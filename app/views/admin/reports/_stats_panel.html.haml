@@ -19,11 +19,11 @@
                 - @data[col].each do |key, value|
                   - case key_types[col] || default_key_type
                   - when 'locale'
-                    - key_name = t(key, scope: :locales)
+                    - key_name = translate_helper_translate(key, scope: :locales)
                   - when 'mode'
-                    - key_name = t("#{Mode.unscoped.find(key).code}_name")
+                    - key_name = translate_helper_translate("#{Mode.unscoped.find(key).code}_name")
                   - else
-                    - key_name = t(key)
+                    - key_name = translate_helper_translate(key)
                   - strings << "#{key_name}: #{value}"
                 = strings.join(', ')
               - else

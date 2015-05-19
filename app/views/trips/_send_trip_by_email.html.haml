@@ -5,19 +5,19 @@
         .modal-header
           .pull-right
             = button_tag type: :submit, class: 'btn action-button', disabled: 'disabled', id: 'send_email_button' do
-              = t(:send)
-            %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= t(:cancel)
-          %h3.modal-title= t(:send_trip_by_email)
+              = translate_helper_translate(:send)
+            %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= translate_helper_translate(:cancel)
+          %h3.modal-title= translate_helper_translate(:send_trip_by_email)
         .modal-body
           #prepare_print_maps
-            =t(:preparing_maps)
+            =translate_helper_translate(:preparing_maps)
             .progress
               .progress-bar.active{role: "progressbar", aria: {valuenow: "0", valuemin: "0", valuemax: "100"}, style: "width: 0%"}
                 0%
           = f.error_notification message: print_messages(f)
           - if user_signed_in?
-            = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}
+            = f.input :email_addresses, label: translate_helper_translate(:to), required: true, hint: translate_helper_translate(:email_hint), :input_html => { :value => get_traveller_related_emails(@traveler, is_assisting)}
           - else
-            = f.input :email_addresses, label: t(:to), required: true, hint: t(:email_hint)
-          = f.input :email_comments, as: :text, label: t(:comments), required: false, input_html: {rows: 3}
+            = f.input :email_addresses, label: translate_helper_translate(:to), required: true, hint: translate_helper_translate(:email_hint)
+          = f.input :email_comments, as: :text, label: translate_helper_translate(:comments), required: false, input_html: {rows: 3}
 

@@ -1,5 +1,5 @@
 %h4
-  = t(:report_name)
+  = translate_helper_translate(:report_name)
 - report_id ||= 0
 %select.form-control.reporting-reports-list{onChange:"window.location.href=this.value"}
   - reports.each do |report_info|

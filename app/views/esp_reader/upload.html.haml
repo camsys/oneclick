@@ -1,6 +1,6 @@
 .row
   .col-sm-6.pull-left
-    =link_to t(:back_to_services), services_path
+    =link_to translate_helper_translate(:back_to_services), services_path
 .row
   .col-sm-12
     %h1 ESP File Upload
@@ -26,7 +26,7 @@
                 =f.input :zip, as: :file, label: 'File'
   :javascript
     $('#upload_esp').on('click', function(){
-      $('#esp_upload_form form').submit();
+      $('#esp_upload_form form').submitranslate_helper_translate();
     });
   .col-sm-6
     .panel.panel-default

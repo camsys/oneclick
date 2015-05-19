@@ -6,7 +6,7 @@
         %tr
           - @columns.each_with_index do |col, index|
             %th
-              = t(col)
+              = translate_helper_translate(col)
       %tbody.nowrap
 
 - filter = true if local_assigns[:filter].nil?

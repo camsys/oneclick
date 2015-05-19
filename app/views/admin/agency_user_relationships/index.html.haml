@@ -1,18 +1,18 @@
 %h1
   = link_to @agency.name, [:admin, @agency] if @agency
 
-%h2= t(:find_traveler)
+%h2= translate_helper_translate(:find_traveler)
 .well.well-sm#filters
   =form_tag({controller: "admin/agency_user_relationships", action: "index"}, method: 'get', :class => "form-inline") do
-    =label_tag :text, t(:search)
+    =label_tag :text, translate_helper_translate(:search)
     =text_field_tag :text, params[:text]
-    =submit_tag t(:submit), name: nil, :class => "btn action-button"
+    =submit_tag translate_helper_translate(:submit), name: nil, :class => "btn action-button"
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_users_table
   %thead
     %tr
-      %th= t(:name)
-      %th= t(:email)
-      %th= t(:registered)
+      %th= translate_helper_translate(:name)
+      %th= translate_helper_translate(:email)
+      %th= translate_helper_translate(:registered)
       %th
   %tbody
     - @users.each do |traveler|
@@ -25,7 +25,7 @@
         %td= traveler.created_at.to_date
         %td.center
           - unless traveler.is_visitor? || current_user.agency.nil?
-            = link_to t(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn action-button"
+            = link_to translate_helper_translate(:plan_a_trip), (admin_agency_traveler_aid_user_path(@agency, traveler.id) rescue ''), :class => "btn action-button"
         = render partial: traveler, locals: {agency: @agency} if @agency
 
 :javascript
@@ -33,7 +33,7 @@
     $('#admin_agencies_table').dataTable( {
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ agencies per page",
-              "sZeroRecords": t(:Nothing_found),
+              "sZeroRecords": translate_helper_translate(:Nothing_found),
               "sInfo": "Showing _START_ to _END_ of _TOTAL_ agencies",
               "sInfoEmpty": "Showing 0 to 0 of 0 agencies",
               "sInfoFiltered": "(filtered from _MAX_ total agencies)"

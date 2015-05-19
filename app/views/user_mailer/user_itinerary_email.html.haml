@@ -1,7 +1,7 @@
-= t(:user_itinerary_email_header).to_s
+= translate_helper_translate(:user_itinerary_email_header).to_s
 
 - unless @comments.blank?
-  %h3= t(:comments)
+  %h3= translate_helper_translate(:comments)
   %p= @comments
 
 %hr
@@ -19,21 +19,21 @@
   %tr
     %td{style: "color:grey;"}
       %strong
-        = t(:from) + ':  '
+        = translate_helper_translate(:from) + ':  '
     %td
       %strong
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
       %strong
-        =t(:to) + ':  '
+        =translate_helper_translate(:to) + ':  '
     %td
       %strong
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
       %strong
-        =t(:at_time)
+        =translate_helper_translate(:at_time)
     %td
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
@@ -43,15 +43,15 @@
 -unless @itinerary.mode.code == 'mode_rideshare'
   %hr
   %h3
-    =t(:summary) + ":"
+    =translate_helper_translate(:summary) + ":"
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
 
 %hr
 %h3
-  =t(:details) +":"
+  =translate_helper_translate(:details) +":"
 
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
 %hr
 
-= t(:user_itinerary_email_footer).to_s
+= translate_helper_translate(:user_itinerary_email_footer).to_s

@@ -20,37 +20,37 @@
         .pull-right
           = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
-          = link_to t(:cancel), @service.id.nil? ? admin_provider_path(@provider) : service_path(@service), class: "btn action-button"
+          = link_to translate_helper_translate(:cancel), @service.id.nil? ? admin_provider_path(@provider) : service_path(@service), class: "btn action-button"
 
   .row
     .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h3.panel-title
-            = t(:service)
-            = t(:information)
+            = translate_helper_translate(:service)
+            = translate_helper_translate(:information)
             = add_tooltip("service_help")
         .panel-body
           - unless @service.active
             %h3.warning
-              = t(:service_is_inactive)
+              = translate_helper_translate(:service_is_inactive)
           -unless @service.logo_url.nil?
             %img{src: @service.logo_url, style: "display: block; margin-right: auto; margin-left: auto;"}
-            = f.input :remove_logo, label: t(:remove_logo), :as => :boolean, input_html: {checked: false}
-          = f.input :logo, label: t(:upload_logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
-          = f.input :display_color, label: t(:display_color), placeholder: "#000000"
+            = f.input :remove_logo, label: translate_helper_translate(:remove_logo), :as => :boolean, input_html: {checked: false}
+          = f.input :logo, label: translate_helper_translate(:upload_logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
+          = f.input :display_color, label: translate_helper_translate(:display_color), placeholder: "#000000"
           = f.input :phone
           = f.input :email
           = f.input :url
           = f.association :service_type,
-                  collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
-          = f.input :external_id, label: t(:service_id)
+                  collection: ServiceType.all.map{|t| [ translate_helper_translate(t.name), t.id ] }
+          = f.input :external_id, label: translate_helper_translate(:service_id)
 
     .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h4.panel-title
-            = t(:internal_contact)
+            = translate_helper_translate(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
@@ -58,27 +58,27 @@
           = f.input :internal_contact_phone
           = f.input :internal_contact_email
           = f.input :internal_contact, collection: @service.users, class: "form-control",
-                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
+                selected: (@contact.id if @contact) , include_blank: "None", label: translate_helper_translate(:user)
 
   .row
     .col-sm-4#schedule-panel
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:schedule)
+            = translate_helper_translate(:schedule)
             = add_tooltip("schedule_help")
         .panel-body
           %table.ALTtable
             %thead
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper_translate('datetime.prompts.day')
                 %th.text-center
-                  = t(:start_time)
+                  = translate_helper_translate(:start_time)
                 %th.text-center
-                  = t(:end_time)
+                  = translate_helper_translate(:end_time)
                 %th.text-center
-                  = t(:clear_?)
+                  = translate_helper_translate(:clear_?)
             %tbody
               - # display each day of week
               - count = 0
@@ -89,7 +89,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = I18n.translate_helper_translate('date.day_names')[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -118,7 +118,7 @@
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:advance_notice_required)
+            = translate_helper_translate(:advance_notice_required)
             = add_tooltip("advance_notice_required_help")
         .panel-body
           - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
@@ -127,12 +127,12 @@
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: adv_notice_days_total,
               name: "service[notice_days_part]"}
-          = t(:to).downcase
+          = translate_helper_translate(:to).downcase
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: max_adv_book_days_total,
               name: "service[max_advanced_book_days_part]"}
           %b 
-            = t(:days).downcase
+            = translate_helper_translate(:days).downcase
           - # currently only use advanced_notice_days, may change back to days/hours/minutes
           /%input.text-right{type: "number", min: 0, max: 23,
           /    value: (minutes_total / 60) % 24,
@@ -142,17 +142,17 @@
           /    value: minutes_total % 60,
           /    name: "service[notice_minutes_part]"}
           /%b minutes
-          = " " + t(:advance_notice_required) + "."
+          = " " + translate_helper_translate(:advance_notice_required) + "."
           - # booking cut off time editing
           %table.ALTtable
             %thead
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper_translate('datetime.prompts.day')
                 %th.text-center
-                  = t(:cut_off_time)
+                  = translate_helper_translate(:cut_off_time)
                 %th.text-center
-                  = t(:clear_?)
+                  = translate_helper_translate(:clear_?)
             %tbody
               - # display each day of week
               - count = 0
@@ -162,7 +162,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = I18n.translate_helper_translate('date.day_names')[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",
@@ -184,11 +184,11 @@
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:accommodations)
+            = translate_helper_translate(:accommodations)
             = add_tooltip("accommodations_help")
         .panel-body
           = f.association :accommodations,
-                collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
+                collection: Accommodation.all.map{|a| [ translate_helper_translate(a.name), a.id ] }, label: false,
                 as: :check_boxes,
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
@@ -198,9 +198,9 @@
       .panel.panel-default.well1
         .panel-heading
           %h4.panel-title
-            = t(:eligibility)
+            = translate_helper_translate(:eligibility)
             = add_tooltip("eligibility_help")
-          = t(:eligibility_rules_descr)
+          = translate_helper_translate(:eligibility_rules_descr)
         .panel-body
 
           %h4 Modify existing rules
@@ -235,15 +235,15 @@
                   %td
                     = join_string
                     - join_string = ' AND '
-                    = t(map.characteristic.name)
+                    = translate_helper_translate(map.characteristic.name)
                     - case map.characteristic.datatype
                     -   when 'bool'
                       = " is "
                       = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', 'true'], ['false', 'false']], map.value))
+                        options_for_selectranslate_helper_translate([['true', 'true'], ['false', 'false']], map.value))
                     -   when 'integer', 'date'
                       = select_tag(input_name(f, :service_characteristics, :rel_code),
-                        options_for_select(@eh.operator_select_options, map.rel_code))
+                        options_for_selectranslate_helper_translate(@eh.operator_select_options, map.rel_code))
                       %input.text-right{type: "number", min: 1, max: 120, value: map.value,
                         name: input_name(f, :service_characteristics, :value)}
 
@@ -269,17 +269,17 @@
                         name: input_name(f, :service_characteristics, :characteristic_id)}
                   %td.text-center
                     = select_tag(input_name(f, :service_characteristics, :group),
-                      options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
+                      options_for_selectranslate_helper_translate((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
                   %td.text-center
-                    = t(c.name)
+                    = translate_helper_translate(c.name)
                     - case c.datatype
                     -   when 'bool'
                       = " is "
                       = select_tag(input_name(f, :service_characteristics, :value),
-                        options_for_select([['true', 'true'], ['false', 'false']]))
+                        options_for_selectranslate_helper_translate([['true', 'true'], ['false', 'false']]))
                     -   when 'integer', 'date'
                       = select_tag(input_name(f, :service_characteristics, :rel_code),
-                        options_for_select(@eh.operator_select_options, 4))
+                        options_for_selectranslate_helper_translate(@eh.operator_select_options, 4))
                       %input.text-right{type: "number", min: 1, max: 120,
                         name: input_name(f, :service_characteristics, :value)}
 
@@ -287,11 +287,11 @@
       .panel.panel-default.well1
         .panel-heading
           %h4.panel-title
-            = t(:trip_purposes)
+            = translate_helper_translate(:trip_purposes)
             = add_tooltip("trip_purposes_help")
         .panel-body
           = f.association :trip_purposes,
-                collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
+                collection: TripPurpose.all.map{|p| [ translate_helper_translate(p.name), p.id ] }, label: false,
                 as: :check_boxes,
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
@@ -299,7 +299,7 @@
       .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
         .panel-heading
           %h4.panel-title
-            = t(:fare)
+            = translate_helper_translate(:fare)
             = add_tooltip("fare_help")
         .panel-body
           .row_fluid.paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
@@ -307,17 +307,17 @@
         
           .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
             = f.simple_fields_for :fare_structures do |fare|
-              = fare.input :base, label: t(:base_rate), input_html: {class: "form-control"}
-              = fare.input :rate, label: t(:mileage_rate), input_html: {class: "form-control"}
-              = f.input :taxi_fare_finder_city, label: t(:taxi_fare_finder_city)
-              = fare.input :desc, label: t(:comments), as: :text, input_html: {class: "form-control"}
+              = fare.input :base, label: translate_helper_translate(:base_rate), input_html: {class: "form-control"}
+              = fare.input :rate, label: translate_helper_translate(:mileage_rate), input_html: {class: "form-control"}
+              = f.input :taxi_fare_finder_city, label: translate_helper_translate(:taxi_fare_finder_city)
+              = fare.input :desc, label: translate_helper_translate(:comments), as: :text, input_html: {class: "form-control"}
 
   .row#time-and-booking-panels
     .col-sm-6
       .panel.panel-default.well3
         .panel-heading
           %h4.panel-title
-            = t(:time_window)
+            = translate_helper_translate(:time_window)
             = add_tooltip("time_window_help")
         .panel-body
           = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
@@ -327,7 +327,7 @@
       .panel.panel-default.well3
         .panel-heading
           %h4.panel-title
-            = t(:booking_information)
+            = translate_helper_translate(:booking_information)
             = add_tooltip("booking_information_help")
         .panel-body        
           = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
@@ -341,7 +341,7 @@
           .row.text-center
             .col-sm-12
               %h3.panel-title
-                = t(:coverage_areas)
+                = translate_helper_translate(:coverage_areas)
                 = add_tooltip("coverage_areas_help")
         .panel-body
           .row
@@ -351,14 +351,14 @@
                 .panel.panel-default
                   .panel-heading
                     %h4.panel-title
-                      = t(rule)
+                      = translate_helper_translate(rule)
                       = add_tooltip("#{rule}_help")
                   .panel-body
-                    %label=t(:coverage_area_edit_instruction)
-                    = f.input rule+'_shapefile', :label => t(:upload_shapefile),:as => :file
+                    %label=translate_helper_translate(:coverage_area_edit_instruction)
+                    = f.input rule+'_shapefile', :label => translate_helper_translate(:upload_shapefile),:as => :file
                     - types.each do |type|
                       %b
-                        = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                        = type.humanize.split[0].pluralize + ' ' + translate_helper_translate(:served_areas)
                       .well.white-well.text-left
                         - checked = @service.send(rule).pluck(:geo_coverage_id)
                         - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
@@ -383,34 +383,34 @@
   boxes = $('.well0');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well1');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well2');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well3');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   if ("#{is_taxi}" == 'true') {
     el = $('#fare-panel').detach();
-    $('#schedule-panel').closest('.row').append(el);
+    $('#schedule-panel').closestranslate_helper_translate('.row').append(el);
   }
 
   $(document).ready(function() {
@@ -429,7 +429,7 @@
     });
 
     // remove non-related fare fields for selected service typ when form is submitted
-    $('.service-edit-form').submit(function() {
+    $('.service-edit-form').submitranslate_helper_translate(function() {
       if($("#service_service_type_id").val() != #{paratransit_id}) {
         $('.paratransit-fare').remove();
       } else {

@@ -1,24 +1,24 @@
-= t(:feedback_email_header).to_s
+= translate_helper_translate(:feedback_email_header).to_s
 
-- product_name = t(:site_title)
+- product_name = translate_helper_translate(:site_title)
 
 %hr
-=t(:follow_up_email_template).sub('%{trip_created_date}', format_date(@trip.created_at.in_time_zone)).sub('%{product_name}', product_name).sub('%{trip_date}', format_date(@trip.trip_parts.first.trip_time.in_time_zone)).sub('%{trip_from_address}', @trip.from_place.name).sub('%{trip_to_address}', @trip.to_place.name)
+=translate_helper_translate(:follow_up_email_template).sub('%{trip_created_date}', format_date(@trip.created_at.in_time_zone)).sub('%{product_name}', product_name).sub('%{trip_date}', format_date(@trip.trip_parts.first.trip_time.in_time_zone)).sub('%{trip_from_address}', @trip.from_place.name).sub('%{trip_to_address}', @trip.to_place.name)
 %br
 %br
-=t(:please_click)
+=translate_helper_translate(:please_click)
 =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
-  =t(:here)
-=t(:success_feedback_link)
+  =translate_helper_translate(:here)
+=translate_helper_translate(:success_feedback_link)
 %br
-=t(:no_trip_taken_feedback_link)
-=t(:please_click)
+=translate_helper_translate(:no_trip_taken_feedback_link)
+=translate_helper_translate(:please_click)
 =link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false) do
-  =t(:here)
+  =translate_helper_translate(:here)
 
 %br
 %br
-= t(:thanks_for_feedback)
+= translate_helper_translate(:thanks_for_feedback)
 
 %hr
-= t(:feedback_email_footer).to_s
+= translate_helper_translate(:feedback_email_footer).to_s

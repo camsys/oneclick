@@ -1,14 +1,14 @@
-- content_for :title, "#{t(:site_title)} - #{t(:sign_up)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:sign_up)}"
 = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name),
         html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
-      %h1= t(:sign_up)
+      %h1= translate_helper_translate(:sign_up)
     .col-sm-6.btns
       .pull-right
         = button_tag type: 'submit', class: "btn action-button", style: 'margin-right:5px;' do
-          = t(:apply)
-        = link_to t(:cancel), :back, class: "btn action-button"
+          = translate_helper_translate(:apply)
+        = link_to translate_helper_translate(:cancel), :back, class: "btn action-button"
         
   .row
     .col-sm-6
@@ -19,16 +19,16 @@
       .panel.panel-default#user_info{role: "main", aria: {label: "Sign Up Form"}}
         .panel-heading
           %h3.panel-title
-            = t(:user_information)
+            = translate_helper_translate(:user_information)
             = add_tooltip("user_information_help")
         .panel-body
           = f.error_notification message: print_messages(f)
-          = f.input :first_name, label: t(:first_name), :autofocus => true
-          = f.input :last_name, label: t(:last_name)
-          = f.input :email, label: t(:email), :required => true
-          = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
-          = f.input :password, label: t(:password), :required => true
-          = f.input :password_confirmation, :label => t(:password_confirmation), :required => true
+          = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true
+          = f.input :last_name, label: translate_helper_translate(:last_name)
+          = f.input :email, label: translate_helper_translate(:email), :required => true
+          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.translate_helper_translate("locales.#{pl}")}
+          = f.input :password, label: translate_helper_translate(:password), :required => true
+          = f.input :password_confirmation, :label => translate_helper_translate(:password_confirmation), :required => true
 
   .row
     .col-sm-6

@@ -2,7 +2,7 @@
 
   .row-fluid
     .span12
-      = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => not(inline)  do |f|
+      = simple_form_for @user_programs_proxy, :url => path, :html => { :class => "form-horizontal" }, :method => 'put', :remote => notranslate_helper_translate(inline)  do |f|
         = f.error_notification message: print_messages(f)
 
         %div{ :data => {:index => 0}}
@@ -21,7 +21,7 @@
                 -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
                   %tr
                     %td
-                      = f.label t(characteristic.note)
+                      = f.label translate_helper_translate(characteristic.note)
                     %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
@@ -55,14 +55,14 @@
         /     - else
         /       %i.fa.fa-arrow-right
         /       Save and plan my trip
-        /     / = t(:save)
+        /     / = translate_helper_translate(:save)
         / - else
         /   = button_tag type: :submit, class: 'btn btn-primary controls' do
         /     %i.fa.fa-check
-        /     = t(:update)
+        /     = translate_helper_translate(:update)
         / = link_to :back, :class => "cancel_link hidden" do
         /   %i.fa.fa-reply
-        /   = t(:cancel)
+        /   = translate_helper_translate(:cancel)
 
 :javascript
   $(document).ready(function(){
@@ -70,7 +70,7 @@
     $('.next-step-btn').on('click', function(){
       if (!window.new_user_programs_proxy_submitted) {
         $('.next-step-btn').addClass('stop');
-        $('*[id*=new_user_programs_proxy]').submit();
+        $('*[id*=new_user_programs_proxy]').submitranslate_helper_translate();
       }
 
       window.new_user_programs_proxy_submitted = true;

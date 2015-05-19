@@ -1,16 +1,16 @@
 / %h1
 /   %i.fa.fa-signin
-/   = t(:log_in)
+/   = translate_helper_translate(:log_in)
 / %h4
 / .well
 /   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form-horizontal' }) do |f|
-/     = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-/     = f.input :password, :required => true, :label => t(:password)
-/     = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+/     = f.input :email, :autofocus => true, :required => true, :label => translate_helper_translate(:email)
+/     = f.input :password, :required => true, :label => translate_helper_translate(:password)
+/     = f.input :remember_me, :label => translate_helper_translate(:remember_me), :as => :boolean if devise_mapping.rememberable?
 /     .actions
 /       = button_tag type: :submit, class: 'btn btn-primary controls' do
 /         %i.fa.fa-sign-in
-/         = t(:log_in)
+/         = translate_helper_translate(:log_in)
 /       = render "devise/shared/links"
 
 / TODO: This is unstable for some reason. Work with Camsys to figure it out.
@@ -31,7 +31,7 @@
     .span4.info
       #left-description
         %h1
-          = t(:log_in)
+          = translate_helper_translate(:log_in)
         %h4 Have we met before?
         %p
           Have you created an account with us before? If so, enter your E-mail address and password, then tap "Log In". Logging in will allow us to skip some questions you may have previously answered.
@@ -48,7 +48,7 @@
         .row-fluid
           .span12
             = button_tag :submit, class: 'login-btn pull-left' do
-              = t(:log_in)
+              = translate_helper_translate(:log_in)
             /%a.login-btn.pull-left{:href => "#"} Log In
             .cancel-container.pull-right
               %a.cancel-btn{:href => kiosk_user_new_trip_start_path(current_or_guest_user)} Skip this step

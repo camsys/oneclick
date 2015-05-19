@@ -12,31 +12,31 @@
     %tbody
       %tr
         %td.itinerary_icons{:width => '10%', :style => "text-align: left;"}
-          %img{:src => logo_url_helper(i), alt: "#{t(i.mode)} icon"}
+          %img{:src => logo_url_helper(i), alt: "#{translate_helper_translate(i.mode)} icon"}
         %td{:width => '15%'}
           .itinerary_text
-            %strong= t(:fare)
+            %strong= translate_helper_translate(:fare)
             %br
             = i.cost_in_words
         %td{:width => '15%'}
           .itinerary_text
-            %strong= t(:trip_date)
+            %strong= translate_helper_translate(:trip_date)
             %br
             = i.date_in_words
         %td{:width => '25%'}
           .itinerary_text
-            %strong= t(:trip_time)
+            %strong= translate_helper_translate(:trip_time)
             %br
             = i.time_range_in_words
           .itinerary_text_small{:style => "line-height: normal;"}
             = i.duration_in_words
         %td{:width => '15%'}
           .itinerary_text
-            %strong= t(:walk_time)
+            %strong= translate_helper_translate(:walk_time)
             %br
             = i.walking_time
         %td{:width => '15%'}
           .itinerary_text
-            %strong= t(:transfers)
+            %strong= translate_helper_translate(:transfers)
             %br
             = i.transfers_in_words

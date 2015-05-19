@@ -1,16 +1,16 @@
 .trip_header
   - out = trip.trip_parts.first
   = round_trip(trip)
-  = t(:from).downcase
+  = translate_helper_translate(:from).downcase
   %span.place_name= trip.from_place.name
-  = t(:to).downcase
+  = translate_helper_translate(:to).downcase
   %span.place_name= trip.to_place.name
   = depart_arrive(out).downcase
   = format_date(out.trip_time)
-  = t(:at)
+  = translate_helper_translate(:at)
   - unless trip.is_return_trip
     = format_time(out.trip_time)
   - else
     = format_time(out.trip_time) + ', '
-    = t(:returning)
+    = translate_helper_translate(:returning)
     = format_time(trip.trip_parts.last.trip_time)

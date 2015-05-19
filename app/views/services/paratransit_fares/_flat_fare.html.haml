@@ -1,24 +1,24 @@
 .row_fluid
-  %b= t(:fare_type) + ": " + t(:flat_fare)
+  %b= translate_helper_translate(:fare_type) + ": " + translate_helper_translate(:flat_fare)
 
 - if fare
   .row_fluid
-    %b= t(:one_way_fare) + ": "
+    %b= translate_helper_translate(:one_way_fare) + ": "
     -if fare.one_way_rate
       - if fare.one_way_rate
         = number_to_currency(fare.one_way_rate.to_f).to_s
       - else
-        = t(:n_a)
+        = translate_helper_translate(:n_a)
     -else
-      = t(:flat_fare_unavailable) + "."
+      = translate_helper_translate(:flat_fare_unavailable) + "."
 
   -if fare.round_trip_rate
     .row_fluid
-      %b= t(:round_trip_fare) + ": "
+      %b= translate_helper_translate(:round_trip_fare) + ": "
       - if fare.round_trip_rate
         = number_to_currency(fare.round_trip_rate.to_f).to_s
       - else
-        = t(:n_a)
+        = translate_helper_translate(:n_a)
 - else
   .row_fluid
-    = t(:flat_fare_unavailable) + "."
+    = translate_helper_translate(:flat_fare_unavailable) + "."

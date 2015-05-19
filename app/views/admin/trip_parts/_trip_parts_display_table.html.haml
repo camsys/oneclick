@@ -19,14 +19,14 @@
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
   %thead
     %tr
-      %th= sort_link @q, "id", t(:id)
-      %th= sort_link @q, "trip_id", t(:trip_id)
-      %th= sort_link @q, "user_name_case_insensitive", t(:traveler)
-      %th= sort_link @q, "trip_datetime", t(:trip_datetime)
-      %th= sort_link @q, "from_address", t(:from)
-      %th= sort_link @q, "to_address", t(:to)
-      %th= sort_link @q, "is_return_trip", t(:is_return_trip)
-      %th= sort_link @q, "provider_name", t(:provider_name)
+      %th= sort_link @q, "id", translate_helper_translate(:id)
+      %th= sort_link @q, "trip_id", translate_helper_translate(:trip_id)
+      %th= sort_link @q, "user_name_case_insensitive", translate_helper_translate(:traveler)
+      %th= sort_link @q, "trip_datetime", translate_helper_translate(:trip_datetime)
+      %th= sort_link @q, "from_address", translate_helper_translate(:from)
+      %th= sort_link @q, "to_address", translate_helper_translate(:to)
+      %th= sort_link @q, "is_return_trip", translate_helper_translate(:is_return_trip)
+      %th= sort_link @q, "provider_name", translate_helper_translate(:provider_name)
   %tbody{ :id => 'trip_parts_table'}
     - trip_parts.each do |trip_part|
       -tripID = "trip#{trip_part.trip_id}"
@@ -37,7 +37,7 @@
         %td.nowrap= format_date_time(trip_part.trip_datetime)
         %td= trip_part.from_address
         %td= trip_part.to_address
-        %td= trip_part.is_return_trip ? t(:return) : t(:outbound)
+        %td= trip_part.is_return_trip ? translate_helper_translate(:return) : translate_helper_translate(:outbound)
         %td= trip_part.provider_name
 .row
   .col-sm-6

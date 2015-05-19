@@ -1,43 +1,43 @@
 .row
   .col-sm-12
     %h1
-      = t(:trip) + @trip.id.to_s
+      = translate_helper_translate(:trip) + @trip.id.to_s
     
 .row
   .col-sm-12
     .row
       .col-sm-4
         %fieldset
-          %legend= t(:trip_details)
+          %legend= translate_helper_translate(:trip_details)
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:user) + ":"
-            %span.col-sm-8= @trip.user.nil? ? t(:anonymous) : link_to(@trip.user.name, user_path(@trip.user))      
+            %span.col-sm-4.text-right= translate_helper_translate(:user) + ":"
+            %span.col-sm-8= @trip.user.nil? ? translate_helper_translate(:anonymous) : link_to(@trip.user.name, user_path(@trip.user))      
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:creator) + ":"
+            %span.col-sm-4.text-right= translate_helper_translate(:creator) + ":"
             %span.col-sm-8= @trip.creator.nil? ? "" : link_to(@trip.creator.name, user_path(@trip.creator))      
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:trip_date) + ":"          
+            %span.col-sm-4.text-right= translate_helper_translate(:trip_date) + ":"          
             %span.col-sm-8= format_date_time(@trip.trip_datetime)          
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:return) + ":"
-            %span.col-sm-8= @trip.is_return_trip ? t(:yes_str) : t(:no_str)
+            %span.col-sm-4.text-right= translate_helper_translate(:return) + ":"
+            %span.col-sm-8= @trip.is_return_trip ? translate_helper_translate(:yes_str) : translate_helper_translate(:no_str)
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:trip_purpose) + ":"
+            %span.col-sm-4.text-right= translate_helper_translate(:trip_purpose) + ":"
             %span.col-sm-8= @trip.trip_purpose.name      
           %p.col-sm-12
-            %span.col-sm-4.text-right= t(:created) + ":"
+            %span.col-sm-4.text-right= translate_helper_translate(:created) + ":"
             %span.col-sm-8= format_date_time(@trip.created_at)          
       .col-sm-8
         %fieldset
-          %legend= t(:places)
+          %legend= translate_helper_translate(:places)
           %table.table.table.condensed.table-striped.table-hover.table-bordered
             %thead
               %tr
-                %th.left= t(:place)
-                %th.left= t(:type)
-                %th.left= t(:address)
-                %th.center= t(:location)
-                %th.center= t(:actions)
+                %th.left= translate_helper_translate(:place)
+                %th.left= translate_helper_translate(:type)
+                %th.left= translate_helper_translate(:address)
+                %th.center= translate_helper_translate(:location)
+                %th.center= translate_helper_translate(:actions)
             %tbody
               - @trip.trip_places.each do |place|
                 %tr
@@ -49,32 +49,32 @@
                   %td.center.nowrap
                     = link_to "#", {class: "btn btn-xs btn-success text-center"} do
                       %i.fa.fa-search
-                      =t(:view)
+                      =translate_helper_translate(:view)
 
     .row
       .col-sm-12
         %fieldset
-          %legend= t(:itineraries)
+          %legend= translate_helper_translate(:itineraries)
           %table.table.table.condensed.table-striped.table-hover.table-bordered
             %thead
               %tr
-                %th.left= t(:mode)
-                %th.center= t(:direction_short)
-                %th.center= t(:status)
-                %th.center= t(:hidden)
-                %th.center= t(:start_time)
-                %th.center= t(:end_time)
-                %th.left= t(:walk_time)
-                %th.left= t(:transit_time)
-                %th.left= t(:wait_time)
-                %th.left= t(:walk_distance_short)
-                %th.center= t(:cost)
+                %th.left= translate_helper_translate(:mode)
+                %th.center= translate_helper_translate(:direction_short)
+                %th.center= translate_helper_translate(:status)
+                %th.center= translate_helper_translate(:hidden)
+                %th.center= translate_helper_translate(:start_time)
+                %th.center= translate_helper_translate(:end_time)
+                %th.left= translate_helper_translate(:walk_time)
+                %th.left= translate_helper_translate(:transit_time)
+                %th.left= translate_helper_translate(:wait_time)
+                %th.left= translate_helper_translate(:walk_distance_short)
+                %th.center= translate_helper_translate(:cost)
                   
             %tbody
               - @trip.itineraries.each do |itin|
                 %tr
                   %td.left= itin.mode
-                  %td.center= itin.trip_part.is_return_trip ? t(:in_str) : t(:out_str)
+                  %td.center= itin.trip_part.is_return_trip ? translate_helper_translate(:in_str) : translate_helper_translate(:out_str)
                   %td.center
                     = link_to "#", :class => "action_popover", :data => {:content => itin.server_message, :html => true, :trigger => 'hover', :title => 'Server Message'} do
                       = itin.server_status

@@ -9,7 +9,7 @@
       %a#no{:href => "#", :name => "yesno", :value => "no"} No
 
 %div{:data => {:index => 1}}
-  = f.input :trip_date, :wrapper => :append, :label => t(:trip_date) do
+  = f.input :trip_date, :wrapper => :append, :label => translate_helper_translate(:trip_date) do
     #date-arrow-prev.prev.month.disabled
     #trip-date= f.input_field :return_trip_date, :as => :string, :label => false
     #date-arrow-next.next.month

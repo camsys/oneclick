@@ -3,12 +3,12 @@
 - round_trip_rate = flat_fare.round_trip_rate
 .row_fluid.col-sm-12
   .col-sm-3
-    = I18n.t('one_way_rate')
+    = I18n.translate_helper_translate('one_way_rate')
   .col-sm-9
     %input.hidden{value: flat_fare.id, name: "serviceflat_fare_attributes][id]"}
     %input.form-control.text-right{type: "number", value: one_way_rate, name: "service[flat_fare_attributes][one_way_rate]", min: "0"}
 .row_fluid.col-sm-12
   .col-sm-3
-    = I18n.t('round_trip_rate')
+    = I18n.translate_helper_translate('round_trip_rate')
   .col-sm-9
     %input.form-control.text-right{type: "number", value: round_trip_rate, name: "service[flat_fare_attributes][round_trip_rate]", min: "0"}

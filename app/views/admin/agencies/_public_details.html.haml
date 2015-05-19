@@ -2,13 +2,13 @@
   .panel.panel-default
     .panel-heading
       %h2.panel-title
-        = t(:contact_info)
+        = translate_helper_translate(:contact_info)
         = add_tooltip("contact_info_help")
     .panel-body
       %table.table.table-condensed
         %tr
           %td.text-right
-            = t(:address) + ":"
+            = translate_helper_translate(:address) + ":"
           %td.text-left
             %b= agency.address.to_s
           %td.text-left
@@ -19,23 +19,23 @@
             %b= agency.zip.to_s
         %tr
           %td.text-right
-            = t(:phone)+ ":  "
+            = translate_helper_translate(:phone)+ ":  "
           %td.text-left{colspan: 4}
             %b= agency.phone.to_s
         %tr
           %td.text-right
-            = t(:email)+ ":  "
+            = translate_helper_translate(:email)+ ":  "
           %td.text-left{colspan: 4}
             - unless agency.email.blank?
               %b= mail_to agency.email.to_s
         %tr
           %td.text-right
-            = t(:url)+ ":  "
+            = translate_helper_translate(:url)+ ":  "
           %td.text-left{colspan: 4}
             - unless agency.url.blank?
               %b= link_to agency.url, agency.url
         %tr
           %td.text-right
-            = t(:parent_agency) + ":  "
+            = translate_helper_translate(:parent_agency) + ":  "
           %td.text-left{colspan: 4}
             %b= agency.parent.name if agency.parent

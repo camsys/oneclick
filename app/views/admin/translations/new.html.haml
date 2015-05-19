@@ -1,10 +1,10 @@
-- content_for :title, "#{t(:site_title)} - #{t(:create_translation)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:create_translation)}"
 .row.info-header
 	.col-sm-12
 		.btns.pull-right
 			= button_tag id:'create_translation', type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
-				= t(:create_translation)
-			= link_to t(:cancel), admin_translations_path, { class: "btn action-button" }
+				= translate_helper_translate(:create_translation)
+			= link_to translate_helper_translate(:cancel), admin_translations_path, { class: "btn action-button" }
 		%h1 Define A Translation
 
 .panel.panel-default{style: 'padding: 0px;'}
@@ -23,5 +23,5 @@
 						= t.input :value, input_html: {rows: 10}
 :javascript
 	$('#create_translation').on('click', function(){
-		$('#translations_form form').submit();
+		$('#translations_form form').submitranslate_helper_translate();
 	});

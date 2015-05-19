@@ -2,7 +2,7 @@
   .span4.info
     #left-description
       %h1
-        = t(:plan_a_trip)
+        = translate_helper_translate(:plan_a_trip)
       %h4 Tell Us Where You're Starting
       %p Will you be traveling from your current location? Tap "yes" or "no". If "no", you will be prompted to enter an address to travel from in the next step.
 
@@ -32,7 +32,7 @@
             %h4
               %div{:class => "alert alert-error"}
                 %a.close{"data-dismiss" => "alert"} ×
-                %div= t(:correct_errors_to_create_a_trip)
+                %div= translate_helper_translate(:correct_errors_to_create_a_trip)
 
 
 

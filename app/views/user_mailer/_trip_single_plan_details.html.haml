@@ -11,7 +11,7 @@
             %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/start.png"}
           %td.itin_text_container
             .itinerary_text
-              = t(:start) + itinerary.trip_part.from_trip_place.name
+              = translate_helper_translate(:start) + itinerary.trip_part.from_trip_place.name
             .itinerary_text_small
               = format_time(itinerary.start_time.in_time_zone)
 
@@ -25,13 +25,13 @@
                 - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
                 - if sidewalk_obstructions.length > 0
                   %br
-                  = t(:sidewalk_obstructions) + ':'
+                  = translate_helper_translate(:sidewalk_obstructions) + ':'
                   %br
                   %div{style:'padding-left: 10px;'}
                     - sidewalk_obstructions.each do |f|
                       = f.comment
                       - unless f.removed_at.nil?
-                        = ', ' + t(:removed_at).downcase + ' ' + format_date(f.removed_at)
+                        = ', ' + translate_helper_translate(:removed_at).downcase + ' ' + format_date(f.removed_at)
                       %br
               .itinerary_text_small
                 =[duration_to_words(leg.duration), exact_distance_to_words(leg.distance)].join(', ')
@@ -40,7 +40,7 @@
             %img{src: "https://s3.amazonaws.com/oneclick-arc-int/images/stop.png"}
           %td.itin_text_container
             .itinerary_text
-              = t(:arrive) + itinerary.trip_part.to_trip_place.name
+              = translate_helper_translate(:arrive) + itinerary.trip_part.to_trip_place.name
             .itinerary_text_small
               = format_time(itinerary.end_time.in_time_zone)
 

@@ -1,23 +1,23 @@
-- content_for :title, "#{t(:site_title)} - #{t(:feedback)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:feedback)}"
 =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
   .row.info-header
     .col-sm-6
       %h1
-        = t(:thanks_for_the_feedback)
+        = translate_helper_translate(:thanks_for_the_feedback)
       %small 
-        = t(:did_not_take_feedback_prompt)
+        = translate_helper_translate(:did_not_take_feedback_prompt)
     .col-sm-6.btns
       .pull-right
-        = f.submit t(:apply), class: "btn action-button"
+        = f.submit translate_helper_translate(:apply), class: "btn action-button"
         = link_to user_trip_path_for_ui_mode(@traveler, @trip), class: "btn action-button" do
-          = t(:cancel)
+          = translate_helper_translate(:cancel)
 
   .row
     .col-sm-12
       = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
-        = ratings_form.input :comments, label: t(:comments)
+        = ratings_form.input :comments, label: translate_helper_translate(:comments)
         - if translation_exists?("comments_help")
           :javascript
-            addHelperTooltip('#comments_label', "#{t(:comments_help)}");
+            addHelperTooltip('#comments_label', "#{translate_helper_translate(:comments_help)}");

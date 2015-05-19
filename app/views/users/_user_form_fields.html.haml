@@ -4,93 +4,93 @@
     .row.info-header
       .col-sm-6
         %h1
-          = current_user != @user ? "#{@user.name}'s #{t(:travel_profile)}" : t(:travel_profile)
+          = current_user != @user ? "#{@user.name}'s #{translate_helper_translate(:travel_profile)}" : translate_helper_translate(:travel_profile)
       .col-sm-6.btns
         .pull-right{style: 'padding-bottom:4px;'}
-          = f.button :submit, t(:apply), class: "btn action-button"
-          = link_to t(:cancel), :back, class: "btn action-button"
+          = f.button :submit, translate_helper_translate(:apply), class: "btn action-button"
+          = link_to translate_helper_translate(:cancel), :back, class: "btn action-button"
 
     .row
       .col-sm-6
         .panel.panel-default#user_info
           .panel-heading
             %h2.panel-title
-              = t(:user_information)
+              = translate_helper_translate(:user_information)
               = add_tooltip("user_information_help")
           .panel-body
-            = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
+            = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true, :required => true
             - if translation_exists?("first_name_help")
               :javascript
-                addHelperTooltip('#first_name_label', "#{t(:first_name_help)}");
+                addHelperTooltip('#first_name_label', "#{translate_helper_translate(:first_name_help)}");
 
-            = f.input :last_name, label: t(:last_name), :required => true
+            = f.input :last_name, label: translate_helper_translate(:last_name), :required => true
             - if translation_exists?("last_name_help")
               :javascript
-                addHelperTooltip('#last_name_label', "#{t(:last_name_help)}");
+                addHelperTooltip('#last_name_label', "#{translate_helper_translate(:last_name_help)}");
 
-            = f.input :title, label: t(:title), :required => false
+            = f.input :title, label: translate_helper_translate(:title), :required => false
             - if translation_exists?("title_help")
               :javascript
-                addHelperTooltip('#title_label', "#{t(:title_help)}");
+                addHelperTooltip('#title_label', "#{translate_helper_translate(:title_help)}");
 
-            = f.input :email, label: t(:email), :required => true
+            = f.input :email, label: translate_helper_translate(:email), :required => true
             - if translation_exists?("email_help")
               :javascript
-                addHelperTooltip('#email_label', "#{t(:email_help)}");
+                addHelperTooltip('#email_label', "#{translate_helper_translate(:email_help)}");
 
             - if is_admin?
-              = f.input :roles, label: "#{t(:admin)}?", collection: Role.order(:name).reject{|role| role.name != "system_administrator"}, as: :check_boxes, label_method: lambda {|t| t(:yes_str)}, checked: (@user.has_role?(:system_administrator) ? 1 : "")
+              = f.input :roles, label: "#{translate_helper_translate(:admin)}?", collection: Role.order(:name).reject{|role| role.name != "system_administrator"}, as: :check_boxes, label_method: lambda {|t| translate_helper_translate(:yes_str)}, checked: (@user.has_role?(:system_administrator) ? 1 : "")
               - if translation_exists?("role_help")
                 :javascript
-                  addHelperTooltip('#roles_label', "#{t(:role_help)}");
+                  addHelperTooltip('#roles_label', "#{translate_helper_translate(:role_help)}");
 
-            = f.input :phone, label: t(:phone), :required => false
+            = f.input :phone, label: translate_helper_translate(:phone), :required => false
             - if translation_exists?("phone_help")
               :javascript
-                addHelperTooltip('#phone_label', "#{t(:phone_help)}");
+                addHelperTooltip('#phone_label', "#{translate_helper_translate(:phone_help)}");
 
-            = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
+            = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.translate_helper_translate("locales.#{pl}")}
             - if translation_exists?("preferred_locale_help")
               :javascript
-                addHelperTooltip('#preferred_locale_label', "#{t(:preferred_locale_help)}");
+                addHelperTooltip('#preferred_locale_label', "#{translate_helper_translate(:preferred_locale_help)}");
 
-            = f.input :password, label: t(:password), :autocomplete => "off", :required => false, label_html: {"aria-label" => "Password. Leave this as well as the password confirmation blank if you do not want to change your password."}
+            = f.input :password, label: translate_helper_translate(:password), :autocomplete => "off", :required => false, label_html: {"aria-label" => "Password. Leave this as well as the password confirmation blank if you do not want to change your password."}
             - if translation_exists?("password_help")
               :javascript
-                addHelperTooltip('#password_label', "#{t(:password_help)}");
+                addHelperTooltip('#password_label', "#{translate_helper_translate(:password_help)}");
 
-            = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
-            = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_speed), input_html: { class: 'form-control' }
+            = f.input :password_confirmation, label: translate_helper_translate(:password_confirmation), :hint => translate_helper_translate(:leave_password_blank), :required => false
+            = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: translate_helper_translate(:walking_speed), input_html: { class: 'form-control' }
             - if translation_exists?("walking_speed_help")
               :javascript
-                addHelperTooltip('#walking_speed_id_label', "#{t(:walking_speed_help)}");
+                addHelperTooltip('#walking_speed_id_label', "#{translate_helper_translate(:walking_speed_help)}");
 
-            = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_maximum_distance), input_html: { class: 'form-control' }
+            = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: translate_helper_translate(:walking_maximum_distance), input_html: { class: 'form-control' }
             - if translation_exists?("walking_maximum_distance_help")
               :javascript
-                addHelperTooltip('#walking_maximum_distance_id_label', "#{t(:walking_maximum_distance_help)}");
+                addHelperTooltip('#walking_maximum_distance_id_label', "#{translate_helper_translate(:walking_maximum_distance_help)}");
 
-            = f.input :maximum_wait_time, label: "#{t(:maximum_wait_time)} (#{t(:minutes)})", as: :integer, input_html: { value: @user.max_wait_time, min: '0'}
+            = f.input :maximum_wait_time, label: "#{translate_helper_translate(:maximum_wait_time)} (#{translate_helper_translate(:minutes)})", as: :integer, input_html: { value: @user.max_wait_time, min: '0'}
             - if translation_exists?("maximum_wait_time_help")
               :javascript
-                addHelperTooltip('#maximum_wait_time_label', "#{t(:maximum_wait_time_help)}");
+                addHelperTooltip('#maximum_wait_time_label', "#{translate_helper_translate(:maximum_wait_time_help)}");
 
       - if can? :full_read, @user
         .col-sm-6
           .panel.panel-default#agencies
             .panel-heading
               %h2.panel-title
-                = t(:agencies)
+                = translate_helper_translate(:agencies)
                 = add_tooltip("agencies_help")
             .panel-body
-              / %label.sr-only{aria: {label: "#{t(:agencies)}"}}
+              / %label.sr-only{aria: {label: "#{translate_helper_translate(:agencies)}"}}
               / - Agency.all.order(:name).each do |agency|
               /   %div
               /     %input.check_boxes.optional{id: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids][]", type: "checkbox", size: 10, value: "#{agency.id}"}
               /     %label.check_boxes.optional{for: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids]"} #{agency}
               /     %br
 
-              = f.association :approved_agencies, collection: Agency.active.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: t(:agencies), label_html: {class: 'sr-only'}
+              = f.association :approved_agencies, collection: Agency.active.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: translate_helper_translate(:agencies), label_html: {class: 'sr-only'}
 
     - if current_user.agency
       .row
@@ -98,13 +98,13 @@
           .panel.panel-default
             .panel-heading
               %h2.panel-title
-                =t(:traveler_notes)
+                =translate_helper_translate(:traveler_notes)
                 = add_tooltip("traveler_notes_help")
             .panel-body
               -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
               =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
                 =note_form.input :note, :input_html => {:cols => 20}, :label => false
-              =t(:only_agency_can_see, :agency => current_user.agency.name)
+              =translate_helper_translate(:only_agency_can_see, :agency => current_user.agency.name)
 
     - if can? :full_read, @user
       .new_buddies.hidden
@@ -114,18 +114,18 @@
           .panel.panel-default#buddies
             .panel-heading
               %h2.panel-title
-                = t(:buddies)
+                = translate_helper_translate(:buddies)
                 = add_tooltip("buddies_help")
             .panel-body
               .table-flash
               %button#add_buddy_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_user'}}
-                = t(:add)
+                = translate_helper_translate(:add)
               %table.table.table.condensed.table-striped.table-hover.table-bordered#buddies_table
                 %thead
-                  %th= t(:buddy)
-                  %th.email= t(:email)
-                  %th= t(:can_assist_me)
-                  %th= t(:i_can_assist)
+                  %th= translate_helper_translate(:buddy)
+                  %th.email= translate_helper_translate(:email)
+                  %th= translate_helper_translate(:can_assist_me)
+                  %th= translate_helper_translate(:i_can_assist)
                 %tbody
                   -# initial load from user record
                   - @user.related_users.each do |ou|
@@ -138,20 +138,20 @@
                         .col-sm-12
                           .pull-right
                             %button.btn.action-button#search
-                              = t(:apply)
+                              = translate_helper_translate(:apply)
                             %button.btn.action-button{data: {dismiss: 'modal'}}
-                              = t(:cancel)
+                              = translate_helper_translate(:cancel)
                     .modal-body
                       .modal-flash
                       .panel.panel-default
                         .panel-heading
                           %h2.panel-title
-                            = t(:find_traveler)
+                            = translate_helper_translate(:find_traveler)
                             = add_tooltip("find_traveler_help")
                         .panel-body
                           .row
                             .col-sm-12
-                              = label_tag :email, t(:email)
+                              = label_tag :email, translate_helper_translate(:email)
                               = text_field_tag :email,nil
 
 
@@ -162,7 +162,7 @@
             .panel.panel-default
               .panel-heading
                 %h2.panel-title
-                  = t(:eligibility)
+                  = translate_helper_translate(:eligibility)
                   = add_tooltip("eligibility_help")
               .panel-body
                 - Characteristic.active.enabled.each do |c|
@@ -173,52 +173,52 @@
                     %fieldset
                       .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{c.code}"}
                         %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{c.code}_label"}
-                          = t(c.note)
+                          = translate_helper_translate(c.note)
                           = add_tooltip("#{c.code}_help")
                           :javascript
                             $('#input_container .label-help').removeClass('fa-2x');
                         .col-sm-5#eligibility_questions
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, "true") }
-                          %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{t(:yes_str)}
+                          %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{translate_helper_translate(:yes_str)}
 
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, "false") }
-                          %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{t(:no_str)}
+                          %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{translate_helper_translate(:no_str)}
 
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "na", checked: c.na_checked?(@traveler) }
-                          %label{for: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]"} #{t(:not_sure_str)}
+                          %label{for: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]"} #{translate_helper_translate(:not_sure_str)}
                   - else
-                    = characteristic_form.input c.code.to_sym, label: t(c.note)
+                    = characteristic_form.input c.code.to_sym, label: translate_helper_translate(c.note)
           .col-sm-6.pull-right
             .panel.panel-default
               .panel-heading
                 %h2.panel-title
-                  = t(:accommodations)
+                  = translate_helper_translate(:accommodations)
                   = add_tooltip("accommodations_help")
               .panel-body
                 -Accommodation.where(:datatype => 'bool').each do |a|
                   %fieldset
                     .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{a.code}"}
                       %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{a.code}_label"}
-                        = t(a.note)
+                        = translate_helper_translate(a.note)
                         = add_tooltip("#{a.code}_help")
                         :javascript
                           $('#input_container .label-help').removeClass('fa-2x');
                       .col-sm-5#eligibility_questions
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "true", checked: a.true_false_checked?(@traveler, "true") }
-                        %label{for: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]"} #{t(:yes_str)}
+                        %label{for: "user_characteristics_proxy_#{a.code}_true", name: "user_characteristics_proxy[#{a.code}]"} #{translate_helper_translate(:yes_str)}
 
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "false", checked: a.true_false_checked?(@traveler, "false") }
-                        %label{for: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]"} #{t(:no_str)}
+                        %label{for: "user_characteristics_proxy_#{a.code}_false", name: "user_characteristics_proxy[#{a.code}]"} #{translate_helper_translate(:no_str)}
 
                         %input.radio_buttons.optional{id: "user_characteristics_proxy_#{a.code}_na", name: "user_characteristics_proxy[#{a.code}]", type: "radio", value: "na", checked: a.na_checked?(@traveler) }
-                        %label{for: "user_characteristics_proxy_#{a.code}_na", name: "user_characteristics_proxy[#{a.code}]"} #{t(:not_sure_str)}
+                        %label{for: "user_characteristics_proxy_#{a.code}_na", name: "user_characteristics_proxy[#{a.code}]"} #{translate_helper_translate(:not_sure_str)}
 
       .row
         .col-sm-6
           .panel.panel-default#booking
             .panel-heading
               %h2.panel-title
-                =t(:booking_information)
+                =translate_helper_translate(:booking_information)
                 = add_tooltip("booking_information_help")
             .panel-body
               =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
@@ -228,28 +228,28 @@
                     = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
                   - else
                     = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
-                =booking_form.input :dob, label: t(:dob), placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+                =booking_form.input :dob, label: translate_helper_translate(:dob), placeholder: "mm/dd/yyyy", hint: translate_helper_translate(:dob_notice)
                 - if translation_exists?("dob_help")
                   :javascript
-                    addHelperTooltip('#dob_label', "#{t(:dob_help)}");
+                    addHelperTooltip('#dob_label', "#{translate_helper_translate(:dob_help)}");
         .col-sm-6
           .panel.panel-default#preferred_modes
             .panel-heading
               %h2.panel-title
-                = t(:preferred_modes)
+                = translate_helper_translate(:preferred_modes)
                 = add_tooltip("preferred_modes_help")
             .panel-body
-              %legend.sr-only= t(:preferred_modes)
-              - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
+              %legend.sr-only= translate_helper_translate(:preferred_modes)
+              - Mode.top_level.where(visible: true).sort{|a, b| I18n.translate_helper_translate(a.name) <=> I18n.translate_helper_translate(b.name)}.each do |m|
                 .row
                   .col-sm-12
                     = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]"
-                    = label_tag "user[preferred_mode_ids][#{m.id}]", t(m.name)
+                    = label_tag "user[preferred_mode_ids][#{m.id}]", translate_helper_translate(m.name)
                     - m.submodes.where(visible: true).each do |sm|
                       .row
                         .col-sm-12.col-sm-push-1
                           = check_box_tag "user[preferred_mode_ids][#{sm.id}]", sm.id, @user.preferred_modes.include?(sm), name: "user[preferred_mode_ids][]"
-                          = label_tag "user[preferred_mode_ids][#{sm.id}]", t(sm.name)
+                          = label_tag "user[preferred_mode_ids][#{sm.id}]", translate_helper_translate(sm.name)
 
 :javascript
   $(document).ready(function() {
@@ -273,10 +273,10 @@
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
       } );
       $("#add_buddy_btn").on("click", function(e) {
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
       });
       $("#search").on("click", function(e) {
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
         $.ajax({
           url: "find_by_email",
           data: {email: $("#email").val()},
@@ -287,7 +287,7 @@
               $("div.table-flash").html(data["msg"]).addClass("alert alert-success fade-in");
               $(".new_buddies select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
               //find row
-              var row = $("td.email:contains('" + data["row"][1] +"')").parent();
+              var row = $("td.email:contains('" + data["row"][1] +"')").parentranslate_helper_translate();
               // Update if exists.  Add if not
               if (row.length) {
                 $("#buddies_table").dataTable().fnUpdate( data["row"], row[0]);
@@ -303,12 +303,12 @@
       });
       $('#email').on('keypress', function(e){
         if(e.keyCode == 13) {
-          e.preventDefault ? e.preventDefault() : e.returnValue = false;
+          e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
           $('#search').click();
         }
       });
     $("td button.action-button").on("click", function(e) {
-      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
 
       $.ajax({
         url: $(this).data("source"),
@@ -323,6 +323,6 @@
     });
     $("#preferred_modes input").change(function() {
       var checked = $(this).prop("checked")
-      $(this).parent().find("input").prop("checked", checked);
+      $(this).parentranslate_helper_translate().find("input").prop("checked", checked);
     });
   });

@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{@service.name}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{@service.name}"
 - temp_rating = @service.ratings.build(user: @traveler)
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @service) && !current_user.nil? && !@service.provider.nil? && !current_user.provider.nil? && @service.provider.id == current_user.provider.id)
 
@@ -8,7 +8,7 @@
 
 -if can? :index, Service
   .col-sm-12
-    = link_to t(:all_services), services_path, class: 'btn action-button btn-arrow-left'
+    = link_to translate_helper_translate(:all_services), services_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h2
@@ -19,42 +19,42 @@
         - if can? :read, temp_rating
           = RateableDecorator.decorate(@service).rating_in_stars
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
-            = t(:feedback)
+            = translate_helper_translate(:feedback)
         - elsif Rating.tripless_feedback?
           -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal", remote: new_service_rating_path(@service)}}
-            = t(:feedback)
+            = translate_helper_translate(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
       - if @service.active && can_manage_provider and (can? :destroy, @service)
         = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
-          = t(:delete)
-        #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper_translate(:delete)
+        #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete,  style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper_translate(:cancel)
+                = button_to translate_helper_translate(:ok), { action: "destroy", id: @service.id }, method: :delete,  style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title)
+                    = translate_helper_translate(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @service.name + " ?"
+                = translate_helper_translate(:confirm_remove_message) + @service.name + " ?"
       - if !@service.active && can_manage_provider && (can? :destroy, @service)
         = button_tag :type => 'button', "data-target" => "#undeleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
-          = t(:undelete)
-        #undeleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:restore_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper_translate(:undelete)
+        #undeleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:restore_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "undelete", id: @service.id }, method: :patch,  style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper_translate(:cancel)
+                = button_to translate_helper_translate(:ok), { action: "undelete", id: @service.id }, method: :patch,  style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title)
+                    = translate_helper_translate(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = t(:confirm_restore_message) + " #{@service.name} ?"
+                = translate_helper_translate(:confirm_restore_message) + " #{@service.name} ?"
       - if can_manage_provider and (can? :update, @service)
         = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
@@ -66,34 +66,34 @@
       .panel.panel-default.well0
         .panel-heading
           %h4.panel-title
-            = t(:internal_contact)
+            = translate_helper_translate(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
               %td.text-right
-                = t(:name) + ": "
+                = translate_helper_translate(:name) + ": "
               %td.text-left
                 %b= @service.internal_contact_name
             %tr
               %td.text-right
-                = t(:title)+": "
+                = translate_helper_translate(:title)+": "
               %td.text-left
                 %b= @service.internal_contact_title
             %tr
               %td.text-right
-                = t(:phone)+ ": "
+                = translate_helper_translate(:phone)+ ": "
               %td.text-left
                 %b= @service.internal_contact_phone
             %tr
               %td.text-right
-                = t(:email)+ ":  "
+                = translate_helper_translate(:email)+ ":  "
               %td.text-left
                 %b= mail_to @service.internal_contact_email
             - if @contact
               %tr
                 %td.text-right
-                  = t(:user) + ": "
+                  = translate_helper_translate(:user) + ": "
                 %td.text-left
                   %b= @contact.name
 -if can_manage_provider
@@ -103,22 +103,22 @@
         .panel.panel-default.well2
           .panel-heading
             %h4.panel-title
-              = t(:schedule)
+              = translate_helper_translate(:schedule)
               = add_tooltip("schedule_help")
           .panel-body
             %table.ALTtable
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper_translate('datetime.prompts.day')
                 %th.text-center
-                  = t(:start_time)
+                  = translate_helper_translate(:start_time)
                 %th.text-center
-                  = t(:end_time)
+                  = translate_helper_translate(:end_time)
               %tbody
                 -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
                   %tr
                     %td.text-center
-                      = I18n.t('date.day_names')[schedule.day_of_week]
+                      = I18n.translate_helper_translate('date.day_names')[schedule.day_of_week]
 
                     %td.text-center
                       =schedule.start_string
@@ -129,24 +129,24 @@
         .panel.panel-default.well2
           .panel-heading
             %h4.panel-title
-              = t(:advance_notice_required)
+              = translate_helper_translate(:advance_notice_required)
               = add_tooltip("advance_notice_required_help")
           .panel-body
             %b
               = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
-            =" " + t(:advance_notice_required).downcase + "."
+            =" " + translate_helper_translate(:advance_notice_required).downcase + "."
             - # booking cut off times
             %table.ALTtable
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper_translate('datetime.prompts.day')
                 %th.text-center
-                  = t(:cut_off_time)
+                  = translate_helper_translate(:cut_off_time)
               %tbody
                 -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
                   %tr
                     %td.text-center
-                      = I18n.t('date.day_names')[cut_off_time.day_of_week]
+                      = I18n.translate_helper_translate('date.day_names')[cut_off_time.day_of_week]
                     %td.text-center
                       =cut_off_time.cut_off_time_string
     - unless is_transit
@@ -154,25 +154,25 @@
         .panel.panel-default.well2
           .panel-heading
             %h4.panel-title
-              = t(:accommodations)
+              = translate_helper_translate(:accommodations)
               = add_tooltip("accommodations_help")
           .panel-body
             -if @service.accommodations.count == 0
-              = t(:no_accommodations)
+              = translate_helper_translate(:no_accommodations)
             -else
               %ul
                 -@service.accommodations.each do |accom|
                   %li
-                    =t(accom.name)
+                    =translate_helper_translate(accom.name)
   .row
     - unless is_transit || is_taxi
       .col-sm-4
         .panel.panel-default.well1
           .panel-heading
             %h4.panel-title
-              = t(:eligibility)
+              = translate_helper_translate(:eligibility)
               = add_tooltip("eligibility_help")
-            = t(:eligibility_rules_descr)
+            = translate_helper_translate(:eligibility_rules_descr)
           .panel-body
             - if @service.service_characteristics.count > 0
               %ul
@@ -181,29 +181,29 @@
                 %li
                   = @eh.service_characteristics_group_to_s @service.service_characteristics.where(group: group)
             - else
-              = t(:no_restriction)
+              = translate_helper_translate(:no_restriction)
 
       .col-sm-4
         .panel.panel-default.well1
           .panel-heading
             %h4.panel-title
-              = t(:trip_purposes)
+              = translate_helper_translate(:trip_purposes)
               = add_tooltip("trip_purposes_help")
           .panel-body
             -if @service.trip_purposes.count == 0
-              = t(:no_restriction)
+              = translate_helper_translate(:no_restriction)
             -else
               %ul
                 -@service.trip_purposes.each do |purpose|
                   %li
-                    =t(purpose.name)
+                    =translate_helper_translate(purpose.name)
 
     - unless is_transit
       .col-sm-4#fare-panel
         .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
           .panel-heading
             %h4.panel-title
-              = t(:fare)
+              = translate_helper_translate(:fare)
               = add_tooltip("fare_help")
           -@service.fare_structures.each do |fare|
             .panel-body
@@ -212,22 +212,22 @@
                   = render partial: 'services/paratransit_fares/show', locals: {fare_structure: fare}
               - else
                 .row_fluid
-                  %b= t(:base_rate) + ": "
+                  %b= translate_helper_translate(:base_rate) + ": "
                   -if fare.base
                     = number_to_currency(fare.base.to_f).to_s
                   -else
-                    = t(:flat_fare_unavailable) + "."
+                    = translate_helper_translate(:flat_fare_unavailable) + "."
                 .row_fluid
-                  %b= t(:taxi_fare_finder_city) + ": "
+                  %b= translate_helper_translate(:taxi_fare_finder_city) + ": "
                   -if @service.taxi_fare_finder_city.present?
                     = @service.taxi_fare_finder_city
                   -else
-                    = t(:none)
+                    = translate_helper_translate(:none)
                 .row_fluid
                   - if fare.rate
-                    %b= t(:mileage_rate) + ": "
+                    %b= translate_helper_translate(:mileage_rate) + ": "
                     = number_to_currency(fare.rate.to_f).to_s
-              %b= t(:comments) + ":  "
+              %b= translate_helper_translate(:comments) + ":  "
               -if fare.desc
                 = fare.desc.html_safe
 
@@ -237,21 +237,21 @@
         .panel.panel-default.well3
           .panel-heading
             %h4.panel-title
-              = t(:time_window)
+              = translate_helper_translate(:time_window)
               = add_tooltip("time_window_help")
           .panel-body
-            = @service.service_window ? t(:service_window) + ": " + @service.service_window.to_s : t(:no_str) + " " + t(:service_window)
+            = @service.service_window ? translate_helper_translate(:service_window) + ": " + @service.service_window.to_s : translate_helper_translate(:no_str) + " " + translate_helper_translate(:service_window)
             %br
-            = @service.time_factor ? t(:time_factor) + ": " + @service.time_factor.to_s : t(:no_str) + " " + t(:time_factor)
+            = @service.time_factor ? translate_helper_translate(:time_factor) + ": " + @service.time_factor.to_s : translate_helper_translate(:no_str) + " " + translate_helper_translate(:time_factor)
 
       .col-sm-6
         .panel.panel-default.well3
           .panel-heading
             %h4.panel-title
-              = t(:booking_information)
+              = translate_helper_translate(:booking_information)
               = add_tooltip("booking_information_help")
           .panel-body        
-            = t(:booking_service_code).to_s + ": " + @service.booking_service_code
+            = translate_helper_translate(:booking_service_code).to_s + ": " + @service.booking_service_code
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
@@ -263,7 +263,7 @@
             .row.text-center
               .col-sm-12
                 %h3.panel-title
-                  = t(:coverage_areas)
+                  = translate_helper_translate(:coverage_areas)
                   = add_tooltip("coverage_areas_help")
           .panel-body
             .row
@@ -273,24 +273,24 @@
                   .panel.panel-default
                     .panel-heading
                       %h4.panel-title
-                        = t(rule)
+                        = translate_helper_translate(rule)
                         = add_tooltip("#{rule}_help")
                     .panel-body
                       - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper_translate(:geometry_defined_by_shapefile)
                       - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper_translate(:geometry_defined_by_shapefile)
                       - else
                         - types.each do |type|
                           %b
-                            =type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                            =type.humanize.split[0].pluralize + ' ' + translate_helper_translate(:served_areas)
                           .well.white-well.text-left
                             -coverage_string = ""
                             - @service.service_coverage_maps.where(rule: rule.singularize.downcase+'_area').joins(:geo_coverage).order('value').each do |map|
                               -if map.geo_coverage.coverage_type == type
                                 -coverage_string += map.geo_coverage.value + ', '
                             -if coverage_string == ""
-                              = t(:n_a)
+                              = translate_helper_translate(:n_a)
                             -else
                               =coverage_string.chop.chop
 
@@ -298,7 +298,7 @@
                 .panel.panel-default
                   .panel-heading
                     %h4.panel-title
-                      = t(:service_area_map)
+                      = translate_helper_translate(:service_area_map)
                       = add_tooltip("service_area_map_help")
                   .sr-only{aria: {label: 'Map.'}} Map.
                   .panel-body{aria: {hidden: 'true'}}
@@ -314,32 +314,32 @@
   boxes = $('.well0');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well1');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well2');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   boxes = $('.well3');
   maxHeight = Math.max.apply(
     Math, boxes.map(function() {
-      return $(this).height();
-  }).get());
-  boxes.height(maxHeight);
+      return $(this).heightranslate_helper_translate();
+  }).getranslate_helper_translate());
+  boxes.heightranslate_helper_translate(maxHeight);
 
   if ("#{is_taxi}" == 'true') {
     el = $('#fare-panel').detach();
-    $('#schedule-panel').closest('.row').append(el);
+    $('#schedule-panel').closestranslate_helper_translate('.row').append(el);
   }

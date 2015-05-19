@@ -19,27 +19,27 @@
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable
   %thead
     %tr
-      %th= sort_link @q, "id", t(:id)
+      %th= sort_link @q, "id", translate_helper_translate(:id)
       -if show_username
-        %th= sort_link @q, "user_name_case_insensitive", t(:traveler)
-      %th= sort_link @q, "trip_date", t(:trip_date)
-      %th= sort_link @q, "from_address", t(:from)
-      %th= sort_link @q, "to_address", t(:to)
-      %th= sort_link @q, "trip_purpose", t(:trip_purpose)
+        %th= sort_link @q, "user_name_case_insensitive", translate_helper_translate(:traveler)
+      %th= sort_link @q, "trip_date", translate_helper_translate(:trip_date)
+      %th= sort_link @q, "from_address", translate_helper_translate(:from)
+      %th= sort_link @q, "to_address", translate_helper_translate(:to)
+      %th= sort_link @q, "trip_purpose", translate_helper_translate(:trip_purpose)
       - if Rating.feedback_on?
-        %th.center= sort_link @q, "trip_rating", t(:rating)
-        %th.center.nowrap= t(:feedback)
+        %th.center= sort_link @q, "trip_rating", translate_helper_translate(:rating)
+        %th.center.nowrap= translate_helper_translate(:feedback)
       -if Oneclick::Application.config.allows_booking
         %th.center
-          = t(:cancel_booking)
+          = translate_helper_translate(:cancel_booking)
         %th.center
           = "Trip Confirmation Numbers"
-      %th.center= t(:actions)
+      %th.center= translate_helper_translate(:actions)
       - if ENV['SHOWALL']
-        %th.center= t(:max_notes)
+        %th.center= translate_helper_translate(:max_notes)
       - if can? :send_follow_up, Trip
-        %th= t(:send_follow_up_email)
-      %th= t(:trip_details)
+        %th= translate_helper_translate(:send_follow_up_email)
+      %th= translate_helper_translate(:trip_details)
   %tbody{ :id => 'trips_table'}
     - trips = RateableDecorator.decorate_collection(trips)
     - rateable_trip_ids = []
@@ -53,7 +53,7 @@
         %td.nowrap= format_date(trip.trip_datetime)
         %td= trip.from_place.name
         %td= trip.to_place.name
-        %td= t(trip.trip_purpose.name)
+        %td= translate_helper_translate(trip.trip_purpose.name)
         - if Rating.feedback_on?
           %td.nowrap{id: "#{tripID}Rating"}
             = trip.rating_in_stars
@@ -63,62 +63,62 @@
                 - rateable_trip_ids << trip.id
                 - modal_name = "##{tripID}RatingModal"
                 %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
-                  = t(:feedback)
+                  = translate_helper_translate(:feedback)
         -if Oneclick::Application.config.allows_booking
           %td.center
             -if trip.is_booked? and trip.in_the_future
-              = button_tag :type => 'button', "data-target" => "#cancelTripConfirmDialog", "data-toggle" => "modal", :alt => t(:cancel_trip), :title => t(:cancel_trip), :class => "btn action-button btn-danger delete-button" do
-                = t(:cancel)
-              #cancelTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:cancel_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+              = button_tag :type => 'button', "data-target" => "#cancelTripConfirmDialog", "data-toggle" => "modal", :alt => translate_helper_translate(:cancel_trip), :title => translate_helper_translate(:cancel_trip), :class => "btn action-button btn-danger delete-button" do
+                = translate_helper_translate(:cancel)
+              #cancelTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:cancel_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
                 .modal-dialog
                   .modal-content
                     .modal-header
                       .pull-right
                         = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button", :method => :post} do
-                          = t(:ok)
+                          = translate_helper_translate(:ok)
                         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
-                          = t(:cancel)
+                          = translate_helper_translate(:cancel)
                       .modal-title{:style => "text-align:left;"}
                         %b
-                          = t(:site_title)
+                          = translate_helper_translate(:site_title)
                     .modal-body{:style => "text-align:left;"}
-                      = t(:confirm_cancel_trip)
+                      = translate_helper_translate(:confirm_cancel_trip)
           %td.center
             - trip.trip_parts.each do |tp|
-              - tp.itineraries.where.not(booking_confirmation: nil).each do |itinerary|
+              - tp.itineraries.where.notranslate_helper_translate(booking_confirmation: nil).each do |itinerary|
                 =itinerary.booking_confirmation
         %td.center.nowrap
-          = link_to repeat_user_trip_path(traveler, trip), {:alt => t(:repeat_trip), :title => t(:repeat_trip), :class => "btn btn-sm", "aria-label" => "#{t(:repeat_trip)}"} do
+          = link_to repeat_user_trip_path(traveler, trip), {:alt => translate_helper_translate(:repeat_trip), :title => translate_helper_translate(:repeat_trip), :class => "btn btn-sm", "aria-label" => "#{translate_helper_translate(:repeat_trip)}"} do
             %i.fa.fa-rotate-right
           - if not trip.is_booked?
             - if trip.in_the_future
-              = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => t(:edit_trip), :title => t(:edit_trip), "aria-label" => "#{t(:edit_trip)}"} do
+              = link_to edit_user_trip_path(traveler, trip), {:class => "btn btn-sm", :alt => translate_helper_translate(:edit_trip), :title => translate_helper_translate(:edit_trip), "aria-label" => "#{translate_helper_translate(:edit_trip)}"} do
                 %i.fa.fa-edit
-            = button_tag :type => 'button', "data-target" => "#deleteTrip" + trip.id.to_s + "ConfirmDialog", "data-toggle" => "modal", :alt => t(:remove_trip), :title => t(:remove_trip), :class => "btn btn-sm btn-danger delete-button", "aria-label" => "#{t(:remove_trip)}" do
+            = button_tag :type => 'button', "data-target" => "#deleteTrip" + trip.id.to_s + "ConfirmDialog", "data-toggle" => "modal", :alt => translate_helper_translate(:remove_trip), :title => translate_helper_translate(:remove_trip), :class => "btn btn-sm btn-danger delete-button", "aria-label" => "#{translate_helper_translate(:remove_trip)}" do
               %i.fa.fa-times
-            .modal.fade.col-sm-12{:id => "deleteTrip#{trip.id}ConfirmDialog", "aria-describedby" => t(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+            .modal.fade.col-sm-12{:id => "deleteTrip#{trip.id}ConfirmDialog", "aria-describedby" => translate_helper_translate(:remove_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
               .modal-dialog
                 .modal-content
                   .modal-header
                     .pull-right
                       = link_to user_trip_path(traveler, trip), {:style => 'margin-right: 5px;', :class => "btn action-button", :method => :delete} do
-                        = t(:ok)
+                        = translate_helper_translate(:ok)
                       = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
-                        = t(:cancel)
+                        = translate_helper_translate(:cancel)
                     .modal-title{:style => "text-align:left;"}
                       %b
-                        = t(:site_title)
+                        = translate_helper_translate(:site_title)
                   .modal-body{:style => "text-align:left;"}
-                    = t(:confirm_remove_trip)
+                    = translate_helper_translate(:confirm_remove_trip)
         - if ENV['SHOWALL']
           %td= "%s / %s" % [trip.outbound_part.max_notes_count, trip.return_part.max_notes_count]
         - if can? :send_follow_up, trip
           %td.center
-            = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn action-button", "aria-label" => "#{t(:send_follow_up_email)}" do
-              - t(:send)
+            = link_to email_feedback_user_trip_path(traveler, trip, locale: I18n.locale), class: "btn action-button", "aria-label" => "#{translate_helper_translate(:send_follow_up_email)}" do
+              - translate_helper_translate(:send)
         %td.center
           = link_to plan_user_trip_path(traveler, trip) do
-            =t(:details)
+            =translate_helper_translate(:details)
 - rateable_trip_ids.each do |rateable_trip_id|
   = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
 

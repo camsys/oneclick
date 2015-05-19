@@ -1,7 +1,7 @@
 - unless results.empty?
   .row
     .col-sm-12
-      %h6= t(:found_x_matches, :count => results.count )
+      %h6= translate_helper_translate(:found_x_matches, :count => results.count )
 
   .row
     .search-dropdown-container
@@ -25,7 +25,7 @@
     .control-group.string
       .controls
         .alert.alert-danger
-          = t(:nothing_found)
+          = translate_helper_translate(:nothing_found)
 
 :javascript
   // User has selected an alternate address from the list
@@ -42,12 +42,12 @@
   });
 
 
-  scrollContent($, {
+  scrollContentranslate_helper_translate($, {
     rootSel: '.search-dropdown-container',
     listSel: '.js-candidate-list-inner',
     property: 'margin-top',
     size: 280,
     total: function ($root) {
-      return $root.find('.js-candidate-list-inner ul.nav.nav-list').height();
+      return $root.find('.js-candidate-list-inner ul.nav.nav-list').heightranslate_helper_translate();
     }
   });

@@ -3,7 +3,7 @@
   %table.table.table-condensed.table-striped.table-bordered.table-hover
     %thead
       %tr
-        %th= t(:zone_id)
+        %th= translate_helper_translate(:zone_id)
         - zones.each do |zone|
           %th= zone[:zone_id]
     %tbody
@@ -21,4 +21,4 @@
               %input.form-control.text-right{style: "min-width: 60px; padding: 0px;", type: 'number', name: 'service[zone_fares_attributes][][rate]', min:"0", value: (has_fare ? fares[key][:rate] : '')}
 - else
   .row_fluid
-    = t(:please_upload_fare_zones)
+    = translate_helper_translate(:please_upload_fare_zones)

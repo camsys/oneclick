@@ -1,14 +1,14 @@
 .col-sm-3
-  = t(:fare_type)
+  = translate_helper_translate(:fare_type)
 .col-sm-9
   %input.hidden{name:'service[fare_structures_attributes][id]', value: fare_structure.id}
   %select.form-control#fare_type_select{name: 'service[fare_structures_attributes][fare_type]'}
     %option{value: FareStructure::FLAT}
-      = t(:flat_fare)
+      = translate_helper_translate(:flat_fare)
     %option{value: FareStructure::MILEAGE}
-      = t(:mileage_fare)
+      = translate_helper_translate(:mileage_fare)
     %option{value: FareStructure::ZONE}
-      = t(:zone_fare)
+      = translate_helper_translate(:zone_fare)
 .row#fare_type_form
   - fare_type = fare_structure.fare_type
   - is_flat_fare = fare_type == FareStructure::FLAT
@@ -23,13 +23,13 @@
       = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
     - else
       .col-sm-12
-        = t(:zone_fare_new_service_warning)
+        = translate_helper_translate(:zone_fare_new_service_warning)
 
 :javascript
   $('#fare_type_select').val(#{fare_structure.fare_type});
 
   $(document).ready(function(){
-    $('.service-edit-form').submit(function() {
+    $('.service-edit-form').submitranslate_helper_translate(function() {
       var fare_type_code = $('#fare_type_select').val();
 
       if(fare_type_code == "#{FareStructure::FLAT}") {

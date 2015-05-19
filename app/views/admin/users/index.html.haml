@@ -1,25 +1,25 @@
-- content_for :title, "#{t(:site_title)} - #{t(:users)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:users)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
-      = button_tag t(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
-    %h1= t(:users)
+      = link_to translate_helper_translate(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper_translate(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
+    %h1= translate_helper_translate(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:users)
+      = translate_helper_translate(:users)
       = add_tooltip("users_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead
         %tr
-          %th= t(:id)
-          %th= t(:username)
-          %th= t(:email)
-          %th= t(:registered)
-          %th= t(:roles)
-          %th#status= t(:status)
+          %th= translate_helper_translate(:id)
+          %th= translate_helper_translate(:username)
+          %th= translate_helper_translate(:email)
+          %th= translate_helper_translate(:registered)
+          %th= translate_helper_translate(:roles)
+          %th#status= translate_helper_translate(:status)
       %tbody
 :javascript
   $(document).ready(function() {
@@ -77,6 +77,6 @@
 
       window.location.href = baseUrl + $.param(params);
 
-      event.preventDefault();
+      event.preventDefaultranslate_helper_translate();
     });
   });

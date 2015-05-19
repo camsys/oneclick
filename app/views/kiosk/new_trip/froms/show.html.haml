@@ -16,17 +16,17 @@
 #from_input.location-from(data-index=1)
   .fadeout
 
-  = f.input :from_place, class: 'inline', label: t(:from) do
+  = f.input :from_place, class: 'inline', label: translate_helper_translate(:from) do
     = f.hidden_field :use_current_location
     - data = {link: search_kiosk_user_trips_path, provide: 'typeahead'}
-    - opts = {placeholder: t(:enter_from), id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
+    - opts = {placeholder: translate_helper_translate(:enter_from), id: 'trip_proxy_from_place', autocomplete: 'off', class: 'no-bottom-margin ajax-typeahead input-large address', data: data}
     = f.text_field :from_place, opts
     = image_tag 'ajax-loader.gif', id: 'from_geocoding_indicator', style: 'display:none;', class: 'loading-indicator'
 
   #from_place_candidates.js-typeahead-visibility-root.hidden
     .row-fluid
       .span12
-        %h6=# t(:found_x_matches, count: results.count )
+        %h6=# translate_helper_translate(:found_x_matches, count: results.count )
 
     .row-fluid
       .search-dropdown-container
@@ -51,7 +51,7 @@
 .form-actions.hidden
   = button_tag type: 'submit', class: "btn btn-primary" do
     %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-    = t(:plan_it)
+    = translate_helper_translate(:plan_it)
   = link_to :back, class: "cancel_link" do
     %i.icon.icon-reply
-    = t(:cancel)
+    = translate_helper_translate(:cancel)

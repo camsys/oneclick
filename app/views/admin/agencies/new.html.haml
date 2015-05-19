@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:new_agency)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:new_agency)}"
 = simple_form_for([:admin, @agency]) do |f|
   = f.error_notification message: print_messages(f)
 
@@ -6,23 +6,23 @@
     .col-sm-12
       .btns.pull-right
         = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
-          = t(:apply)
+          = translate_helper_translate(:apply)
         = link_to admin_agencies_path, class: 'btn action-button' do
-          = t(:cancel)
-      %h1= t(:create_agency)
+          = translate_helper_translate(:cancel)
+      %h1= translate_helper_translate(:create_agency)
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = t(:agency_info)
+        = translate_helper_translate(:agency_info)
         = add_tooltip("agency_info_help")
     .panel-body
       .form-inputs
-        = f.input :name, label: t(:name)
+        = f.input :name, label: translate_helper_translate(:name)
         - if translation_exists?("name_help")
           :javascript
-            addHelperTooltip('#name_label', "#{t(:name_help)}");
+            addHelperTooltip('#name_label', "#{translate_helper_translate(:name_help)}");
 
-        = f.association :parent, collection: @agency.possible_parents, label: t(:parent)
+        = f.association :parent, collection: @agency.possible_parents, label: translate_helper_translate(:parent)
         - if translation_exists?("agency_parent_help")
           :javascript
-            addHelperTooltip('#parent_id_label', "#{t(:agency_parent_help)}");
+            addHelperTooltip('#parent_id_label', "#{translate_helper_translate(:agency_parent_help)}");

@@ -1,6 +1,6 @@
 .row-fluid
-  %button.btn.action-button.pull-right#showAddBuddyModalButton{"data-target" => "#addBuddyModal", "data-toggle" => "modal", :type => "button"}= t(:add)
-  %h3=t(:buddies)
+  %button.btn.action-button.pull-right#showAddBuddyModalButton{"data-target" => "#addBuddyModal", "data-toggle" => "modal", :type => "button"}= translate_helper_translate(:add)
+  %h3=translate_helper_translate(:buddies)
 #buddy_table
   = render partial: 'devise/registrations/buddy_table', locals: {user: user}
 /MODAL STUFF
@@ -11,7 +11,7 @@
       .modal-body
         = simple_form_for [user, @user_relationship], remote: true, :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }  do |f|
           = f.hidden_field "messagesFieldName", value: "buddyMessages" # This MUST match the name of the messages div above
-          = f.input :email, label: t(:buddys_email_address), as: :email
+          = f.input :email, label: translate_helper_translate(:buddys_email_address), as: :email
           = button_tag type: :submit, class: 'btn action-button controls' do
             %i.fa.fa-check
-            = t(:send_buddy_request)
+            = translate_helper_translate(:send_buddy_request)

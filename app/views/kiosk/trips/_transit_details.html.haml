@@ -4,7 +4,7 @@
       %i.icon-play.mode_icon_formatting{:class => 'start_icon'}
     %td
       .itinerary_text
-        %p= t(:start) + itinerary.trip_part.from_trip_place.name
+        %p= translate_helper_translate(:start) + itinerary.trip_part.from_trip_place.name
       .itinerary_text_small
         = format_time(itinerary.start_time.in_time_zone)
 
@@ -15,19 +15,19 @@
       %td
         -if leg.mode == Leg::TripLeg::WALK
           .itinerary_text
-            %p= leg.mode + ' ' + t(:to) + ' ' + leg.end_place.name
+            %p= leg.mode + ' ' + translate_helper_translate(:to) + ' ' + leg.end_place.name
           .itinerary_text_small
             =duration_to_words(leg.duration)
         -else
           .itinerary_text
-            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + t(:to) + ' ' + leg.end_place.name
+            %p= leg.agency_id + ' ' + leg.mode + ' ' + leg.route + ' ' + translate_helper_translate(:to) + ' ' + leg.end_place.name
           .itinerary_text_small
-            = format_time(leg.start_time) + ' ' + t(:to) + ' ' + format_time(leg.end_time)
+            = format_time(leg.start_time) + ' ' + translate_helper_translate(:to) + ' ' + format_time(leg.end_time)
   %tr
     %td.itinerary_icons
       %i.icon-stop.mode_icon_formatting{:class => 'end_icon'}
     %td
       .itinerary_text
-        %p= t(:arrive) + itinerary.trip_part.to_trip_place.name
+        %p= translate_helper_translate(:arrive) + itinerary.trip_part.to_trip_place.name
       .itinerary_text_small
         = format_time(itinerary.end_time.in_time_zone)

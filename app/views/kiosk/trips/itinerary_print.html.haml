@@ -1,19 +1,19 @@
 = image_tag get_logo, :style => "margin-top:50px;"
-.title-desc= t(:one_click_trip_planner)
+.title-desc= translate_helper_translate(:one_click_trip_planner)
 
 %hr
 
 %table#printer-friendly
   %tr
-    %h4= t(:from) + ':  '
+    %h4= translate_helper_translate(:from) + ':  '
   %tr
     %p= @itinerary.trip_part.trip.from_place.name
   %tr
-    %h4= t(:to) + ':  '
+    %h4= translate_helper_translate(:to) + ':  '
   %tr
     %p= @itinerary.trip_part.trip.to_place.name
   %tr
-    %h4= t(:at_time) + ':  '
+    %h4= translate_helper_translate(:at_time) + ':  '
   %tr
     %p= format_date(@itinerary.trip_part.trip.trip_datetime.in_time_zone)
 
@@ -59,7 +59,7 @@
 
 :javascript
   $(document).ready(function() {
-    //window.print();
+    //window.printranslate_helper_translate();
     $('.navbar').addClass('hidden');
     $('body').addClass('print');
     $('.container-fluid').css({

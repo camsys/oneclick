@@ -30,7 +30,7 @@
           / .row-fluid
           /   .span12
           /     =link_to '#', {href: '#send_trip_by_email', class: 'btn btn-block', data: {toggle: 'modal'}} do
-          /       =t(:e_mail) + " your trip plan."
+          /       =translate_helper_translate(:e_mail) + " your trip plan."
           / .row-fluid
           /   .span12
           /     =link_to '#', {onclick: "window.open('" + show_printer_friendly_user_trip_url(@traveler,@trip, print: false) +  "'); return false;", class: 'btn btn-block', data: {toggle: 'modal'}} do
@@ -52,7 +52,7 @@
             - if not itinerary.service.booking_service_code.blank? and user_signed_in?
               .row-fluid
                 .span12
-                  = link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
+                  = link_to translate_helper_translate(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
                   .ecolane-booking-results.hide
                     .success.hide
                       Booking successful. Your confirmation code
@@ -73,7 +73,7 @@
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
       - else
         %p
-          = t(:depart)
+          = translate_helper_translate(:depart)
         .prev-btn
     %div.span10.card-view-resize
       %div{id: 'outbound_section'}
@@ -99,7 +99,7 @@
             - if @trip.return_part.has_selected?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           - else
-            = t(:return)
+            = translate_helper_translate(:return)
             .prev-btn
         .card-prev
       %div.span10.card-view-resize
@@ -113,7 +113,7 @@
     Trip Overview
   / .new-trip.pull-right
   /   = link_to new_user_trip_path do
-  /     = t(:plan_a_new_trip)
+  /     = translate_helper_translate(:plan_a_new_trip)
 
 #overview-modal.hide
   .row-fluid
@@ -142,7 +142,7 @@
 
       %h5 Purpose
       %p.reason
-        = t(@trip.trip_purpose)
+        = translate_helper_translate(@trip.trip_purpose)
       .close-overview
         .close-btn
           Close Trip Overview
@@ -153,8 +153,8 @@
 
 :javascript
   $('a[href="#show-email-provider-modal"]').on('click', function (e) {
-    e.preventDefault();
-    $('#itinerary_modal').html("#{escape_javascript(render 'email_provider_modal')}");
+    e.preventDefaultranslate_helper_translate();
+    $('#itinerary_modal').html("#{escape_javascriptranslate_helper_translate(render 'email_provider_modal')}");
     $('#itinerary_modal').modal({show: true, keyboard: false});
   });
 

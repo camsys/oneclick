@@ -1,7 +1,7 @@
-- content_for :title, "#{t(:site_title)} - #{t(:settings)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:settings)}"
 .row.info-header
   .col-sm-12
-    %h1= t(:settings)
+    %h1= translate_helper_translate(:settings)
 
 = render 'admin/pois/form'
 = render 'admin/application_logo_upload_form'

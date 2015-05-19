@@ -12,29 +12,29 @@
 .row
   .col-sm-12
     = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-      = f.input :raw_address, :class => "inline col-sm-12", :label => t(:enter_address) do
-        = f.text_field :raw_address, :placeholder => t(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.input :raw_address, :class => "inline col-sm-12", :label => translate_helper_translate(:enter_address) do
+        = f.text_field :raw_address, :placeholder => translate_helper_translate(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
         = image_tag "ajax-loader.gif", :id => "geocoding_indicator", :style => "display:none;margin-top:-9px;", :class => "loading-indicator"
 
-      = f.input :name, :label => t(:place_name), :placeholder => t(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
-      = f.input :home, as: :boolean, :label => false, :inline_label => t(:my_home_chkbox_label)
+      = f.input :name, :label => translate_helper_translate(:place_name), :placeholder => translate_helper_translate(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
+      = f.input :home, as: :boolean, :label => false, :inline_label => translate_helper_translate(:my_home_chkbox_label)
       = f.hidden_field :place_type_id, :id => "place_type_field"
       = f.hidden_field :place_id, :id => "place_id_field"
 
       .form-actions
         = button_tag :type => 'submit', :class => "btn action-button" do
           %i.fa.fa-check
-          = @place_proxy.id.nil? ? t(:save) : t(:update)
+          = @place_proxy.id.nil? ? translate_helper_translate(:save) : translate_helper_translate(:update)
         = link_to :back, :class => "cancel_link" do
           %i.fa.fa-reply
-          = t(:cancel)
+          = translate_helper_translate(:cancel)
 
 #select_place{:style => "display:none;"}
   = render :partial => 'trips/alt_address_select', :locals => {:results => [], :type => "place"}
 
 .row
   .col-sm-12
-    %h6= t(:found_x_places, :count => @places.count )
+    %h6= translate_helper_translate(:found_x_places, :count => @places.count )
 
 .row
   .places-list.col-sm-12.thumbnail{:style => "height:200px;overflow:auto;"}
@@ -52,10 +52,10 @@
   .col-sm-12{:style => "padding-top:5px"}
     = link_to "#", :class => "btn action-button", :id => "delete_button" do
       %i.fa.fa-times
-      = t(:delete)
+      = translate_helper_translate(:delete)
     = link_to "#", :class => "btn action-button", :id => "edit_button" do
       %i.fa.fa-edit
-      = t(:edit)
+      = translate_helper_translate(:edit)
 
 :javascript
   // Configure UI behaviors
@@ -63,7 +63,7 @@
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
-  var delete_message = "#{t(:confirm_remove_message)}"
+  var delete_message = "#{translate_helper_translate(:confirm_remove_message)}"
 
   // Hide the name editing div on page load
   $(document).ready(function(){
@@ -90,7 +90,7 @@
     // Remove highlights from all the rows and add a highlight
     // to the current row
     $('.place-list-item').removeClass('active');
-    $(this).parent().addClass('active');
+    $(this).parentranslate_helper_translate().addClass('active');
 
     // Update the delete and edit forms if the place can be deleted
     var place_id = $(this).data('place-id');
@@ -111,14 +111,14 @@
 
   // Submit the delete form if the user clicks the delete button
   $('#delete_button').click(function(e) {
-    e.preventDefault();
+    e.preventDefaultranslate_helper_translate();
     if ($('#delete_button').attr('disabled')) {
       return false;
     }
     var message = delete_message + $('#delete_place_name').val() + " ?";
     window.oneclickConfirmBox(message, function(result) {
       if (result) {
-        $('#delete_form').submit();
+        $('#delete_form').submitranslate_helper_translate();
       }
     });
     return false;
@@ -127,7 +127,7 @@
   // Move to edit mode if the user clicks the delete button
   $('#edit_button').click(function() {
     if ($('#edit_place_id').val() != "") {
-      $('#edit_form').submit();
+      $('#edit_form').submitranslate_helper_translate();
     }
     return true;
   });
@@ -148,7 +148,7 @@
       if (addr.length >= geocoder_min_chars) {
         $('#query').val(addr);
         $('#target').val(2);
-        $('#query_form').submit();
+        $('#query_form').submitranslate_helper_translate();
         $('#geocoding_indicator').show();
       }
     }
@@ -162,9 +162,9 @@
       minLength: typeahead_min_chars,
       source: function(query, process) {
           if (timeout) {
-            clearTimeout(timeout);
+            clearTimeoutranslate_helper_translate(timeout);
           }
-          timeout = setTimeout(function() {
+          timeout = setTimeoutranslate_helper_translate(function() {
             return $.ajax({
                 url: $('#place_proxy_raw_address').data('link'),
                 type: 'get',
@@ -191,14 +191,14 @@
 
     sorter: function (items) {
        var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
-        while (aItem = items.shift()) {
+        while (aItem = items.shiftranslate_helper_translate()) {
             var item = JSON.parse(aItem);
             if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
             else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));
             else caseInsensitive.push(JSON.stringify(item));
         }
 
-        return beginswith.concat(caseSensitive, caseInsensitive)
+        return beginswith.concatranslate_helper_translate(caseSensitive, caseInsensitive)
 
     },
 

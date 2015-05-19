@@ -1,22 +1,22 @@
-= t(:buddy_request_email_header).to_s
+= translate_helper_translate(:buddy_request_email_header).to_s
 %br
-/=cms_snippet_content('buddy_request_email')
+/=cms_snippet_contentranslate_helper_translate('buddy_request_email')
 - user_name = get_user_name(@traveler) 
 %h3
-  = t(:buddy_request_email_intro).sub('%{name}', user_name).sub('%{site_title}', t(:site_title))
+  = translate_helper_translate(:buddy_request_email_intro).sub('%{name}', user_name).sub('%{site_title}', translate_helper_translate(:site_title))
 
 %hr
 
 %h4
-  = t(:buddy_request_email_step_0) 
+  = translate_helper_translate(:buddy_request_email_step_0) 
 %h4
-  = t(:buddy_request_email_step_1)
-  = link_to t(:site_title), root_url, {target: '_new'}
+  = translate_helper_translate(:buddy_request_email_step_1)
+  = link_to translate_helper_translate(:site_title), root_url, {target: '_new'}
 %h4
-  = t(:buddy_request_email_step_2)
+  = translate_helper_translate(:buddy_request_email_step_2)
 %h4
-  = t(:buddy_request_email_step_3)
+  = translate_helper_translate(:buddy_request_email_step_3)
 %h4
-  = t(:buddy_request_email_step_4).sub('%{name}', user_name)
+  = translate_helper_translate(:buddy_request_email_step_4).sub('%{name}', user_name)
 %br
-= t(:buddy_request_email_footer).to_s
+= translate_helper_translate(:buddy_request_email_footer).to_s

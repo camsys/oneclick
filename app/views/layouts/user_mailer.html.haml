@@ -1,5 +1,5 @@
 - if translation_exists?("generic_email_header")
-  = t(:generic_email_header)
+  = translate_helper_translate(:generic_email_header)
 - else
   %img{src: "#{get_logo_path}"}
 
@@ -7,4 +7,4 @@
 = yield
 %br
 
-= make_translation_safe(t(:generic_email_footer))
+= make_translation_safe(translate_helper_translate(:generic_email_footer))

@@ -5,7 +5,7 @@
         %tr
           - columns.each_with_index do |col, index|
             %th
-              = t(col)
+              = translate_helper_translate(col)
       %tbody.nowrap
         - rows.each do |row|
           %tr

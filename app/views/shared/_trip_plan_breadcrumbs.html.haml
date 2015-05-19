@@ -7,6 +7,6 @@
       %li.btn.btn-default.btn-arrow-right{class: breadcrumb_class(t)}<
         - if breadcrumb_tab_navigable(t)
           = link_to breadcrumb_path(t), tabindex: "6" do
-            = t(t)
+            = translate_helper_translate(t)
         - else
-          = t(t)
+          = translate_helper_translate(t)

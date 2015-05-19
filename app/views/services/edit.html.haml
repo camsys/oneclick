@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{t(:service)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:edit)} #{translate_helper_translate(:service)}"
 = render 'form'
 
 = render 'services/paratransit_fares/farezone_upload_modal'

@@ -1,4 +1,4 @@
-- label= t(dir)
+- label= translate_helper_translate(dir)
 - ad = "#{dir}_arrive_depart"
 - field = "#{dir}_trip_date".to_sym
 - time_field = "#{dir}_trip_time".to_sym
@@ -10,13 +10,13 @@
 
 .col-md-3
   -# Note that the collection assumes that the departing_at option evaluates as true in the proxy.  This should mirror trip_part.is_depart behavior
-  = f.input ad, wrapper: :horizontal_labelless_select, collection: [[t(:arriving_by), false], [t(:departing_at), true]], include_blank: false, label_method: :first, value_method: :last
+  = f.input ad, wrapper: :horizontal_labelless_select, collection: [[translate_helper_translate(:arriving_by), false], [translate_helper_translate(:departing_at), true]], include_blank: false, label_method: :first, value_method: :last
   - if dir=='outbound' && translation_exists?("outbound_help")
     :javascript
-      addHelperTooltip('#outbound_label', "#{t(:outbound_help)}");
+      addHelperTooltip('#outbound_label', "#{translate_helper_translate(:outbound_help)}");
   - elsif dir=='return' && translation_exists?("return_help")
     :javascript
-      addHelperTooltip('#return_label', "#{t(:return_help)}");
+      addHelperTooltip('#return_label', "#{translate_helper_translate(:return_help)}");
 
 .col-md-6{:style => "padding: 0px;"}
 
@@ -39,14 +39,14 @@
     :javascript
       $('#trip_proxy_#{dir}_trip_date').datetimepicker({
         defaultDate: new Date(),
-        minDate: moment(0, "HH"),
+        minDate: momentranslate_helper_translate(0, "HH"),
         pickTime: false,
         format: 'MM/DD/YYYY',
         language: '#{I18n.locale}'
       });
 
       $('#trip_proxy_#{dir}_trip_time').datetimepicker({
-        defaultDate: moment().next15(),
+        defaultDate: momentranslate_helper_translate().next15(),
         pickDate: false,
         useSeconds: false,
         minuteStepping: 15,

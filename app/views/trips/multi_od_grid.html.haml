@@ -7,7 +7,7 @@
 .panel.panel-default
   .panel-heading
     %h2.panel-title
-      = t(:trip_summaries)
+      = translate_helper_translate(:trip_summaries)
       = add_tooltip("trip_summaries_help")
   .panel-body
     .row#gridBaseContainer
@@ -18,7 +18,7 @@
           %tr
             %td{colspan:2, style: 'visibility: hidden;'}
             %td{colspan:@dest_place_names.uniq.length, style: 'text-align: center; font-weight: bold;'}
-              =t(:going_to)
+              =translate_helper_translate(:going_to)
           %tr
             %td{colspan:2, style: 'visibility: hidden;'}
             - @dest_place_names.uniq.each do |d|
@@ -28,7 +28,7 @@
             %tr
               -if index ==0
                 %th{rowspan:@origin_place_names.uniq.length, class: 'rotate', style: 'text-align: center; font-weight: bold;'}
-                  =t(:leaving_from)
+                  =translate_helper_translate(:leaving_from)
               %td
                 =o
               - @dest_place_names.uniq.each do |d|
@@ -39,7 +39,7 @@
                   .trip-summary
                   .col-sm-12{style:'text-align:center;'}
                     = link_to user_trip_path(@traveler, id: match_trip_id ), class: 'btn action-button' do
-                      =t(:details)
+                      =translate_helper_translate(:details)
       .col-sm-12
         = render partial: 'shared/page_comments', locals: {key: :grid_footer_comment}
 
@@ -47,14 +47,14 @@
   $(document).ready(function() {
     //include all possible localized words to be used in review.js
     var localeDictFinder = {
-      outbound: '#{t(:outbound)}',
-      return: '#{t(:return)}',
-      routes: '#{t(:routes)}',
-      minutes: '#{t(:minutes)}',
-      walk: '#{t(:walk)}',
-      miles: '#{t(:miles)}',
-      unknown_cost: '#{t(:unknown_cost)}',
-      plus: '#{t(:plus)}'
+      outbound: '#{translate_helper_translate(:outbound)}',
+      return: '#{translate_helper_translate(:return)}',
+      routes: '#{translate_helper_translate(:routes)}',
+      minutes: '#{translate_helper_translate(:minutes)}',
+      walk: '#{translate_helper_translate(:walk)}',
+      miles: '#{translate_helper_translate(:miles)}',
+      unknown_cost: '#{translate_helper_translate(:unknown_cost)}',
+      plus: '#{translate_helper_translate(:plus)}'
     };
 
     var trip_configs = #{trip_summary_configs.to_json};

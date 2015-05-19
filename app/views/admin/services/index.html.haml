@@ -1,34 +1,34 @@
-- content_for :title, "#{t(:site_title)} - #{t(:services)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:services)}"
 .row
   .col-sm-12
-    = link_to t(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
+    = link_to translate_helper_translate(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-12
-    %h1= t(:services)
+    %h1= translate_helper_translate(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:services)
+      = translate_helper_translate(:services)
       = add_tooltip("services_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
       %thead
         %tr
-          %th= t(:id)
-          %th= t(:name)
-          %th= t(:provider)
-          %th= t(:type)
-          %th#status= t(:status)
+          %th= translate_helper_translate(:id)
+          %th= translate_helper_translate(:name)
+          %th= translate_helper_translate(:provider)
+          %th= translate_helper_translate(:type)
+          %th#status= translate_helper_translate(:status)
       %tbody
         - @services.each do |service|
           %tr
             %td= service.id
             %td= service.name
             %td= service.provider.name
-            %td= cms_snippet_content(service.service_type.name)
+            %td= cms_snippet_contentranslate_helper_translate(service.service_type.name)
             %td
               - if service.active == false
-                = t(:inactive)
+                = translate_helper_translate(:inactive)
 
 = render partial: 'admin/shared/datatable_js', locals: {key: 'admin_services', entity: 'services'}
 

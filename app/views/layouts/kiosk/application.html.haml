@@ -2,8 +2,8 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
-      %title= content_for?(:title) ? yield(:title) : t(:site_title)
-      %meta{:content => content_for?(:description) ? yield(:description) : t(:site_description), :name => "description"}
+      %title= content_for?(:title) ? yield(:title) : translate_helper_translate(:site_title)
+      %meta{:content => content_for?(:description) ? yield(:description) : translate_helper_translate(:site_description), :name => "description"}
       = ajaxful_rating_style
       = stylesheet_link_tag "application", :media => "all"
       = stylesheet_link_tag '' + brand, :media => "all"
@@ -68,10 +68,10 @@
 
       $(document).ready(function(){
         // Set default locale configs and other settings that affect every page
-        localized_yes_str = "#{t(:yes_str)}";
-        localized_no_str = "#{t(:no_str)}";
-        localized_ok_str = "#{t(:ok)}";
-        localized_cancel_str = "#{t(:cancel)}";
+        localized_yes_str = "#{translate_helper_translate(:yes_str)}";
+        localized_no_str = "#{translate_helper_translate(:no_str)}";
+        localized_ok_str = "#{translate_helper_translate(:ok)}";
+        localized_cancel_str = "#{translate_helper_translate(:cancel)}";
 
         bootbox.setDefaults({
           locale: "#{I18n.locale}"

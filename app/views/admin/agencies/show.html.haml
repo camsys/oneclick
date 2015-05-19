@@ -1,56 +1,56 @@
-- content_for :title, "#{t(:site_title)} - #{@agency.name}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{@agency.name}"
 - temp_rating = @agency.ratings.build(user: @traveler)
 - can_manage_agency =(can? :manage, :all) || ((can? :full_read, @agency) && !current_user.nil? && !current_user.agency.nil? && @agency.id == current_user.agency.id)
 - if can? :index, Agency
   .col-sm-12
-    = link_to t(:all_agencies), admin_agencies_path, class: 'btn action-button btn-arrow-left'
+    = link_to translate_helper_translate(:all_agencies), admin_agencies_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @agency.name
     -unless @agency.active
-      %p= t(:inactive)
+      %p= translate_helper_translate(:inactive)
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
         - if can? :read, temp_rating
           = RateableDecorator.decorate(@agency).rating_in_stars
           %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
-            = t(:feedback)
+            = translate_helper_translate(:feedback)
         - elsif Rating.tripless_feedback?
           -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
           %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
-            = t(:feedback)
+            = translate_helper_translate(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
       - if @agency.active && can_manage_agency and can? :destroy, @agency
         = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
-          = t(:delete)
-        #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper_translate(:delete)
+        #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper_translate(:cancel)
+                = button_to translate_helper_translate(:ok), { action: "destroy", id: @agency.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title)
+                    = translate_helper_translate(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @agency.name + " ?"
+                = translate_helper_translate(:confirm_remove_message) + @agency.name + " ?"
       - if !@agency.active && can_manage_agency && (can? :destroy, @agency)
         = button_tag :type => 'button', "data-target" => "#undeleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
-          = t(:undelete)
-        #undeleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:restore_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper_translate(:undelete)
+        #undeleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:restore_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "undelete", id: @agency.id }, method: :patch, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper_translate(:cancel)
+                = button_to translate_helper_translate(:ok), { action: "undelete", id: @agency.id }, method: :patch, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = t(:site_title)
+                    = translate_helper_translate(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = t(:confirm_restore_message) + " #{@agency.name} ?"
+                = translate_helper_translate(:confirm_restore_message) + " #{@agency.name} ?"
       - if can_manage_agency and can? :update, @agency
         = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
@@ -61,51 +61,51 @@
       .panel.panel-default
         .panel-heading
           %h2.panel-title
-            = t(:internal_contact)
+            = translate_helper_translate(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
               %td.text-right
-                = t(:name) + ": "
+                = translate_helper_translate(:name) + ": "
               %td.text-left
                 %b= @agency.internal_contact_name
             %tr
               %td.text-right
-                = t(:title)+": "
+                = translate_helper_translate(:title)+": "
               %td.text-left
                 %b= @agency.internal_contact_title
             %tr
               %td.text-right
-                = t(:phone)+ ": "
+                = translate_helper_translate(:phone)+ ": "
               %td.text-left
                 %b= @agency.internal_contact_phone
             %tr
               %td.text-right
-                = t(:email)+ ":  "
+                = translate_helper_translate(:email)+ ":  "
               %td.text-left
                 %b= mail_to @agency.internal_contact_email
             - if @contact
               %tr
                 %td.text-right
-                  = t(:user) + ": "
+                  = translate_helper_translate(:user) + ": "
                 %td.text-left
                   %b= @contact.name
 - if can_manage_agency
   .panel.panel-default#staff
     .panel-heading
       %h2.panel-title
-        = t(:staff_actions)
+        = translate_helper_translate(:staff_actions)
         = add_tooltip("staff_actions_help")
     .panel-body
-      %h3= t(:administrators)
+      %h3= translate_helper_translate(:administrators)
       %table.ALTtable.table-condensed#admin_table
         %thead
           %tr
-            %th= t(:name)
-            %th= t(:title)
-            %th= t(:phone)
-            %th= t(:email)
+            %th= translate_helper_translate(:name)
+            %th= translate_helper_translate(:title)
+            %th= translate_helper_translate(:phone)
+            %th= translate_helper_translate(:email)
         %tbody
           - @admins.each do |s|
             %tr
@@ -114,14 +114,14 @@
               %td= s.phone.to_s
               %td= mail_to s.email.to_s
 
-      %h3= t(:agents)
+      %h3= translate_helper_translate(:agents)
       %table.ALTtable.table-condensed#agent_table
         %thead
           %tr
-            %th= t(:name)
-            %th= t(:title)
-            %th= t(:phone)
-            %th= t(:email)
+            %th= translate_helper_translate(:name)
+            %th= translate_helper_translate(:title)
+            %th= translate_helper_translate(:phone)
+            %th= translate_helper_translate(:email)
         %tbody
           - @agents.each do |s|
             %tr

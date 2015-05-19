@@ -1,22 +1,22 @@
 - multi_places = []
 - if dir=='from'
   - marker_key = 'start'
-  - label=t(:leaving_from)
-  - sr_label = t(:type_from_address)
-  - multi_places = @trip_proxy.multi_origin_places.split(';') unless @trip_proxy.multi_origin_places.nil?
+  - label=translate_helper_translate(:leaving_from)
+  - sr_label = translate_helper_translate(:type_from_address)
+  - multi_places = @trip_proxy.multi_origin_places.splitranslate_helper_translate(';') unless @trip_proxy.multi_origin_places.nil?
 - elsif dir=='to'
   - marker_key = 'stop'
-  - label=t(:going_to)
-  - sr_label = t(:type_to_address)
-  - multi_places = @trip_proxy.multi_dest_places.split(';')  unless @trip_proxy.multi_dest_places.nil?
+  - label=translate_helper_translate(:going_to)
+  - sr_label = translate_helper_translate(:type_to_address)
+  - multi_places = @trip_proxy.multi_dest_places.splitranslate_helper_translate(';')  unless @trip_proxy.multi_dest_places.nil?
 = f.input "#{dir}_place".to_sym, input_html: {class: 'place_picker', autocomplete: 'off', type: "text", tabindex: 0}, id: "trip_proxy_#{dir}_place", wrapper: :group, label: label, "aria-hidden" => 'true' do
   = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0, "aria-autocomplete" => 'inline'
   - if dir=='from' && translation_exists?("leaving_from_help")
     :javascript
-      addHelperTooltip('#from_place_label', "#{t(:leaving_from_help)}");
+      addHelperTooltip('#from_place_label', "#{translate_helper_translate(:leaving_from_help)}");
   - elsif dir=='to' && translation_exists?("going_to_help")
     :javascript
-      addHelperTooltip('#to_place_label', "#{t(:going_to_help)}");
+      addHelperTooltip('#to_place_label', "#{translate_helper_translate(:going_to_help)}");
   %span.input-group-btn
     %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1', aria: {label: "Click button to center my location"}}   
       %i.fa.fa-location-arrow

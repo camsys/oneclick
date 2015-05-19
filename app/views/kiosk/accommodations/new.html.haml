@@ -1,9 +1,9 @@
 %div.responsive-mbp.row-fluid
   .span4.info
     %h1
-      = t(:about_you)
-    %h4= t(:follow_up_questions)
-    %p= t(:follow_up_question_descr).html_safe
+      = translate_helper_translate(:about_you)
+    %h4= translate_helper_translate(:follow_up_questions)
+    %p= translate_helper_translate(:follow_up_question_descr).html_safe
   %div.span8plus.inputs
     .row-fluid.accommodations-section
       = render partial: 'kiosk/accommodations/form',  :locals => {:path => kiosk_user_accommodation_path(@traveler, @user_accommodations_proxy.id, inline: 1), :inline => true}

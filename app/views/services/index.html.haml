@@ -1,15 +1,15 @@
-- content_for :title, "#{t(:site_title)} - #{t(:services)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:services)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
       - if Oneclick::Application.config.show_update_services && can?(:upload, EspReader)
         = link_to "Update Services", upload_esp_reader_index_path, {class: 'btn action-button', role: 'button'}
-      = button_tag t(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
-    %h1= t(:services)
+      = button_tag translate_helper_translate(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
+    %h1= translate_helper_translate(:services)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:services)
+      = translate_helper_translate(:services)
       = add_tooltip("services_help")
   .panel-body
     = render 'table'

@@ -1,54 +1,54 @@
 .row-fluid
   - unless itinerary.cost_comments.blank?
-    %h4 =t(:cost_details)
+    %h4 =translate_helper_translate(:cost_details)
     = itinerary.cost_comments.html_safe
 
   - if itinerary.missing_information
     %h4
       %i.icon.icon-question-sign
-      =t(:this_service_is_for)
+      =translate_helper_translate(:this_service_is_for)
       %ul
-        -itinerary.missing_information_text.split(':').each do |info|
+        -itinerary.missing_information_text.splitranslate_helper_translate(':').each do |info|
           %li
             -count = 0
-            -info.split(',').each do |i|
+            -info.splitranslate_helper_translate(',').each do |i|
               - count += 1
-              - if info.split(',').count - 1 == count
+              - if info.splitranslate_helper_translate(',').count - 1 == count
                 -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                  = t(i[0,7], age: i[7..-1]) + ' ' + t(:and) + ' '
+                  = translate_helper_translate(i[0,7], age: i[7..-1]) + ' ' + translate_helper_translate(:and) + ' '
                 -else
-                  = t(i) + ' ' + t(:and) + ' '
-              - elsif info.split(',').count == count
+                  = translate_helper_translate(i) + ' ' + translate_helper_translate(:and) + ' '
+              - elsif info.splitranslate_helper_translate(',').count == count
                 -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                  = t(i[0,7], age: i[7..-1])
+                  = translate_helper_translate(i[0,7], age: i[7..-1])
                 -else
-                  = t(i)
+                  = translate_helper_translate(i)
               - else
                 -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                  = t(i[0,7], age: i[7..-1]) + ','
+                  = translate_helper_translate(i[0,7], age: i[7..-1]) + ','
                 -else
-                  = t(i) + ','
+                  = translate_helper_translate(i) + ','
 
   -if itinerary.accommodation_mismatch
     %h4
       %i.icon.icon-warning-sign
-      = t(:trip_needs_more_accommodations).to_s + ":"
+      = translate_helper_translate(:trip_needs_more_accommodations).to_s + ":"
     %ul
-      -itinerary.missing_accommodations.split(',').each do |accommodation|
+      -itinerary.missing_accommodations.splitranslate_helper_translate(',').each do |accommodation|
         %li
           =accommodation
   -if itinerary.too_late
     %h4
       %i.icon.icon-calendar
-      = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+      = translate_helper_translate(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + translate_helper_translate(:trip_insufficient_notice_b)
   -if itinerary.too_early
     %h4
       %i.icon.icon-calendar
-      = t(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + t(:trip_max_advanced_book_notice_b)
+      = translate_helper_translate(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + translate_helper_translate(:trip_max_advanced_book_notice_b)
   -if itinerary.date_mismatch or itinerary.time_mismatch
     %h4
       %i.icon.icon-calendar
-      = t(:trip_outside_service_hours)
+      = translate_helper_translate(:trip_outside_service_hours)
 
   %h4
     - if itinerary.service.try(:phone).present?

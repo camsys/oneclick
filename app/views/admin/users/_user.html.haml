@@ -3,7 +3,7 @@
     = f.hidden_field :agency_id, id: agency.id
     .modal-header
       %a.close{"data-dismiss" => "modal"} ×
-      %h3= t(:change_role)
+      %h3= translate_helper_translate(:change_role)
     .modal-body
       = f.input_field :role_name, :collection => ROLES, :as => :radio_buttons, checked: (user.roles.first.name rescue nil)
     .modal-footer

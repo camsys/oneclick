@@ -7,13 +7,13 @@
             .col-sm-12
               %h3.panel-title
                 .btns.pull-right
-                  = f.submit t(:ok), class: 'btn action-button', role: 'button'
-                = t(:load_pois)
+                  = f.submit translate_helper_translate(:ok), class: 'btn action-button', role: 'button'
+                = translate_helper_translate(:load_pois)
                 = add_tooltip("load_pois_help")
         .panel-body
           = f.error_notification message: print_messages(f)
-          %label=t(:load_pois_notes)
-          = f.input "file", required:true, :label => t(:select_pois_file_to_upload),:as => :file
+          %label=translate_helper_translate(:load_pois_notes)
+          = f.input "file", required:true, :label => translate_helper_translate(:select_pois_file_to_upload),:as => :file
   :javascript
     if(#{Rails.application.config.poi_is_loading}) {
       $('#poi_upload_div').overlayMask();
@@ -28,7 +28,7 @@
             success: function(status) { 
               if(!status.is_loading) {
                 $('#poi_upload_div').overlayMask('remove');
-                show_alert(status.loading_summary);
+                show_alertranslate_helper_translate(status.loading_summary);
               }
             }
           });

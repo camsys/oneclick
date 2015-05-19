@@ -6,19 +6,19 @@
         .row.text
           .col-sm-12
             %h3.panel-title
-              = t(:public_comments)
+              = translate_helper_translate(:public_comments)
               = add_tooltip("public_comments_help")
       .panel-body
         - if commentable.public_comments.empty?
-          = t(:no_comments)
+          = translate_helper_translate(:no_comments)
         - else
           - if can? :full_read, commentable
             %dl
               - commentable.public_comments.each do |comment|
-                %dt= [t("locales.#{comment.locale}"), t(:comment)].join(' ')
+                %dt= [translate_helper_translate("locales.#{comment.locale}"), translate_helper_translate(:comment)].join(' ')
                 %dd= comment.comment.html_safe
           - else
-            %p= commentable.public_comments.where(locale: I18n.locale).first.comment.html_safe rescue t(:no_comments)
+            %p= commentable.public_comments.where(locale: I18n.locale).first.comment.html_safe rescue translate_helper_translate(:no_comments)
 
   - if (can? :full_read, commentable) && can_view_private == true
     .col-sm-6
@@ -27,13 +27,13 @@
           .row.text
             .col-sm-12
               %h3.panel-title
-                = t(:private_comments)
+                = translate_helper_translate(:private_comments)
                 = add_tooltip("private_comments_help")
         .panel-body
           - if commentable.private_comments.empty?
-            = t(:no_comments)
+            = translate_helper_translate(:no_comments)
           - else
             %dl
               - commentable.private_comments.each do |comment|
-                %dt= [t("locales.#{comment.locale}"), t(:comment)].join(' ')
+                %dt= [translate_helper_translate("locales.#{comment.locale}"), translate_helper_translate(:comment)].join(' ')
                 %dd= comment.comment.html_safe

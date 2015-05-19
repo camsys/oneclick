@@ -1,6 +1,6 @@
 .modal.hide.fade{id: "user_comments_" + trip.id.to_s}
   .modal-header
-    %h3= t(:leave_comments)
+    %h3= translate_helper_translate(:leave_comments)
   = simple_form_for :trip, url: comments_user_trip_path(@traveler, trip), html: { class: 'form-horizontal',
     id: 'user_comments_form_' + trip.id.to_s}  do |f|
     .modal-body
@@ -8,7 +8,7 @@
       = f.input :user_comments, :as => :text, label: false, required: false, :input_html => { :rows => 6 , :style => 'width: 98%', :value => trip.user_comments}
     .modal-footer
       = button_tag type: :submit, class: 'btn action-button' do
-        =t(:submit)
+        =translate_helper_translate(:submit)
       = link_to '#', class: "cancel_link", data: {dismiss: 'modal'} do
         %i.fa.fa-reply
-        = t(:cancel)
+        = translate_helper_translate(:cancel)

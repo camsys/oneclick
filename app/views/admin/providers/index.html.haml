@@ -1,23 +1,23 @@
-- content_for :title, "#{t(:site_title)} - #{t(:providers)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:providers)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
       - if can? :create, Provider
-        = link_to t(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
-      = button_tag t(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
-    %h1= t(:providers)
+        = link_to translate_helper_translate(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper_translate(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
+    %h1= translate_helper_translate(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:providers)
+      = translate_helper_translate(:providers)
       = add_tooltip("providers_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
       %thead
         %tr
-          %th= t(:id)
-          %th= t(:name)
-          %th#status= t(:status)
+          %th= translate_helper_translate(:id)
+          %th= translate_helper_translate(:name)
+          %th#status= translate_helper_translate(:status)
           %th
       %tbody
         - @providers.each do |provider|
@@ -26,10 +26,10 @@
             %td= link_to provider.name, admin_provider_path(provider)
             %td
               - if provider.active == false
-                = t(:inactive)
+                = translate_helper_translate(:inactive)
 
             %td.center
               = link_to admin_provider_services_path(provider) do
-                = t(:services)
+                = translate_helper_translate(:services)
 
 = render partial: 'admin/shared/datatable_js', locals: {key: 'admin_providers', entity: 'providers'}

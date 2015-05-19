@@ -6,4 +6,4 @@
 - when FareStructure::ZONE
   = render partial: 'services/paratransit_fares/zone_fare', locals: {fares: fare_structure.zone_fares}
 - else
-  %b= t(:fare_type) + ": " + t(:complex_fare)
+  %b= translate_helper_translate(:fare_type) + ": " + translate_helper_translate(:complex_fare)

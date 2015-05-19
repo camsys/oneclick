@@ -1,14 +1,14 @@
 - links = []
 
 - if controller_name != 'sessions'
-  - links << link_to( new_session_path(resource_name), class: "btn action-button") { t(:ok) }
+  - links << link_to( new_session_path(resource_name), class: "btn action-button") { translate_helper_translate(:ok) }
 
 / - if devise_mapping.registerable? && controller_name != 'registrations'
-/   - links << link_to( :back, class: "btn action-button") { t(:cancel) }
+/   - links << link_to( :back, class: "btn action-button") { translate_helper_translate(:cancel) }
 
 / TODO don't support password recovery yet  
 - if devise_mapping.recoverable? && controller_name != 'passwords'
-  - links << link_to(new_password_path(resource_name)) { content_tag(:i, nil, {class: 'fa fa-info-circle'}) + ' ' + t(:forgot_your_password)}
+  - links << link_to(new_password_path(resource_name)) { content_tag(:i, nil, {class: 'fa fa-info-circle'}) + ' ' + translate_helper_translate(:forgot_your_password)}
 
 - if devise_mapping.confirmable? && controller_name != 'confirmations'
   - links << link_to( "Didn't receive confirmation instructions?", new_confirmation_path(resource_name))
@@ -18,6 +18,6 @@
 
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
-    - links << link_to(t(:sign_in_with_provider_to_s_titleize, provider: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider))
+    - links << link_to(translate_helper_translate(:sign_in_with_provider_to_s_titleize, provider: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider))
 
 = links.map(&:html_safe).join(' | ').html_safe

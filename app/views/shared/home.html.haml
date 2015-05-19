@@ -2,24 +2,24 @@
   .col-sm-12
     .center.col-sm-6
       - if user_signed_in?
-        = cms_snippet_content('home-top-logged-in_html')
+        = cms_snippet_contentranslate_helper_translate('home-top-logged-in_html')
       - else
-        = cms_snippet_content('home-top_html')
+        = cms_snippet_contentranslate_helper_translate('home-top_html')
 .row
   .col-sm-4.col-sm-offset-4
     = render partial: 'shared/actions_menu', locals: {actions: @actions}
 .row
   - if user_signed_in?
     .col-sm-4
-      = cms_snippet_content('home-bottom-left-logged-in_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-left-logged-in_html')
     .col-sm-4
-      = cms_snippet_content('home-bottom-center-logged-in_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-center-logged-in_html')
     .col-sm-4
-      = cms_snippet_content('home-bottom-right-logged-in_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-right-logged-in_html')
   - else
     .col-sm-4
-      = cms_snippet_content('home-bottom-left_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-left_html')
     .col-sm-4
-      = cms_snippet_content('home-bottom-center_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-center_html')
     .col-sm-4
-      = cms_snippet_content('home-bottom-right_html')
+      = cms_snippet_contentranslate_helper_translate('home-bottom-right_html')

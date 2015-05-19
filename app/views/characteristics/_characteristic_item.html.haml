@@ -8,41 +8,41 @@
             - when 'bool'
               .form-group.string.optional
                 .string.optional.col-sm-7.control-label{id: "#{item.code}_label", for: item.code}
-                  = t(item.note)
+                  = translate_helper_translate(item.note)
                   - if translation_exists?("#{item.code}_help")
                   - help_tag = "#{item.code}_help".to_sym
                     :javascript
-                      addHelperTooltip("##{item.code}_label", "#{t(help_tag)}");
+                      addHelperTooltip("##{item.code}_label", "#{translate_helper_translate(help_tag)}");
                 .col-sm-5
-                  = f.input item.code.to_sym, id: item.code, :collection =>  [[t(:yes_str), 'true'], [t(:no_str), 'false'], [t(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control', style: 'min-width:120px;' }, label: false
+                  = f.input item.code.to_sym, id: item.code, :collection =>  [[translate_helper_translate(:yes_str), 'true'], [translate_helper_translate(:no_str), 'false'], [translate_helper_translate(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control', style: 'min-width:120px;' }, label: false
             - else
-              = f.input item.code.to_sym, label: t(item.note)
+              = f.input item.code.to_sym, label: translate_helper_translate(item.note)
               - if translation_exists?("#{item.code}_help")
                 :javascript
-                  addHelperTooltip("##{item.code}_label", "#{t(:date_of_birth_help)}");
+                  addHelperTooltip("##{item.code}_label", "#{translate_helper_translate(:date_of_birth_help)}");
 - else
   - case item.datatype
     - when 'bool'
       %fieldset
         .form-group.radio_buttons.optional#input_container{class: "user_characteristics_proxy_#{item.code}"}
           %legend.col-sm-7.radio_buttons.optional.control-label{id: "#{item.code}_label"}
-            = t(item.note)
+            = translate_helper_translate(item.note)
             = add_tooltip("#{item.code}_help")
             :javascript
               $('.inline-radio .label-help').removeClass('fa-2x');
           .col-sm-5#eligibility_questions
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "true", checked: item.true_false_checked?(@traveler, "true") }
-            %label{for: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]"} #{t(:yes_str)}
+            %label{for: "user_characteristics_proxy_#{item.code}_true", name: "user_characteristics_proxy[#{item.code}]"} #{translate_helper_translate(:yes_str)}
 
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "false", checked: item.true_false_checked?(@traveler, "false") }
-            %label{for: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]"} #{t(:no_str)}
+            %label{for: "user_characteristics_proxy_#{item.code}_false", name: "user_characteristics_proxy[#{item.code}]"} #{translate_helper_translate(:no_str)}
 
             %input.radio_buttons.optional{id: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]", type: "radio", value: "na", checked: item.na_checked?(@traveler) }
-            %label{for: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]"} #{t(:not_sure_str)}
+            %label{for: "user_characteristics_proxy_#{item.code}_na", name: "user_characteristics_proxy[#{item.code}]"} #{translate_helper_translate(:not_sure_str)}
 
-      / = f.input item.code.to_sym, collection: [[true, t(:yes_str)], [false, t(:no_str)], [UserProfileProxy::PARAM_NOT_SET, t(:not_sure_str)]], :required => false, as: :radio_buttons, label: t(item.note), label_method: :last, value_method: :first
+      / = f.input item.code.to_sym, collection: [[true, translate_helper_translate(:yes_str)], [false, translate_helper_translate(:no_str)], [UserProfileProxy::PARAM_NOT_SET, translate_helper_translate(:not_sure_str)]], :required => false, as: :radio_buttons, label: translate_helper_translate(item.note), label_method: :last, value_method: :first
     - else
-      = f.input item.code.to_sym, label: t(item.note)
+      = f.input item.code.to_sym, label: translate_helper_translate(item.note)
       - if translation_exists?("#{item.code}_help")
         :javascript
-          addHelperTooltip("##{item.code}_label", "#{t(:date_of_birth_help)}");
+          addHelperTooltip("##{item.code}_label", "#{translate_helper_translate(:date_of_birth_help)}");

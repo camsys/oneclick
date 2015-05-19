@@ -1,22 +1,22 @@
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to t(:create), new_admin_user_path,{class: 'btn action-button', role: 'button'}
-    %h1= t(:find_traveler)
+      = link_to translate_helper_translate(:create), new_admin_user_path,{class: 'btn action-button', role: 'button'}
+    %h1= translate_helper_translate(:find_traveler)
 
 -if @pre_auth_travelers
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = t(:authorized_travelers)
+        = translate_helper_translate(:authorized_travelers)
         = add_tooltip("authorized_travelers_help")
     .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#preauth_travelers_table
         %thead
           %tr
-            %th.col-sm-4= t(:name)
-            %th.col-sm-4= t(:email)
-            %th.col-sm-4= t(:registered)
+            %th.col-sm-4= translate_helper_translate(:name)
+            %th.col-sm-4= translate_helper_translate(:email)
+            %th.col-sm-4= translate_helper_translate(:registered)
         %tbody
           - @pre_auth_travelers.each do |traveler|
             %tr
@@ -41,5 +41,5 @@
 
   // Add a listener on the asset type filter that submits the form when changed
   $('#time_filter').change(function() {
-    $('#time_filter_form').submit();
+    $('#time_filter_form').submitranslate_helper_translate();
   });

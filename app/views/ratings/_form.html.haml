@@ -3,8 +3,8 @@
     .row
       .col-sm-12
         .pull-right
-          = f.submit t(:apply), class: "btn action-button"
-          %button.btn.action-button#hide_feedback{data: {dismiss: "modal"}}= t(:cancel)
+          = f.submit translate_helper_translate(:apply), class: "btn action-button"
+          %button.btn.action-button#hide_feedback{data: {dismiss: "modal"}}= translate_helper_translate(:cancel)
         = simple_fields_for @ratings_proxy.rater do |rater|
           = rater.input :id, as: :hidden
   - @ratings_proxy.rateables.each do |rateable|
@@ -18,18 +18,18 @@
           -# the ratings_radio wrapper uses an inline span rather than a block div, so wrap it in a .row to keep from breaking
           .stars
             -# using collection_radio_buttons for add'l control over formatting.  See http://rubydoc.info/github/plataformatec/simple_form/master/SimpleForm/FormBuilder:collection_radio_buttons for API
-            = ratings_form.label t(:feedback_rating)
+            = ratings_form.label translate_helper_translate(:feedback_rating)
             .align-left.clearfix
               %span.pull-left
                 = ratings_form.collection_radio_buttons( :value, Rating.options, :first, :last, boolean_style: nil, item_wrapper_tag: nil)
-              %a.clear{:href=>'#'}= t(:clear)
-          = ratings_form.input :comments, label: t(:comments), placeholder: t(:feedback_comments)
+              %a.clear{:href=>'#'}= translate_helper_translate(:clear)
+          = ratings_form.input :comments, label: translate_helper_translate(:comments), placeholder: translate_helper_translate(:feedback_comments)
           = ratings_form.input :id, as: :hidden, :input_html => { :value => rateable.id }
 -# Add in clear functionality for the clear button.
 :javascript
   $(document).ready(function() {
     $("a.clear").on("click", function() {
-      $(this).closest(".stars").find("input:checked").prop("checked", false);
+      $(this).closestranslate_helper_translate(".stars").find("input:checked").prop("checked", false);
     });
     $("#hide_feedback").on("click", function() {
       $("#ratings").show();

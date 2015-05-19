@@ -7,11 +7,11 @@
       = urpd.can_assist_me
       - if urp.can_assist_me
         .relationship_status{class: ("hidden" unless ENV['SHOWALL'])}
-          = select_tag "user[relationship][#{urp.can_assist_me.id}]", options_for_select(RelationshipStatus.statuses, urp.can_assist_me.relationship_status.id)
+          = select_tag "user[relationship][#{urp.can_assist_me.id}]", options_for_selectranslate_helper_translate(RelationshipStatus.statuses, urp.can_assist_me.relationship_status.id)
           = urp.can_assist_me.status
     %td{data: {rel: urp.i_can_assist.try(:id)}}
       = urpd.i_can_assist
       - if urp.i_can_assist
         .relationship_status{class: ("hidden" unless ENV['SHOWALL'])}
-          = select_tag "user[relationship][#{urp.i_can_assist.id}]", options_for_select(RelationshipStatus.statuses, urp.i_can_assist.relationship_status.id)
+          = select_tag "user[relationship][#{urp.i_can_assist.id}]", options_for_selectranslate_helper_translate(RelationshipStatus.statuses, urp.i_can_assist.relationship_status.id)
           = urp.i_can_assist.status

@@ -22,7 +22,7 @@
   		"oLanguage": {
                         "sLengthMenu": "#{sLengthMenu}",
                         "sInfo": "#{sInfo}",
-                        "sZeroRecords": "#{t(:nothing_found_sorry)}"
+                        "sZeroRecords": "#{translate_helper_translate(:nothing_found_sorry)}"
   		}
   	} );
   } );
@@ -61,7 +61,7 @@
   		"fnInit": function( oSettings, nPaging, fnDraw ) {
   			var oLang = oSettings.oLanguage.oPaginate;
   			var fnClickHandler = function ( e ) {
-  				e.preventDefault();
+  				e.preventDefaultranslate_helper_translate();
   				if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
   					fnDraw( oSettings );
   				}
@@ -101,7 +101,7 @@
   
   			for ( i=0, ien=an.length ; i<ien ; i++ ) {
   				// Remove the middle elements
-  				$('li:gt(0)', an[i]).filter(':not(:last)').remove();
+  				$('li:gtranslate_helper_translate(0)', an[i]).filter(':notranslate_helper_translate(:last)').remove();
   
   				// Add the new list items and their event handlers
   				for ( j=iStart ; j<=iEnd ; j++ ) {
@@ -109,8 +109,8 @@
   					$('<li '+sClass+'><a href="#">'+j+'</a></li>')
   						.insertBefore( $('li:last', an[i])[0] )
   						.bind('click', function (e) {
-  							e.preventDefault();
-  							oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
+  							e.preventDefaultranslate_helper_translate();
+  							oSettings._iDisplayStart = (parseIntranslate_helper_translate($('a', this).textranslate_helper_translate(),10)-1) * oPaging.iLength;
   							fnDraw( oSettings );
   						} );
   				}

@@ -1,21 +1,21 @@
-- content_for :title, "#{t(:site_title)} - #{t(:feedback)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:feedback)}"
 .col-sm-12
   .row.info-header
     .col-sm-12
       .btns.pull-right
-        = submit_tag t(:apply), class: "btn action-button"
-        = link_to t(:cancel), ratings_path, class: "btn action-button"
-      %h1= t(:feedback)
+        = submit_tag translate_helper_translate(:apply), class: "btn action-button"
+        = link_to translate_helper_translate(:cancel), ratings_path, class: "btn action-button"
+      %h1= translate_helper_translate(:feedback)
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = t(:feedback)
+        = translate_helper_translate(:feedback)
         = add_tooltip("feedback_help")
     .panel-body
       = search_form_for @q, id: 'ratings_search_form', :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
         .form-group
           = f.search_field "id_or_user_name_or_comments_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
-          = f.submit t(:search), class: 'btn action-button'
+          = f.submit translate_helper_translate(:search), class: 'btn action-button'
       %p
         %select.input-sm#per_page_select
           - [10, 25, 50, 100].each do |per_page|
@@ -37,15 +37,15 @@
         %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
           %thead
             %tr
-              %th= sort_link @q, :id, t(:id)
-              %th= sort_link @q, :user_name, t(:username)
-              %th.center= t(:rating_targets)
-              %th.rating.hidden= t(:rating)
-              %th.rating_in_stars.nowrap= sort_link @q, :value, t(:rating)
-              %th= sort_link @q, :comments, t(:comments)
-              %th= sort_link @q, :is_approved, t(:approve)
-              %th= sort_link @q, :is_rejected, t(:reject)
-              %th= sort_link @q, :created_at, t(:created)
+              %th= sort_link @q, :id, translate_helper_translate(:id)
+              %th= sort_link @q, :user_name, translate_helper_translate(:username)
+              %th.center= translate_helper_translate(:rating_targets)
+              %th.rating.hidden= translate_helper_translate(:rating)
+              %th.rating_in_stars.nowrap= sort_link @q, :value, translate_helper_translate(:rating)
+              %th= sort_link @q, :comments, translate_helper_translate(:comments)
+              %th= sort_link @q, :is_approved, translate_helper_translate(:approve)
+              %th= sort_link @q, :is_rejected, translate_helper_translate(:reject)
+              %th= sort_link @q, :created_at, translate_helper_translate(:created)
           %tbody
             - @ratings.decorate.each do |rating|
               %tr
@@ -58,11 +58,11 @@
                 %td.rating_in_stars.nowrap= rating.rating_in_stars
                 %td= rating.comments
                 %td
-                  = label_tag "#{rating.id}_#{Rating::APPROVED}", t(:approve), class: "sr-only"
+                  = label_tag "#{rating.id}_#{Rating::APPROVED}", translate_helper_translate(:approve), class: "sr-only"
                   -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
                   = radio_button_tag "#{rating.id}", Rating::APPROVED
                 %td
-                  = label_tag "#{rating.id}_#{Rating::REJECTED}", t(:reject), class: "sr-only"
+                  = label_tag "#{rating.id}_#{Rating::REJECTED}", translate_helper_translate(:reject), class: "sr-only"
                   -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
                   = radio_button_tag "#{rating.id}", Rating::REJECTED
                 %td.nowrap= format_date_time(rating.created_at)
@@ -93,9 +93,9 @@ $(document).ready( function() {
       $("#rateable_modal .modal-content").html(data);
     });
 
-    e.preventDefault ? e.preventDefault() : e.returnValue = false;
+    e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
   });
-  $("#ratings_form").submit(function( event ) {
+  $("#ratings_form").submitranslate_helper_translate(function( event ) {
     $.ajax({
       type: "POST",
       url: "/ratings/approve",
@@ -108,6 +108,6 @@ $(document).ready( function() {
       // This can't just be a reload or we hit issues with the reload
       success: function() { window.location = window.location }
     })
-    event.preventDefault();
+    event.preventDefaultranslate_helper_translate();
   });
 });

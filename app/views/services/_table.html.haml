@@ -1,13 +1,13 @@
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
   %thead
     %tr
-      %th= t(:id)
-      %th= t(:name)
-      %th= t(:provider)
-      %th= t(:phone)
-      %th= t(:email)
-      %th= t(:service_id)
-      %th#status= t(:status)
+      %th= translate_helper_translate(:id)
+      %th= translate_helper_translate(:name)
+      %th= translate_helper_translate(:provider)
+      %th= translate_helper_translate(:phone)
+      %th= translate_helper_translate(:email)
+      %th= translate_helper_translate(:service_id)
+      %th#status= translate_helper_translate(:status)
   %tbody
     - @services.each do |service|
       %tr
@@ -25,4 +25,4 @@
         %td= service.external_id
         %td
           - if service.active == false
-            = t(:inactive)
+            = translate_helper_translate(:inactive)

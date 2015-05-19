@@ -1,8 +1,8 @@
-- content_for :title, "#{t(:site_title)} - #{t(:travel_profile)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:travel_profile)}"
 .row.info-header
   .col-sm-6
     %h1=@user.name
   .col-sm-6.btns{style: 'padding-bottom:4px;'}
     -if can? :edit, @user
-      =link_to t(:edit), edit_user_path(@user), {class: 'btn action-button pull-right', role: 'button'}
+      =link_to translate_helper_translate(:edit), edit_user_path(@user), {class: 'btn action-button pull-right', role: 'button'}
 =render partial: 'user_display', locals: {user: @user}

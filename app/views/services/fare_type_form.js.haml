@@ -1,7 +1,7 @@
 - case @fare_type
 - when 0
-  $('#fare_type_form').html("#{escape_javascript(render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: @fare_structure})}");
+  $('#fare_type_form').html("#{escape_javascriptranslate_helper_translate(render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: @fare_structure})}");
 - when 1
-  $('#fare_type_form').html("#{escape_javascript(render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: @fare_structure})}");
+  $('#fare_type_form').html("#{escape_javascriptranslate_helper_translate(render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: @fare_structure})}");
 - when 3 
-  $('#fare_type_form').html("#{escape_javascript(render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: @fare_structure})}");
+  $('#fare_type_form').html("#{escape_javascriptranslate_helper_translate(render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: @fare_structure})}");

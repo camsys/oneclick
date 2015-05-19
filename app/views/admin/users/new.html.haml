@@ -1,32 +1,32 @@
-- content_for :title, "#{t(:site_title)} - #{t(:create_user)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:create_user)}"
 = simple_form_for [:admin, @user], html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
-      %h1= t(:create)
+      %h1= translate_helper_translate(:create)
     .col-sm-6.btns
       .pull-right
         = button_tag type: :submit, class: 'btn action-button', style: 'margin-right:5px;' do
-          = t(:apply)
-        = link_to t(:cancel), :back, class: "btn action-button"
+          = translate_helper_translate(:apply)
+        = link_to translate_helper_translate(:cancel), :back, class: "btn action-button"
   .row
     .col-sm-6
       .panel.panel-default
         .panel-heading
           %h2.panel-title
-            = t(:user_information)
+            = translate_helper_translate(:user_information)
             = add_tooltip("user_information_help")
         .panel-body
           = f.error_notification message: print_messages(f)
           = display_base_errors @user
-          = f.input :first_name, label: t(:first_name), :autofocus => true
-          = f.input :last_name, label: t(:last_name)
-          = f.input :email, label: t(:email), :required => true
+          = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true
+          = f.input :last_name, label: translate_helper_translate(:last_name)
+          = f.input :email, label: translate_helper_translate(:email), :required => true
           .col-md-3
-            .pull-right= f.label "#{t(:admin)}?"
+            .pull-right= f.label "#{translate_helper_translate(:admin)}?"
           .col-md-9{style: "margin-bottom:1em;margin-top:-0.5em;padding:0 10px;"}
-            = f.input_field :roles, :label => "#{t(:admin)}?", :collection => Role.order(:name).reject{|role| role.name != "system_administrator"}, :as => :check_boxes, :label_method => lambda {|t| t(:yes_str)}
-          = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.t("locales.#{pl}")}
+            = f.input_field :roles, :label => "#{translate_helper_translate(:admin)}?", :collection => Role.order(:name).reject{|role| role.name != "system_administrator"}, :as => :check_boxes, :label_method => lambda {|t| translate_helper_translate(:yes_str)}
+          = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| I18n.translate_helper_translate("locales.#{pl}")}
           = f.input :password
           = f.input :password_confirmation
-          = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_speed), input_html: { class: 'form-control' }
-          = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: t(:walking_maximum_distance), input_html: { class: 'form-control' }
+          = f.input :walking_speed_id, :collection =>  WalkingSpeed.all, :selected => get_selected_walking_speed_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: translate_helper_translate(:walking_speed), input_html: { class: 'form-control' }
+          = f.input :walking_maximum_distance_id, :collection =>  WalkingMaximumDistance.all, :selected => get_selected_walking_max_distance_id(@user), :value => :id, :label_method => lambda { |v| v.label}, label: translate_helper_translate(:walking_maximum_distance), input_html: { class: 'form-control' }

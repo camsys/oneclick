@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{@agency.name}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:edit)} #{@agency.name}"
 = simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
@@ -17,11 +17,11 @@
       .panel.panel-default
         .panel-heading
           %h4.panel-title
-            = t(:contact_info)
+            = translate_helper_translate(:contact_info)
             = add_tooltip("contact_info_help")
         .panel-body
           = f.input :address
-          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+          = f.input :city, label: "#{translate_helper_translate(:city)}/#{translate_helper_translate(:state)}/#{translate_helper_translate(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
             = f.input_field :city, class: "col-sm-3"
             %label.col-sm-1
@@ -35,7 +35,7 @@
       .panel.panel-default
         .panel-heading
           %h4.panel-title
-            = t(:internal_contact)
+            = translate_helper_translate(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
@@ -43,33 +43,33 @@
           = f.input :internal_contact_phone
           = f.input :internal_contact_email
           = f.input :internal_contact, collection: @agency.users, class: "form-control",
-                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
+                selected: (@contact.id if @contact) , include_blank: "None", label: translate_helper_translate(:user)
 
   .panel.panel-default
     .panel-heading
       %h4.panel-title
-        = t(:staff_actions)
+        = translate_helper_translate(:staff_actions)
         = add_tooltip("staff_actions_help")
     .panel-body
       .col-sm-6
         %b
-          = t(:administrators)
+          = translate_helper_translate(:administrators)
         .scrolling-checkbox-list.agency_admin
           = f.association :administrators, collection: @agency.agents.order(:first_name),
                   as: :check_boxes, wrapper: :inline_checkboxes, label: false
       .col-sm-6
         %b
-          = t(:agents)
+          = translate_helper_translate(:agents)
         %input{:name => "agency[agent_ids]", :type => 'hidden'}
         .row
           .col-sm-12
             %button#add_agent_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_agent'}}
-              = t(:add)
+              = translate_helper_translate(:add)
             %table.table.table.condensed.table-striped.table-hover.table-bordered#agents_table
               %thead
-                %th= t(:id)
-                %th= t(:name)
-                %th.email= t(:email)
+                %th= translate_helper_translate(:id)
+                %th= translate_helper_translate(:name)
+                %th.email= translate_helper_translate(:email)
                 %th
               %tbody
                 -# initial load from user record
@@ -89,20 +89,20 @@
                       .col-sm-12
                         .pull-right
                           %button.btn.action-button#search
-                            = t(:apply)
+                            = translate_helper_translate(:apply)
                           %button.btn.action-button{data: {dismiss: 'modal'}}
-                            = t(:cancel)
+                            = translate_helper_translate(:cancel)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
                       .panel-heading
                         %h2.panel-title
-                          = t(:find_agent)
+                          = translate_helper_translate(:find_agent)
                           = add_tooltip("find_agent_help")
                       .panel-body
                         .row
                           .col-sm-12
-                            = label_tag :email, t(:email)
+                            = label_tag :email, translate_helper_translate(:email)
                             = text_field_tag :email,nil
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @agency}
@@ -132,7 +132,7 @@
         "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
     } );
     $("#add_agent_btn").on("click", function(e) {
-      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
     });
 
     var addAgentToAdminList = function(agentId, agentName) {
@@ -156,7 +156,7 @@
     };
     updateAgentIds();
     $("#search").on("click", function(e) {
-      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
       $.ajax({
         url: "find_agent_by_email",
         data: {email: $("#email").val()},
@@ -171,7 +171,7 @@
             dataRow.push('<button class="btn btn-sm btn-danger delete-button"><i class="fa fa-times"></i></button>');
             $( "#agents_table" ).DataTable().row(":contains('" + data["row"][2] +"')").remove().draw(false);
             $( "#agents_table" ).DataTable().row.add(dataRow).draw();
-            addAgentToAdminList(dataRow[0], dataRow[1]);
+            addAgentToAdminListranslate_helper_translate(dataRow[0], dataRow[1]);
             updateAgentIds();
           } else {
             $("div.modal-flash").html(data["msg"]).addClass("alert alert-success fade-in");
@@ -189,17 +189,17 @@
         }
     } );
     $('#agents_table').on('click', '.delete-button', function (e) {
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
         var selectedRows = $('#agents_table').DataTable().row('.selected');
         if(selectedRows.length > 0) {
-          removeAgentFromAdminList(selectedRows.data()[0]);
+          removeAgentFromAdminListranslate_helper_translate(selectedRows.data()[0]);
           selectedRows.remove().draw( false );
           updateAgentIds();
         }
     } );
     $('#email').on('keypress', function(e){
       if(e.keyCode == 13) {
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
         $('#search').click();
       }
     });

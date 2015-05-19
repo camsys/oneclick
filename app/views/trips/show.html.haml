@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:plan_a_trip)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:plan_a_trip)}"
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row
@@ -9,12 +9,12 @@
           %button#open_survey.btn.action-button{"data-toggle" => "modal", "data-target" => "#satisfaction_survey"}
             %i.fa.fa-thumbs-up
             %i.fa.fa-thumbs-down.fa-flip-horizontal
-            = t(:feedback)
+            = translate_helper_translate(:feedback)
       - else
         = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
-          = t(:feedback)
+          = translate_helper_translate(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
-        =t(:next)
+        =translate_helper_translate(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
@@ -29,12 +29,12 @@
         %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
         .mobile-checkbox__checkmark
         %span{id:'legendCheckbox-label'}
-        = t(:legends)
+        = translate_helper_translate(:legends)
       %label.mobile-checkbox{for: 'filterCheckbox'}
         %input.mobile-input-checkbox{type:'checkbox',id:'filterCheckbox',"aria-labelledby"=>"filterCheckbox-label", "aria-describedby"=>"filterCheckbox-description"}
         .mobile-checkbox__checkmark
         %span{id:'filterCheckbox-label'}
-        = t(:filters)
+        = translate_helper_translate(:filters)
 
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
@@ -44,9 +44,9 @@
   .col-xs-12#action_footer{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
       = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
-        = t(:feedback)
+        = translate_helper_translate(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
-        =t(:next)
+        =translate_helper_translate(:next)
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
@@ -58,7 +58,7 @@
         .modal-dialog
           .modal-content
             .modal-header
-              = t(:feedback)
+              = translate_helper_translate(:feedback)
             .modal-body
               = render "satisfaction_surveys/form"
 
@@ -87,25 +87,25 @@
       //update date names in localized texts for moment js lib
       var localeLang = '#{I18n.locale}';
       if(localeLang.toLowerCase() != 'en' && localeLang.toLowerCase() != 'tags') { //override moment lang if not english
-        var weekdays = #{I18n.t('date.day_names')};
+        var weekdays = #{I18n.translate_helper_translate('date.day_names')};
         if(weekdays instanceof Array && weekdays.length > 0) {
           moment.lang(localeLang, {
             weekdays : weekdays
             });
         }
-        var weekdaysShort = #{I18n.t('date.abbr_day_names')};
+        var weekdaysShort = #{I18n.translate_helper_translate('date.abbr_day_names')};
         if(weekdaysShort instanceof Array && weekdaysShort.length > 0) {
           moment.lang(localeLang, {
             weekdaysShort : weekdaysShort
             });
         }
-        var months = #{I18n.t('date.month_names')};
+        var months = #{I18n.translate_helper_translate('date.month_names')};
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months
             });
         }
-        var monthsShort = #{I18n.t('date.abbr_month_names')};
+        var monthsShort = #{I18n.translate_helper_translate('date.abbr_month_names')};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
             monthsShort : monthsShort
@@ -115,81 +115,81 @@
 
       //include all possible localized words to be used in review.js
       var localeDictFinder = {
-        failed_to_update_profile: '#{t(:failed_to_update_profile)}',
-        select_a_plan_each_trip_part: '#{t(:select_a_plan_each_trip_part)}',
-        update: '#{t(:update)}',
-        cancel: '#{t(:cancel)}',
-        select: '#{t(:select)}',
-        sort_by: '#{t(:sort_by)}',
-        travel_time: '#{t(:travel_time)}',
-        travel_time_sorter: '#{t(:travel_time_sorter)}',
-        trip_time: '#{t(:trip_time_filter)}',
-        trip_time_help: '#{t(:trip_time_help)}',
-        wait_time: '#{t(:wait_time_filter)}',
-        wait_time_sorter: '#{t(:wait_time_sorter)}',
-        wait_time_help: '#{t(:wait_time_help)}',
-        arrival_time: '#{t(:arrival_time)}',
-        arrival_time_sorter: '#{t(:arrival_time_sorter)}',
-        departure_time: '#{t(:departure_time)}',
-        departure_time_sorter: '#{t(:departure_time_sorter)}',
-        depart_at: '#{t(:depart_at)}',
-        arrive_in: '#{t(:arrive_in)}',
-        departing_at: '#{t(:departing_at)}',
-        arriving_by: '#{t(:arriving_by)}',
-        fare: '#{t(:fare)}',
-        fare_filter: '#{t(:fare_filter)}',
-        fare_sorter: '#{t(:fare_sorter)}',
-        fare_help: '#{t(:fare_help)}',
-        number_of_transfers: '#{t(:number_of_transfers_filter)}',
-        number_of_transfers_help: '#{t(:number_of_transfers_help)}',
-        modes: '#{t(:modes_filter)}',
-        modes_help: '#{t(:modes_help)}',
-        number_of_paratransit_count: '#{t(:number_of_paratransit_count_filter)}',
-        number_of_paratransit_count_help: '#{t(:number_of_paratransit_count_help)}',
-        walk: '#{t(:mode_walk_name)}',
-        rideshare: '#{t(:mode_rideshare_name)}',
-        paratransit: '#{t(:mode_paratransit_name)}',
-        taxi: '#{t(:mode_taxi_name)}',
-        transit: '#{t(:mode_transit_name)}',
-        bus: '#{t(:mode_bus_name)}',
-        ferry: '#{t(:mode_ferry_name)}',
-        cable_car: '#{t(:mode_cable_car_name)}',
-        funicular: '#{t(:mode_funicular_name)}',
-        gondola: '#{t(:mode_gondola_name)}',
-        bikeshare: '#{t(:mode_bikeshare_name)}',
-        subway: '#{t(:mode_subway_name)}',
-        tram: '#{t(:mode_tram_name)}',
-        rail: '#{t(:mode_rail_name)}',
-        bicycle: '#{t(:mode_bicycle_name)}',
-        drive: '#{t(:mode_car_name)}',
-        car: '#{t(:mode_car_name)}',
-        wait: '#{t(:wait)}',
-        transfer: '#{t(:transfer)}',
-        trip_restrictions: '#{t(:trip_restrictions)}',
-        minutes: '#{t(:minutes)}',
-        minute_abbr: '#{t(:minute_abbr)}',
-        unknown: '#{t(:unknown)}',
-        no_itineraries_found: '#{t(:no_itineraries_found)}',
-        something_went_wrong: '#{t(:something_went_wrong)}',
-        press_space_or_dblclick_for_details: '#{t(:press_space_or_dblclick_for_details)}',
-        press_space_for_details: '#{t(:press_space_for_details)}',
-        four_digit_year: '#{t(:four_digit_year)}',
-        miles: '#{t(:miles)}',
-        legend: '#{t(:legend)}',
-        legend_help: '#{t(:legend_help)}',
-        walk_dist: '#{t(:walk_distance_filter)}',
-        walk_dist_sorter: '#{t(:walk_distance_sorter)}',
-        walk_dist_help: '#{t(:walk_distance_help)}',
-        trip_outbound_help: '#{t(:trip_outbound_help)}',
-        trip_return_help: '#{t(:trip_return_help)}',
-        outbound: '#{t(:outbound)}',
-        return: '#{t(:return)}',
-        to: '#{t(:to)}',
-        from: '#{t(:from)}',
-        accommodations: '#{t(:accommodations_filter)}',
-        accommodations_help: '#{t(:accommodations_help)}',
-        did_not_take_feedback_prompt: "#{t(:did_not_take_feedback_prompt)}",
-        stay_on_page: '#{t(:stay_on_page)}'
+        failed_to_update_profile: '#{translate_helper_translate(:failed_to_update_profile)}',
+        select_a_plan_each_trip_part: '#{translate_helper_translate(:select_a_plan_each_trip_part)}',
+        update: '#{translate_helper_translate(:update)}',
+        cancel: '#{translate_helper_translate(:cancel)}',
+        select: '#{translate_helper_translate(:select)}',
+        sort_by: '#{translate_helper_translate(:sort_by)}',
+        travel_time: '#{translate_helper_translate(:travel_time)}',
+        travel_time_sorter: '#{translate_helper_translate(:travel_time_sorter)}',
+        trip_time: '#{translate_helper_translate(:trip_time_filter)}',
+        trip_time_help: '#{translate_helper_translate(:trip_time_help)}',
+        wait_time: '#{translate_helper_translate(:wait_time_filter)}',
+        wait_time_sorter: '#{translate_helper_translate(:wait_time_sorter)}',
+        wait_time_help: '#{translate_helper_translate(:wait_time_help)}',
+        arrival_time: '#{translate_helper_translate(:arrival_time)}',
+        arrival_time_sorter: '#{translate_helper_translate(:arrival_time_sorter)}',
+        departure_time: '#{translate_helper_translate(:departure_time)}',
+        departure_time_sorter: '#{translate_helper_translate(:departure_time_sorter)}',
+        depart_at: '#{translate_helper_translate(:depart_at)}',
+        arrive_in: '#{translate_helper_translate(:arrive_in)}',
+        departing_at: '#{translate_helper_translate(:departing_at)}',
+        arriving_by: '#{translate_helper_translate(:arriving_by)}',
+        fare: '#{translate_helper_translate(:fare)}',
+        fare_filter: '#{translate_helper_translate(:fare_filter)}',
+        fare_sorter: '#{translate_helper_translate(:fare_sorter)}',
+        fare_help: '#{translate_helper_translate(:fare_help)}',
+        number_of_transfers: '#{translate_helper_translate(:number_of_transfers_filter)}',
+        number_of_transfers_help: '#{translate_helper_translate(:number_of_transfers_help)}',
+        modes: '#{translate_helper_translate(:modes_filter)}',
+        modes_help: '#{translate_helper_translate(:modes_help)}',
+        number_of_paratransit_count: '#{translate_helper_translate(:number_of_paratransit_count_filter)}',
+        number_of_paratransit_count_help: '#{translate_helper_translate(:number_of_paratransit_count_help)}',
+        walk: '#{translate_helper_translate(:mode_walk_name)}',
+        rideshare: '#{translate_helper_translate(:mode_rideshare_name)}',
+        paratransit: '#{translate_helper_translate(:mode_paratransit_name)}',
+        taxi: '#{translate_helper_translate(:mode_taxi_name)}',
+        transit: '#{translate_helper_translate(:mode_transit_name)}',
+        bus: '#{translate_helper_translate(:mode_bus_name)}',
+        ferry: '#{translate_helper_translate(:mode_ferry_name)}',
+        cable_car: '#{translate_helper_translate(:mode_cable_car_name)}',
+        funicular: '#{translate_helper_translate(:mode_funicular_name)}',
+        gondola: '#{translate_helper_translate(:mode_gondola_name)}',
+        bikeshare: '#{translate_helper_translate(:mode_bikeshare_name)}',
+        subway: '#{translate_helper_translate(:mode_subway_name)}',
+        tram: '#{translate_helper_translate(:mode_tram_name)}',
+        rail: '#{translate_helper_translate(:mode_rail_name)}',
+        bicycle: '#{translate_helper_translate(:mode_bicycle_name)}',
+        drive: '#{translate_helper_translate(:mode_car_name)}',
+        car: '#{translate_helper_translate(:mode_car_name)}',
+        wait: '#{translate_helper_translate(:wait)}',
+        transfer: '#{translate_helper_translate(:transfer)}',
+        trip_restrictions: '#{translate_helper_translate(:trip_restrictions)}',
+        minutes: '#{translate_helper_translate(:minutes)}',
+        minute_abbr: '#{translate_helper_translate(:minute_abbr)}',
+        unknown: '#{translate_helper_translate(:unknown)}',
+        no_itineraries_found: '#{translate_helper_translate(:no_itineraries_found)}',
+        something_went_wrong: '#{translate_helper_translate(:something_went_wrong)}',
+        press_space_or_dblclick_for_details: '#{translate_helper_translate(:press_space_or_dblclick_for_details)}',
+        press_space_for_details: '#{translate_helper_translate(:press_space_for_details)}',
+        four_digit_year: '#{translate_helper_translate(:four_digit_year)}',
+        miles: '#{translate_helper_translate(:miles)}',
+        legend: '#{translate_helper_translate(:legend)}',
+        legend_help: '#{translate_helper_translate(:legend_help)}',
+        walk_dist: '#{translate_helper_translate(:walk_distance_filter)}',
+        walk_dist_sorter: '#{translate_helper_translate(:walk_distance_sorter)}',
+        walk_dist_help: '#{translate_helper_translate(:walk_distance_help)}',
+        trip_outbound_help: '#{translate_helper_translate(:trip_outbound_help)}',
+        trip_return_help: '#{translate_helper_translate(:trip_return_help)}',
+        outbound: '#{translate_helper_translate(:outbound)}',
+        return: '#{translate_helper_translate(:return)}',
+        to: '#{translate_helper_translate(:to)}',
+        from: '#{translate_helper_translate(:from)}',
+        accommodations: '#{translate_helper_translate(:accommodations_filter)}',
+        accommodations_help: '#{translate_helper_translate(:accommodations_help)}',
+        did_not_take_feedback_prompt: "#{translate_helper_translate(:did_not_take_feedback_prompt)}",
+        stay_on_page: '#{translate_helper_translate(:stay_on_page)}'
       };
 
       //show or hide legends
@@ -200,7 +200,7 @@
         } else {
           $('#legendDiv').addClass('hidden-xs-sm');
         }
-        e.preventDefault();
+        e.preventDefaultranslate_helper_translate();
       });
 
       //show or hide filters
@@ -211,7 +211,7 @@
         } else {
           $('#filterDiv').addClass('hidden-xs-sm');
         }
-        e.preventDefault();
+        e.preventDefaultranslate_helper_translate();
       });
 
       var tripResponse = #{@tripResponse.to_json};
@@ -242,7 +242,7 @@
         var $chartContainer = $('.single-plan-review[data-plan-id=' + itinId + '] .single-plan-chart-container');
         $chartContainer.focus();
         $('html, body').animate({
-            scrollTop: ($chartContainer.offset().top - 100)
+            scrollTop: ($chartContainer.offsetranslate_helper_translate().top - 100)
         }, 500);
       });
 
@@ -252,13 +252,13 @@
         var tripParts = $('#tripContainer').find('.single-trip-part');
         var selectedPlans = tripParts.find('.single-plan-selected');
         if(tripParts.length != selectedPlans.length) {
-          show_alert(localeDictFinder['select_a_plan_each_trip_part']);
+          show_alertranslate_helper_translate(localeDictFinder['select_a_plan_each_trip_part']);
           return;
         }
 
         var selectedPlanIds = [];
         selectedPlans.each(function() {
-          var tmpPlanId = parseInt($(this).attr('data-plan-id'));
+          var tmpPlanId = parseIntranslate_helper_translate($(this).attr('data-plan-id'));
           if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
             selectedPlanIds.push(tmpPlanId);
           }
@@ -281,8 +281,8 @@
           success: function() {
             $('#satisfaction_survey .modal-header').remove();
             $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
-            $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{t(:success)}</strong>");
-            setTimeout(function(){
+            $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper_translate(:success)}</strong>");
+            setTimeoutranslate_helper_translate(function(){
               $('#satisfaction_survey').modal('hide');
             }, 1000);
           },

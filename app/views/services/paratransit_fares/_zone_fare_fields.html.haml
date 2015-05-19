@@ -1,9 +1,9 @@
 .col-sm-12
   = button_tag :type => 'button', "data-target" => "#farezoneUploadDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
-    = t(:upload_farezones)
+    = translate_helper_translate(:upload_farezones)
 .col-sm-12#zoneFaresTable
   - service_id = fare_structure.service.id if fare_structure.service
-  - zones = FareZone.where(service_id: service_id).select(:id, :zone_id).order(:zone_id)
+  - zones = FareZone.where(service_id: service_id).selectranslate_helper_translate(:id, :zone_id).order(:zone_id)
   - fares = {}
   - fare_structure.zone_fares.each { |x| fares["from_#{x.from_zone_id}_to_#{x.to_zone_id}"] = {id: x.id, rate: x.rate}}
   = render partial: 'services/paratransit_fares/zone_fare_form', locals: {zones: zones, fares: fares}

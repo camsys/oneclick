@@ -19,5 +19,5 @@
     .nav-collapse.collapse.pull-right
       %ul.nav.pull-right
         - if user_signed_in?
-          %li= link_to t(:logout), destroy_kiosk_user_session_path
+          %li= link_to translate_helper_translate(:logout), destroy_kiosk_user_session_path
         %li.call-for-assistance= link_to 'Call for assistance', 'tel://+18447247433'

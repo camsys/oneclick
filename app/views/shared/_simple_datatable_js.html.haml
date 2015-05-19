@@ -12,7 +12,7 @@
             "sDom": "#{%q[<'row'<'col-sm-6' f>>] if filter}<'row'<'col-sm-6'l><'extras col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
     } );
     function exportCsv(mode) {
-     var a = document.createElement('a');
+     var a = document.createElementranslate_helper_translate('a');
      a.href = "#{@url_for_csv}"
      a.target = '_blank';
      document.body.appendChild(a);
@@ -20,12 +20,12 @@
     };
 
     $('#export_visible').click(function(e) {
-       e.preventDefault();
+       e.preventDefaultranslate_helper_translate();
        exportCsv("filtered");
     } );
 
     $('#export_all').click(function(e) {
-       e.preventDefault();
+       e.preventDefaultranslate_helper_translate();
        exportCsv("all");
     } );
 

@@ -1,7 +1,7 @@
 #eligibility_form
   .row-fluid
     .span12
-      = simple_form_for @user_characteristics_proxy, :url => path, :method => 'put', :remote => not(inline)  do |f|
+      = simple_form_for @user_characteristics_proxy, :url => path, :method => 'put', :remote => notranslate_helper_translate(inline)  do |f|
         = f.error_notification message: print_messages(f)
         .eligibility-question{ :data => {:index => 0}}
           = render partial: 'kiosk/characteristics/eligibility_alert', locals: {inline: inline}
@@ -21,7 +21,7 @@
                 - Characteristic.personal_factors.where(:datatype => 'bool').each do |characteristic|
                   %tr
                     %td
-                      = f.label t(characteristic.note)
+                      = f.label translate_helper_translate(characteristic.note)
                     %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
@@ -98,13 +98,13 @@
           = button_tag :type => 'submit', :class => "btn btn-primary hidden" do
             %i.fa.fa-arrow-right
             Next step
-            / = t(:save)
+            / = translate_helper_translate(:save)
         - else
           = button_tag type: :submit, class: 'btn btn-primary controls hidden' do
             %i.fa.fa-check
-            = t(:update)
+            = translate_helper_translate(:update)
         = link_to :back, :class => "cancel_link hidden" do
           %i.fa.fa-reply
-          = t(:cancel)
+          = translate_helper_translate(:cancel)
 
   / SO...somehow we gotta get that to look like this.

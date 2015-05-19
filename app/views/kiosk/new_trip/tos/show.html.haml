@@ -5,15 +5,15 @@
 #to_input{ :data => {:index => 2}}
   .fadeout
 
-  = f.input :to_place, :class => "inline", :label => t(:to) do
-    = f.text_field :to_place, :placeholder => t(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
+  = f.input :to_place, :class => "inline", :label => translate_helper_translate(:to) do
+    = f.text_field :to_place, :placeholder => translate_helper_translate(:enter_to), :id => "trip_proxy_to_place", :class => "no-bottom-margin ajax-typeahead input-large address", :autocomplete => "off", :data => {:link => search_kiosk_user_trips_path, :provide => "typeahead"}
     = f.input :to_is_home, id: "to_is_home", as: :boolean, :label => false, :inline_label => "This is my home"
     = image_tag "ajax-loader.gif", :id => "to_geocoding_indicator", :style => "display:none;", :class => "loading-indicator"
 
   #to_place_candidates.js-typeahead-visibility-root.hidden
     .row-fluid
       .span12
-        %h6=# t(:found_x_matches, count: results.count )
+        %h6=# translate_helper_translate(:found_x_matches, count: results.count )
 
     .row-fluid
       .search-dropdown-container
@@ -38,7 +38,7 @@
 .form-actions.hidden
   = button_tag type: 'submit', class: "btn btn-primary" do
     %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-    = t(:plan_it)
+    = translate_helper_translate(:plan_it)
   = link_to :back, class: "cancel_link" do
     %i.icon.icon-reply
-    = t(:cancel)
+    = translate_helper_translate(:cancel)

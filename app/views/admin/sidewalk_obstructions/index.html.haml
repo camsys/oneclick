@@ -1,34 +1,34 @@
-- content_for :title, "#{t(:site_title)} - #{t(:sidewalk_obstructions)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:sidewalk_obstructions)}"
 .col-sm-12
   .row.info-header
     .col-sm-12
       .btns.pull-right
-        = button_tag t(:apply), id: 'submitChanges', class: "btn action-button"
-        = link_to t(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
-      %h1= t(:sidewalk_obstructions)
-    #deleteSidewalkObstructionConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_sidewalk_obstructions), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+        = button_tag translate_helper_translate(:apply), id: 'submitChanges', class: "btn action-button"
+        = link_to translate_helper_translate(:cancel), admin_sidewalk_obstructions_path, class: "btn action-button"
+      %h1= translate_helper_translate(:sidewalk_obstructions)
+    #deleteSidewalkObstructionConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:remove_sidewalk_obstructions), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
       .modal-dialog
         .modal-content
           .modal-header
             = button_tag class: 'btn action-button pull-right', action: 'cancel_delete', data: {dismiss: 'modal'} do
-              = t(:cancel)
+              = translate_helper_translate(:cancel)
             = button_tag class: 'btn action-button pull-right', action: 'confirm_delete', data: {dismiss: 'modal'} do
-              = t(:ok)
+              = translate_helper_translate(:ok)
             .modal-title{:style => "text-align:left;"}
               %b
-                = t(:site_title)
+                = translate_helper_translate(:site_title)
           .modal-body{:style => "text-align:left;"}
-            = t(:confirm_remove_message) + t(:sidewalk_obstructions).downcase + " ?"
+            = translate_helper_translate(:confirm_remove_message) + translate_helper_translate(:sidewalk_obstructions).downcase + " ?"
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = t(:sidewalk_obstructions)
+        = translate_helper_translate(:sidewalk_obstructions)
         = add_tooltip("sidewalk_obstructions_help")
     .panel-body
       = search_form_for @q, id: 'sidewalk_obstructions_search_form', :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
         .form-group
           = f.search_field "id_or_user_name_or_comment_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
-          = f.submit t(:search), class: 'btn action-button'
+          = f.submit translate_helper_translate(:search), class: 'btn action-button'
       %p
         %select.input-sm#per_page_select
           - [10, 25, 50, 100].each do |per_page|
@@ -50,14 +50,14 @@
         %table.table.table-condensed.table-striped.table-bordered.table-hover#sidewalk_feedbacks_table
           %thead
             %tr
-              %th= sort_link @q, :id, t(:id)
-              %th= sort_link @q, :user_name, t(:username)
-              %th= sort_link @q, :comment, t(:comments)
-              %th= sort_link @q, :removed_at, t(:remove_by)
-              %th= sort_link @q, :is_approved, t(:approve)
-              %th= sort_link @q, :is_rejected, t(:reject)
-              %th= sort_link @q, :is_deleted, t(:delete)
-              %th= sort_link @q, :created_at, t(:created)
+              %th= sort_link @q, :id, translate_helper_translate(:id)
+              %th= sort_link @q, :user_name, translate_helper_translate(:username)
+              %th= sort_link @q, :comment, translate_helper_translate(:comments)
+              %th= sort_link @q, :removed_at, translate_helper_translate(:remove_by)
+              %th= sort_link @q, :is_approved, translate_helper_translate(:approve)
+              %th= sort_link @q, :is_rejected, translate_helper_translate(:reject)
+              %th= sort_link @q, :is_deleted, translate_helper_translate(:delete)
+              %th= sort_link @q, :created_at, translate_helper_translate(:created)
               %th
           %tbody
             - @sidewalk_obstructions.each do |feedback|
@@ -69,20 +69,20 @@
                   - unless feedback.removed_at.nil?
                     =format_date_time(feedback.removed_at)
                 %td
-                  = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", t(:approve), class: "sr-only"
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::APPROVED}", translate_helper_translate(:approve), class: "sr-only"
                   = radio_button_tag "#{feedback.id}", SidewalkObstruction::APPROVED, feedback.approved?
 
                 %td
-                  = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", t(:reject), class: "sr-only"
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::REJECTED}", translate_helper_translate(:reject), class: "sr-only"
                   = radio_button_tag "#{feedback.id}", SidewalkObstruction::REJECTED, feedback.rejected?
                 %td
-                  = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", t(:delete), class: "sr-only"
+                  = label_tag "#{feedback.id}_#{SidewalkObstruction::DELETED}", translate_helper_translate(:delete), class: "sr-only"
                   = radio_button_tag "#{feedback.id}", SidewalkObstruction::DELETED
                 %td.nowrap= format_date_time(feedback.created_at)
                 %td.center
                   - if feedback.lat and feedback.lon
                     = link_to Rails.application.config.street_view_url + '?lat=' + feedback.lat.to_s + '&lng=' + feedback.lon.to_s, class: 'btn action-button', target: '_blank', role: 'button' do
-                      = t(:street_view)
+                      = translate_helper_translate(:street_view)
         .row
           .col-sm-6
             .pull-left
@@ -110,11 +110,11 @@ $(document).ready( function() {
   };
 
   $('#submitChanges').on('click', function() {
-    $('#sidewalk_obstructions_form').submit();
+    $('#sidewalk_obstructions_form').submitranslate_helper_translate();
   });
 
-  $("#sidewalk_obstructions_form").submit(function( event ) {
-    event.preventDefault();
+  $("#sidewalk_obstructions_form").submitranslate_helper_translate(function( event ) {
+    event.preventDefaultranslate_helper_translate();
     if($("input:checked[value=deleted]").length > 0) {
       $('#deleteSidewalkObstructionConfirmDialog').modal('show');
     } else {

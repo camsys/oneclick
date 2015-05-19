@@ -2,18 +2,18 @@
   .panel.panel-default.well0
     .panel-heading
       %span.panel-title
-        = t(:service)
-        = t(:information)
+        = translate_helper_translate(:service)
+        = translate_helper_translate(:information)
         = add_tooltip("service_help")
     .panel-body
       -unless service.active
         %p.warning
-          = t(:service_is_inactive)
+          = translate_helper_translate(:service_is_inactive)
       - if service.logo_url
         %img{src: service.logo_url.to_s}
       - if service.display_color
         %p 
-          = t(:display_color) + ": " + service.display_color
+          = translate_helper_translate(:display_color) + ": " + service.display_color
       %p
         =service.phone
       %p
@@ -23,7 +23,7 @@
           =link_to service.url, service.url
       -if service.service_type and service.service_type.name
         %p
-          =t(:service_type).to_s + ": " + t(service.service_type.name.downcase.to_sym)
+          =translate_helper_translate(:service_type).to_s + ": " + translate_helper_translate(service.service_type.name.downcase.to_sym)
       -if service.external_id
         %p
-          =t(:service_id).to_s + ": " + service.external_id.to_s
+          =translate_helper_translate(:service_id).to_s + ": " + service.external_id.to_s

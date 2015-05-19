@@ -1,9 +1,9 @@
 = simple_form_for(user, :url => registration_path(user), :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }) do |f|
   = f.error_notification message: print_messages(f)
   = display_base_errors user
-  = f.input :first_name, label: t(:first_name), :autofocus => true, :required => true
-  = f.input :last_name, label: t(:last_name), :required => true
-  = f.input :email, label: t(:email), :required => true
-  = f.input :preferred_locale, label: t(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
-  = f.input :password, label: t(:password), :autocomplete => "off", :required => false
-  = f.input :password_confirmation, label: t(:password_confirmation), :hint => t(:leave_password_blank), :required => false
+  = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true, :required => true
+  = f.input :last_name, label: translate_helper_translate(:last_name), :required => true
+  = f.input :email, label: translate_helper_translate(:email), :required => true
+  = f.input :preferred_locale, label: translate_helper_translate(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
+  = f.input :password, label: translate_helper_translate(:password), :autocomplete => "off", :required => false
+  = f.input :password_confirmation, label: translate_helper_translate(:password_confirmation), :hint => translate_helper_translate(:leave_password_blank), :required => false

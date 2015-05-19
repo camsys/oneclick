@@ -1,4 +1,4 @@
-= t(:provider_trip_email_header).to_s
+= translate_helper_translate(:provider_trip_email_header).to_s
 %br
 %h3="Trip request from " + @traveler.name
 
@@ -87,4 +87,4 @@
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
 %hr{style: "height:12px; background:#848484;"}
-= t(:provider_trip_email_footer).to_s
+= translate_helper_translate(:provider_trip_email_footer).to_s

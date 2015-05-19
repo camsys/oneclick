@@ -1,15 +1,15 @@
-- content_for :title, "#{t(:site_title)} - #{t(:log_in)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:log_in)}"
 = simple_form_for resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
-      %h1= t(:log_in)
+      %h1= translate_helper_translate(:log_in)
     .col-sm-6.btns
       .pull-right
         = button_tag type: :submit, class: 'btn action-button' do
-          = t(:ok)   
+          = translate_helper_translate(:ok)   
         - unless params[:redirect_to] #TODO: URI valid check?             
           - if devise_mapping.registerable? && controller_name != 'registrations'
-            = link_to( :back, class: "btn action-button") { t(:cancel) }
+            = link_to( :back, class: "btn action-button") { translate_helper_translate(:cancel) }
 
   .row
     .col-sm-6
@@ -19,16 +19,16 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h1.panel-title= t(:user_information)
+          %h1.panel-title= translate_helper_translate(:user_information)
         .panel-body
           = f.hidden_field :redirect_to, value: params[:redirect_to]
           - unless Rails.env.development? and ENV['DROPDOWN_USERS']
-            = f.input :email, :autofocus => true, :required => true, :label => t(:email)
-            = f.input :password, :required => true, :label => t(:password)
+            = f.input :email, :autofocus => true, :required => true, :label => translate_helper_translate(:email)
+            = f.input :password, :required => true, :label => translate_helper_translate(:password)
           - else
-            = f.input :email, :autofocus => true, :required => true, :label => t(:email), collection: User.any_role.order(:email).pluck(:email)
-            = f.input :password, :required => true, :label => t(:password), input_html: {value: 'welcome1'}
-          = f.input :remember_me, :label => t(:remember_me), :as => :boolean if devise_mapping.rememberable?
+            = f.input :email, :autofocus => true, :required => true, :label => translate_helper_translate(:email), collection: User.any_role.order(:email).pluck(:email)
+            = f.input :password, :required => true, :label => translate_helper_translate(:password), input_html: {value: 'welcome1'}
+          = f.input :remember_me, :label => translate_helper_translate(:remember_me), :as => :boolean if devise_mapping.rememberable?
           - unless params[:redirect_to] #TODO: URI valid check?             
             = render "devise/shared/links"
 

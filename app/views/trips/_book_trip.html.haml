@@ -8,57 +8,57 @@
         -if is_either_part_bookable
           - if not is_trip_booked
             %button.btn.action-button#book_button_btn
-              =t(:book)
+              =translate_helper_translate(:book)
         -elsif is_either_booking_code_available
           = button_tag id: 'bookingSubmitButton', type: :submit, class: 'btn action-button' do
-            = t(:submit)
+            = translate_helper_translate(:submit)
           :javascript
             $('#bookingSubmitButton').on('click', function(event) {
-              $('#bookingModal form').submit();
+              $('#bookingModal form').submitranslate_helper_translate();
             });
         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
-          = t(:close)
+          = translate_helper_translate(:close)
       .modal-title{:style => "text-align:left;"}
         %b
           -if @trip.is_booked?
-            = t(:trip_booked)
+            = translate_helper_translate(:trip_booked)
           -else
-            = t(:book_your_trip)
+            = translate_helper_translate(:book_your_trip)
     .modal-body#bookingContent
       -if is_either_part_bookable
         .panel.panel-default
           .panel-header
             %span#headerMessage
               -if @trip.is_booked?
-                =t(:trip_booked_2)
+                =translate_helper_translate(:trip_booked_2)
               -elsif @trip.outbound_part.is_bookable? and (@trip.return_part and @trip.return_part.is_bookable?)
-                =t(:trip_is_eligible)
+                =translate_helper_translate(:trip_is_eligible)
               -elsif @trip.outbound_part.is_bookable?
-                =t(:outbound_is_eligible)
+                =translate_helper_translate(:outbound_is_eligible)
               -else
-                =t(:return_is_eligible)
+                =translate_helper_translate(:return_is_eligible)
 
           .panel-body
             -if @trip.outbound_part.is_bookable?
               .row
                 %label.col-sm-4.text-right
-                  =t(:from) + ":"
+                  =translate_helper_translate(:from) + ":"
                 .col-sm-8.text-left
                   =@trip.outbound_part.from_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  =t(:to) + ":"
+                  =translate_helper_translate(:to) + ":"
                 .col-sm-8.text-left
                   =@trip.outbound_part.to_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+                  = @trip.outbound_part.is_depart ? translate_helper_translate(:departing_at) + ":" : translate_helper_translate(:arriving_by) + ":"
                 .col-sm-8.text-left
                   =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
               -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable?
                 .row
                   %label.col-sm-4.text-right
-                    = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
+                    = @trip.return_part.is_depart ? translate_helper_translate(:cap_returning_at) + ":" : translate_helper_translate(:returning_by) + ":"
                   .col-sm-8.text-left
                     =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
                 .row
@@ -69,17 +69,17 @@
             -else
               .row
                 %label.col-sm-4.text-right
-                  =t(:from)
+                  =translate_helper_translate(:from)
                 .col-sm-8.text-left
                   =@trip.return_part.from_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  =t(:to)
+                  =translate_helper_translate(:to)
                 .col-sm-8.text-left
                   =@trip.return_part.to_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  = @trip.return_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+                  = @trip.return_part.is_depart ? translate_helper_translate(:departing_at) + ":" : translate_helper_translate(:arriving_by) + ":"
                 .col-sm-8.text-left
                   =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
               .row
@@ -111,7 +111,7 @@
                     -phone_number = @trip.outbound_part.selected_itinerary.service.phone.to_s
                   = "Your trip has been booked.  You will be contacted by Shared Ride to confirm this trip."
                 .confirmation
-                  =t(:more_info_call) + " " + "Shared Ride at " + phone_number + "."
+                  =translate_helper_translate(:more_info_call) + " " + "Shared Ride at " + phone_number + "."
             -else
               .row#results
                 .confirmation#results1
@@ -128,19 +128,19 @@
             = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: selected_itinerary.service.id}
             = f.input :itinerary_id, :as => :hidden, :input_html => {value: selected_itinerary.id}
-            = f.input :external_user_id,label: "Shared Ride " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-            = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+            = f.input :external_user_id,label: "Shared Ride " + translate_helper_translate(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+            = f.input :dob, label: translate_helper_translate(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: translate_helper_translate(:dob_notice)
 
         -if selected_itinerary.service.phone
-          =t(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + t(:for_assistance) + "."
+          =translate_helper_translate(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + translate_helper_translate(:for_assistance) + "."
         -else
-          =t(:if_no_client_id) + " " + selected_itinerary.service.name + "."
+          =translate_helper_translate(:if_no_client_id) + " " + selected_itinerary.service.name + "."
 :javascript
   $('#book_button_btn').unbind('click');
   $('#book_button_btn').on('click', function(event) {
     event.stopPropagation();
-    var text = "#{t(:please_wait)}" + "..."
-    $('#book_button_btn').text(text);
+    var text = "#{translate_helper_translate(:please_wait)}" + "..."
+    $('#book_button_btn').textranslate_helper_translate(text);
 
     $('#book_button_btn').addClass('disabled');
     $.ajax({
@@ -208,7 +208,7 @@
         $('#results1').html(confirmation_numbers);
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
+        contact_message = "#{translate_helper_translate(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
 
 
@@ -219,7 +219,7 @@
         var confirmation_message = "Your trip could not be booked at this time."
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
+        contact_message = "#{translate_helper_translate(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
       }
 

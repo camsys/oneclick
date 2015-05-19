@@ -1,11 +1,11 @@
-- content_for :title, "#{t(:site_title)} - #{t(:translations)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:translations)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
       = link_to new_admin_translation_path, :class => "btn action-button" do
         Add Key
       %button.btn.action-button#deleteTranslationsBtn{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslationsModal", disabled: 'disabled'}
-        = t(:delete)
+        = translate_helper_translate(:delete)
 
       .modal.fade.text-center#deleteTranslationsModal{tabindex: "-1", role: "dialog",  aria: {labelledby: "modalLabel", hidden: "true"}}
         .modal-dialog.modal-sm
@@ -15,10 +15,10 @@
                 %span{aria: {hidden: "true"}}
                   %i.fa.fa-close
                 %span.sr-only Close
-              %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
+              %h3.modal-title{id: "modalLabel"}= translate_helper_translate(:confirm_msg)
             .modal-body
               = link_to "#{admin_translations_path}/", :data => {:ids => []}, :method => :delete, :class => "btn action-button", :id => "deleteTranslations" do
-                = t(:delete)
+                = translate_helper_translate(:delete)
             
       
     %h1
@@ -33,10 +33,10 @@
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table
       %thead
         %tr
-          %th= t(:key)
+          %th= translate_helper_translate(:key)
           - @locales.each do |locale|
             %th= locale
-          %th= t(:delete)
+          %th= translate_helper_translate(:delete)
       %tbody
         - @translations_proxies.each do |tp|
           %tr
@@ -48,7 +48,7 @@
                   = link_to t.value.truncate(30), edit_admin_translation_path(t)
                 - else
                   - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
-                  = link_to t(:add), path, class: 'btn action-button'
+                  = link_to translate_helper_translate(:add), path, class: 'btn action-button'
             %td.text-center
               = check_box_tag "translation", tp.translations[0].id
               

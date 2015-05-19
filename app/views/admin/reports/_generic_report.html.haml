@@ -8,7 +8,7 @@
       %thead
         %tr
           %td Date
-          %td= t(:count)
+          %td= translate_helper_translate(:count)
       %tbody
         - @data.each_value do |row|
           %tr
@@ -22,7 +22,7 @@
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.setOnLoadCallback(draw_chart);
 
-  function draw_chart() {
+  function draw_chartranslate_helper_translate() {
   var chart_data = new google.visualization.DataTable();
   chart_data.addColumn('string', 'Asset Type'); 
   chart_data.addColumn('number', 'Count');
@@ -37,13 +37,13 @@
   legend : {position : 'none'},
   vAxis :  {title : 'Number'}
   };
-  chart = new google.visualization.AreaChart(document.getElementById('chart'));
+  chart = new google.visualization.AreaChartranslate_helper_translate(document.getElementById('chart'));
   chart.draw(chart_data, chart_options);
   }
 
   // Handle the resize event and make sure the chart is redrawn for the new size
   window.onresize = function() {
-  draw_chart();
+  draw_chartranslate_helper_translate();
   };
   
     

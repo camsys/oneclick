@@ -2,45 +2,45 @@
   .col-sm-12
     = render partial: 'provider_and_cost_comments', locals: {itinerary: itinerary}
 
-    -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
+    -if itinerary.missing_information and itinerary.missing_information_text.splitranslate_helper_translate(':').count > 0
       %h4
         %i.fa.fa-question-circle
-        =t(:this_service_is_for)
+        =translate_helper_translate(:this_service_is_for)
         %ul
-          -itinerary.missing_information_text.split(':').each do |info|
+          -itinerary.missing_information_text.splitranslate_helper_translate(':').each do |info|
             %li
               -count = 0
-              -info.split(',').each do |i|
+              -info.splitranslate_helper_translate(',').each do |i|
                 - count += 1
-                - if info.split(',').count - 1 == count
+                - if info.splitranslate_helper_translate(',').count - 1 == count
                   -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                    = t(i[0,7], age: i[7..-1]) + ' ' + t(:and) + ' '
+                    = translate_helper_translate(i[0,7], age: i[7..-1]) + ' ' + translate_helper_translate(:and) + ' '
                   -else
-                    = t(i) + ' ' + t(:and) + ' '
-                - elsif info.split(',').count == count
+                    = translate_helper_translate(i) + ' ' + translate_helper_translate(:and) + ' '
+                - elsif info.splitranslate_helper_translate(',').count == count
                   -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                    = t(i[0,7], age: i[7..-1])
+                    = translate_helper_translate(i[0,7], age: i[7..-1])
                   -else
-                    = t(i)
+                    = translate_helper_translate(i)
                 - else
                   -if i[0,7] == "age_max" or i[0,7] == "age_min"
-                    = t(i[0,7], age: i[7..-1]) + ','
+                    = translate_helper_translate(i[0,7], age: i[7..-1]) + ','
                   -else
-                    = t(i) + ','
+                    = translate_helper_translate(i) + ','
 
 
     -if itinerary.too_late
       %h4
         %i.fa.fa-calendar
-        = t(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + t(:trip_insufficient_notice_b)
+        = translate_helper_translate(:trip_insufficient_notice_a) + itinerary.service.human_readable_advanced_notice + translate_helper_translate(:trip_insufficient_notice_b)
     -if itinerary.too_early
       %h4
         %i.fa.fa-calendar
-        = t(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + t(:trip_max_advanced_book_notice_b)
+        = translate_helper_translate(:trip_max_advanced_book_notice_a) + itinerary.service.human_readable_max_allow_advanced_notice + translate_helper_translate(:trip_max_advanced_book_notice_b)
     -if itinerary.date_mismatch or itinerary.time_mismatch
       %h4
         %i.fa.fa-calendar
-        = t(:trip_outside_service_hours)
+        = translate_helper_translate(:trip_outside_service_hours)
 
     .row.hidden
       ="SCORE: " + itinerary.match_score.to_s
@@ -48,7 +48,7 @@
   - itinerary.service.get_contact_info_array.each do |a,b|
     %tr
       %td{:style=>'width: 50%'}
-        = t(a) +":"
+        = translate_helper_translate(a) +":"
       %td
         = sanitize_nil_to_na b
 
@@ -57,26 +57,26 @@
     %table{:style => "width: 100%;"}
       %tr
         %td{:style => "width: 50%;"}
-          = t(:accommodations_provided)
+          = translate_helper_translate(:accommodations_provided)
         %td
           -itinerary.service.accommodations.each do |accom|
-            =t(accom.name)
+            =translate_helper_translate(accom.name)
             %br
 -if Accommodation.count > itinerary.service.accommodations.count
   .well.well-sm.comments
     %table{:style => "width: 100%;"}
       %tr
         %td{:style => "width: 50%;"}
-          = t(:accommodations_not_provided)
+          = translate_helper_translate(:accommodations_not_provided)
         %td
           -(Accommodation.all - itinerary.service.accommodations).each do |accom|
-            =t(accom.name)
+            =translate_helper_translate(accom.name)
             %br
 
 - if @current_ability and can? :read, itinerary.service.ratings.build(user: @traveler)
   %table{:style => "width: 100%;"}
     %tr
       %td{:style => "width: 50%;"}
-        = t(:rating) +":"
+        = translate_helper_translate(:rating) +":"
       %td
         = RateableDecorator.decorate(itinerary.service).rating_in_stars

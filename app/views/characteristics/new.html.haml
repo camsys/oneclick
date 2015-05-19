@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:eligibility_accommodation_questions)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:eligibility_accommodation_questions)}"
 - is_splash_available = whether_show_tranlatation_item?(:options_page_splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
@@ -9,11 +9,11 @@
   %div{class: non_splash_css}
     .pull-right
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-        =t(:next)
+        =translate_helper_translate(:next)
         :javascript
           $(function() {
             $('button[name=planTrip]').click(function() {
-              $('.user-characteristics').submit();
+              $('.user-characteristics').submitranslate_helper_translate();
             });
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -25,14 +25,14 @@
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Eligibility and Accommodation Form'}, :style => 'padding: 0px;'}
       .panel-heading
         %h2.panel-title
-          =t(:eligibility_accommodation_questions)
+          =translate_helper_translate(:eligibility_accommodation_questions)
           = add_tooltip("eligibility_accommodation_questions_help")
       .panel-body
         = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
         / end of options column
     .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
-        =t(:next)
+        =translate_helper_translate(:next)
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :options_footer_comment}
   - if is_splash_available

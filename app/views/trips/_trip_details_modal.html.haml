@@ -3,9 +3,9 @@
     .modal-body{style: "padding: 5px;"}
       .col-sm-12.well{style: "padding: 5px; height: 100%; margin-bottom: 0; overflow-y: scroll;"}
         .col-sm-12#trip_details_header{style: "padding: 5px 0px;"}
-          %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
+          %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=translate_helper_translate(:close)
           %b.modal-title
-            = "#{t(:trip_details)} - " + @itinerary.trip_part.description_without_direction
+            = "#{translate_helper_translate(:trip_details)} - " + @itinerary.trip_part.description_without_direction
             = add_tooltip("trip_details_help")
             :javascript
               createPopover(".modal-title .label-help");
@@ -29,18 +29,18 @@
 
     var makeFullscreen = function(){
       var minMapHeight = 200;
-      var newMainHeight = $(window).outerHeight(true);
-      var mapHeaderHeight = $('#trip_details_header').outerHeight(true)
-                          + $('#trip_summary_header').outerHeight(true);
+      var newMainHeight = $(window).outerHeightranslate_helper_translate(true);
+      var mapHeaderHeight = $('#trip_details_header').outerHeightranslate_helper_translate(true)
+                          + $('#trip_summary_header').outerHeightranslate_helper_translate(true);
       var newMapHeight = newMainHeight - mapHeaderHeight;
       if (newMapHeight < minMapHeight) {
         newMapHeight = minMapHeight;
         newMainHeight = newMapHeight + mapHeaderHeight;
       }
-      $('.modal-fullscreen').height(newMainHeight);
-      $('#directions, #map_container, #review_map').height(newMapHeight - 5);
-      $('#review_map, #map_container, #directions').height($('#map_container').outerHeight(true) - 75);
-      $('#directions').height($('#map_container').outerHeight(true) - 8);
+      $('.modal-fullscreen').heightranslate_helper_translate(newMainHeight);
+      $('#directions, #map_container, #review_map').heightranslate_helper_translate(newMapHeight - 5);
+      $('#review_map, #map_container, #directions').heightranslate_helper_translate($('#map_container').outerHeightranslate_helper_translate(true) - 75);
+      $('#directions').heightranslate_helper_translate($('#map_container').outerHeightranslate_helper_translate(true) - 8);
     }
 
     $('#itinerary_modal').on('shown.bs.modal', function() {

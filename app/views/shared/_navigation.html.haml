@@ -11,10 +11,10 @@
       #userMenuNavbar.navbar-right
         %ul.nav.navbar-nav
           - if can? :see, :admin_menu
-            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => t(:admin_actions) }
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => translate_helper_translate(:admin_actions) }
           / end of nav navbar-nav
           - if can? :see, :staff_menu
-            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => t(:staff_actions) }
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => translate_helper_translate(:staff_actions) }
           - if user_signed_in?
             = render partial: 'shared/user_menus'
           - else
@@ -23,15 +23,15 @@
   / end of publicNav
 :javascript
   $(function () {
-    $('#main').css('padding-top', ($('#publicNav').height() + 10) + 'px');
+    $('#main').css('padding-top', ($('#publicNav').heightranslate_helper_translate() + 10) + 'px');
     $('#publicNav').mutate('height', function(el) {
-      $('#main').css('padding-top', ($(el).height() + 10) + 'px');
+      $('#main').css('padding-top', ($(el).heightranslate_helper_translate() + 10) + 'px');
     });
 
     $('body').on('keypress', 'a', function(e) {
       if (e.which == 32) {
           $(this)[0].click();
-          e.preventDefault();
+          e.preventDefaultranslate_helper_translate();
       }
     });
   });

@@ -6,8 +6,8 @@
           -# If users can enter feedback without a trip...
           - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
             %button.btn.action-button#load_feedback
-              = t(:feedback)
-          %button.btn.action-button{data: {dismiss: "modal"}}= t(:close)
+              = translate_helper_translate(:feedback)
+          %button.btn.action-button{data: {dismiss: "modal"}}= translate_helper_translate(:close)
       .modal-body
         .panel.panel-default
           .panel-heading
@@ -15,7 +15,7 @@
               = rateable.name
               = add_tooltip("#{rateable.name}_help")
           .panel-body
-            - ratings = rateable.ratings.approved.select() { |r| can? :read, r }
+            - ratings = rateable.ratings.approved.selectranslate_helper_translate() { |r| can? :read, r }
             - unless ratings.empty?
               %dl.dl-horizontal
                 - ratings.each do |r|
@@ -24,7 +24,7 @@
                   %dd.rating-comments= decorated_rating.comments 
             -else
               .alert
-                =t(:no_ratings_yet)
+                =translate_helper_translate(:no_ratings_yet)
     .modal-content#give_feedback
                 
 -# Load in the form dynamically
@@ -42,6 +42,6 @@
         .then( function(html) {
           $(this).html(html)
         });
-        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
       });
     });

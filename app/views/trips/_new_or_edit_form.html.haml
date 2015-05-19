@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:plan_a_trip)}"
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:plan_a_trip)}"
 - is_splash_available = whether_show_tranlatation_item?(:splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
@@ -10,7 +10,7 @@
     .pull-right
       -if @show_booking
         = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
-          =t(:ecolane_login_button)
+          =translate_helper_translate(:ecolane_login_button)
           :javascript
             $(function() {
               $('button[name=ecolaneSignin]').click(function() {
@@ -18,11 +18,11 @@
               });
             });
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-        =t(:next)
+        =translate_helper_translate(:next)
         :javascript
           $(function() {
             $('button[name=planTrip]').click(function() {
-              $('.plan-a-trip').submit();
+              $('.plan-a-trip').submitranslate_helper_translate();
             });
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -40,7 +40,7 @@
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
         %h2.panel-title
-          =t(:trip_parameters)
+          =translate_helper_translate(:trip_parameters)
           = add_tooltip("trip_parameters_help")
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
@@ -57,18 +57,18 @@
             #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
                 %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
-                  =t(:trip_dir)
+                  =translate_helper_translate(:trip_dir)
                   = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{translate_helper_translate(:round_trip)}
 
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{t(:one_way)}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{translate_helper_translate(:one_way)}
 
             = field_set_tag do
               / .inline-radio
-              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+              /   = f.input :is_round_trip, as: :radio_buttons, label: translate_helper_translate(:trip_dir), collection: [[translate_helper_translate(:round_trip), 1], [translate_helper_translate(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -83,7 +83,7 @@
             #baseModes
               .form-group.check_boxes.optional.trip_proxy_modes
                 %legend.col-sm-3.check_boxes.optional.control-label#legend_label
-                  =t(:modes)
+                  =translate_helper_translate(:modes)
                   = add_tooltip("modes_help")
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
@@ -93,7 +93,7 @@
                       %br
 
             = field_set_tag do
-              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
+              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: translate_helper_translate(:modes)
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
@@ -122,15 +122,15 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper_translate(v[0][:name])}, label: translate_helper_translate(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
-                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
+                addHelperTooltip('#trip_purpose_id_label', "#{translate_helper_translate(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper_translate(v[0][:name])}, label: translate_helper_translate(:trip_purposes), input_html: { class: 'form-control' }
             - if translation_exists?("trip_purposes_help")
               :javascript
-                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
+                addHelperTooltip('#trip_purpose_id_label', "#{translate_helper_translate(:trip_purposes_help)}");
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
@@ -145,13 +145,13 @@
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
                 %h2.panel-title
-                  %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                  %button#mapCloseButton.close.pull-right{type: "button", title: translate_helper_translate(:close)}
                     %i.fa.fa-close
                     %span.hide Close
                   %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
                     %i.fa.fa-expand
 
-                  =t(:map)
+                  =translate_helper_translate(:map)
                   = add_tooltip("map_help")
                   :javascript
                     $('#tripMapContainer .label-help').removeClass('pull-right fa-2x');
@@ -161,9 +161,9 @@
       .pull-right
         -if @show_booking
           = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
-            =t(:ecolane_login_button)
+            =translate_helper_translate(:ecolane_login_button)
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-          =t(:next)
+          =translate_helper_translate(:next)
 
       .pull-left
         %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
@@ -196,7 +196,7 @@
                   %i.fa.fa-compress
                 %span.sr-only Minimize
               %h3.modal-title{id: "modalLabel2"}
-                = t(:map)
+                = translate_helper_translate(:map)
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
 
@@ -270,15 +270,15 @@
           
     var makeFullscreen = function(){
       var minMapHeight = 200;
-      var newMainHeight = $(window).outerHeight(true);
-      var mapHeaderHeight = $('.modal-fullscreen .modal-header').outerHeight(true);
+      var newMainHeight = $(window).outerHeightranslate_helper_translate(true);
+      var mapHeaderHeight = $('.modal-fullscreen .modal-header').outerHeightranslate_helper_translate(true);
       var newMapHeight = newMainHeight - mapHeaderHeight;
       if (newMapHeight < minMapHeight) {
         newMapHeight = minMapHeight;
         newMainHeight = newMapHeight + mapHeaderHeight;
       }
-      $('.modal-fullscreen').height(newMainHeight);
-      $('#expandedMap').height(newMapHeight - 5);
+      $('.modal-fullscreen').heightranslate_helper_translate(newMainHeight);
+      $('#expandedMap').heightranslate_helper_translate(newMapHeight - 5);
     }
 
     $('#mapExpand').on('shown.bs.modal', function() {
@@ -303,7 +303,7 @@
         }
 
         if(mapBounds) {
-          setTimeout(function(){
+          setTimeoutranslate_helper_translate(function(){
             mapObj.LMmap.fitBounds(mapBounds);
             mapObj.refreshMarkers();
           }, 10);
@@ -363,13 +363,13 @@
       //parse multi-od places
       var multi_origin_places = [];
       $('#from_places td.address-data').each(function(){
-        multi_origin_places.push($(this).text());
+        multi_origin_places.push($(this).textranslate_helper_translate());
       });
       $('#multi_origin_places').val(multi_origin_places.join(';'));
 
       var multi_dest_places = [];
       $('#to_places td.address-data').each(function(){
-        multi_dest_places.push($(this).text());
+        multi_dest_places.push($(this).textranslate_helper_translate());
       });
       $('#multi_dest_places').val(multi_dest_places.join(';'));
 

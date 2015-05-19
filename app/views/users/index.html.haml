@@ -1,13 +1,13 @@
-- content_for :title, "#{t(:site_title)} - #{t(:users)}"
-%h3{role: "main", aria: {label: "Users Table"}}= t(:users)
+- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:users)}"
+%h3{role: "main", aria: {label: "Users Table"}}= translate_helper_translate(:users)
 .col-sm-8
   %table.table.table-condensed
     %thead
       %tr
-        %th= t(:username)
-        %th= t(:email)
-        %th= t(:registered)
-        %th= t(:role)
+        %th= translate_helper_translate(:username)
+        %th= translate_helper_translate(:email)
+        %th= translate_helper_translate(:registered)
+        %th= translate_helper_translate(:role)
         %th
         %th
     %tbody
@@ -18,6 +18,6 @@
           %td= user.created_at.to_date
           %td= user.roles.first.name.titleize unless user.roles.first.nil?
           %td
-            %a.btn.btn-xs{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"}= t(:change_role)
+            %a.btn.btn-xs{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"}= translate_helper_translate(:change_role)
             = render user
-          %td= link_to(t(:delete_user), user_path(user), :data => { :confirm => t(:confirm_msg) }, :method => :delete, :class => 'btn btn-xs') unless user == current_user
+          %td= link_to(translate_helper_translate(:delete_user), user_path(user), :data => { :confirm => translate_helper_translate(:confirm_msg) }, :method => :delete, :class => 'btn btn-xs') unless user == current_user

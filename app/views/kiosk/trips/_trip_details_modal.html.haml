@@ -20,7 +20,7 @@
       %a.close-btn-container{"data-dismiss" => "modal"}
         .close-btn
         %p
-          =t(:close)
+          =translate_helper_translate(:close)
     .detail-section.span8plus
       .detail-header
         -# %i.fa.fa-2x{:class => get_trip_summary_icon(@itinerary)}
@@ -45,18 +45,18 @@
 
         .detail-footer
           %a.print-me{href: kiosk_print_itinerary_url(@itinerary, protocol: 'print')}
-            %span= t(:print)
+            %span= translate_helper_translate(:print)
         / %li
-        /   =t(:chat)
+        /   =translate_helper_translate(:chat)
         / %li{:id => "email_itinerary"}
         /   =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
-        /     =t(:e_mail)
+        /     =translate_helper_translate(:e_mail)
 
 
 :javascript
   $('body').on('shown', '#map_tab_link', function() {
     $('#lmap').css('height', '576px');
-    //alert("invalidating map");
+    //alertranslate_helper_translate("invalidating map");
     CsMaps.lmap.invalidateMap();
     CsMaps.lmap.showMap();
   });

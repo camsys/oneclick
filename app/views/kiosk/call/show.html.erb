@@ -23,11 +23,11 @@
     console.log("Error: " + error.message.message);
   });
 
-  Twilio.Device.connect(function (conn) {
+  Twilio.Device.connectranslate_helper_translate(function (conn) {
     console.log("Dialing <%= @number %>");
   });
 
-  Twilio.Device.disconnect(function (conn) {
+  Twilio.Device.disconnectranslate_helper_translate(function (conn) {
     if (window.cocoa) window.cocoa.closeTelWindow();
   })
 
@@ -39,8 +39,8 @@
       var number = '<%= @number %>';
     }
 
-    Twilio.Device.connect({PhoneNumber: number});
-    $('.number-display').text(' '+ number.split('://')[1]);
+    Twilio.Device.connectranslate_helper_translate({PhoneNumber: number});
+    $('.number-display').textranslate_helper_translate(' '+ number.splitranslate_helper_translate('://')[1]);
   }
 
   function hangup () {
@@ -48,7 +48,7 @@
 
     // close the window anyway after a half second. Allows the window to
     // still be closed even if the call never connected.
-    setTimeout(function () {
+    setTimeoutranslate_helper_translate(function () {
       if (window.cocoa) window.cocoa.closeTelWindow();
     }, 500);
   }

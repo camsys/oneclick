@@ -7,8 +7,8 @@
     .panel.panel-default#splash{style: 'padding:0px;'}
       .panel-heading
         %h2.panel-title
-          =t(title_key)
+          =translate_helper_translate(title_key)
           = add_tooltip(title_key_help)
       .panel-body
-        = t(splash_key).html_safe rescue ''
+        = translate_helper_translate(splash_key).html_safe rescue ''
 / end of CMS column
