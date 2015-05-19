@@ -132,7 +132,7 @@
         "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
     } );
     $("#add_agent_btn").on("click", function(e) {
-      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
     });
 
     var addAgentToAdminList = function(agentId, agentName) {
@@ -156,7 +156,7 @@
     };
     updateAgentIds();
     $("#search").on("click", function(e) {
-      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
       $.ajax({
         url: "find_agent_by_email",
         data: {email: $("#email").val()},
@@ -189,17 +189,17 @@
         }
     } );
     $('#agents_table').on('click', '.delete-button', function (e) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         var selectedRows = $('#agents_table').DataTable().row('.selected');
         if(selectedRows.length > 0) {
-          removeAgentFromAdminListranslate_helper_translate(selectedRows.data()[0]);
+          removeAgentFromAdminList(selectedRows.data()[0]);
           selectedRows.remove().draw( false );
           updateAgentIds();
         }
     } );
     $('#email').on('keypress', function(e){
       if(e.keyCode == 13) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         $('#search').click();
       }
     });

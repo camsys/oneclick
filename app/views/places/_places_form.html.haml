@@ -90,7 +90,7 @@
     // Remove highlights from all the rows and add a highlight
     // to the current row
     $('.place-list-item').removeClass('active');
-    $(this).parentranslate_helper_translate().addClass('active');
+    $(this).parent().addClass('active');
 
     // Update the delete and edit forms if the place can be deleted
     var place_id = $(this).data('place-id');
@@ -111,14 +111,14 @@
 
   // Submit the delete form if the user clicks the delete button
   $('#delete_button').click(function(e) {
-    e.preventDefaultranslate_helper_translate();
+    e.preventDefault();
     if ($('#delete_button').attr('disabled')) {
       return false;
     }
     var message = delete_message + $('#delete_place_name').val() + " ?";
     window.oneclickConfirmBox(message, function(result) {
       if (result) {
-        $('#delete_form').submitranslate_helper_translate();
+        $('#delete_form').submit();
       }
     });
     return false;
@@ -127,7 +127,7 @@
   // Move to edit mode if the user clicks the delete button
   $('#edit_button').click(function() {
     if ($('#edit_place_id').val() != "") {
-      $('#edit_form').submitranslate_helper_translate();
+      $('#edit_form').submit();
     }
     return true;
   });
@@ -148,7 +148,7 @@
       if (addr.length >= geocoder_min_chars) {
         $('#query').val(addr);
         $('#target').val(2);
-        $('#query_form').submitranslate_helper_translate();
+        $('#query_form').submit();
         $('#geocoding_indicator').show();
       }
     }
@@ -191,7 +191,7 @@
 
     sorter: function (items) {
        var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
-        while (aItem = items.shiftranslate_helper_translate()) {
+        while (aItem = items.shift()) {
             var item = JSON.parse(aItem);
             if (!item.name.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(JSON.stringify(item));
             else if (~item.name.indexOf(this.query)) caseSensitive.push(JSON.stringify(item));

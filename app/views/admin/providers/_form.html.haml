@@ -135,7 +135,7 @@
         "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
     } );
     $("#add_staff_btn").on("click", function(e) {
-      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
     });
 
     var updateAgentIds = function() {
@@ -149,7 +149,7 @@
     };
     updateAgentIds();
     $("#search").on("click", function(e) {
-      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
       $.ajax({
         url: "find_staff_by_email",
         data: {email: $("#email").val()},
@@ -181,7 +181,7 @@
         }
     } );
     $('#staffs_table').on('click', '.delete-button', function (e) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         var selectedRows = $('#staffs_table').DataTable().row('.selected');
         if(selectedRows.length > 0) {
           selectedRows.remove().draw( false );
@@ -190,7 +190,7 @@
     } );
     $('#email').on('keypress', function(e){
       if(e.keyCode == 13) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         $('#search').click();
       }
     });

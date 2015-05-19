@@ -15,7 +15,7 @@
               = rateable.name
               = add_tooltip("#{rateable.name}_help")
           .panel-body
-            - ratings = rateable.ratings.approved.selectranslate_helper_translate() { |r| can? :read, r }
+            - ratings = rateable.ratings.approved.select() { |r| can? :read, r }
             - unless ratings.empty?
               %dl.dl-horizontal
                 - ratings.each do |r|
@@ -42,6 +42,6 @@
         .then( function(html) {
           $(this).html(html)
         });
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
       });
     });

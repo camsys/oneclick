@@ -21,13 +21,13 @@
         // Reporting Engine only respects YYYY-MM-DD format
         $('.filter-form').on('submit', function(){
           $('.filter-form .is-date-field').each(function(){
-            var field_date = momentranslate_helper_translate($(this).val(), 'MM/DD/YYYY');
+            var field_date = moment($(this).val(), 'MM/DD/YYYY');
             var field_val = '';
             if(field_date.isValid()) {
               if(this.className && this.className.indexOf('is-end-date') >=0) {
-                field_val = field_date.endOf("day").formatranslate_helper_translate("YYYY-MM-DD HH:mm:ss");
+                field_val = field_date.endOf("day").format("YYYY-MM-DD HH:mm:ss");
               } else {
-                field_val = field_date.startOf("day").formatranslate_helper_translate("YYYY-MM-DD HH:mm:ss");
+                field_val = field_date.startOf("day").format("YYYY-MM-DD HH:mm:ss");
               }
             }
             $(this).val(field_val);
@@ -43,7 +43,7 @@
     $('.filter-form select option').on('mousedown', function (e) {
         this.selected = !this.selected;
 
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
     });
 
   });

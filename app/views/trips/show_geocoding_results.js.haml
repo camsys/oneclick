@@ -1,6 +1,6 @@
 - if @target == "0"
   removeMatchingMarkers('start_');
-  $('#from_place_candidates').html("#{escape_javascriptranslate_helper_translate(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
+  $('#from_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "from"})}");
   - if @matches.count == 1
     select_first_candidate_address("from");
   - else
@@ -11,7 +11,7 @@
   
 - else
   removeMatchingMarkers('stop_');
-  $('#to_place_candidates').html("#{escape_javascriptranslate_helper_translate(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
+  $('#to_place_candidates').html("#{escape_javascript(render :partial => 'alt_address_select', :locals => {:results => @matches, :type => "to"})}");
   - if @matches.count == 1
     select_first_candidate_address("to");
   - else

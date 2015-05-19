@@ -22,7 +22,7 @@
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.setOnLoadCallback(draw_chart);
 
-  function draw_chartranslate_helper_translate() {
+  function draw_chart() {
   var chart_data = new google.visualization.DataTable();
   chart_data.addColumn('string', 'Asset Type'); 
   chart_data.addColumn('number', 'Count');
@@ -43,7 +43,7 @@
 
   // Handle the resize event and make sure the chart is redrawn for the new size
   window.onresize = function() {
-  draw_chartranslate_helper_translate();
+  draw_chart();
   };
   
     

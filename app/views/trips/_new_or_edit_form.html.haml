@@ -22,7 +22,7 @@
         :javascript
           $(function() {
             $('button[name=planTrip]').click(function() {
-              $('.plan-a-trip').submitranslate_helper_translate();
+              $('.plan-a-trip').submit();
             });
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -270,15 +270,15 @@
           
     var makeFullscreen = function(){
       var minMapHeight = 200;
-      var newMainHeight = $(window).outerHeightranslate_helper_translate(true);
-      var mapHeaderHeight = $('.modal-fullscreen .modal-header').outerHeightranslate_helper_translate(true);
+      var newMainHeight = $(window).outerHeight(true);
+      var mapHeaderHeight = $('.modal-fullscreen .modal-header').outerHeight(true);
       var newMapHeight = newMainHeight - mapHeaderHeight;
       if (newMapHeight < minMapHeight) {
         newMapHeight = minMapHeight;
         newMainHeight = newMapHeight + mapHeaderHeight;
       }
-      $('.modal-fullscreen').heightranslate_helper_translate(newMainHeight);
-      $('#expandedMap').heightranslate_helper_translate(newMapHeight - 5);
+      $('.modal-fullscreen').height(newMainHeight);
+      $('#expandedMap').height(newMapHeight - 5);
     }
 
     $('#mapExpand').on('shown.bs.modal', function() {
@@ -303,7 +303,7 @@
         }
 
         if(mapBounds) {
-          setTimeoutranslate_helper_translate(function(){
+          setTimeout(function(){
             mapObj.LMmap.fitBounds(mapBounds);
             mapObj.refreshMarkers();
           }, 10);
@@ -363,13 +363,13 @@
       //parse multi-od places
       var multi_origin_places = [];
       $('#from_places td.address-data').each(function(){
-        multi_origin_places.push($(this).textranslate_helper_translate());
+        multi_origin_places.push($(this).text());
       });
       $('#multi_origin_places').val(multi_origin_places.join(';'));
 
       var multi_dest_places = [];
       $('#to_places td.address-data').each(function(){
-        multi_dest_places.push($(this).textranslate_helper_translate());
+        multi_dest_places.push($(this).text());
       });
       $('#multi_dest_places').val(multi_dest_places.join(';'));
 

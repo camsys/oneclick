@@ -153,8 +153,8 @@
 
 :javascript
   $('a[href="#show-email-provider-modal"]').on('click', function (e) {
-    e.preventDefaultranslate_helper_translate();
-    $('#itinerary_modal').html("#{escape_javascriptranslate_helper_translate(render 'email_provider_modal')}");
+    e.preventDefault();
+    $('#itinerary_modal').html("#{escape_javascript(render 'email_provider_modal')}");
     $('#itinerary_modal').modal({show: true, keyboard: false});
   });
 

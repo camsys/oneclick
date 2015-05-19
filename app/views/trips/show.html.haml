@@ -200,7 +200,7 @@
         } else {
           $('#legendDiv').addClass('hidden-xs-sm');
         }
-        e.preventDefaultranslate_helper_translate();
+        e.preventDefault();
       });
 
       //show or hide filters
@@ -211,7 +211,7 @@
         } else {
           $('#filterDiv').addClass('hidden-xs-sm');
         }
-        e.preventDefaultranslate_helper_translate();
+        e.preventDefault();
       });
 
       var tripResponse = #{@tripResponse.to_json};
@@ -242,7 +242,7 @@
         var $chartContainer = $('.single-plan-review[data-plan-id=' + itinId + '] .single-plan-chart-container');
         $chartContainer.focus();
         $('html, body').animate({
-            scrollTop: ($chartContainer.offsetranslate_helper_translate().top - 100)
+            scrollTop: ($chartContainer.offset().top - 100)
         }, 500);
       });
 

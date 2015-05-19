@@ -15,7 +15,7 @@
             = translate_helper_translate(:submit)
           :javascript
             $('#bookingSubmitButton').on('click', function(event) {
-              $('#bookingSignupModal form').submitranslate_helper_translate();
+              $('#bookingSignupModal form').submit();
             });
           %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= translate_helper_translate(:initial_booking_close)
       %h3.modal-title=translate_helper_translate(:initial_booking_title)

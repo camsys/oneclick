@@ -273,10 +273,10 @@
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>"
       } );
       $("#add_buddy_btn").on("click", function(e) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
       });
       $("#search").on("click", function(e) {
-        e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+        e.preventDefault ? e.preventDefault() : e.returnValue = false;
         $.ajax({
           url: "find_by_email",
           data: {email: $("#email").val()},
@@ -287,7 +287,7 @@
               $("div.table-flash").html(data["msg"]).addClass("alert alert-success fade-in");
               $(".new_buddies select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
               //find row
-              var row = $("td.email:contains('" + data["row"][1] +"')").parentranslate_helper_translate();
+              var row = $("td.email:contains('" + data["row"][1] +"')").parent();
               // Update if exists.  Add if not
               if (row.length) {
                 $("#buddies_table").dataTable().fnUpdate( data["row"], row[0]);
@@ -303,12 +303,12 @@
       });
       $('#email').on('keypress', function(e){
         if(e.keyCode == 13) {
-          e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+          e.preventDefault ? e.preventDefault() : e.returnValue = false;
           $('#search').click();
         }
       });
     $("td button.action-button").on("click", function(e) {
-      e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
       $.ajax({
         url: $(this).data("source"),
@@ -323,6 +323,6 @@
     });
     $("#preferred_modes input").change(function() {
       var checked = $(this).prop("checked")
-      $(this).parentranslate_helper_translate().find("input").prop("checked", checked);
+      $(this).parent().find("input").prop("checked", checked);
     });
   });

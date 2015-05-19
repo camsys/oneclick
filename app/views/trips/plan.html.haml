@@ -52,7 +52,7 @@
 :javascript
   $(document).ready(function(){
     $('.drivingDirectionsLink').each(function(index){
-      parentDiv = $(this).parentranslate_helper_translate();
+      parentDiv = $(this).parent();
       parentDivTarget = parentDiv.attr('data-target');
       parentDiv.attr('data-target', parentDivTarget + index);
       dataTarget = parentDiv.siblings('#drivingDirections').attr('id');

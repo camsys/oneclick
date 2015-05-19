@@ -110,11 +110,11 @@ $(document).ready( function() {
   };
 
   $('#submitChanges').on('click', function() {
-    $('#sidewalk_obstructions_form').submitranslate_helper_translate();
+    $('#sidewalk_obstructions_form').submit();
   });
 
   $("#sidewalk_obstructions_form").submitranslate_helper_translate(function( event ) {
-    event.preventDefaultranslate_helper_translate();
+    event.preventDefault();
     if($("input:checked[value=deleted]").length > 0) {
       $('#deleteSidewalkObstructionConfirmDialog').modal('show');
     } else {

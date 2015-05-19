@@ -1,8 +1,8 @@
 remove_messages();
-#{selectorify(target_name)}.html("#{escape_javascriptranslate_helper_translate(render 'shared/messages')}");
-$('#buddy_table').html("#{escape_javascriptranslate_helper_translate(render partial: 'devise/registrations/buddy_table', locals: {user: user})}");
-$('#traveler_table').html("#{escape_javascriptranslate_helper_translate(render partial: 'devise/registrations/traveler_table', locals: {user: user})}");
-$('#agencies_table').html("#{escape_javascriptranslate_helper_translate(render partial: 'devise/registrations/agency_table', locals: {user: user})}");
+#{selectorify(target_name)}.html("#{escape_javascript(render 'shared/messages')}");
+$('#buddy_table').html("#{escape_javascript(render partial: 'devise/registrations/buddy_table', locals: {user: user})}");
+$('#traveler_table').html("#{escape_javascript(render partial: 'devise/registrations/traveler_table', locals: {user: user})}");
+$('#agencies_table').html("#{escape_javascript(render partial: 'devise/registrations/agency_table', locals: {user: user})}");
 $("a[data-id='2']").textranslate_helper_translate("#{translate_helper_translate(:buddies) + ' (' + user.delegates.count.to_s + ')'}");
 $("a[data-id='3']").textranslate_helper_translate("#{translate_helper_translate(:travelers) + ' (' + user.travelers.count.to_s + ')'}");
 $("a[data-id='7']").textranslate_helper_translate("#{translate_helper_translate(:agencies) + ' (' + user.approved_agencies.count.to_s + ')'}");

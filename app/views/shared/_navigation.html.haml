@@ -23,15 +23,15 @@
   / end of publicNav
 :javascript
   $(function () {
-    $('#main').css('padding-top', ($('#publicNav').heightranslate_helper_translate() + 10) + 'px');
+    $('#main').css('padding-top', ($('#publicNav').height() + 10) + 'px');
     $('#publicNav').mutate('height', function(el) {
-      $('#main').css('padding-top', ($(el).heightranslate_helper_translate() + 10) + 'px');
+      $('#main').css('padding-top', ($(el).height() + 10) + 'px');
     });
 
     $('body').on('keypress', 'a', function(e) {
       if (e.which == 32) {
           $(this)[0].click();
-          e.preventDefaultranslate_helper_translate();
+          e.preventDefault();
       }
     });
   });

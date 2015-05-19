@@ -93,7 +93,7 @@ $(document).ready( function() {
       $("#rateable_modal .modal-content").html(data);
     });
 
-    e.preventDefault ? e.preventDefaultranslate_helper_translate() : e.returnValue = false;
+    e.preventDefault ? e.preventDefault() : e.returnValue = false;
   });
   $("#ratings_form").submitranslate_helper_translate(function( event ) {
     $.ajax({
@@ -108,6 +108,6 @@ $(document).ready( function() {
       // This can't just be a reload or we hit issues with the reload
       success: function() { window.location = window.location }
     })
-    event.preventDefaultranslate_helper_translate();
+    event.preventDefault();
   });
 });
