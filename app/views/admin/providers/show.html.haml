@@ -9,7 +9,7 @@
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= @provider.inactive_message
+      %p= @provider.deleted_message
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
@@ -19,7 +19,7 @@
             = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
-        = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
@@ -43,7 +43,7 @@
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
-        = render 'disable_form'
+        = render partial: "admin/shared/disable_form", locals: { deleteable: @provider }
 .row
   .col-sm-6
     .panel.panel-default
