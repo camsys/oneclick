@@ -1,6 +1,7 @@
 require 'carrierwave/orm/activerecord'
 
 class Provider < ActiveRecord::Base
+  include DisableCommented
   include Rateable
   include Commentable
   extend LocaleHelpers
@@ -17,7 +18,7 @@ class Provider < ActiveRecord::Base
         foreign_key: :resource_id
   has_many :staff, -> { where('roles.name=?', 'provider_staff') }, class_name: 'User',
         through: :cs_roles, source: :users
-  
+
   include Validations
   before_validation :check_url_protocol
   validates :name, presence: true, length: { maximum: 128 }
@@ -26,7 +27,7 @@ class Provider < ActiveRecord::Base
     relation = provider_id ? where(id: provider_id).order(:name) : order(:name)
     form_collection_from_relation include_all, relation, false, true
   end
-  
+
   def internal_contact
     users.with_role( :internal_contact, self).first
   end
