@@ -110,6 +110,7 @@ class Admin::UsersController < Admin::BaseController
 
   def destroy
     @user.soft_delete
+    @user.save
     flash[:notice] = t(:user_deleted)
     respond_to do |format|
       format.html { redirect_to admin_users_path }
