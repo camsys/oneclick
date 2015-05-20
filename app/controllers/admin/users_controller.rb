@@ -110,6 +110,7 @@ class Admin::UsersController < Admin::BaseController
 
   def destroy
     @user.soft_delete
+    @user.disabled_comment = params[:user][:disabled_comment]
     @user.save
     flash[:notice] = t(:user_deleted)
     respond_to do |format|
