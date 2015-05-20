@@ -12,9 +12,9 @@ class Admin::AgenciesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @agencies }
-      format.csv do 
+      format.csv do
         filter_params = params.permit(:bIncludeInactive, :search)
-        
+
         @agencies = Agency.get_exported(@agencies, filter_params)
 
         render_csv("agencies.csv", @agencies, Agency.csv_headers)
@@ -160,6 +160,7 @@ def agency_params params
   params.require(:agency).permit(:name, :address, :city, :state, :zip, :phone, :email, :url,
     :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone,
     :internal_contact_email,
+    :disabled_comment,
     comments_attributes: COMMENT_ATTRIBUTES,
     public_comments_attributes: COMMENT_ATTRIBUTES,
     private_comments_attributes: COMMENT_ATTRIBUTES,
