@@ -48,6 +48,7 @@ class TaxiItinerary < Itinerary
           new_itinerary.mode = taxi_mode
           new_itinerary.service = taxi_service
           new_itinerary.calculate_fare
+          new_itinerary.server_status = 200
 
           itineraries.push(new_itinerary)
         end
