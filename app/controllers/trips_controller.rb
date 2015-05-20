@@ -19,7 +19,7 @@ class TripsController < PlaceSearchingController
 
     @params = {q: q_param}
 
-    total_trips = @q.result(:district => true).uniq(:id)
+    total_trips = @q.result(:district => true)
 
     # filter data based on accessibility
     total_trips = total_trips.by_user(params[:user_id])
