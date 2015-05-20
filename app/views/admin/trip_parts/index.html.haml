@@ -12,6 +12,6 @@
   .panel-body
     = search_form_for @q, :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
       .form-group
-        = f.search_field "id_or_trip_id_or_user_name_or_provider_name_or_from_address_or_to_address_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+        = f.search_field "user_name_or_provider_name_or_is_return_trip_or_from_address_or_to_address_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
         = f.submit t(:search), class: 'btn action-button'
     = render partial: "trip_parts_display_table", locals: {trip_parts: @trip_parts, traveler: @traveler}

@@ -10,17 +10,9 @@ class TripPartView < ActiveRecord::Base
   self.primary_key = "id"
 
   # case insensitive search and sort
-  ransacker :id do
+  ransacker :is_return_trip do
     Arel.sql(
-      "regexp_replace(
-        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
-    )
-  end
-
-  ransacker :trip_id do
-    Arel.sql(
-      "regexp_replace(
-        to_char(\"#{table_name}\".\"trip_id\", '9999999'), ' ', '', 'g')"
+      "case when is_return_trip is true then '#{I18n.t(:return)}' else '#{I18n.t(:outbound)}' end"
     )
   end
 
