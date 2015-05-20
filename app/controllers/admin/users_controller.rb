@@ -10,7 +10,7 @@ class Admin::UsersController < Admin::BaseController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: usertable}
-      format.csv do 
+      format.csv do
         if params[:all]
           render_csv("users.csv", usertable)
         else
@@ -187,7 +187,7 @@ class Admin::UsersController < Admin::BaseController
   private
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :preferred_mode_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :disabled_comment, :walking_maximum_distance_id, :preferred_mode_ids => [])
   end
 
   def load_user
