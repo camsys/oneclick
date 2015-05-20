@@ -32,8 +32,38 @@ class FareStructure < ActiveRecord::Base
     end
   end
 
-  def zone_fare(start_lat, start_lng, end_lat, end_lng)
-    return nil unless service && start_lat && start_lng && end_lat && end_lng && service.fare_zones
+  def flat_fare_number
+    if flat_fare
+      flat_fare.one_way_rate
+    end
+  end
+
+  def mileage_fare_number(trip_part)
+    return nil unless trip_part && mileage_fare && mileage_fare.base_rate
+
+    mileage = TripPlanner.new.get_drive_distance(
+      !trip_part.is_depart, 
+      trip_part.scheduled_time, 
+      trip_part.from_trip_place.lat, 
+      trip_part.from_trip_place.lon, 
+      trip_part.to_trip_place.lat, 
+      trip_part.to_trip_place.lon)
+
+    if mileage_fare.mileage_rate
+      mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
+    else
+      mileage_fare.base_rate.to_f
+    end
+  end
+
+  def zone_fare_number(trip_part)
+    return nil unless trip_part && service && service.fare_zones
+    
+    start_lat = trip_part.from_trip_place.lat
+    start_lng = trip_part.from_trip_place.lon 
+    end_lat = trip_part.to_trip_place.lat 
+    end_lng = trip_part.to_trip_place.lon
+    return nil unless start_lat && start_lng && end_lat && end_lng
     
     from_zone_id = service.fare_zones.identify(start_lat, start_lng)
     to_zone_id = service.fare_zones.identify(end_lat, end_lng)

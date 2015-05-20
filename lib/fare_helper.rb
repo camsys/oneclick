@@ -17,7 +17,7 @@ class FareHelper
     is_paratransit = itinerary.service.is_paratransit? rescue false
 
     if is_paratransit
-      cost = calculate_paratransit_itinerary_cost(itinerary)
+      cost = itinerary.calculate_fare
       if cost
         itinerary.cost = cost
         itinerary.save
@@ -69,73 +69,108 @@ class FareHelper
 
   end
 
-  # TODO: needs to be refactored into ParatransitItinerary model
-  def calculate_paratransit_itinerary_cost itinerary
-    fare_structure = itinerary.service.fare_structures.first rescue nil
+  def get_itinerary_cost itinerary
+    estimated = false
+    fare =  itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
+    price_formatted = nil
+    cost_in_words = ''
+    comments = ''
+    is_paratransit = itinerary.service.is_paratransit? rescue false
 
-    if fare_structure
-      case fare_structure.fare_type
-      when FareStructure::FLAT
-        flat_fare = fare_structure.flat_fare
-
-        if flat_fare && flat_fare.one_way_rate
-          fare = flat_fare.one_way_rate.to_f
-        end
-      when FareStructure::MILEAGE
-        mileage_fare = fare_structure.mileage_fare
-        if mileage_fare && mileage_fare.base_rate
-
-          if mileage_fare.mileage_rate
-            trip_part = itinerary.trip_part
-            is_return_trip = trip_part.is_return_trip
-            trip_places = trip_part.trip.trip_places
-            if is_return_trip
-              start_lat = trip_places.last.lat 
-              start_lng = trip_places.last.lon
-              end_lat = trip_places.first.lat 
-              end_lng = trip_places.first.lon
-            else
-              start_lat = trip_places.first.lat 
-              start_lng = trip_places.first.lon
-              end_lat = trip_places.last.lat 
-              end_lng = trip_places.last.lon
-            end
-
-            mileage = TripPlanner.new.get_drive_distance(
-              !trip_part.is_depart, 
-              trip_part.scheduled_time, 
-              start_lat, start_lng, 
-              end_lat, end_lng)
-
-            if mileage
-              fare = mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
-            else
-              fare = mileage_fare.base_rate.to_f
-            end
+    if is_paratransit
+      para_fare = ParatransitItinerary.calculate_fare itinerary, itinerary.cost
+      if para_fare
+        estimated = para_fare[:estimated]
+        fare = para_fare[:fare]
+        price_formatted = para_fare[:price_formatted]
+        cost_in_words = para_fare[:cost_in_words]
+        comments = para_fare[:comments]
+      end
+    else
+      if fare.respond_to? :fare_type
+        case fare.fare_type
+        when FareStructure::FLAT
+          if fare.base and fare.rate
+            estimated = true
+            comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+            fare = fare.base.to_f
+            price_formatted = number_to_currency(fare.ceil) + '*'
+            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+          elsif fare.base
+            fare = fare.base.to_f
+            price_formatted = number_to_currency(fare)
+            cost_in_words = price_formatted
           else
-            fare = mileage_fare.base_rate.to_f
+            fare = nil
+          end
+        when FareStructure::MILEAGE
+            if fare.base
+              estimated = true
+              comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+              fare = fare.base.to_f
+              price_formatted = number_to_currency(fare.ceil) + '*'
+              cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+            else
+              fare = nil
+            end
+        when FareStructure::COMPLEX
+          fare = nil
+          estimated = true
+          price_formatted = '*'
+          comments = I18n.t(:see_details_for_cost)
+          cost_in_words = I18n.t(:see_below)
+        end
+      else
+        if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
+          Rails.logger.info 'is walk or bicycle, so no charge'
+          fare = 0
+          price_formatted = I18n.t(:no_charge)
+          cost_in_words = price_formatted
+        else
+          case itinerary.mode
+          when Mode.taxi
+            if fare
+              fare = fare.ceil
+              estimated = true
+              price_formatted = number_to_currency(fare) + '*'
+              comments = I18n.t(:cost_estimated)
+              cost_in_words = number_to_currency(fare) + I18n.t(:est)
+            end
+          when Mode.rideshare
+            fare = nil
+            estimated = true
+            price_formatted = '*'
+            comments = I18n.t(:see_details_for_cost)
+            cost_in_words = I18n.t(:see_below)
           end
         end
-      when FareStructure::ZONE
-        is_return_trip = itinerary.trip_part.is_return_trip
-        trip_places = itinerary.trip_part.trip.trip_places
-        if is_return_trip
-          start_lat = trip_places.last.lat 
-          start_lng = trip_places.last.lon
-          end_lat = trip_places.first.lat 
-          end_lng = trip_places.first.lon
-        else
-          start_lat = trip_places.first.lat 
-          start_lng = trip_places.first.lon
-          end_lat = trip_places.last.lat 
-          end_lng = trip_places.last.lon
-        end
-
-        fare = fare_structure.zone_fare(start_lat, start_lng, end_lat, end_lng)
       end
     end
 
-    fare
-  end
+    if price_formatted.nil?
+      unless fare.nil?
+        fare = fare.to_f
+        if fare == 0
+          Rails.logger.info 'no charge as fare is 0'
+          price_formatted = I18n.t(:no_charge)
+          cost_in_words = price_formatted
+        else
+          price_formatted = number_to_currency(fare)
+          cost_in_words = number_to_currency(fare)
+        end
+      else
+        estimated = true
+        price_formatted = '*'
+        comments = I18n.t(:see_details_for_cost)
+        cost_in_words = I18n.t(:unknown)
+      end
+    end
 
+    # save calculated fare
+    if !estimated && fare && itinerary.cost != fare
+      itinerary.update_attributes(cost: fare)
+    end
+
+    return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
+  end
 end

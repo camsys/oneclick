@@ -84,7 +84,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def cost
-    get_itinerary_cost(object)
+    FareHelper.new.get_itinerary_cost(object)
   end
 
   def legs

@@ -22,7 +22,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def cost_in_words
-    get_itinerary_cost(object)[:cost_in_words]
+    FareHelper.new.get_itinerary_cost(object)[:cost_in_words]
   end
 
   def duration_in_words

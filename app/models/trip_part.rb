@@ -126,7 +126,7 @@ class TripPart < ActiveRecord::Base
         end
       when Mode.paratransit
         timed "paratransit" do
-          itins += create_paratransit_itineraries
+          itins += ParatransitItinerary.get_itineraries(self)
         end
       when Mode.rideshare
         timed "rideshare" do
