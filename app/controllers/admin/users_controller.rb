@@ -128,7 +128,7 @@ class Admin::UsersController < Admin::BaseController
 
   def merge_edit
     @user = User.find(params[:id])
-    @sub = User.find_by(email: params[:sub_email])
+    @sub = User.find_by(email: params[:search])
 
     session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
