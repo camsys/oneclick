@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150515175117) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "disabled_comment"
     t.string  "token"
   end
 
@@ -136,8 +137,8 @@ ActiveRecord::Schema.define(version: 20150515175117) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -530,6 +531,7 @@ ActiveRecord::Schema.define(version: 20150515175117) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
+    t.string   "disabled_comment"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -736,6 +738,7 @@ ActiveRecord::Schema.define(version: 20150515175117) do
     t.integer  "walking_maximum_distance_id"
     t.datetime "deleted_at"
     t.integer  "maximum_wait_time"
+    t.string   "disabled_comment"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"

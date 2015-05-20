@@ -104,4 +104,10 @@ class Agency < ActiveRecord::Base
     rel
   end
 
+  def inactive_message
+    message = "Agency Deleted. "
+    message += "Reason for Deleting: #{ disabled_comment }" if !disabled_comment.empty?
+    message
+  end
+
 end
