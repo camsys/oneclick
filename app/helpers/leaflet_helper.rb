@@ -63,7 +63,7 @@ module LeafletHelper
         locale_text: {
           approve: I18n.t(:approve),
           reject: I18n.t(:reject),
-          delete: I18n.t(:delete),
+          remove: I18n.t(:delete),
           submit: I18n.t(:submit),
           cancel: I18n.t(:cancel),
           remove_by: I18n.t(:remove_by),

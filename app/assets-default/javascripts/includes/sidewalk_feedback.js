@@ -152,7 +152,7 @@ CsLeaflet.SidewalkFeedbackTool = {
                     "<button class='btn action-button map-action-button' style='margin-right: 5px;' action='reject'>" + locale_text.reject + "</button>"
                 ) : ""
             ) +
-            (allowActions.is_deletable ? "<button class='btn action-button map-action-button' action='delete'>" + locale_text.delete + "</button>": "") +
+            (allowActions.is_deletable ? "<button class='btn action-button map-action-button' action='delete'>" + locale_text.remove + "</button>": "") +
             "</div></div>" +
             "<div class='row'>" +
             "<div><label>" + locale_text.comments + "</label><div><span class='col-sm-12'>" + feedbackData.comment + "</span></div></div>" +
