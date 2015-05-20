@@ -588,7 +588,7 @@ es:
   select_pois_file_to_upload: '[es]Select POIs file (.csv)[/es]'
   pois_file_not_csv: '[es]The file is not in CSV format.[es]'
   pois_load_summary: "[es]POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/es]"
-  
+
 
   #map
   map: '[es]Map[/es]'
@@ -922,6 +922,8 @@ es:
   all: "Todos"
   system_usage: "[es]System Usage[/es]"
   broswer_warning: "[es]Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again.[/es]"
+  reason_for_disabling: "[es]Reason for Deleting:[/es]"
+  why_are_you_deleting: "[es] Why are you deleting[/es]"
 
   relationship_status:
     relationship_status_requested: "[es599]Requested[/es]"

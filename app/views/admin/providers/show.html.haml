@@ -9,7 +9,7 @@
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= t(:inactive)
+      %p= @provider.deleted_message
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
@@ -19,20 +19,8 @@
             = t(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
-        = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
           = t(:delete)
-        #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-          .modal-dialog
-            .modal-content
-              .modal-header
-                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
-                .modal-title{:style => "text-align:left;"}
-                  %b
-                    = t(:site_title)
-              .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @provider.name + " ?"
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
             = icon_label(:add_service)
@@ -54,6 +42,8 @@
       - if can_manage_provider && (can? :update, @provider)
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
+      - if @provider.active && can_manage_provider && (can? :destroy, @provider)
+        = render partial: "admin/shared/disable_form", locals: { deleteable: @provider }
 .row
   .col-sm-6
     .panel.panel-default

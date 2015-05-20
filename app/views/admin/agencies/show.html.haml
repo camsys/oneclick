@@ -8,7 +8,7 @@
   .col-sm-5
     %h1= @agency.name
     -unless @agency.active
-      %p= t(:inactive)
+      %p= @agency.deleted_message
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
@@ -22,20 +22,8 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
       - if @agency.active && can_manage_agency and can? :destroy, @agency
-        = button_tag :type => 'button', "data-target" => "#deleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
-        #deleteAgencyConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_agency), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-          .modal-dialog
-            .modal-content
-              .modal-header
-                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @agency.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
-                .modal-title{:style => "text-align:left;"}
-                  %b
-                    = t(:site_title)
-              .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @agency.name + " ?"
       - if !@agency.active && can_manage_agency && (can? :destroy, @agency)
         = button_tag :type => 'button', "data-target" => "#undeleteAgencyConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:undelete)
@@ -54,6 +42,8 @@
       - if can_manage_agency and can? :update, @agency
         = link_to edit_admin_agency_path(@agency), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
+      - if @agency.active && can_manage_agency and can? :destroy, @agency
+        = render partial: "admin/shared/disable_form", locals: { deleteable: @agency }
 .row
   = render partial: "public_details", locals: {agency: @agency}
   - if can_manage_agency

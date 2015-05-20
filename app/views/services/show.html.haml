@@ -13,6 +13,8 @@
   .col-sm-5
     %h2
       =@service.name
+    - if !@service.active
+      %p= @service.deleted_message
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
@@ -26,20 +28,8 @@
             = t(:feedback)
         = render partial: "ratings/organization_feedback_modal", locals: {rateable: @service}
       - if @service.active && can_manage_provider and (can? :destroy, @service)
-        = button_tag :type => 'button', "data-target" => "#deleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
+        = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:delete)
-        #deleteServiceConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:remove_service), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
-          .modal-dialog
-            .modal-content
-              .modal-header
-                = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = t(:cancel)
-                = button_to t(:ok), { action: "destroy", id: @service.id }, method: :delete,  style: "margin-right: 5px;", class: "btn action-button pull-right"
-                .modal-title{:style => "text-align:left;"}
-                  %b
-                    = t(:site_title)
-              .modal-body{:style => "text-align:left;"}
-                = t(:confirm_remove_message) + @service.name + " ?"
       - if !@service.active && can_manage_provider && (can? :destroy, @service)
         = button_tag :type => 'button', "data-target" => "#undeleteServiceConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = t(:undelete)
@@ -58,6 +48,8 @@
       - if can_manage_provider and (can? :update, @service)
         = link_to edit_service_path(@service), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
+      - if @service.active && can_manage_provider and (can? :destroy, @service)
+        = render partial: 'admin/shared/disable_form', locals: { deleteable: @service }
 .row
   = render partial: "public_details", locals: { service: @service}
 
@@ -250,7 +242,7 @@
             %h4.panel-title
               = t(:booking_information)
               = add_tooltip("booking_information_help")
-          .panel-body        
+          .panel-body
             = t(:booking_service_code).to_s + ": " + @service.booking_service_code
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}

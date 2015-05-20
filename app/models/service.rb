@@ -3,6 +3,7 @@ class Service < ActiveRecord::Base
   require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
   include Commentable
+  include DisableCommented
 
   resourcify
 
@@ -73,7 +74,7 @@ class Service < ActiveRecord::Base
   def is_paratransit?
     is_service_type('paratransit')
   end
-  
+
   def is_transit?
     is_service_type('transit')
   end
@@ -442,7 +443,7 @@ class Service < ActiveRecord::Base
 
    #taken from def eligible_by_location(trip_part, itineraries)
    #some day we may want to pass the whole object around and not just from/to
-   
+
    mercator_factory = RGeo::Geographic.simple_mercator_factory
 
    service = self
@@ -493,7 +494,7 @@ class Service < ActiveRecord::Base
   end
 
   def ensure_valid_advanced_book_day_range
-    min_mins = self.advanced_notice_minutes 
+    min_mins = self.advanced_notice_minutes
     max_mins = self.max_advanced_book_minutes
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
       errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
