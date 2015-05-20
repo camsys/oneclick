@@ -17,7 +17,7 @@ class FareHelper
     is_paratransit = itinerary.service.is_paratransit? rescue false
 
     if is_paratransit
-      cost = itinerary.calculate_fare
+      cost = ParatransitItinerary.calculate_fare itinerary
       if cost
         itinerary.cost = cost
         itinerary.save
