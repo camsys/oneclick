@@ -27,11 +27,23 @@ class User
     end
 
     def exists(r)
-       r.name != :multi_o_d_trips
+      @main.respond_to?(r.name)
     end
 
     def merge_association(r)
-      @sub.send(r.name).each { |assoc| @main.send(r.name) << assoc.dup }
+      from_sub = unique_to_sub(r)
+      from_sub.each { |assoc| @main.send(r.name) << assoc.dup }
+    end
+
+    def unique_to_sub(r)
+      from_main = id_hash(r)
+      @sub.send(r.name).select { |assoc| from_main[assoc.id.to_s] }
+    end
+
+    def id_hash(r)
+      ids = { }
+      @main.send(r.name).each { |assoc| ids[assoc.id.to_s] = true }
+      ids
     end
 
   end
