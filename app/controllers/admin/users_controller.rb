@@ -142,7 +142,8 @@ class Admin::UsersController < Admin::BaseController
 
   def merge_submit
     @user = User.find(params[:id])
-    @sub = User.find_by(email: params[:sub_email])
+    @sub = User.find_by(email: params[:user][:sub])
+    binding.pry
     User::MergeTwoAccounts(@user, @sub)
     respond_to do |format|
       format.html { redirect_to admin_user_path(@user) }
