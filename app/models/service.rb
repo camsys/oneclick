@@ -4,6 +4,8 @@ class Service < ActiveRecord::Base
   include Rateable # mixin to handle all rating methods
   include Commentable
 
+  validates :display_color, :hexadecimal_color => true
+
   resourcify
 
   #associations
