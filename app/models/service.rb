@@ -451,16 +451,16 @@ class Service < ActiveRecord::Base
 
    Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
 
-   origin_point = mercator_factory.point(from[0], from[1])
-   destination_point = mercator_factory.point(to[0], to[1])
+   origin_point = mercator_factory.point(from[1], from[0])
+   destination_point = mercator_factory.point(to[1], to[0])
 
-   # right now we validate a service as eligible for location if the endpoint_area_geom or coverage_area_geom is nil... really?
-   return true if service.endpoint_area_geom.nil?
-   return true if service.coverage_area_geom.nil?
+   unless service.endpoint_area_geom.nil?
+      return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
+   end
 
-   return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
-
-   return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
+   unless service.coverage_area_geom.nil?
+     return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
+   end
 
    return true
 
