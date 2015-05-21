@@ -307,7 +307,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         registerChartContainerEvents();
 
         //render legend & filter
-        addLegendHtml(_tripResponse.trip_parts);
+        if (filterConfigs.show_legend == true) { addLegendHtml(_tripResponse.trip_parts); }
+        
         addFilterHtml(_tripResponse.trip_parts);
 
         resizePlanColumns();

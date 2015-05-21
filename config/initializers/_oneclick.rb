@@ -75,6 +75,9 @@ Oneclick::Application.configure do
   #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
   config.api_activated = false
 
+  # the ability to see the legend on the review page
+  config.show_legend = true
+
 
   case ENV['BRAND'] || 'arc'
   when 'arc'
