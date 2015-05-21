@@ -37,7 +37,7 @@ class User
 
     def unique_to_sub(r)
       from_main = id_hash(r)
-      @sub.send(r.name).select { |assoc| from_main[assoc.id.to_s] }
+      @sub.send(r.name).select { |assoc| !from_main[assoc.id.to_s] }
     end
 
     def id_hash(r)
