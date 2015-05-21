@@ -13,6 +13,9 @@
   .col-sm-5
     %h2
       =@service.name
+    %h4
+      Provided by
+      = link_to @service.provider.name, admin_provider_path(@service.provider)
   .col-sm-7.btns
     .pull-right
       -if Rating.feedback_on?
