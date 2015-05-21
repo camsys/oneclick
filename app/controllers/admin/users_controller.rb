@@ -137,7 +137,6 @@ class Admin::UsersController < Admin::BaseController
     @user_programs_proxy = UserProgramsProxy.new(@user)
     @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
 
-    render 'edit', alert: "Merging"
     # render 'edit', alert: " #{ I18n.t(:will_merge_accounts) } #{ @user.name }, #{ @sub.name }  "
   end
 
