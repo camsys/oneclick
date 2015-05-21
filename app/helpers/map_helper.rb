@@ -271,6 +271,8 @@ module MapHelper
 
     if leg.mode.nil?
       a = {"className" => 'map-tripleg map-tripleg-unknown'}
+    elsif leg.display_color.present?
+      a = {"className" => "map-tripleg", "color" => '#' + leg.color}
     else
       a = {"className" => 'map-tripleg map-tripleg-' + leg.mode.downcase}
     end

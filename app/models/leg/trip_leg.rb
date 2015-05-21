@@ -62,6 +62,10 @@ module Leg
       return end_time - start_time
     end
 
+    def color
+      self.display_color
+    end
+
     def trip_steps
       html = "<div data-toggle='collapse' data-target='#drivingDirections'><a class='drivingDirectionsLink'>" + short_description + "</a></div>
               <div id='drivingDirections' class='panel-body collapse'>"
