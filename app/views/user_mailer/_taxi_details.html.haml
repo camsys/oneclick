@@ -1,8 +1,22 @@
 %table.center
-  -YAML.load(itinerary.server_message).each do |business|
-    %tr
-      %td
-        %b
-          =business['name'] + ":  "
-      %td
-        =business['phone']
+  %tr
+    %td
+      %b
+        =itinerary.service.name + " - "  + itinerary.service.phone
+%br
+
+- if itinerary.service.public_comments
+  .row
+    .col-sm-12
+      .well.well-sm.comments
+        - itinerary.service.public_comments.each do |comment|
+          = comment.comment
+          %br
+
+- if itinerary.service.fare_structures
+  - itinerary.service.fare_structures.each do |fare|
+    -if fare.desc
+      .row
+        .col-sm-12
+          .well.well-sm.comments
+            = fare.desc.html_safe
