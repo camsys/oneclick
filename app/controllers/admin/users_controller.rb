@@ -169,7 +169,7 @@ class Admin::UsersController < Admin::BaseController
 
 
     else
-      render 'merge', :alert => "Unable to update user."
+      redirect_to admin_user_path(@user), :alert => "Unable to update user."
     end
 
 
