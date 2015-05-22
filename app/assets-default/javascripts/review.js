@@ -765,7 +765,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                         "logo_url": plan.mode_logo_url,
                         "start_time_estimated": plan.start_time_estimated,
                         "end_time_estimated": plan.end_time_estimated,
-                        "service_window": (plan.service_window || 0)
+                        "service_window": (plan.service_window || 0),
+                        "display_color": plan.display_color
                     });
                 }
 
