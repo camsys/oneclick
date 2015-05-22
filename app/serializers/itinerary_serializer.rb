@@ -88,9 +88,11 @@ class ItinerarySerializer < ActiveModel::Serializer
   end
 
   def legs
+
     legs = object.get_legs(false)
 
     last_leg = nil
+
     legs.inject([]) do |m, leg|
       if !last_leg.nil? && (leg.start_time > (last_leg.end_time + 1.second))
         m <<        {
@@ -105,6 +107,20 @@ class ItinerarySerializer < ActiveModel::Serializer
 
       leg_mode_type = leg.mode.downcase if leg.mode
       leg_mode = Mode.unscoped.where(code: "mode_#{leg_mode_type}").first
+
+      #determine display color
+     if object.service
+        unless ["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode)
+          if object.service.display_color.nil? || object.service.display_color.blank?
+            display_color = leg.display_color
+          else 
+            display_color = object.service.display_color
+          end
+        end
+      else
+        display_color = leg.display_color
+      end
+
       m <<        {
         type: leg.mode,
         logo_url: (leg_mode.logo_url if leg_mode),
@@ -113,20 +129,8 @@ class ItinerarySerializer < ActiveModel::Serializer
         end_time: leg.end_time.iso8601,
         start_place: "#{leg.start_place.lat},#{leg.start_place.lon}",
         end_place: "#{leg.end_place.lat},#{leg.end_place.lon}",
-        display_color: object.service ? (["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode) ? "" : (object.service.display_color.nil? || object.service.display_color.blank? ? leg.display_color : object.service.display_color)) : leg.display_color
+        display_color: display_color
       }
-
-      # if object.service
-      #   unless ["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode)
-      #     if object.service.display_color.nil? || object.service.display_color.blank?
-      #       m.first[:display_color] = leg.display_color
-      #     else 
-      #       m.first[:display_color] = object.service.display_color
-      #     end
-      #   end
-      # else
-      #   m.first[:display_color] = leg.display_color
-      # end
 
       last_leg = leg
       m
