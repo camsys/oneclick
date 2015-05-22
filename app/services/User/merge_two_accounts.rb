@@ -27,7 +27,7 @@ class User
     end
 
     def exists(r)
-      @main.respond_to?(r.name)
+      @main.respond_to?(r.name) && @sub.respond_to?(r.name) && r.name != :multi_o_d_trips
     end
 
     def merge_association(r)
