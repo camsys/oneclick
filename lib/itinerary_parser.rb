@@ -72,15 +72,16 @@ protected
     new_transit_leg.agency_name = leg['agencyName']
     agencyId = leg['agencyId']
 
-    use_gtfs_color = true
     leg_service = Service.where(external_id: agencyId).first
+
     if leg_service.present?
-      new_transit_leg.agency_id = s.name
-      use_gtfs_color = leg_service.use_gtfs_colors
+      new_transit_leg.agency_id = leg_service.name
+      use_gtfs_color = leg_service.use_gtfs_colors if leg_service.use_gtfs_colors.present?
+      use_gtfs_colors ||= false
       new_transit_leg.display_color = leg_service.display_color if leg_service.display_color.present?
       new_transit_leg.display_color ||= leg['routeColor'] unless (leg['routeColor'].nil? || leg['routeColor'].blank? || !leg_service.use_gtfs_colors)
     else
-      sub.agency_id = leg['agencyId']
+      new_transit_leg.agency_id = leg['agencyId']
     end 
 
     new_transit_leg.head_sign = leg['headsign']
