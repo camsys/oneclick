@@ -43,6 +43,8 @@ module Leg
     attr_accessor :steps
     attr_accessor :display_color
 
+    attr_accessor :agency_id
+
     def route
       "n/a"
     end
