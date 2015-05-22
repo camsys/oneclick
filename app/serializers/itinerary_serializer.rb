@@ -109,7 +109,8 @@ class ItinerarySerializer < ActiveModel::Serializer
       leg_mode = Mode.unscoped.where(code: "mode_#{leg_mode_type}").first
 
       #determine display color
-     if object.service
+     if object.service.present?
+        puts "LEG AT COLOR DETERMINE TIME... WATCH AGENCY: " + leg.to_s
         unless ["BICYCLE","WALK","WAIT","CAR"].include?(leg.mode)
           if object.service.display_color.nil? || object.service.display_color.blank?
             display_color = leg.display_color
@@ -135,6 +136,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       last_leg = leg
       m
     end
+
   end
 
   def duration
