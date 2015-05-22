@@ -80,6 +80,7 @@ protected
       use_gtfs_colors ||= false
       new_transit_leg.display_color = leg_service.display_color if leg_service.display_color.present?
       new_transit_leg.display_color ||= leg['routeColor'] unless (leg['routeColor'].nil? || leg['routeColor'].blank? || !leg_service.use_gtfs_colors)
+      new_transit_leg.display_color = "#" + new_transit_leg.display_color if (new_transit_leg.display_color.index("#") != 0 && new_transit_leg.display_color.present?)
     else
       new_transit_leg.agency_id = leg['agencyId']
     end 
