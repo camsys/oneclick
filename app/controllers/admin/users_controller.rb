@@ -145,6 +145,35 @@ class Admin::UsersController < Admin::BaseController
     @sub = User.find_by(email: params[:user][:sub])
 
     User::MergeTwoAccounts.call(@user, @sub)
+
+
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
+
+    # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
+    if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+      params[:user].except! :password, :password_confirmation
+    end
+
+    if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
+      params[:user][:roles].reject(&:blank?).empty? ? @user.remove_role(:system_administrator) : @user.add_role(:system_administrator)
+      @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
+      set_approved_agencies(params[:user][:approved_agency_ids])
+      booking_alert = set_booking_services(@user, params[:user_service])
+      @user.update_relationships(params[:user][:relationship])
+      @user.add_buddies(params[:new_buddies])
+      if booking_alert
+        redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."
+      else
+        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
+      end
+
+
+    else
+      render 'merge', :alert => "Unable to update user."
+    end
+
+
+
     respond_to do |format|
       format.html { redirect_to admin_user_path(@user) }
       format.json { head :no_content }
