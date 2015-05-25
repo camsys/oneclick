@@ -142,11 +142,12 @@ class Admin::UsersController < Admin::BaseController
 
   def merge_submit
     @user = User.find(params[:id])
-    @sub = User.find_by(email: params[:user][:sub])
+    main = @user
+    sub = User.find_by(email: params[:user][:sub])
 
-    User::MergeTwoAccounts.call(@user, @sub)
+    User::MergeTwoAccounts.call(main, sub)
 
-
+    binding.pry
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
 
     # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
@@ -169,7 +170,7 @@ class Admin::UsersController < Admin::BaseController
 
 
     else
-      redirect_to admin_user_path(@user), :alert => "Unable to update user."
+      redirect_to admin_user_path(@user), :alert => "Unable to updated user."
     end
 
 

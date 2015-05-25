@@ -31,22 +31,9 @@ class User
     end
 
     def merge_association(r)
-      from_sub = unique_to_sub(r)
-      from_sub.each { |assoc| @main.send(r.name) << assoc.dup }
+      total = @sub.send(r.name) + @main.send(r.name)
+      eval("@main.#{ r.name.to_s } = total.uniq")
     end
-
-    def unique_to_sub(r)
-      from_main = id_hash(r)
-      from_sub = @sub.send(r.name)
-      @sub.send(r.name).select { |assoc| !from_main[assoc.id.to_s] }
-    end
-
-    def id_hash(r)
-      ids = { }
-      @main.send(r.name).each { |assoc| ids[assoc.id.to_s] = true }
-      ids
-    end
-
   end
 
 end
