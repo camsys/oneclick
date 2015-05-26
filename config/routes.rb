@@ -350,7 +350,6 @@ Oneclick::Application.routes.draw do
           patch 'undelete'
         end
       end
-      resources :translations
       resources :oneclick_configurations
     end#admin
 
