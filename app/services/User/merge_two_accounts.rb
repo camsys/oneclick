@@ -5,6 +5,7 @@ class User
 
     def self.call(user1, user2)
       merger = new(user1, user2)
+      binding.pry
       merger.main.save
       merger.sub.soft_delete
     end
@@ -16,6 +17,7 @@ class User
       @sub = user2
       @reflections = User.reflect_on_all_associations
       merge_all_possible
+      remove_duplicates
     end
 
     def merge_all_possible
@@ -31,8 +33,11 @@ class User
     end
 
     def merge_association(r)
-      total = @sub.send(r.name) + @main.send(r.name)
-      eval("@main.#{ r.name.to_s } = total.uniq")
+      @sub.send(r.name).each { |assoc| @main.send(r.name) << assoc.dup }
+    end
+
+    def remove_duplicates
+      @reflections.each { |r| @main.send(r.name).uniq! if mergeable?(r) && exists(r) }
     end
   end
 
