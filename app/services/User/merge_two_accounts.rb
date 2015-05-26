@@ -19,7 +19,7 @@ class User
     end
 
     def merge_all_possible
-      @reflections.each { |r| merge_association(r) if mergeable?(r) && exists(r) }
+      @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if mergeable?(r) && exists(r) }
     end
 
     def mergeable?(r)
@@ -32,7 +32,7 @@ class User
     end
 
     def merge_association(r)
-      unique_to_sub(r).each { |assoc| @main.send(r.name) << assoc.dup; binding.pry }
+      unique_to_sub(r).each { |assoc| @main.send(r.name) << assoc.dup }
     end
 
     def ids_from_main(r)
