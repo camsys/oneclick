@@ -5,7 +5,6 @@ class User
 
     def self.call(user1, user2)
       merger = new(user1, user2)
-      binding.pry
       merger.main.save
       merger.sub.soft_delete
     end
@@ -17,7 +16,6 @@ class User
       @sub = user2
       @reflections = User.reflect_on_all_associations
       merge_all_possible
-      remove_duplicates
     end
 
     def merge_all_possible
@@ -25,7 +23,8 @@ class User
     end
 
     def mergeable?(r)
-      r.macro == :has_many || r.macro == :has_and_belongs_to_many
+      #r.macro == :has_many || r.macro == :has_and_belongs_to_many
+      r.name == :roles
     end
 
     def exists(r)
@@ -33,11 +32,19 @@ class User
     end
 
     def merge_association(r)
-      @sub.send(r.name).each { |assoc| @main.send(r.name) << assoc.dup }
+      unique_to_sub(r).each { |assoc| @main.send(r.name) << assoc.dup; binding.pry }
     end
 
-    def remove_duplicates
-      @reflections.each { |r| @main.send(r.name).uniq! if mergeable?(r) && exists(r) }
+    def ids_from_main(r)
+      from_main = { }
+      @main.send(r.name).each { |assoc| from_main[assoc.id.to_s] = true }
+      from_main
+    end
+
+    def unique_to_sub(r)
+      from_main = ids_from_main(r)
+      uniques = @sub.send(r.name).select { |assoc| !from_main.has_key?(assoc.id.to_s) }
+      uniques
     end
   end
 
