@@ -370,16 +370,16 @@ protected
     when FareStructure::ZONE
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
-
+      
       zone_fares_attrs.each do | fare_attrs |
         next if fare_attrs[:rate].blank?
         fare_params = {
           rate: fare_attrs[:rate].to_f
         }
-
+        
         fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
       end
-
+      
       if fs.mileage_fare
         fs.mileage_fare.delete
         fs.mileage_fare = nil

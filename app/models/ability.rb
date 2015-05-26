@@ -110,12 +110,13 @@ class Ability
       can [:show, :results, :trips_datatable], Report
       can [:read, :full_read, :find_staff_by_email], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
       can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
-      can [:update, :show, :full_read], Service do |s|
+      can [:update, :show, :full_read, :destroy, :manage], Service do |s|
         user.provider.services.include?(s)
       end
       can :create, Service
       can :send_follow_up, Trip
       can :create, FareZone
+
     end
 
     ## All users have the following permissions, which logically OR with 'can' statements above

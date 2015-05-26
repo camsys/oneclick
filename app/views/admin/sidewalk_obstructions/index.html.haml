@@ -27,7 +27,7 @@
     .panel-body
       = search_form_for @q, id: 'sidewalk_obstructions_search_form', :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
         .form-group
-          = f.search_field "id_or_user_name_or_comment_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+          = f.search_field "user_name_or_comment_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
           = f.submit t(:search), class: 'btn action-button'
       %p
         %select.input-sm#per_page_select

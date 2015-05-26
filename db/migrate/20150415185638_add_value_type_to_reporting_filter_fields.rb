@@ -1,5 +1,7 @@
 class AddValueTypeToReportingFilterFields < ActiveRecord::Migration
   def change
-    add_column :reporting_filter_fields, :value_type, :string
+    unless column_exists? :reporting_filter_fields, :value_type
+      add_column :reporting_filter_fields, :value_type, :string
+    end
   end
 end

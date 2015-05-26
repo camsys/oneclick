@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  use_gtfs_colors: "Use GTFS Colors"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"

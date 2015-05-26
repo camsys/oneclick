@@ -14,16 +14,26 @@ class FareHelper
 
   #Caculate Fare based on stored fare rules
   def calculate_fare_locally(trip_part, itinerary)
-    my_fare = itinerary.service.fare_structures.where(fare_type: 0).order(:base).first
+    is_paratransit = itinerary.service.is_paratransit? rescue false
 
-    if my_fare
-      itinerary.cost = my_fare.base
-      itinerary.cost_comments= my_fare.desc
+    if is_paratransit
+      cost = calculate_paratransit_itinerary_cost(itinerary)
+      if cost
+        itinerary.cost = cost
+        itinerary.save
+      end
     else
-      itinerary.cost_comments = itinerary.service.fare_structures.where(fare_type: 2).pluck(:desc).first
-    end
+      my_fare = itinerary.service.fare_structures.where(fare_type: 0).order(:base).first
 
-    itinerary.save
+      if my_fare
+        itinerary.cost = my_fare.base
+        itinerary.cost_comments= my_fare.desc
+      else
+        itinerary.cost_comments = itinerary.service.fare_structures.where(fare_type: 2).pluck(:desc).first
+      end
+
+      itinerary.save
+    end
   end
 
   #Get the fare from a third-party source (e.g., a booking agent.)
@@ -57,6 +67,75 @@ class FareHelper
       return
     end
 
+  end
+
+  # TODO: needs to be refactored into ParatransitItinerary model
+  def calculate_paratransit_itinerary_cost itinerary
+    fare_structure = itinerary.service.fare_structures.first rescue nil
+
+    if fare_structure
+      case fare_structure.fare_type
+      when FareStructure::FLAT
+        flat_fare = fare_structure.flat_fare
+
+        if flat_fare && flat_fare.one_way_rate
+          fare = flat_fare.one_way_rate.to_f
+        end
+      when FareStructure::MILEAGE
+        mileage_fare = fare_structure.mileage_fare
+        if mileage_fare && mileage_fare.base_rate
+
+          if mileage_fare.mileage_rate
+            trip_part = itinerary.trip_part
+            is_return_trip = trip_part.is_return_trip
+            trip_places = trip_part.trip.trip_places
+            if is_return_trip
+              start_lat = trip_places.last.lat 
+              start_lng = trip_places.last.lon
+              end_lat = trip_places.first.lat 
+              end_lng = trip_places.first.lon
+            else
+              start_lat = trip_places.first.lat 
+              start_lng = trip_places.first.lon
+              end_lat = trip_places.last.lat 
+              end_lng = trip_places.last.lon
+            end
+
+            mileage = TripPlanner.new.get_drive_distance(
+              !trip_part.is_depart, 
+              trip_part.scheduled_time, 
+              start_lat, start_lng, 
+              end_lat, end_lng)
+
+            if mileage
+              fare = mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
+            else
+              fare = mileage_fare.base_rate.to_f
+            end
+          else
+            fare = mileage_fare.base_rate.to_f
+          end
+        end
+      when FareStructure::ZONE
+        is_return_trip = itinerary.trip_part.is_return_trip
+        trip_places = itinerary.trip_part.trip.trip_places
+        if is_return_trip
+          start_lat = trip_places.last.lat 
+          start_lng = trip_places.last.lon
+          end_lat = trip_places.first.lat 
+          end_lng = trip_places.first.lon
+        else
+          start_lat = trip_places.first.lat 
+          start_lng = trip_places.first.lon
+          end_lat = trip_places.last.lat 
+          end_lng = trip_places.last.lon
+        end
+
+        fare = fare_structure.zone_fare(start_lat, start_lng, end_lat, end_lng)
+      end
+    end
+
+    fare
   end
 
 end

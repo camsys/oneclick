@@ -25,11 +25,12 @@
     = render partial: 'shared/page_comments', locals: {key: :review_header_comment}
   #reviewBaseContainer.row
     .col-xs-12.form-group.hidden-md-lg
-      %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
-        %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
-        .mobile-checkbox__checkmark
-        %span{id:'legendCheckbox-label'}
-        = t(:legends)
+      - if Oneclick::Application.config.show_legend == true
+        %label.mobile-checkbox{for: 'legendCheckbox', style: 'margin-right: 5px;'}
+          %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
+          .mobile-checkbox__checkmark
+          %span{id:'legendCheckbox-label'}
+          = t(:legends)
       %label.mobile-checkbox{for: 'filterCheckbox'}
         %input.mobile-input-checkbox{type:'checkbox',id:'filterCheckbox',"aria-labelledby"=>"filterCheckbox-label", "aria-describedby"=>"filterCheckbox-description"}
         .mobile-checkbox__checkmark
@@ -81,7 +82,8 @@
         default_max_wait_time: #{@max_wait_time || "null"},
         default_min_paratransit_count:0,
         default_max_paratransit_count: #{@max_paratransit_count || "null"},
-        current_user_accommodations: #{@current_user_accommodations}
+        current_user_accommodations: #{@current_user_accommodations},
+        show_legend: #{Oneclick::Application.config.show_legend}
       };
 
       //update date names in localized texts for moment js lib

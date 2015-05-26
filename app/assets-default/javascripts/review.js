@@ -307,7 +307,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         registerChartContainerEvents();
 
         //render legend & filter
-        addLegendHtml(_tripResponse.trip_parts);
+        if (filterConfigs.show_legend == true) { addLegendHtml(_tripResponse.trip_parts); }
+        
         addFilterHtml(_tripResponse.trip_parts);
 
         resizePlanColumns();
@@ -764,7 +765,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                         "logo_url": plan.mode_logo_url,
                         "start_time_estimated": plan.start_time_estimated,
                         "end_time_estimated": plan.end_time_estimated,
-                        "service_window": (plan.service_window || 0)
+                        "service_window": (plan.service_window || 0),
+                        "display_color": plan.display_color
                     });
                 }
 
@@ -1440,10 +1442,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var logo_link = tripPlan.logo_link
         var service_icon_link = "";
         if (logo_link.length > 0 ){
-            service_icon_link = "<a href='" + logo_link + "'><img src='" + logoUrl + "'></a>"
+            service_icon_link = "<a href='" + logo_link + "' style='background:url(" + logoUrl + ") no-repeat center;'></a>"
         }
         else{
-            service_icon_link = "<img src='" + logoUrl + "'></a>"
+            service_icon_link = "<a style='background:url(" + logoUrl + ") no-repeat center;'></a>"
         }
         var accommodations = tripPlan.accommodations;
 
@@ -2687,9 +2689,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         if (!isValidObject(tripPlan)) {
             return;
         }
-
-        displayColor = tripPlan.display_color
-
+        
         var tripLegs = tripPlan.legs || [];
         //planId, chartDivId, tripLegs, tripStartTime, tripEndTime, intervalStep, barHeight, serviceName
         if (!tripStartTime instanceof Date || !tripEndTime instanceof Date || !tripLegs instanceof Array || typeof(intervalStep) != 'number' || typeof(barHeight) != 'number') {
@@ -2741,14 +2741,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return "travel-type-" + d.type.toLowerCase();
             })
             .attr('style', function(d) {
-                if (/^#[0-9A-F]{6}$/i.test(displayColor))
-                    return "fill: " + displayColor;  
-                else if (d.display_color) {
-                    if (d.display_color.match(/[\da-fA-F]/g).length == 6) {
-                        return "fill: #" + d.display_color;    
-                    } else {
-                        return "fill: " + d.display_color;
-                    }
+                console.log("DDDDD ===" + JSON.stringify(d))
+                if (d.display_color) {
+                    return "fill: " + d.display_color;
                 }
             })
             .attr("x", function(d) {

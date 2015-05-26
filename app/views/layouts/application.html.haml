@@ -9,20 +9,11 @@
     = javascript_include_tag "javascripts/application"
 
     - if browser.mobile?
-      - if browser.safari?
-        = favicon_link_tag "#{get_favicon_path("mobile")}", rel: 'apple-touch-icon', type: "image/png"
-      - else
-        = favicon_link_tag "#{get_favicon_path("mobile")}"
+      = favicon_link_tag "#{get_favicon_path("mobile")}"
     - elsif browser.tablet?
-      - if browser.safari?
-        = favicon_link_tag "#{get_favicon_path("mobile")}", rel: 'apple-touch-icon', type: "image/png"
-      - else
-        = favicon_link_tag "#{get_favicon_path("tablet")}"
+      = favicon_link_tag "#{get_favicon_path("tablet")}"
     - else
-      - if browser.safari?
-        = favicon_link_tag "#{get_favicon_path}", rel: 'apple-touch-icon', type: "image/png"
-      - else
-        = favicon_link_tag "#{get_favicon_path}"
+      = favicon_link_tag "#{get_favicon_path}"
 
     = csrf_meta_tags
     = yield(:head)

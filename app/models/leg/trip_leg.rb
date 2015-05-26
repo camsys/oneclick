@@ -43,6 +43,8 @@ module Leg
     attr_accessor :steps
     attr_accessor :display_color
 
+    attr_accessor :agency_id
+
     def route
       "n/a"
     end
@@ -60,6 +62,10 @@ module Leg
 
     def duration
       return end_time - start_time
+    end
+
+    def color
+      self.display_color
     end
 
     def trip_steps
