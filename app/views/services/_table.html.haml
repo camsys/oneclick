@@ -7,12 +7,13 @@
       %th= t(:phone)
       %th= t(:email)
       %th= t(:service_id)
+      %th= t(:type)
       %th#status= t(:status)
   %tbody
     - @services.each do |service|
       %tr
         %td
-          =service.id
+          = service.id
         %td
           =link_to service.name, service_path(service.id)
         %td
@@ -23,6 +24,8 @@
         %td= service.phone
         %td= service.email
         %td= service.external_id
+        %td
+          = cms_snippet_content(service.service_type.name)
         %td
           - if service.active == false
             = t(:inactive)
