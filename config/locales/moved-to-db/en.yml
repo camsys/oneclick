@@ -898,6 +898,9 @@ en:
 
   ask_age: "Are you age %{age} or older?"
 
+  # Merging
+  merge: "Merge"
+
   # General Messages
   hello: "Hello"
   id: "ID"

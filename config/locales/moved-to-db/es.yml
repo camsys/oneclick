@@ -860,6 +860,9 @@ es:
   tablet: '[es]Tablet[/es]'
   user_agent: 'user-agent'
 
+    # Merging
+  merge: "[es]Merge[/es]"
+
   # General Messages
   hello: "Hola"
   id: "[es370]ID[/es]"

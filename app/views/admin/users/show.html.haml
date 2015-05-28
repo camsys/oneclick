@@ -45,7 +45,7 @@
         {class: 'btn action-button pull-right', role: 'button'}
     - if can?(:merge, @user)
       = button_tag type: 'button', "data-target" => "#searchForUserToMerge","data-toggle" => "modal", class: "btn action-button" do
-        = "Merge"
+        = "# { I18n.t(:merge) }"
       = render 'find_user_to_merge'
   %h2
     - if @user.deleted_at
