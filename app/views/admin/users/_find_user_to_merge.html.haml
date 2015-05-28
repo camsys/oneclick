@@ -6,11 +6,11 @@
           = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
             = t(:cancel)
           = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
-            = icon_label(:merge)
+            = "Merge"
           .modal-title{:style => "text-align:left;"}
             %b
               = t(:site_title)
         .modal-body{:style => "text-align:left;"}
-          = text_field_tag(:search, params[:search])
+          = text_field_tag(:search, params[:search], size: "57%;")
 
 
