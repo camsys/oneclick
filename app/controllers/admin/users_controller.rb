@@ -164,7 +164,7 @@ class Admin::UsersController < Admin::BaseController
       if booking_alert
         redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."
       else
-        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User merged."
+        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User merged with #{ sub.email }'s account."
       end
 
 
