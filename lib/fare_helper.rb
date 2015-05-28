@@ -1,4 +1,5 @@
 class FareHelper
+  include ActionView::Helpers::NumberHelper
 
   #Check to see if we should calculate the fare locally or use a third-party service.
   def calculate_fare(trip_part, itinerary)
@@ -17,9 +18,9 @@ class FareHelper
     is_paratransit = itinerary.service.is_paratransit? rescue false
 
     if is_paratransit
-      cost = ParatransitItinerary.calculate_fare itinerary
-      if cost
-        itinerary.cost = cost
+      cost = calculate_paratransit_fare itinerary, itinerary.cost
+      if cost && cost[:fare]
+        itinerary.cost = cost[:fare]
         itinerary.save
       end
     else
@@ -69,6 +70,81 @@ class FareHelper
 
   end
 
+  def calculate_paratransit_fare(itinerary, skip_calculation = false)
+    estimated = false
+    price_formatted = nil
+    cost_in_words = ''
+    comments = ''
+    fare = nil
+
+    fare = itinerary.cost
+    fare_structure = itinerary.service.fare_structures.first rescue nil
+    trip_part = itinerary.trip_part
+
+    if fare_structure
+      case fare_structure.fare_type
+      when FareStructure::FLAT
+        flat_fare = fare_structure.flat_fare
+        if !skip_calculation
+          fare = fare_structure.flat_fare_number
+        end
+
+        if fare
+          fare = fare.to_f
+          price_formatted = number_to_currency(fare)
+          cost_in_words = price_formatted
+
+          if flat_fare.round_trip_rate
+            price_formatted +=  '*'
+            comments = "#{I18n.t(:one_way_rate)}: #{number_to_currency(flat_fare.one_way_rate)}; #{I18n.t(:round_trip_rate)}: #{number_to_currency(flat_fare.round_trip_rate)}"
+          end
+        end
+
+      when FareStructure::MILEAGE
+        mileage_fare = fare_structure.mileage_fare
+        estimated = true
+        if !skip_calculation
+          fare = fare_structure.mileage_fare_number(trip_part)
+        end
+
+        if fare
+          if mileage_fare.mileage_rate
+            comments = "#{I18n.t(:base_rate)}: #{number_to_currency(mileage_fare.base_rate)}; #{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
+          else
+            comments = I18n.t(:mileage_rate_not_available)
+          end
+
+          price_formatted = "#{number_to_currency(fare.ceil)}*"
+          cost_in_words = "#{number_to_currency(fare.ceil)} #{I18n.t(:est)}"
+        end
+      when FareStructure::ZONE
+        if !skip_calculation
+          fare = fare_structure.zone_fare_number(trip_part)
+          price_formatted = number_to_currency(fare) if fare 
+        end
+      end
+    end
+
+    if price_formatted.nil? && fare.nil?
+      estimated = true
+      price_formatted = '*'
+      comments = I18n.t(:see_details_for_cost)
+      cost_in_words = I18n.t(:unknown)
+    else
+      if !skip_calculation
+        itinerary.cost = fare
+      end
+    end
+
+    {
+      estimated: estimated,
+      fare: fare,
+      price_formatted: price_formatted,
+      cost_in_words: cost_in_words,
+      comments: comments
+    }
+  end
+
   def get_itinerary_cost itinerary
     estimated = false
     fare =  itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
@@ -78,7 +154,7 @@ class FareHelper
     is_paratransit = itinerary.service.is_paratransit? rescue false
 
     if is_paratransit
-      para_fare = ParatransitItinerary.calculate_fare itinerary, itinerary.cost
+      para_fare = calculate_paratransit_fare itinerary, itinerary.cost
       if para_fare
         estimated = para_fare[:estimated]
         fare = para_fare[:fare]
