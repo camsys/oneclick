@@ -14,12 +14,12 @@ class TripPurpose < ActiveRecord::Base
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
     if include_all
-      list = [[I18n.t(:all), -1]]
+      list = [[TranslationEngine.translate_text(:all), -1]]
     else
       list = []
     end
     ordered_by_localized_name.where(active: true).each do |p|
-      list << [I18n.t(p.name), p.id]
+      list << [TranslationEngine.translate_text(p.name), p.id]
     end
     list
   end

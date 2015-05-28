@@ -46,7 +46,7 @@ protected
   # Validation. Check that the return trip time is well formatted and after the trip time
   def validate_return_trip_time
     if return_trip_datetime && (return_trip_datetime <= outbound_trip_datetime)
-      errors.add(:return_trip_time, I18n.translate(:return_trip_time_before_start))
+      errors.add(:return_trip_time, TranslationEngine.translate_text(:return_trip_time_before_start))
     end
   end
 
@@ -61,7 +61,7 @@ protected
       end
     rescue Exception => e
       puts e
-      errors.add(:return_trip_date, I18n.translate(:date_wrong_format))
+      errors.add(:return_trip_date, TranslationEngine.translate_text(:date_wrong_format))
     end
   end
 
@@ -76,7 +76,7 @@ protected
       end
     rescue Exception => e
       puts e
-      errors.add(:return_trip_time, I18n.translate(:time_wrong_format))
+      errors.add(:return_trip_time, TranslationEngine.translate_text(:time_wrong_format))
     end
   end
 

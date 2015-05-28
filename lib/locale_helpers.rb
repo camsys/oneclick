@@ -18,13 +18,13 @@ module LocaleHelpers
   # return name value pairs suitable for passing to simple_form collection
   def form_collection_from_relation(include_all, relation, translate=true, mark_inactive=false)
     if include_all
-      list = [[I18n.t(:all), -1]]
+      list = [[TranslationEngine.translate_text(:all), -1]]
     else
       list = []
     end
-    inactive_label = " (#{I18n.t(:inactive)})"
+    inactive_label = " (#{TranslationEngine.translate_text(:inactive)})"
     relation.each do |r|
-      name = "#{(translate ? I18n.t(r.name) : r.name)}#{mark_inactive && !r.active ? inactive_label : ''}"
+      name = "#{(translate ? TranslationEngine.translate_text(r.name) : r.name)}#{mark_inactive && !r.active ? inactive_label : ''}"
       list << [name, r.id]
     end
     list

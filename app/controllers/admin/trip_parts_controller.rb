@@ -68,7 +68,7 @@ class Admin::TripPartsController < Admin::BaseController
 
       data.find_each { |row| y << fields.map { |field| 
         if field == :is_return_trip
-          row.send(field) ? I18n.t(:return) : I18n.t(:outbound)
+          row.send(field) ? TranslationEngine.translate_text(:return) : TranslationEngine.translate_text(:outbound)
         else 
           row.send(field)
         end

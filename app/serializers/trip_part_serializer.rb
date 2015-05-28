@@ -24,7 +24,7 @@ class TripPartSerializer < ActiveModel::Serializer
   end
 
   def round_trip trip
-    trip.is_return_trip ? I18n.t(:round_trip) : I18n.t(:one_way)
+    trip.is_return_trip ? TranslationEngine.translate_text(:round_trip) : TranslationEngine.translate_text(:one_way)
   end
 
   def start_time

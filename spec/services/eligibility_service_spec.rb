@@ -20,8 +20,8 @@ describe EligibilityService do
 
   it "generates the missing information structure" do
     options_for_bool = [
-       { text: I18n.t(:yes_str), value: true },
-       { text: I18n.t(:no_str), value: false }
+       { text: TranslationEngine.translate_text(:yes_str), value: true },
+       { text: TranslationEngine.translate_text(:no_str), value: false }
     ]
 
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))

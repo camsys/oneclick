@@ -90,7 +90,7 @@ class Admin::UtilController < Admin::BaseController
     info_msgs = []
     error_msgs = []
     if !can?(:upload_application_logo, :util)
-      error_msgs << t(:not_authorized)
+      error_msgs << TranslationEngine.translate_text(:not_authorized)
     else
       file = params[:logo][:file] if params[:logo]
       
@@ -103,12 +103,12 @@ class Admin::UtilController < Admin::BaseController
         end
 
         if OneclickConfiguration.create_or_update(:ui_logo, uploader.url)
-          info_msgs << t(:logo) + " " + t(:was_successfully_updated)
+          info_msgs << TranslationEngine.translate_text(:logo) + " " + TranslationEngine.translate_text(:was_successfully_updated)
         else
-          error_msgs << t(:failed_to_update_application_logo)
+          error_msgs << TranslationEngine.translate_text(:failed_to_update_application_logo)
         end
       else
-        error_msgs << t(:select_image_to_upload)
+        error_msgs << TranslationEngine.translate_text(:select_image_to_upload)
       end
     end
 
@@ -136,7 +136,7 @@ class Admin::UtilController < Admin::BaseController
     end
 
     if !can?(:upload_favicon, :util)
-      error_msgs << t(:not_authorized)
+      error_msgs << TranslationEngine.translate_text(:not_authorized)
     else
       if params[:favicon]
         file = params[:favicon][:file]
@@ -155,12 +155,12 @@ class Admin::UtilController < Admin::BaseController
         end
 
         if OneclickConfiguration.create_or_update(favicon, uploader.url)
-          info_msgs << t(:favicon) + " " + t(:was_successfully_updated)
+          info_msgs << TranslationEngine.translate_text(:favicon) + " " + TranslationEngine.translate_text(:was_successfully_updated)
         else
-          error_msgs << t(:failed_to_update_favicon)
+          error_msgs << TranslationEngine.translate_text(:failed_to_update_favicon)
         end
       else
-        error_msgs << t(:select_favicon_to_upload)
+        error_msgs << TranslationEngine.translate_text(:select_favicon_to_upload)
       end
     end
 

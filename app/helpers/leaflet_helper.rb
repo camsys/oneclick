@@ -61,13 +61,13 @@ module LeafletHelper
         reject_feedback_url: reject_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         delete_feedback_url: delete_user_sidewalk_obstructions_path({:user_id => current_or_guest_user.id}),
         locale_text: {
-          approve: I18n.t(:approve),
-          reject: I18n.t(:reject),
-          delete: I18n.t(:delete),
-          submit: I18n.t(:submit),
-          cancel: I18n.t(:cancel),
-          remove_by: I18n.t(:remove_by),
-          comments: I18n.t(:comments)
+          approve: TranslationEngine.translate_text(:approve),
+          reject: TranslationEngine.translate_text(:reject),
+          delete: TranslationEngine.translate_text(:delete),
+          submit: TranslationEngine.translate_text(:submit),
+          cancel: TranslationEngine.translate_text(:cancel),
+          remove_by: TranslationEngine.translate_text(:remove_by),
+          comments: TranslationEngine.translate_text(:comments)
         },
         icon_class: SIDEWALK_MARKER_ICON,
         min_visible_zoom: MIN_SIDEWALK_ZOOM
@@ -90,12 +90,12 @@ module LeafletHelper
       show_sidewalk_feedback: show_sidewalk_feedback,
       sidewalk_feedback_options: sidewalk_feedback_options,
       map_control_tooltips: {
-        zoom_in: I18n.t(:zoom_in),
-        zoom_out: I18n.t(:zoom_out),
-        my_location: I18n.t(:center_my_location),
-        display_street_view: I18n.t(:display_street_view),
-        select_location_on_map: I18n.t(:select_location_on_map),
-        add_sidewalk_feedback_on_map: I18n.t(:add_sidewalk_feedback_on_map)
+        zoom_in: TranslationEngine.translate_text(:zoom_in),
+        zoom_out: TranslationEngine.translate_text(:zoom_out),
+        my_location: TranslationEngine.translate_text(:center_my_location),
+        display_street_view: TranslationEngine.translate_text(:display_street_view),
+        select_location_on_map: TranslationEngine.translate_text(:select_location_on_map),
+        add_sidewalk_feedback_on_map: TranslationEngine.translate_text(:add_sidewalk_feedback_on_map)
       }
     }.to_json
 

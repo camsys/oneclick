@@ -16,7 +16,7 @@ module Leg
     end
 
     def short_description
-      desc = [I18n.t(mode.downcase.to_sym), I18n.t(:to), end_place.name].join(' ')
+      desc = [TranslationEngine.translate_text(mode.downcase.to_sym), TranslationEngine.translate_text(:to), end_place.name].join(' ')
     end
 
   end

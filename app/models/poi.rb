@@ -92,7 +92,7 @@ class Poi < GeocodedAddress
       count_bad: count_bad,
       count_possible_existing: count_possible_existing
     }
-    summary_info = I18n.t(:pois_load_summary) % sub_pairs
+    summary_info = TranslationEngine.translate_text(:pois_load_summary) % sub_pairs
     OneclickConfiguration.create_or_update(:poi_last_loading_summary, summary_info)
     OneclickConfiguration.create_or_update(:poi_is_loading, false)
 

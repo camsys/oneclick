@@ -20,7 +20,7 @@ class RatingDecorator < Draper::Decorator
   # Text only rating
   def rating(noblanks = true)
     if value.eql? Rating::DID_NOT_TAKE
-      return I18n.t(:untaken_trip)
+      return TranslationEngine.translate_text(:untaken_trip)
     end
     text = ""
     for i in 1..5

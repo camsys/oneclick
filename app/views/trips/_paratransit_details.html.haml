@@ -2,22 +2,22 @@
   .col-sm-12
     = render partial: 'provider_and_cost_comments', locals: {itinerary: itinerary}
 
-    -if itinerary.missing_information and itinerary.missing_information_text.splitranslate_helper_translate(':').count > 0
+    -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
       %h4
         %i.fa.fa-question-circle
         =translate_helper_translate(:this_service_is_for)
         %ul
-          -itinerary.missing_information_text.splitranslate_helper_translate(':').each do |info|
+          -itinerary.missing_information_text.split(':').each do |info|
             %li
               -count = 0
-              -info.splitranslate_helper_translate(',').each do |i|
+              -info.split(',').each do |i|
                 - count += 1
-                - if info.splitranslate_helper_translate(',').count - 1 == count
+                - if info.split(',').count - 1 == count
                   -if i[0,7] == "age_max" or i[0,7] == "age_min"
                     = translate_helper_translate(i[0,7], age: i[7..-1]) + ' ' + translate_helper_translate(:and) + ' '
                   -else
                     = translate_helper_translate(i) + ' ' + translate_helper_translate(:and) + ' '
-                - elsif info.splitranslate_helper_translate(',').count == count
+                - elsif info.split(',').count == count
                   -if i[0,7] == "age_max" or i[0,7] == "age_min"
                     = translate_helper_translate(i[0,7], age: i[7..-1])
                   -else

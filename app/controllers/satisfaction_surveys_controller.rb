@@ -19,7 +19,7 @@ class SatisfactionSurveysController < ApplicationController
         format.json { render json: @satisfaction_survey }
       else
         format.json { render json: @satisfaction_survey.errors, status: :unprocessable_entity }
-        format.html { redirect_to :back, notice: t(:saving_survey_failed) }
+        format.html { redirect_to :back, notice: TranslationEngine.translate_text(:saving_survey_failed) }
       end
     end
   end
@@ -27,10 +27,10 @@ class SatisfactionSurveysController < ApplicationController
   def update
     if @satisfaction_survey.update(satisfaction_survey_params)
       redirect_to :back
-      flash[:notice] = t(:survey_updated)
+      flash[:notice] = TranslationEngine.translate_text(:survey_updated)
     else
       redirect_to :back
-      flash[:alert] = t(:problem_saving)
+      flash[:alert] = TranslationEngine.translate_text(:problem_saving)
     end
   end
 

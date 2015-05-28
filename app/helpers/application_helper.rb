@@ -129,35 +129,35 @@ module ApplicationHelper
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.001
-      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(4).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     elsif miles < 0.01
-      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(3).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     else
-      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(2).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     end
 
     dist_str
   end
 
   def distance_to_words(dist_in_meters)
-    return t(:n_a) unless dist_in_meters
+    return TranslationEngine.translate_text(:n_a) unless dist_in_meters
 
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.25
-      dist_str = t(:less_than_1_block)
+      dist_str = TranslationEngine.translate_text(:less_than_1_block)
     elsif miles < 0.5
-      dist_str = t(:about_2_blocks)
+      dist_str = TranslationEngine.translate_text(:about_2_blocks)
     elsif miles < 1
-      dist_str = t(:about_4_blocks)
+      dist_str = TranslationEngine.translate_text(:about_4_blocks)
     else
-      dist_str = t(:twof_miles) % [miles]
+      dist_str = TranslationEngine.translate_text(:twof_miles) % [miles]
     end
     dist_str
   end
 
   def duration_to_words(time_in_seconds, options = {})
-    return t(:n_a) unless time_in_seconds
+    return TranslationEngine.translate_text(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
     hours = time_in_seconds/3600
@@ -166,31 +166,31 @@ module ApplicationHelper
     time_string = ''
 
     if time_in_seconds > 60*60*24 and options[:days_only]
-      return I18n.translate(:day, count: hours / 24)
+      return TranslationEngine.translate_text(:day, count: hours / 24)
     end
 
     if hours > 0
       format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
-      time_string << I18n.translate(format, count: hours)  + ' '
+      time_string << TranslationEngine.translate_text(format, count: hours)  + ' '
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << I18n.translate(:minute, count: minutes)
+      time_string << TranslationEngine.translate_text(:minute, count: minutes)
     end
 
     if time_in_seconds < 60
-      time_string = I18n.translate(:less_than_one_minute)
+      time_string = TranslationEngine.translate_text(:less_than_one_minute)
     end
 
     if options[:days_only]
-      time_string = I18n.translate(:day, count: hours/24.round)
+      time_string = TranslationEngine.translate_text(:day, count: hours/24.round)
     end
 
     time_string
   end
 
   def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
-    return t(:n_a) unless (
+    return TranslationEngine.translate_text(:n_a) unless (
       start_time_in_seconds && end_time_in_seconds && 
       (end_time_in_seconds >= start_time_in_seconds)
     )
@@ -198,7 +198,7 @@ module ApplicationHelper
     start_days = start_time_in_seconds/3600/24.round
     end_days = end_time_in_seconds/3600/24.round
 
-    start_days.to_s + " " + I18n.translate(:to).downcase + " " + I18n.translate(:day, count: end_days)
+    start_days.to_s + " " + TranslationEngine.translate_text(:to).downcase + " " + TranslationEngine.translate_text(:day, count: end_days)
   end
 
   def get_boolean(val)
@@ -311,25 +311,25 @@ module ApplicationHelper
     branded_key = [brand, key].join('.')
     if I18n.locale != :tags
       begin
-        if I18n.translate(branded_key, options.merge({raise: true})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true})))
+        if TranslationEngine.translate_text(branded_key, options.merge({raise: true})).class != Array
+          make_translation_safe(TranslationEngine.translate_text(branded_key, options.merge({raise: true})))
         else
-          raw(I18n.translate(branded_key, options.merge({raise: true})))
+          raw(TranslationEngine.translate_text(branded_key, options.merge({raise: true})))
         end
       rescue Exception => e
         begin
-          if I18n.translate(key, options.merge({raise: true})).class != Array
-            make_translation_safe(I18n.translate(key, options.merge({raise: true})))
+          if TranslationEngine.translate_text(key, options.merge({raise: true})).class != Array
+            make_translation_safe(TranslationEngine.translate_text(key, options.merge({raise: true})))
           else
-            raw(I18n.translate(key, options.merge({raise: true})))
+            raw(TranslationEngine.translate_text(key, options.merge({raise: true})))
           end
         rescue Exception => e
           Rails.logger.warn "key: #{key} not found: #{e.inspect}"
           begin
-            if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
-              make_translation_safe(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
+            if TranslationEngine.translate_text(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
+              make_translation_safe(TranslationEngine.translate_text(key,options.merge({raise: true, locale: I18n.default_locale})))
             else
-              raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
+              raw(TranslationEngine.translate_text(key,options.merge({raise: true, locale: I18n.default_locale})))
             end
           rescue Exception => e
             "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
@@ -338,10 +338,10 @@ module ApplicationHelper
       end
     else
       begin
-        if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
+        if TranslationEngine.translate_text(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
+          make_translation_safe(TranslationEngine.translate_text(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
         else
-          raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
+          raw(TranslationEngine.translate_text(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
         end
       rescue Exception => e
         return '[' + key.to_s + ']'
@@ -358,7 +358,7 @@ module ApplicationHelper
   def links_to_each_locale(show_translations = false)
     links = []
     I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
+      links << link_using_locale(TranslationEngine.translate_text("locales.#{l}"), l)
     end
     if show_translations
       links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
@@ -431,11 +431,11 @@ module ApplicationHelper
     defined? key and
     !Translation.where(key: key).first.nil? and
     (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
-    !I18n.t(key).blank?
+    !TranslationEngine.translate_text(key).blank?
   end
 
   def translation_exists?(key_str)
-    translation = I18n.t key_str, :raise => true rescue false
+    translation = TranslationEngine.translate_text key_str, :raise => true rescue false
     if translation
       return !translation.empty?
     else

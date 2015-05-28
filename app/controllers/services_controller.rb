@@ -180,14 +180,14 @@ class ServicesController < ApplicationController
           if temp_endpoints_shapefile.content_type.include?('zip')
             temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
           else
-            zip_alert_msg = t(:upload_zip_alert)
+            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
           end
         end
         unless temp_coverages_shapefile.nil?
           if temp_coverages_shapefile.content_type.include?('zip')
             temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
           else
-            zip_alert_msg = t(:upload_zip_alert)
+            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
           end
         end
 
@@ -210,7 +210,7 @@ class ServicesController < ApplicationController
         if alert_msgs.count > 0
           format.html { redirect_to @service, alert: alert_msgs.join('; ') }
         else
-          format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) }
+          format.html { redirect_to @service, notice: TranslationEngine.translate_text(:service) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         end
         format.json { head :no_content }
       else

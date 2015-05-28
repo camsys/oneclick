@@ -26,13 +26,13 @@ class TripView < ActiveRecord::Base
   # csv related
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:traveler),
-      I18n.t(:trip_date),
-      I18n.t(:from),
-      I18n.t(:to),
-      I18n.t(:trip_purpose),
-      I18n.t(:rating),
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:traveler),
+      TranslationEngine.translate_text(:trip_date),
+      TranslationEngine.translate_text(:from),
+      TranslationEngine.translate_text(:to),
+      TranslationEngine.translate_text(:trip_purpose),
+      TranslationEngine.translate_text(:rating),
     ]
   end
 
