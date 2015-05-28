@@ -321,12 +321,15 @@ protected
     end
 
     fs_attrs = service_params[:fare_structures_attributes]
+
     if fs_attrs[:id]
       fs = FareStructure.find(fs_attrs[:id])
     else
       fs = @service.fare_structures.first
     end
     fs.fare_type == fs_attrs[:fare_type].to_i
+
+    fs.desc = params[:service][:base_fare_structure_desc]
 
     case fs.fare_type
     when FareStructure::FLAT
@@ -337,6 +340,7 @@ protected
         one_way_rate: (flat_fare_attrs[:one_way_rate].to_f if !flat_fare_attrs[:one_way_rate].blank?),
         round_trip_rate: (flat_fare_attrs[:round_trip_rate].to_f if !flat_fare_attrs[:round_trip_rate].blank?)
       }
+
       if !fs.flat_fare
         FlatFare.create flat_fare_params
       else
@@ -356,6 +360,7 @@ protected
         base_rate: (mileage_fare_attrs[:base_rate].to_f if !mileage_fare_attrs[:base_rate].blank? ),
         mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !mileage_fare_attrs[:mileage_rate].blank?)
       }
+
       if !fs.mileage_fare
         MileageFare.create mileage_fare_params
       else
@@ -370,7 +375,7 @@ protected
     when FareStructure::ZONE
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
-      
+
       zone_fares_attrs.each do | fare_attrs |
         next if fare_attrs[:rate].blank?
         fare_params = {
