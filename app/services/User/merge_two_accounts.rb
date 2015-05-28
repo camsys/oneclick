@@ -15,6 +15,7 @@ class User
       @main = user1
       @sub = user2
       @reflections = User.reflect_on_all_associations
+      @join_tables = User::FindUserJoinTables.call
       merge_all_possible
     end
 
@@ -23,7 +24,7 @@ class User
     end
 
     def mergeable?(r)
-      r.macro == :has_many || r.macro == :has_and_belongs_to_many
+      (r.macro == :has_many || r.macro == :has_and_belongs_to_many) && !@join_tables.has_key?(r.name)
     end
 
     def appropriate?(r)
