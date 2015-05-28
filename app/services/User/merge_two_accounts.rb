@@ -20,7 +20,7 @@ class User
     end
 
     def merge_all_possible
-      @reflections.each { |r| merge_association(r) if mergeable?(r) && appropriate?(r) }
+      @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if mergeable?(r) && appropriate?(r) }
     end
 
     def mergeable?(r)
@@ -31,21 +31,21 @@ class User
       @main.respond_to?(r.name) && r.name != :multi_o_d_trips && r.options.has_key?(:through)
     end
 
-    def merge_association(r)
-      unique_to_sub(r).each { |assoc| @main.send(r.name) << assoc.dup }
-    end
+    # def merge_association(r)
+    #   unique_to_sub(r).each { |assoc| @main.send(r.name) << assoc.dup }
+    # end
 
-    def ids_from_main(r)
-      from_main = { }
-      @main.send(r.name).each { |assoc| from_main[assoc.id.to_s] = true }
-      from_main
-    end
+    # def ids_from_main(r)
+    #   from_main = { }
+    #   @main.send(r.name).each { |assoc| from_main[assoc.id.to_s] = true }
+    #   from_main
+    # end
 
-    def unique_to_sub(r)
-      from_main = ids_from_main(r)
-      uniques = @sub.send(r.name).select { |assoc| !from_main.has_key?(assoc.id.to_s) }
-      uniques
-    end
+    # def unique_to_sub(r)
+    #   from_main = ids_from_main(r)
+    #   uniques = @sub.send(r.name).select { |assoc| !from_main.has_key?(assoc.id.to_s) }
+    #   uniques
+    # end
   end
 
 end

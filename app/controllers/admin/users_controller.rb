@@ -147,7 +147,6 @@ class Admin::UsersController < Admin::BaseController
 
     User::MergeTwoAccounts.call(main, sub)
 
-    binding.pry
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
 
     # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
@@ -165,19 +164,12 @@ class Admin::UsersController < Admin::BaseController
       if booking_alert
         redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."
       else
-        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User updated."
+        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User merged."
       end
 
 
     else
-      redirect_to admin_user_path(@user), :alert => "Unable to updated user."
-    end
-
-
-
-    respond_to do |format|
-      format.html { redirect_to admin_user_path(@user) }
-      format.json { head :no_content }
+      redirect_to admin_user_path(@user), :alert => "Unable to merge user."
     end
   end
 
