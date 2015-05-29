@@ -130,6 +130,10 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     @sub = User.find_by(email: params[:search])
 
+    if @sub.nil?
+      redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
+    end
+
     session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
@@ -144,6 +148,11 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     main = @user
     sub = User.find_by(email: params[:user][:sub])
+
+    if sub.nil?
+      redirect_to admin_user_path(@user), :alert => "Could Not Find a User with email address #{ params[:user][:sub] }."
+    end
+
 
     User::MergeTwoAccounts.call(main, sub)
 
