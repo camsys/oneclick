@@ -900,6 +900,10 @@ en:
 
   # Merging
   merge: "Merge"
+  merge_message_1: "Clicking on 'Apply' will merge "
+  merge_message_2: "'s account into "
+  merge_message_3: "'s account.  You may also edit "
+  merge_message_4: "'s account using the fields below."
 
   # General Messages
   hello: "Hello"
