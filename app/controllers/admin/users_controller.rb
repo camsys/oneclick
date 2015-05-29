@@ -149,7 +149,7 @@ class Admin::UsersController < Admin::BaseController
     sub = User.find_by(email: params[:user][:sub])
 
     if sub.nil?
-      redirect_to admin_user_path(@user), :alert => "Could Not Find a User with email address #{ params[:user][:sub] }."
+      redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:user][:sub] }."
     end
 
 

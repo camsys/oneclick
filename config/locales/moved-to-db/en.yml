@@ -900,6 +900,7 @@ en:
 
   # Merging
   merge: "Merge"
+  type_email_to_merge_with: "What is the email email of the account you want to merge with?"
   merge_message_1: "Clicking on 'Apply' will merge "
   merge_message_2: "'s account into "
   merge_message_3: "'s account.  You may also edit "
