@@ -377,7 +377,7 @@ class EcolaneHelpers
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
     default_funding = get_default_funding_source(get_customer_id(itinerary))
-    funding_array = [default_funding] + Oneclick::Application.config.funding_source_order
+    funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
     purpose = itinerary.trip_part.trip.trip_purpose.code
     min_index = 10000

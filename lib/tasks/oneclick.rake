@@ -324,4 +324,18 @@ namespace :oneclick do
     puts 'trips_view is created'
   end
 
+  desc "Create Funding Source Objects for Ecolane/Rabbit"
+  task create_funding_sources: :environment do
+    funding_sources = Oneclick::Application.config.funding_source_order
+    services = Service.where(booking_service_code: "ecolane")
+    services.each do |s|
+      funding_sources.each_with_index do |fs,i|
+        FundingSource.where(code: fs, service: s).first_or_create do |new_fs|
+          new_fs.index = i
+          new_fs.save
+        end
+      end
+    end
+  end
+
 end
