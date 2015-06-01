@@ -13,7 +13,7 @@ class TripView < ActiveRecord::Base
   self.table_name = "trips_view"
   self.primary_key = "id"
 
-  # case insensitive search and sort
+  # case insensitive search and sort  
   ransacker :user_name_case_insensitive, type: :string do
     arel_table[:user_name].lower
   end

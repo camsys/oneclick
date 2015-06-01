@@ -45,6 +45,7 @@
           = f.association :service_type,
                   collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
           = f.input :external_id, label: t(:service_id)
+          = f.input :use_gtfs_colors, label: t(:use_gtfs_colors)
 
     .col-sm-6
       .panel.panel-default.well0
@@ -303,7 +304,13 @@
             = add_tooltip("fare_help")
         .panel-body
           .row_fluid.paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
-            = render partial: 'services/paratransit_fares/form', locals: {fare_structure: @service.fare_structures.first}
+            - fare_structure = @service.fare_structures.first
+            = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare_structure}
+            .row_fluid
+              .col-sm-3
+                = I18n.t('comments')
+              .col-sm-9
+                %input.form-control.text-right{value: fare_structure.desc, name: "service[base_fare_structure_desc]"}
         
           .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
             = f.simple_fields_for :fare_structures do |fare|

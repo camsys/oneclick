@@ -46,7 +46,8 @@ protected
     end
 
     # parse the common properties
-    if obj
+    if obj.present?
+
       obj.distance = leg['distance'].to_f
       obj.start_time = convert_time(leg['startTime'])
       obj.end_time = convert_time(leg['endTime'])
@@ -56,7 +57,7 @@ protected
       obj.end_place = parse_place(leg['to'])
 
       obj.geometry = parse_geometry(leg['legGeometry']) if include_geometry
-      obj.display_color = leg['routeColor'] unless leg['routeColor'].nil? || leg['routeColor'].blank?
+      
     end
 
     return obj
@@ -66,24 +67,34 @@ protected
 
     Rails.logger.debug "Parsing TRANSIT leg"
 
-    sub = Leg::TransitLeg.new
-    sub.mode = leg['mode']
-    sub.agency_name = leg['agencyName']
+    new_transit_leg = Leg::TransitLeg.new
+    new_transit_leg.mode = leg['mode']
+    new_transit_leg.agency_name = leg['agencyName']
     agencyId = leg['agencyId']
-    s = Service.where(external_id: agencyId).first
-    if s
-      sub.agency_id = s.name
+
+    leg_service = Service.where(external_id: agencyId).first
+
+    if leg_service.present?
+      new_transit_leg.agency_id = leg_service.name
+      use_gtfs_color = leg_service.use_gtfs_colors if leg_service.use_gtfs_colors.present?
+      use_gtfs_colors ||= false
+      new_transit_leg.display_color = leg_service.display_color if leg_service.display_color.present?
+      new_transit_leg.display_color ||= leg['routeColor'] unless (leg['routeColor'].nil? || leg['routeColor'].blank? || !leg_service.use_gtfs_colors)
+      if new_transit_leg.display_color.present?
+        new_transit_leg.display_color = "#" + new_transit_leg.display_color if (new_transit_leg.display_color.index("#") != 0)
+      end
     else
-      sub.agency_id = leg['agencyId']
-    end
+      new_transit_leg.agency_id = leg['agencyId']
+    end 
 
-    sub.head_sign = leg['headsign']
-    sub.route = leg['route']
-    sub.route_id = leg['routeId']
-    sub.route_short_name = leg['routeShortName']
-    sub.route_long_name = leg['routeLongName']
+    new_transit_leg.head_sign = leg['headsign']
+    new_transit_leg.route = leg['route']
+    new_transit_leg.route_id = leg['routeId']
+    new_transit_leg.route_short_name = leg['routeShortName']
+    new_transit_leg.route_long_name = leg['routeLongName']
 
-    return sub
+    return new_transit_leg
+
   end
 
   def self.parse_walk_leg(leg)

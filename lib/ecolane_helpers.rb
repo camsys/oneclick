@@ -265,8 +265,6 @@ class EcolaneHelpers
 
   def validate_passenger(customer_number, dob)
 
-    return true, 'George', 'Burdell'
-
     iso_dob = iso8601ify(dob)
     if iso_dob.nil?
       return false, "", ""

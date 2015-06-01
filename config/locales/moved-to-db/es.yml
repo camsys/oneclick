@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  use_gtfs_colors: "Use GTFS Colors"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
@@ -25,6 +26,7 @@ es:
   round_trip_rate: '[es]Round Trip Rate[/es]'
   zone_id: '[es]Zone ID[/es]'
   upload_fare_zones: '[es]Upload Fare Zones[/es]'
+  please_upload_fare_zones: '[es]Please first upload the fare zone shapefile[/es]'
   upload_fare_zones_notes: '[es]Please upload a zipped(.zip) shapefile that contains fare zone polygons[/es]'
   fare_zones_shapefile: '[es]Fare Zones Shapefile(*)[/es]'
   zone_id_column: '[es]Zone ID Column Name(*)[/es]'
@@ -931,6 +933,9 @@ es:
   system_usage: "[es]System Usage[/es]"
   broswer_warning: "[es]Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again.[/es]"
   will_merge_accounts: "[es]Clicking on 'Apply' will  merge the following two accounts:[/es]"
+  reason_for_disabling: "[es]Reason for Deleting:[/es]"
+  why_are_you_deleting: "[es] Why are you deleting[/es]"
+
 
   relationship_status:
     relationship_status_requested: "[es599]Requested[/es]"

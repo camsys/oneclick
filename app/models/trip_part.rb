@@ -114,19 +114,19 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
-
+    
     modes.each do |mode|
       case mode
         # start with the non-OTP modes
       when Mode.taxi
         timed "taxi" do
-          taxi_itineraries = TaxiItinerary.get_taxi_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, trip.user)
+          taxi_itineraries = TaxiItinerary.get_taxi_itineraries(self, [from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, trip.user)
           itins << taxi_itineraries if taxi_itineraries.length > 0
           itins.flatten!
         end
       when Mode.paratransit
         timed "paratransit" do
-          itins += create_paratransit_itineraries
+          itins += ParatransitItinerary.get_itineraries(self)
         end
       when Mode.rideshare
         timed "rideshare" do

@@ -351,6 +351,7 @@ Oneclick::Application.routes.draw do
         member do
           patch 'undelete'
         end
+        resources :trip_parts
       end
       resources :translations
       resources :oneclick_configurations

@@ -23,7 +23,7 @@
         - @services.each do |service|
           %tr
             %td= service.id
-            %td= service.name
+            %td= link_to service.name, service_path(service.id)
             %td= service.provider.name
             %td= cms_snippet_content(service.service_type.name)
             %td

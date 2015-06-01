@@ -10,7 +10,7 @@
     .col-sm-12
       .well.well-sm.comments
         - itinerary.service.public_comments.each do |comment|
-          = comment.comment
+          = comment.comment.html_safe
           %br
 
 - if itinerary.service.fare_structures

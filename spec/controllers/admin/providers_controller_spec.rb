@@ -148,14 +148,14 @@ describe Admin::ProvidersController do
     it "marks the requested provider inactive" do
       provider = Provider.create! create_attributes
       expect {
-        delete :destroy, {:id => provider.to_param}, valid_session
+        delete :destroy, {:id => provider.to_param, :provider => valid_attributes}, valid_session
         provider.reload
       }.to change(provider, :active).from(true).to(false)
     end
 
     it "redirects to the admin_providers list" do
       provider = Provider.create! create_attributes
-      delete :destroy, {:id => provider.to_param}, valid_session
+      delete :destroy, {:id => provider.to_param, :provider => valid_attributes}, valid_session
       response.should redirect_to(admin_providers_url)
     end
   end

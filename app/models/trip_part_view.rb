@@ -10,6 +10,12 @@ class TripPartView < ActiveRecord::Base
   self.primary_key = "id"
 
   # case insensitive search and sort
+  ransacker :is_return_trip do
+    Arel.sql(
+      "case when is_return_trip is true then '#{I18n.t(:return)}' else '#{I18n.t(:outbound)}' end"
+    )
+  end
+
   ransacker :user_name_case_insensitive, type: :string do
     arel_table[:user_name].lower
   end

@@ -13,9 +13,9 @@ class ServicesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @services }
-      format.csv do 
+      format.csv do
         filter_params = params.permit(:bIncludeInactive, :search)
-        
+
         @services = Service.get_exported(@services, filter_params)
 
         render_csv("services.csv", @services, Service.csv_headers)
@@ -226,6 +226,7 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
+    @service.disabled_comment = params[:service][:disabled_comment]
     @service.update_attributes(active: false)
 
     respond_to do |format|
@@ -266,7 +267,7 @@ protected
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
-                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :disabled_comment,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:
@@ -320,12 +321,15 @@ protected
     end
 
     fs_attrs = service_params[:fare_structures_attributes]
+
     if fs_attrs[:id]
       fs = FareStructure.find(fs_attrs[:id])
     else
       fs = @service.fare_structures.first
     end
     fs.fare_type == fs_attrs[:fare_type].to_i
+
+    fs.desc = params[:service][:base_fare_structure_desc]
 
     case fs.fare_type
     when FareStructure::FLAT
@@ -336,6 +340,7 @@ protected
         one_way_rate: (flat_fare_attrs[:one_way_rate].to_f if !flat_fare_attrs[:one_way_rate].blank?),
         round_trip_rate: (flat_fare_attrs[:round_trip_rate].to_f if !flat_fare_attrs[:round_trip_rate].blank?)
       }
+
       if !fs.flat_fare
         FlatFare.create flat_fare_params
       else
@@ -355,6 +360,7 @@ protected
         base_rate: (mileage_fare_attrs[:base_rate].to_f if !mileage_fare_attrs[:base_rate].blank? ),
         mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !mileage_fare_attrs[:mileage_rate].blank?)
       }
+
       if !fs.mileage_fare
         MileageFare.create mileage_fare_params
       else
@@ -369,7 +375,7 @@ protected
     when FareStructure::ZONE
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
-      
+
       zone_fares_attrs.each do | fare_attrs |
         next if fare_attrs[:rate].blank?
         fare_params = {

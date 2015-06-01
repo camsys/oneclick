@@ -73,7 +73,10 @@ Oneclick::Application.configure do
   config.force_ssl = false
 
   #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
-  config.api_activated = true
+  config.api_activated = false
+
+  # the ability to see the legend on the review page
+  config.show_legend = true
 
 
   case ENV['BRAND'] || 'arc'
@@ -129,7 +132,7 @@ Oneclick::Application.configure do
     config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-    config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
+    config.geocoder_bounds = [[25.602294, -80.347081], [26.427309, -80.061728]]
     config.open_trip_planner = "http://otp-fl.camsys-apps.com:8080/otp/routers/fl/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
@@ -165,7 +168,7 @@ Oneclick::Application.configure do
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
-    config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
+    config.geocoder_bounds = [[39.87970800405549,  -76.90189361572266], [40.0262999543423, -76.56372070312499]]
     config.default_zoom = 12
     config.open_trip_planner = "http://otp-pa.camsys-apps.com:8080/otp/routers/pa/plan?"
     config.transit_respects_ada = false
@@ -253,7 +256,7 @@ Oneclick::Application.configure do
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
-    config.geocoder_bounds = [[33.163,-117.874],[36.063,-114.033]]
+    config.geocoder_bounds = [[36.063,-117.874],[33.163,-114.033]]
     config.default_zoom = 12
     config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/ieuw/plan?"
     config.transit_respects_ada = false

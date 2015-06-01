@@ -15,10 +15,9 @@ class Rating < ActiveRecord::Base
   validates :value, :presence => true # What if we allow users to just enter commments/feedback.  Don't require value.  Needs schema change
 
   # custom ransackers
-  ransacker :id do
+  ransacker :value do
     Arel.sql(
-      "regexp_replace(
-        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+      "case when value = #{DID_NOT_TAKE} then '#{I18n.t(:untaken_trip)}' else to_char(\"#{table_name}\".\"value\", '9') end"
     )
   end
   

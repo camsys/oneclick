@@ -1,6 +1,5 @@
 class Admin::TripPartsController < Admin::BaseController
   check_authorization
-  load_and_authorize_resource
 
   def index
     authorize! :access, :admin_trip_parts

@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  use_gtfs_colors: "Use GTFS Colors"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
@@ -45,6 +46,7 @@ en:
   round_trip_rate: 'Round Trip Rate'
   zone_id: 'Zone ID'
   upload_fare_zones: 'Upload Fare Zones'
+  please_upload_fare_zones: 'Please first upload the fare zone shapefile'
   upload_fare_zones_notes: 'Please upload a zipped(.zip) shapefile that contains fare zone polygons'
   fare_zones_shapefile: 'Fare Zones Shapefile(*)'
   zone_id_column: 'Zone ID Column Name(*)'
@@ -969,6 +971,8 @@ en:
   system_usage: "System Usage"
   broswer_warning: "Warning! Your current browser is outdated. While you may still use 1-Click, some of the features may not function. We recommend that you upgrade to the latest version of your browser and try again."
   will_merge_accounts: "Clicking on 'Apply' will  merge the following two accounts:"
+  reason_for_disabling: "Reason for Deleting:"
+  why_are_you_deleting: "Why are you deleting"
 
   relationship_status:
     relationship_status_requested: "Requested"

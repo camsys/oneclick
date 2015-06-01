@@ -18,6 +18,7 @@ ht:
   round_trip_rate: '[ht]Round Trip Rate[/ht]'
   zone_id: '[ht]Zone ID[/ht]'
   upload_fare_zones: '[ht]Upload Fare Zones[/ht]'
+  please_upload_fare_zones: '[ht]Please first upload the fare zone shapefile[/ht]'
   upload_fare_zones_notes: '[ht]Please upload a zipped(.zip) shapefile that contains fare zone polygons[/ht]'
   fare_zones_shapefile: '[ht]Fare Zones Shapefile(*)[/ht]'
   zone_id_column: '[ht]Zone ID Column Name(*)[/ht]'
