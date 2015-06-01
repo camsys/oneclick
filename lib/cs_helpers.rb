@@ -220,12 +220,16 @@ module CsHelpers
       return ""
     end
 
-    is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
-    I18n.locale = I18n.default_locale if is_in_tags
+    #oneclick_short %A, %B %-d
+    #oneclick_long %A, %B %-d %Y
+
+    is_in_tags = I18n.locale == :tags
+    # tags locale cause trouble in datetime localization, here, using default_locale to localize
+    I18n.locale = I18n.default_locale if I18n.locale == :tags
     if date.year == Date.today.year
-      formatted_date = I18n.l date.to_date, :format => :oneclick_short
+      formatted_date = TranslationEngine.localize_date_short_format date.to_date
     else
-      formatted_date = I18n.l date.to_date, :format => :oneclick_long
+      formatted_date = TranslationEngine.localize_date_long_format date.to_date
     end
     I18n.locale = :tags if is_in_tags
 
@@ -235,7 +239,7 @@ module CsHelpers
   def format_time(time)
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
-    formatted_time = I18n.l time, :format => :oneclick_short unless time.nil?
+    formatted_time = TranslationEngine.localize_time(time) unless time.nil?
     I18n.locale = :tags if is_in_tags
 
     formatted_time || ""
