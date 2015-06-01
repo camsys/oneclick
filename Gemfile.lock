@@ -58,6 +58,17 @@ GIT
       activemodel (~> 4.0)
 
 GIT
+  remote: git://github.com/camsys/translation_engine.git
+  revision: a5395d8f1f88f4d7562650a1d3bd171194b1461c
+  specs:
+    translation_engine (0.0.1)
+      honeybadger
+      i18n-active_record
+      pg
+      rails (= 4.0.3)
+      sass-rails
+
+GIT
   remote: git://github.com/camsys/twitter-typeahead-rails.git
   revision: b9e407f9a4224f0840b60a523a2df42eeca7dfe7
   specs:
@@ -644,6 +655,7 @@ DEPENDENCIES
   sprockets (= 2.11.0)
   thin
   timecop
+  translation_engine!
   travis
   twilio-ruby
   twitter-bootstrap-rails-confirm!
