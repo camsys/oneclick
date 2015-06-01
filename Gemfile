@@ -16,6 +16,7 @@ else
 end
 
 gem 'translation_engine', github: 'camsys/translation_engine'
+#gem 'translation_engine', path: '~/code/translation_engine'
 
 gem 'fog'
 gem 'coffee-rails'
