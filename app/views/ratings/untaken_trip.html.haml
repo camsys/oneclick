@@ -18,6 +18,6 @@
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
         = ratings_form.input :comments, label: translate_helper(:comments)
-        - if translation_exists?("comments_help")
+        - if TranslationEngine.translation_exists?("comments_help")
           :javascript
             addHelperTooltip('#comments_label', "#{t(:comments_help)}");

@@ -1,5 +1,5 @@
 - content_for :title, "#{t(:site_title)} - #{t(:plan_a_trip)}"
-- is_splash_available = whether_show_tranlatation_item?(:splash)
+- is_splash_available = TranslationEngine.show_translation_item?(:splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
 - if is_splash_available
@@ -27,7 +27,7 @@
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
 .row
-  - is_splash_available = whether_show_tranlatation_item?(:splash)
+  - is_splash_available = TranslationEngine.show_translation_item?(:splash)
   - non_splash_css = 'col-sm-12'
   - splash_css = ''
   - if is_splash_available
@@ -123,12 +123,12 @@
 
           -if I18n.locale == :tags
             = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
             = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
 

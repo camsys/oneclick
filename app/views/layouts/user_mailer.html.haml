@@ -1,4 +1,4 @@
-- if translation_exists?("generic_email_header")
+- if TranslationEngine.translation_exists?("generic_email_header")
   = translate_helper(:generic_email_header)
 - else
   %img{src: "#{get_logo_path}"}
