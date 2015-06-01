@@ -1,7 +1,7 @@
-= t(:user_itinerary_email_header).to_s
+= translate_helper(:user_itinerary_email_header).to_s
 
 - unless @comments.blank?
-  %h3= t(:comments)
+  %h3= translate_helper(:comments)
   %p= @comments
 
 %hr
@@ -19,7 +19,7 @@
   %tr
     %td{style: "color:grey;"}
       %strong
-        = t(:from) + ':  '
+        = translate_helper(:from) + ':  '
     %td
       %strong
         =@trip.from_place.name
@@ -54,4 +54,4 @@
 
 %hr
 
-= t(:user_itinerary_email_footer).to_s
+= translate_helper(:user_itinerary_email_footer).to_s

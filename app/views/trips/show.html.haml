@@ -9,10 +9,10 @@
           %button#open_survey.btn.action-button{"data-toggle" => "modal", "data-target" => "#satisfaction_survey"}
             %i.fa.fa-thumbs-up
             %i.fa.fa-thumbs-down.fa-flip-horizontal
-            = t(:feedback)
+            = translate_helper(:feedback)
       - else
         = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
-          = t(:feedback)
+          = translate_helper(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
         =t(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -30,12 +30,12 @@
           %input.mobile-input-checkbox{type:'checkbox',id:'legendCheckbox',"aria-labelledby"=>"legendCheckbox-label", "aria-describedby"=>"legendCheckbox-description"}
           .mobile-checkbox__checkmark
           %span{id:'legendCheckbox-label'}
-          = t(:legends)
+          = translate_helper(:legends)
       %label.mobile-checkbox{for: 'filterCheckbox'}
         %input.mobile-input-checkbox{type:'checkbox',id:'filterCheckbox',"aria-labelledby"=>"filterCheckbox-label", "aria-describedby"=>"filterCheckbox-description"}
         .mobile-checkbox__checkmark
         %span{id:'filterCheckbox-label'}
-        = t(:filters)
+        = translate_helper(:filters)
 
     #accessoryContainer.col-md-3.col-xs-12
     / end of filter column
@@ -45,7 +45,7 @@
   .col-xs-12#action_footer{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
       = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
-        = t(:feedback)
+        = translate_helper(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
   .col-sm-12
@@ -59,7 +59,7 @@
         .modal-dialog
           .modal-content
             .modal-header
-              = t(:feedback)
+              = translate_helper(:feedback)
             .modal-body
               = render "satisfaction_surveys/form"
 
