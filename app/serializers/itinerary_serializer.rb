@@ -97,7 +97,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       if !last_leg.nil? && (leg.start_time > (last_leg.end_time + 1.second))
         m <<        {
           type: 'WAIT',
-          description: escape_javascript(I18n.t(:wait_at) + ' '+ last_leg.end_place.name),
+          description: escape_javascript(TranslationEngine.translate_text(:wait_at) + ' '+ last_leg.end_place.name),
           start_time: (last_leg.end_time + 1.second).iso8601,
           end_time: (leg.start_time - 1.second).iso8601,
           start_place: "#{last_leg.end_place.lat},#{last_leg.end_place.lon}",
@@ -163,7 +163,7 @@ class ItinerarySerializer < ActiveModel::Serializer
       total_walk_dist: object.walk_distance, #": "Number Opt", // (feet?)
       total_transit_time: object.transit_time, #": "Number Opt", // (seconds)
       total_wait_time: object.wait_time, #": "Number Opt", // (seconds)
-      duration_in_words: (sortable_duration ? duration_to_words(sortable_duration) : I18n.t(:not_available))
+      duration_in_words: (sortable_duration ? duration_to_words(sortable_duration) : TranslationEngine.translate_text(:not_available))
     }
   end
 
@@ -183,7 +183,7 @@ class ItinerarySerializer < ActiveModel::Serializer
   def accommodations
     case object.mode
     when Mode.paratransit
-      accoms = object.service.accommodations.map{|a| I18n.t(a.name) }
+      accoms = object.service.accommodations.map{|a| TranslationEngine.translate_text(a.name) }
     end
   end
 

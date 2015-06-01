@@ -96,7 +96,7 @@ class FareHelper
 
           if flat_fare.round_trip_rate
             price_formatted +=  '*'
-            comments = "#{I18n.t(:one_way_rate)}: #{number_to_currency(flat_fare.one_way_rate)}; #{I18n.t(:round_trip_rate)}: #{number_to_currency(flat_fare.round_trip_rate)}"
+            comments = "#{TranslationEngine.translate_text(:one_way_rate)}: #{number_to_currency(flat_fare.one_way_rate)}; #{TranslationEngine.translate_text(:round_trip_rate)}: #{number_to_currency(flat_fare.round_trip_rate)}"
           end
         end
 
@@ -109,13 +109,13 @@ class FareHelper
 
         if fare
           if mileage_fare.mileage_rate
-            comments = "#{I18n.t(:base_rate)}: #{number_to_currency(mileage_fare.base_rate)}; #{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
+            comments = "#{TranslationEngine.translate_text(:base_rate)}: #{number_to_currency(mileage_fare.base_rate)}; #{number_to_currency(mileage_fare.mileage_rate)}/mile - " + TranslationEngine.translate_text(:cost_estimated)
           else
-            comments = I18n.t(:mileage_rate_not_available)
+            comments = TranslationEngine.translate_text(:mileage_rate_not_available)
           end
 
           price_formatted = "#{number_to_currency(fare.ceil)}*"
-          cost_in_words = "#{number_to_currency(fare.ceil)} #{I18n.t(:est)}"
+          cost_in_words = "#{number_to_currency(fare.ceil)} #{TranslationEngine.translate_text(:est)}"
         end
       when FareStructure::ZONE
         if !skip_calculation
@@ -128,8 +128,8 @@ class FareHelper
     if price_formatted.nil? && fare.nil?
       estimated = true
       price_formatted = '*'
-      comments = I18n.t(:see_details_for_cost)
-      cost_in_words = I18n.t(:unknown)
+      comments = TranslationEngine.translate_text(:see_details_for_cost)
+      cost_in_words = TranslationEngine.translate_text(:unknown)
     else
       if !skip_calculation
         itinerary.cost = fare
@@ -168,10 +168,10 @@ class FareHelper
         when FareStructure::FLAT
           if fare.base and fare.rate
             estimated = true
-            comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+            comments = "+#{number_to_currency(fare.rate)}/mile - " + TranslationEngine.translate_text(:cost_estimated)
             fare = fare.base.to_f
             price_formatted = number_to_currency(fare.ceil) + '*'
-            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+            cost_in_words = number_to_currency(fare.ceil) + TranslationEngine.translate_text(:est)
           elsif fare.base
             fare = fare.base.to_f
             price_formatted = number_to_currency(fare)
@@ -182,10 +182,10 @@ class FareHelper
         when FareStructure::MILEAGE
             if fare.base
               estimated = true
-              comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
+              comments = "+#{number_to_currency(fare.rate)}/mile - " + TranslationEngine.translate_text(:cost_estimated)
               fare = fare.base.to_f
               price_formatted = number_to_currency(fare.ceil) + '*'
-              cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
+              cost_in_words = number_to_currency(fare.ceil) + TranslationEngine.translate_text(:est)
             else
               fare = nil
             end
@@ -193,14 +193,14 @@ class FareHelper
           fare = nil
           estimated = true
           price_formatted = '*'
-          comments = I18n.t(:see_details_for_cost)
-          cost_in_words = I18n.t(:see_below)
+          comments = TranslationEngine.translate_text(:see_details_for_cost)
+          cost_in_words = TranslationEngine.translate_text(:see_below)
         end
       else
         if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
           Rails.logger.info 'is walk or bicycle, so no charge'
           fare = 0
-          price_formatted = I18n.t(:no_charge)
+          price_formatted = TranslationEngine.translate_text(:no_charge)
           cost_in_words = price_formatted
         else
           case itinerary.mode
@@ -209,15 +209,15 @@ class FareHelper
               fare = fare.ceil
               estimated = true
               price_formatted = number_to_currency(fare) + '*'
-              comments = I18n.t(:cost_estimated)
-              cost_in_words = number_to_currency(fare) + I18n.t(:est)
+              comments = TranslationEngine.translate_text(:cost_estimated)
+              cost_in_words = number_to_currency(fare) + TranslationEngine.translate_text(:est)
             end
           when Mode.rideshare
             fare = nil
             estimated = true
             price_formatted = '*'
-            comments = I18n.t(:see_details_for_cost)
-            cost_in_words = I18n.t(:see_below)
+            comments = TranslationEngine.translate_text(:see_details_for_cost)
+            cost_in_words = TranslationEngine.translate_text(:see_below)
           end
         end
       end
@@ -228,7 +228,7 @@ class FareHelper
         fare = fare.to_f
         if fare == 0
           Rails.logger.info 'no charge as fare is 0'
-          price_formatted = I18n.t(:no_charge)
+          price_formatted = TranslationEngine.translate_text(:no_charge)
           cost_in_words = price_formatted
         else
           price_formatted = number_to_currency(fare)
@@ -237,8 +237,8 @@ class FareHelper
       else
         estimated = true
         price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-        cost_in_words = I18n.t(:unknown)
+        comments = TranslationEngine.translate_text(:see_details_for_cost)
+        cost_in_words = TranslationEngine.translate_text(:unknown)
       end
     end
 

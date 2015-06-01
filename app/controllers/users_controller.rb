@@ -217,7 +217,7 @@ class UsersController < ApplicationController
 
     if user.nil?
       success = false
-      msg = I18n.t(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
+      msg = TranslationEngine.translate_text(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
       msg = TranslationEngine.translate_text(:you_can_t_be_your_own_buddy)
@@ -231,7 +231,7 @@ class UsersController < ApplicationController
       row = [
               user.name,
               user.email,
-              I18n.t('relationship_status.relationship_status_pending'),
+              TranslationEngine.translate_text('relationship_status.relationship_status_pending'),
               UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end

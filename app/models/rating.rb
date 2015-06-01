@@ -17,7 +17,7 @@ class Rating < ActiveRecord::Base
   # custom ransackers
   ransacker :value do
     Arel.sql(
-      "case when value = #{DID_NOT_TAKE} then '#{I18n.t(:untaken_trip)}' else to_char(\"#{table_name}\".\"value\", '9') end"
+      "case when value = #{DID_NOT_TAKE} then '#{TranslationEngine.translate_text(:untaken_trip)}' else to_char(\"#{table_name}\".\"value\", '9') end"
     )
   end
   

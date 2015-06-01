@@ -92,13 +92,13 @@ class Schedule < ActiveRecord::Base
 protected
   
   def times_valid_present_and_start_before_end
-    errors.add(:"#{day_of_week}start_time", I18n.t(:presence_msg)) if !@start_time_present && @end_time_present
-    errors.add(:"#{day_of_week}end_time", I18n.t(:presence_msg)) if !@end_time_present && @start_time_present
-    errors.add(:"#{day_of_week}start_time", I18n.t(:valid_time_msg)) if @start_time_present && !@start_time_valid
-    errors.add :"#{day_of_week}end_time", I18n.t(:valid_time_msg) if @end_time_present && !@end_time_valid
+    errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:presence_msg)) if !@start_time_present && @end_time_present
+    errors.add(:"#{day_of_week}end_time", TranslationEngine.translate_text(:presence_msg)) if !@end_time_present && @start_time_present
+    errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:valid_time_msg)) if @start_time_present && !@start_time_valid
+    errors.add :"#{day_of_week}end_time", TranslationEngine.translate_text(:valid_time_msg) if @end_time_present && !@end_time_valid
       
     if @start_time_valid && @end_time_valid
-      errors.add(:"#{day_of_week}start_time", I18n.t(:before_msg) + I18n.t(:end_time)) if (start_seconds > end_seconds)
+      errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:before_msg) + TranslationEngine.translate_text(:end_time)) if (start_seconds > end_seconds)
 
     end
   end

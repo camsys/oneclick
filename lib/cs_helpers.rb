@@ -268,39 +268,39 @@ module CsHelpers
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
-      I18n.t(:rail)
+      TranslationEngine.translate_text(:rail)
     elsif mode_code == 'railbus'
-      I18n.t(:rail_and_bus)
+      TranslationEngine.translate_text(:rail_and_bus)
     elsif mode_code == 'bus'
-      I18n.t(:bus)
+      TranslationEngine.translate_text(:bus)
     elsif mode_code == 'drivetransit'
-      I18n.t(:drive_and_transit)
+      TranslationEngine.translate_text(:drive_and_transit)
     elsif mode_code == 'transit'
-      I18n.t(:transit)
+      TranslationEngine.translate_text(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:mode_paratransit_name)
+      TranslationEngine.translate_text(:mode_paratransit_name)
     elsif mode_code == 'volunteer'
-      I18n.t(:volunteer)
+      TranslationEngine.translate_text(:volunteer)
     elsif mode_code == 'non-emergency medical service'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
     elsif mode_code == 'nemt'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
     elsif mode_code == 'dial_a_ride'
-      I18n.t(:dial_a_ride)
+      TranslationEngine.translate_text(:dial_a_ride)
     elsif mode_code == 'tap'
-      I18n.t(:tap)
+      TranslationEngine.translate_text(:tap)
     elsif mode_code == 'livery'
-      I18n.t(:car_service)
+      TranslationEngine.translate_text(:car_service)
     elsif mode_code == 'taxi'
-      I18n.t(:taxi)
+      TranslationEngine.translate_text(:taxi)
     elsif mode_code == 'rideshare'
-      I18n.t(:rideshare)
+      TranslationEngine.translate_text(:rideshare)
     elsif mode_code == 'walk'
-      I18n.t(:walk)
+      TranslationEngine.translate_text(:walk)
     elsif mode_code == 'car'
-      I18n.t(:drive)
+      TranslationEngine.translate_text(:drive)
     elsif mode_code == 'bicycle'
-      I18n.t(:bicycle)
+      TranslationEngine.translate_text(:bicycle)
     end
     return title
   end

@@ -62,7 +62,7 @@ class TripsController < PlaceSearchingController
 
     @current_user_accommodations = []
     User.find(params[:user_id]).user_accommodations.where(value: "true").each do |acc|
-      @current_user_accommodations << I18n.t(Accommodation.find(acc.accommodation_id).name).downcase
+      @current_user_accommodations << TranslationEngine.translate_text(Accommodation.find(acc.accommodation_id).name).downcase
     end
 
     @satisfaction_survey = SatisfactionSurvey.new
@@ -152,7 +152,7 @@ class TripsController < PlaceSearchingController
 
       session[:multi_od_trip_edited] = false
     else
-      flash.now[:alert] = I18n.t(:something_went_wrong)
+      flash.now[:alert] = TranslationEngine.translate_text(:something_went_wrong)
     end
 
     respond_to do |format|

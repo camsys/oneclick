@@ -37,12 +37,12 @@ class UsersDatatable
 private
   def self.localized_column_names
     [
-      I18n.t(:id),
-      I18n.t(:username),
-      I18n.t(:email),
-      I18n.t(:registered),
-      I18n.t(:roles),
-      I18n.t(:status)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:username),
+      TranslationEngine.translate_text(:email),
+      TranslationEngine.translate_text(:registered),
+      TranslationEngine.translate_text(:roles),
+      TranslationEngine.translate_text(:status)
     ]
   end
 
@@ -53,7 +53,7 @@ private
       user.email,
       user.created_at.to_date,
       user.roles.collect(&:human_readable_name).to_sentence,
-      user.deleted_at ? I18n.t(:user_deleted) : ''
+      user.deleted_at ? TranslationEngine.translate_text(:user_deleted) : ''
     ]
   end
 
@@ -65,7 +65,7 @@ private
         user.email,
         user.created_at.to_date,
         user.roles.collect(&:human_readable_name).to_sentence,
-        user.deleted_at ? I18n.t(:user_deleted) : ''
+        user.deleted_at ? TranslationEngine.translate_text(:user_deleted) : ''
       ]
     end
   end

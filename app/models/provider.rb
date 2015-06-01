@@ -61,9 +61,9 @@ class Provider < ActiveRecord::Base
 
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:name),
-      I18n.t(:status)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:status)
     ]
   end
 
@@ -71,7 +71,7 @@ class Provider < ActiveRecord::Base
     [
       id,
       name,
-      active ? '' : I18n.t(:inactive)
+      active ? '' : TranslationEngine.translate_text(:inactive)
     ].to_csv
   end
 

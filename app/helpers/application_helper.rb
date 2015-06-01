@@ -128,11 +128,11 @@ module ApplicationHelper
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.001
-      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(4).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     elsif miles < 0.01
-      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(3).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     else
-      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(2).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     end
 
     dist_str

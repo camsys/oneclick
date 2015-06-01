@@ -35,7 +35,7 @@ class ItineraryDecorator < Draper::Decorator
     return format_date(itinerary_start_time + (itinerary_end_time - itinerary_start_time) / 2) if (itinerary_start_time && itinerary_end_time)
     return format_date(itinerary_start_time) if (itinerary_start_time)
     return format_date(itinerary_end_time) if (itinerary_end_time)
-    return I18n.t(:not_available)
+    return TranslationEngine.translate_text(:not_available)
   end
 
   def time_range_in_words
@@ -43,20 +43,20 @@ class ItineraryDecorator < Draper::Decorator
     when 'mode_taxi'
       itinerary_start_time =get_itinerary_start_time(object)
       itinerary_end_time = get_itinerary_end_time(object)
-      return format_time(itinerary_start_time) + ' ' + I18n.t(:to) + ' ' + format_time(itinerary_end_time) if (itinerary_start_time && itinerary_end_time)
-      return I18n.t(:not_available)
+      return format_time(itinerary_start_time) + ' ' + TranslationEngine.translate_text(:to) + ' ' + format_time(itinerary_end_time) if (itinerary_start_time && itinerary_end_time)
+      return TranslationEngine.translate_text(:not_available)
     else
-      return format_time(start_time) + ' ' + I18n.t(:to) + ' ' + format_time(end_time) if (start_time && end_time)
-      return I18n.t(:not_available)
+      return format_time(start_time) + ' ' + TranslationEngine.translate_text(:to) + ' ' + format_time(end_time) if (start_time && end_time)
+      return TranslationEngine.translate_text(:not_available)
     end
   end
 
   def notes
     case mode.code
     when 'mode_transit', 'mode_car', 'mode_bicycle', 'mode_walk'
-      I18n.t(:no_str)
+      TranslationEngine.translate_text(:no_str)
     when 'mode_taxi'
-      I18n.t(:yes_str)
+      TranslationEngine.translate_text(:yes_str)
     when 'mode_paratransit'
       # h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
       h.day_range_to_words(service.advanced_notice_minutes*60, service.max_advanced_book_minutes*60)
@@ -70,11 +70,11 @@ class ItineraryDecorator < Draper::Decorator
   def notes_label
     case mode.code
     when 'mode_rideshare'
-      I18n.t(:note)
+      TranslationEngine.translate_text(:note)
     when 'mode_transit', 'mode_taxi', 'mode_paratransit', 'mode_car', 'mode_bicycle', 'mode_walk'
-      I18n.t(:book_ahead)
+      TranslationEngine.translate_text(:book_ahead)
     else
-      I18n.t(:note)
+      TranslationEngine.translate_text(:note)
     end
   end
 
@@ -83,7 +83,7 @@ class ItineraryDecorator < Draper::Decorator
   end
 
   def transfers_in_words
-    transfers || I18n.t(:none)
+    transfers || TranslationEngine.translate_text(:none)
     # I18n.translate(:transfer, count: i.transfers)
   end
 
