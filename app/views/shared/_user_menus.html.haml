@@ -2,7 +2,7 @@
   %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
     %i.fa.fa-user
     - unless is_assisting
-      = "#{t(:welcome)}, #{get_traveler.welcome}"
+      = "#{translate_helper(:welcome)}, #{get_traveler.welcome}"
     - else
       = translate_helper(:assisting_assisted_user_email, assisted_user: @traveler.name)
     %b.caret
