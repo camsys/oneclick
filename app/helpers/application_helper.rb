@@ -102,7 +102,7 @@ module ApplicationHelper
     TripPurpose.all.each do |tp|
       elems << {
         :id => tp.id,
-        :value => t(tp.name)
+        :value => TranslationEngine.translate_text(tp.name)
       }
     end
     return elems
@@ -139,24 +139,24 @@ module ApplicationHelper
   end
 
   def distance_to_words(dist_in_meters)
-    return t(:n_a) unless dist_in_meters
+    return TranslationEngine.translate_text(:n_a) unless dist_in_meters
 
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.25
-      dist_str = t(:less_than_1_block)
+      dist_str = TranslationEngine.translate_text(:less_than_1_block)
     elsif miles < 0.5
-      dist_str = t(:about_2_blocks)
+      dist_str = TranslationEngine.translate_text(:about_2_blocks)
     elsif miles < 1
-      dist_str = t(:about_4_blocks)
+      dist_str = TranslationEngine.translate_text(:about_4_blocks)
     else
-      dist_str = t(:twof_miles) % [miles]
+      dist_str = TranslationEngine.translate_text(:twof_miles) % [miles]
     end
     dist_str
   end
 
   def duration_to_words(time_in_seconds, options = {})
-    return t(:n_a) unless time_in_seconds
+    return TranslationEngine.translate_text(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
     hours = time_in_seconds/3600
@@ -189,7 +189,7 @@ module ApplicationHelper
   end
 
   def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
-    return t(:n_a) unless (
+    return TranslationEngine.translate_text(:n_a) unless (
       start_time_in_seconds && end_time_in_seconds && 
       (end_time_in_seconds >= start_time_in_seconds)
     )
@@ -306,100 +306,6 @@ module ApplicationHelper
     html.html_safe
   end
 
-  def t(key, options={})
-    branded_key = [brand, key].join('.')
-    if I18n.locale != :tags
-      begin
-        if I18n.translate(branded_key, options.merge({raise: true})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true})))
-        else
-          raw(I18n.translate(branded_key, options.merge({raise: true})))
-        end
-      rescue Exception => e
-        begin
-          if I18n.translate(key, options.merge({raise: true})).class != Array
-            make_translation_safe(I18n.translate(key, options.merge({raise: true})))
-          else
-            raw(I18n.translate(key, options.merge({raise: true})))
-          end
-        rescue Exception => e
-          Rails.logger.warn "key: #{key} not found: #{e.inspect}"
-          begin
-            if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
-              make_translation_safe(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
-            else
-              raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
-            end
-          rescue Exception => e
-            "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
-          end
-        end
-      end
-    else
-      begin
-        if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
-        else
-          raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
-        end
-      rescue Exception => e
-        return '[' + key.to_s + ']'
-      end
-
-      return '[' + branded_key.to_s + ']'
-    end
-  end
-
-  def make_translation_safe(translation)
-    translation.to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br> ').html_safe
-  end
-
-  def links_to_each_locale(show_translations = false)
-    links = []
-    I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
-    end
-    if show_translations
-      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
-    end
-
-    return '' if links.size <= 1
-
-    links.join(' | ').html_safe
-  end
-
-  def link_using_locale link_text, locale
-    path = session[:location] || request.fullpath
-    parts = path.split('/', 3)
-
-    current_locale = I18n.available_locales.detect do |l|
-      parts[1] == l.to_s
-    end
-    parts.delete_at(1) if current_locale or I18n.locale == :tags
-    parts = parts.join('/')
-    parts = '' if parts=='/'
-    newpath = "/#{locale}#{parts}"
-
-    if (newpath == path) or
-      (newpath == "/#{I18n.locale}#{path}") or
-      (newpath == "/#{I18n.locale}")
-      link_text
-    else
-      link_to link_text, newpath
-    end
-  end
-
-  def link_without_locale link_text
-    parts = link_text.split('/', 3)
-    has_locale = I18n.available_locales.detect do |l|
-      parts[1] == l.to_s
-    end
-    parts.delete_at(1) if has_locale
-    parts = parts.join('/')
-    return '/' if parts.empty?
-    parts
-  end
-
   def at_root
     (request.path == root_path) or
     (link_without_locale(request.path) == root_path)
@@ -424,30 +330,12 @@ module ApplicationHelper
     end
   end
 
-  # non-tag locale: the key must be defined, and content is not blank
-  # tag locale: key must be defined
-  def whether_show_tranlatation_item? key
-    defined? key and
-    !Translation.where(key: key).first.nil? and
-    (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
-    !I18n.t(key).blank?
-  end
-
-  def translation_exists?(key_str)
-    translation = I18n.t key_str, :raise => true rescue false
-    if translation
-      return !translation.empty?
-    else
-      return false
-    end
-  end
-
   def add_tooltip(key)
     if translation_exists?(key)
       html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
-      html << t(key.to_sym)
+      html << TranslationEngine.translate_text(key.to_sym)
       html << '" aria-label="'
-      html << t(key.to_sym)
+      html << TranslationEngine.translate_text(key.to_sym)
       html << '" tabindex="0"></i>'
       return html.html_safe
     end
