@@ -2,7 +2,6 @@ class Agency < ActiveRecord::Base
   include DisableCommented
   include Rateable # mixin to handle all rating methods
   include Commentable
-  extend LocaleHelpers
   resourcify
 
   belongs_to :parent, class_name: 'Agency'

@@ -4,7 +4,6 @@ module ApplicationHelper
   MILE_TO_FEET = 5280
 
   include CsHelpers
-  include LocaleHelpers
 
   KIOSK_ICON_DICTIONARY = {
     Leg::TripLeg::WALK => 'travelcon-walk',

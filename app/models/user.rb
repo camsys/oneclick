@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   include DisableCommented
   include ActiveModel::Validations
-  extend LocaleHelpers
 
   # enable roles for this model
   rolify

@@ -4,7 +4,6 @@ class Provider < ActiveRecord::Base
   include DisableCommented
   include Rateable
   include Commentable
-  extend LocaleHelpers
   resourcify
 
   mount_uploader :logo, ProviderLogoUploader
