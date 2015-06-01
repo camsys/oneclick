@@ -1,11 +1,11 @@
 - if translation_exists?("printer_friendly_header")
-  = translate_helper_translate(:printer_friendly_header)
+  = translate_helper(:printer_friendly_header)
 - else
   %img{src: "#{get_logo_path}"}
   %br
   %h1{:style => 'display:inline;vertical-align:middle;'}
     %strong
-      = translate_helper_translate(:site_title)
+      = translate_helper(:site_title)
 
 %hr
 
@@ -13,21 +13,21 @@
   %tr
     %td{style: "color:grey;"}
       %strong
-        = translate_helper_translate(:from) + ':  '
+        = translate_helper(:from) + ':  '
     %td
       %strong
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
       %strong
-        =translate_helper_translate(:to) + ':  '
+        =translate_helper(:to) + ':  '
     %td
       %strong
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
       %strong
-        =translate_helper_translate(:at_time)
+        =translate_helper(:at_time)
     %td
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
@@ -39,7 +39,7 @@
 %hr{style: "height:12px; background:#848484;"}
 
 - if translation_exists?("printer_friendly_footer")
-  = translate_helper_translate(:printer_friendly_footer)
+  = translate_helper(:printer_friendly_footer)
 - else
   %table
     %tbody

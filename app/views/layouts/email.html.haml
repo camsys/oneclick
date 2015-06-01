@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %meta{:content => content_for?(:description) ? yield(:description) : translate_helper_translate(:site_description), :name => "description"}
+    %meta{:content => content_for?(:description) ? yield(:description) : translate_helper(:site_description), :name => "description"}
   %body{:class => "#{controller_name} #{action_name}"}
     .email_header
       = yield(:header)
@@ -9,5 +9,5 @@
       = yield
     .footer
       %p Copyrightranslate_helper_translate(c) mycompany.com
-      %p=translate_helper_translate(:do_not_reply)
+      %p=translate_helper(:do_not_reply)
              

@@ -3,7 +3,7 @@
     .col-sm-12
       %a
         %h2
-          = translate_helper_translate(:return)
+          = translate_helper(:return)
   .row.itineraries_holder
     = render :partial => 'trip_itineraries', :locals => {:itineraries => return_itineraries(@show_hidden),
       trip_part: @trip.return_part }

@@ -1,4 +1,4 @@
-- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:trip_summaries)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:trip_summaries)}"
 - if !@is_plan_valid
   - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -15,7 +15,7 @@
   - if @assisting_agency
     .col-xs-12.well{style: "padding: 5px;"}
       .col-sm-12{style: "padding: 0px;"}
-        =translate_helper_translate(:trip_planned_assistance)
+        =translate_helper(:trip_planned_assistance)
         %b=@assisting_agency.name
       -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
@@ -39,7 +39,7 @@
         .modal-dialog
           .modal-content
             .modal-header
-              = translate_helper_translate(:feedback)
+              = translate_helper(:feedback)
             .modal-body
               = render "satisfaction_surveys/form"
 
@@ -68,7 +68,7 @@
           },3000);
         }, 1);
         window.onbeforeunload = dontShowPopup;
-        return "#{translate_helper_translate(:did_not_take_feedback_prompt)} #{translate_helper_translate(:stay_on_page)}";
+        return "#{translate_helper(:did_not_take_feedback_prompt)} #{translate_helper(:stay_on_page)}";
       }
       function dontShowPopup() { }
 
@@ -92,7 +92,7 @@
         success: function() {
           $('#satisfaction_survey .modal-header').remove();
           $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
-          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper_translate(:success)}</strong>");
+          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper(:success)}</strong>");
           setTimeoutranslate_helper_translate(function(){
             $('#satisfaction_survey').modal('hide');
           }, 1000);

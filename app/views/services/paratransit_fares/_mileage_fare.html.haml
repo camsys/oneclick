@@ -1,20 +1,20 @@
-%b= translate_helper_translate(:fare_type) + ": " + translate_helper_translate(:mileage_fare)
+%b= translate_helper(:fare_type) + ": " + translate_helper(:mileage_fare)
 
 - if fare
   .row_fluid
-    %b= translate_helper_translate(:base_rate) + ": "
+    %b= translate_helper(:base_rate) + ": "
     -if fare.base_rate
       = number_to_currency(fare.base_rate.to_f).to_s
     -else
-      = translate_helper_translate(:base_fare_unavailable) + "."
+      = translate_helper(:base_fare_unavailable) + "."
 
   - if fare.mileage_rate
     .row_fluid
-      %b= translate_helper_translate(:mileage_rate) + ": "
+      %b= translate_helper(:mileage_rate) + ": "
       - if fare.mileage_rate
         = number_to_currency(fare.mileage_rate.to_f).to_s
       - else
-        = translate_helper_translate(:n_a)
+        = translate_helper(:n_a)
 - else
   .row_fluid
-    = translate_helper_translate(:fare_unavailable) + "."
+    = translate_helper(:fare_unavailable) + "."

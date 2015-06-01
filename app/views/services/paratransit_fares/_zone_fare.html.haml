@@ -1,4 +1,4 @@
-%b= translate_helper_translate(:fare_type) + ": " + translate_helper_translate(:zone_fare)
+%b= translate_helper(:fare_type) + ": " + translate_helper(:zone_fare)
 
 - if fares.count > 0
   - zones = {}
@@ -15,7 +15,7 @@
   %table.table.table-condensed.table-striped.table-bordered.table-hover
     %thead
       %tr
-        %th= translate_helper_translate(:zone_id)
+        %th= translate_helper(:zone_id)
         - zones.each do |zone_id, id|
           %th= zone_id
     %tbody
@@ -29,7 +29,7 @@
               - if rate
                 = number_to_currency(rate.to_f).to_s
               - else
-                = translate_helper_translate(:n_a)
+                = translate_helper(:n_a)
 - else
   .row_fluid
-    = translate_helper_translate(:fare_unavailable) + "."
+    = translate_helper(:fare_unavailable) + "."

@@ -175,7 +175,7 @@ module ApplicationHelper
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << TranslationEngine.translate_text(:minute, count: minutes)
+      time_string << TranslationEngine.translate_text(:minute)
     end
 
     if time_in_seconds < 60

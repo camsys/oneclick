@@ -7,11 +7,11 @@
             .col-sm-12
               %h3.panel-title
                 .btns.pull-right
-                  = f.submit translate_helper_translate(:ok), class: 'btn action-button', role: 'button'
-                = translate_helper_translate(:upload_application_logo)
+                  = f.submit translate_helper(:ok), class: 'btn action-button', role: 'button'
+                = translate_helper(:upload_application_logo)
                 = add_tooltip("upload_application_logo_help")
         .panel-body
           = f.error_notification message: print_messages(f)
           %label
-            = translate_helper_translate(:upload_application_logo_notes)
-          = f.input "file", required:true, :label => translate_helper_translate(:select_logo_image_to_upload),:as => :file
+            = translate_helper(:upload_application_logo_notes)
+          = f.input "file", required:true, :label => translate_helper(:select_logo_image_to_upload),:as => :file

@@ -1,23 +1,23 @@
-- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:providers)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:providers)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
       - if can? :create, Provider
-        = link_to translate_helper_translate(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
-      = button_tag translate_helper_translate(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
-    %h1= translate_helper_translate(:providers)
+        = link_to translate_helper(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
+    %h1= translate_helper(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = translate_helper_translate(:providers)
+      = translate_helper(:providers)
       = add_tooltip("providers_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
       %thead
         %tr
-          %th= translate_helper_translate(:id)
-          %th= translate_helper_translate(:name)
-          %th#status= translate_helper_translate(:status)
+          %th= translate_helper(:id)
+          %th= translate_helper(:name)
+          %th#status= translate_helper(:status)
           %th
       %tbody
         - @providers.each do |provider|
@@ -26,10 +26,10 @@
             %td= link_to provider.name, admin_provider_path(provider)
             %td
               - if provider.active == false
-                = translate_helper_translate(:inactive)
+                = translate_helper(:inactive)
 
             %td.center
               = link_to admin_provider_services_path(provider) do
-                = translate_helper_translate(:services)
+                = translate_helper(:services)
 
 = render partial: 'admin/shared/datatable_js', locals: {key: 'admin_providers', entity: 'providers'}

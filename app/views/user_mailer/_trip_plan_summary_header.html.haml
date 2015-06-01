@@ -4,17 +4,17 @@
   %table{style: "width: 100%; text-align: center;"}
     %thead
       %tr
-        %th.sr-only{:style => "text-align: left;"}= translate_helper_translate(:mode)
-        %th= translate_helper_translate(:fare)
-        %th= translate_helper_translate(:trip_date)
-        %th= translate_helper_translate(:trip_time)
-        %th= translate_helper_translate(:walk_time)
-        %th= translate_helper_translate(:transfers)
+        %th.sr-only{:style => "text-align: left;"}= translate_helper(:mode)
+        %th= translate_helper(:fare)
+        %th= translate_helper(:trip_date)
+        %th= translate_helper(:trip_time)
+        %th= translate_helper(:walk_time)
+        %th= translate_helper(:transfers)
     %tbody
       %tr
         %td{:width => '20%', :style => "text-align: left;"}
           %img{:src => logo_url_helper(i)}
-          .sr-only= translate_helper_translate(i.mode)
+          .sr-only= translate_helper(i.mode)
         %td{:width => '15%'}
           .itinerary_text
             = i.cost_in_words

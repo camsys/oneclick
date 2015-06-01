@@ -1,22 +1,22 @@
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to translate_helper_translate(:create), new_admin_user_path,{class: 'btn action-button', role: 'button'}
-    %h1= translate_helper_translate(:find_traveler)
+      = link_to translate_helper(:create), new_admin_user_path,{class: 'btn action-button', role: 'button'}
+    %h1= translate_helper(:find_traveler)
 
 -if @pre_auth_travelers
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = translate_helper_translate(:authorized_travelers)
+        = translate_helper(:authorized_travelers)
         = add_tooltip("authorized_travelers_help")
     .panel-body
       %table.table.table-condensed.table-striped.table-bordered.table-hover#preauth_travelers_table
         %thead
           %tr
-            %th.col-sm-4= translate_helper_translate(:name)
-            %th.col-sm-4= translate_helper_translate(:email)
-            %th.col-sm-4= translate_helper_translate(:registered)
+            %th.col-sm-4= translate_helper(:name)
+            %th.col-sm-4= translate_helper(:email)
+            %th.col-sm-4= translate_helper(:registered)
         %tbody
           - @pre_auth_travelers.each do |traveler|
             %tr

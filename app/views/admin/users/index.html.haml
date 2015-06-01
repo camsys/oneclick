@@ -1,25 +1,25 @@
-- content_for :title, "#{translate_helper_translate(:site_title)} - #{translate_helper_translate(:users)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:users)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to translate_helper_translate(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
-      = button_tag translate_helper_translate(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
-    %h1= translate_helper_translate(:users)
+      = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
+    %h1= translate_helper(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = translate_helper_translate(:users)
+      = translate_helper(:users)
       = add_tooltip("users_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead
         %tr
-          %th= translate_helper_translate(:id)
-          %th= translate_helper_translate(:username)
-          %th= translate_helper_translate(:email)
-          %th= translate_helper_translate(:registered)
-          %th= translate_helper_translate(:roles)
-          %th#status= translate_helper_translate(:status)
+          %th= translate_helper(:id)
+          %th= translate_helper(:username)
+          %th= translate_helper(:email)
+          %th= translate_helper(:registered)
+          %th= translate_helper(:roles)
+          %th#status= translate_helper(:status)
       %tbody
 :javascript
   $(document).ready(function() {

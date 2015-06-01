@@ -3,14 +3,14 @@
     %table.table.table.condensed.table-striped.table-hover.table-bordered#datatable
       %thead
         %tr
-          %th.left= translate_helper_translate(:id)
-          %th.left= translate_helper_translate(:user)
-          %th.left= translate_helper_translate(:creator)
-          %th.left= translate_helper_translate(:from)
-          %th.left= translate_helper_translate(:to)
-          %th.center= translate_helper_translate(:trip_date)
-          %th.center= translate_helper_translate(:created)
-          %th.center= translate_helper_translate(:actions)
+          %th.left= translate_helper(:id)
+          %th.left= translate_helper(:user)
+          %th.left= translate_helper(:creator)
+          %th.left= translate_helper(:from)
+          %th.left= translate_helper(:to)
+          %th.center= translate_helper(:trip_date)
+          %th.center= translate_helper(:created)
+          %th.center= translate_helper(:actions)
       %tbody
         - trips.each do |trip|
           %tr
@@ -26,9 +26,9 @@
             %td.center.nowrap
               = link_to user_trip_path(current_user, trip, :show_hidden => 1), {class: "btn btn-xs btn-success text-center"} do
                 %i.fa.fa-share-sign
-                = translate_helper_translate(:itinerary)
+                = translate_helper(:itinerary)
               = link_to details_user_trip_path(current_user, trip), {class: "btn btn-xs btn-info text-center"} do
                 %i.fa.fa-exclamation-sign
-                = translate_helper_translate(:details)
+                = translate_helper(:details)
 
 = render 'shared/simple_datatable_js'

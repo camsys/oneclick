@@ -1,56 +1,56 @@
-- content_for :title, "#{translate_helper_translate(:site_title)} - #{@provider.name}"
+- content_for :title, "#{translate_helper(:site_title)} - #{@provider.name}"
 - temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
 - can_manage_provider =(can? :manage, :all) || ((can? :full_read, @provider) && !current_user.nil? && !current_user.provider.nil? && @provider.id == current_user.provider.id)
 - if can? :index, Provider
   .row
     .col-sm-12
-      = link_to translate_helper_translate(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
+      = link_to translate_helper(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'
 .row.info-header
   .col-sm-5
     %h1= @provider.name
     - unless @provider.active
-      %p= translate_helper_translate(:inactive)
+      %p= translate_helper(:inactive)
   .col-sm-7.btns
     .pull-right
       -if temp_rating && Rating.feedback_on?
         - if can? :read, temp_rating
           = RateableDecorator.new(@provider).rating_in_stars
           %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
-            = translate_helper_translate(:feedback)
+            = translate_helper(:feedback)
       = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
       - if @provider.active && can_manage_provider && (can? :destroy, @provider)
         = button_tag :type => 'button', "data-target" => "#deleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
-          = translate_helper_translate(:delete)
-        #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper(:delete)
+        #deleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = translate_helper_translate(:cancel)
-                = button_to translate_helper_translate(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper(:cancel)
+                = button_to translate_helper(:ok), { action: "destroy", id: @provider.id }, method: :delete, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = translate_helper_translate(:site_title)
+                    = translate_helper(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = translate_helper_translate(:confirm_remove_message) + @provider.name + " ?"
+                = translate_helper(:confirm_remove_message) + @provider.name + " ?"
         - if can_manage_provider && can?(:create, Service) && can?(:update, @provider)
           = link_to new_service_path(provider_id: @provider), {class: 'btn action-button', role: 'button'} do
             = icon_label(:add_service)
       - if !@provider.active && can_manage_provider && (can? :destroy, @provider)
         = button_tag :type => 'button', "data-target" => "#undeleteProviderConfirmDialog", "data-toggle" => "modal", :class => "btn action-button" do
-          = translate_helper_translate(:undelete)
-        #undeleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper_translate(:restore_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+          = translate_helper(:undelete)
+        #undeleteProviderConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:restore_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                  = translate_helper_translate(:cancel)
-                = button_to translate_helper_translate(:ok), { action: "undelete", id: @provider.id }, method: :patch, style: "margin-right: 5px;", class: "btn action-button pull-right"
+                  = translate_helper(:cancel)
+                = button_to translate_helper(:ok), { action: "undelete", id: @provider.id }, method: :patch, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
                   %b
-                    = translate_helper_translate(:site_title)
+                    = translate_helper(:site_title)
               .modal-body{:style => "text-align:left;"}
-                = translate_helper_translate(:confirm_restore_message) + " #{@provider.name} ?"
+                = translate_helper(:confirm_restore_message) + " #{@provider.name} ?"
       - if can_manage_provider && (can? :update, @provider)
         = link_to edit_admin_provider_path(@provider), {class: 'btn action-button', role: 'button'} do
           = icon_label(:edit)
@@ -59,18 +59,18 @@
     .panel.panel-default
       .panel-heading
         %h4.panel-title
-          = translate_helper_translate(:provider_info)
+          = translate_helper(:provider_info)
           = add_tooltip("provider_info_help")
       .panel-body
         %table.table.table-condensed
           %tr
             %td.text-right
-              = translate_helper_translate(:logo)
+              = translate_helper(:logo)
             %td.center
               %img{src: @provider.logo_url}
           %tr
             %td.text-right
-              = translate_helper_translate(:address) + ":"
+              = translate_helper(:address) + ":"
             %td.text-left
               %b= @provider.address.to_s
             %td.text-left
@@ -81,17 +81,17 @@
               %b= @provider.zip.to_s
           %tr
             %td.text-right
-              = translate_helper_translate(:phone)+ ":  "
+              = translate_helper(:phone)+ ":  "
             %td.text-left{colspan: 4}
               %b= @provider.phone.to_s
           %tr
             %td.text-right
-              = translate_helper_translate(:email)+ ":  "
+              = translate_helper(:email)+ ":  "
             %td.text-left{colspan: 4}
               %b= mail_to @provider.email.to_s
           %tr
             %td.text-right
-              = translate_helper_translate(:url)+ ":  "
+              = translate_helper(:url)+ ":  "
             %td.text-left{colspan: 4}
               - if @provider.url
                 %b= link_to @provider.url, @provider.url
@@ -101,34 +101,34 @@
       .panel.panel-default
         .panel-heading
           %h4.panel-title
-            = translate_helper_translate(:internal_contact)
+            = translate_helper(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           %table.table.table-condensed
             %tr
               %td.text-right
-                = translate_helper_translate(:name) + ": "
+                = translate_helper(:name) + ": "
               %td.text-left
                 %b= @provider.internal_contact_name
             %tr
               %td.text-right
-                = translate_helper_translate(:title)+": "
+                = translate_helper(:title)+": "
               %td.text-left
                 %b= @provider.internal_contact_title
             %tr
               %td.text-right
-                = translate_helper_translate(:phone)+ ": "
+                = translate_helper(:phone)+ ": "
               %td.text-left
                 %b= @provider.internal_contact_phone
             %tr
               %td.text-right
-                = translate_helper_translate(:email)+ ":  "
+                = translate_helper(:email)+ ":  "
               %td.text-left
                 %b= mail_to @provider.internal_contact_email
             - if @contact
               %tr
                 %td.text-right
-                  = translate_helper_translate(:user) + ": "
+                  = translate_helper(:user) + ": "
                 %td.text-left
                   %b= link_to @contact.name, admin_user_path(@contact)
 
@@ -137,19 +137,19 @@
   .panel.panel-default
     .panel-heading
       %h4.panel-title
-        = translate_helper_translate(:staff_actions)
+        = translate_helper(:staff_actions)
         = add_tooltip("staff_actions_help")
     .panel-body
       %table.ALTtable.table-condensed
         %tr
           %th.text-left
-            = translate_helper_translate(:name)
+            = translate_helper(:name)
           %th.text-left
-            = translate_helper_translate(:title)
+            = translate_helper(:title)
           %th.text-left
-            = translate_helper_translate(:phone)
+            = translate_helper(:phone)
           %th.text-left
-            = translate_helper_translate(:email)
+            = translate_helper(:email)
 
         - if @staff.count > 0
           - @staff.each do |s|
@@ -164,12 +164,12 @@
                 %b= mail_to s.email.to_s
         - else
           %tr
-            %td= translate_helper_translate(:nothing_found_sorry)
+            %td= translate_helper(:nothing_found_sorry)
 
   .panel.panel-default
     .panel-heading
       %h4.panel-title
-        = translate_helper_translate(:services)
+        = translate_helper(:services)
         = add_tooltip("services_help")
     .panel-body
       = render 'services/table'
@@ -180,7 +180,7 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          / %h4.panel-title= translate_helper_translate(:other_information)
+          / %h4.panel-title= translate_helper(:other_information)
           %h4.panel-title
             Other Information
             = add_tooltip("other_information_help")

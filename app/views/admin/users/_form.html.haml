@@ -1,7 +1,6 @@
 %h1
   %i.fa.fa-key.fa-rotate-90
-  = debugger
-  = translate_helper_translate(:sign_up)
+  = translate_helper(:sign_up)
 
 - if @create_inline
   .row
@@ -19,30 +18,30 @@
           .col-sm-12
             %p
               =cms_snippet_contentranslate_helper_translate('registration-reasoning')
-            / = translate_helper_translate(:to_see_best_options)
+            / = translate_helper(:to_see_best_options)
         .row
           .col-sm-12
             %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
               %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-              =translate_helper_translate(:no_thanks_just_plan_it)
+              =translate_helper(:no_thanks_just_plan_it)
 
     - Rails.logger.debug "In view, I18n: #{I18n.locale}"
-    - Rails.logger.debug translate_helper_translate(:first_name)
-    = f.input :first_name, label: translate_helper_translate(:first_name), :autofocus => true
-    = f.input :last_name, label: translate_helper_translate(:last_name)
-    = f.input :email, label: translate_helper_translate(:email), :required => true
-    = f.input :password, label: translate_helper_translate(:password), :required => true
-    = f.input :password_confirmation, :label => translate_helper_translate(:retype_your_password), :required => true
+    - Rails.logger.debug translate_helper(:first_name)
+    = f.input :first_name, label: translate_helper(:first_name), :autofocus => true
+    = f.input :last_name, label: translate_helper(:last_name)
+    = f.input :email, label: translate_helper(:email), :required => true
+    = f.input :password, label: translate_helper(:password), :required => true
+    = f.input :password_confirmation, :label => translate_helper(:retype_your_password), :required => true
     = f.hidden :approved_agencies if session[:agency]
     - if @create_inline
       .form-actions
         = button_tag :type => 'submit', :class => "btn action-button" do
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          =translate_helper_translate(:sign_up_and_plan)
+          =translate_helper(:sign_up_and_plan)
     - else
       .actions
         = button_tag type: :submit, class: 'btn action-button controls' do
           %i.fa.fa-edit
-          = translate_helper_translate(:sign_up)
+          = translate_helper(:sign_up)
         = render "devise/shared/links"
 

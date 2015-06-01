@@ -12,29 +12,29 @@
 .row
   .col-sm-12
     = simple_form_for @place_proxy, :url => @place_proxy.id.nil? ? user_places_path(@traveler) : user_place_path(@traveler, @place_proxy.id), :method => @place_proxy.id.nil? ? 'post' : 'put', :html => {:style => "margin-top:10px;margin-bottom:10px;"}  do |f|
-      = f.input :raw_address, :class => "inline col-sm-12", :label => translate_helper_translate(:enter_address) do
-        = f.text_field :raw_address, :placeholder => translate_helper_translate(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
+      = f.input :raw_address, :class => "inline col-sm-12", :label => translate_helper(:enter_address) do
+        = f.text_field :raw_address, :placeholder => translate_helper(:enter_address_or_place), :disabled => ! @place_proxy.can_alter_location, :id => "place_proxy_raw_address", :autocomplete => "off", :class => "ajax-typeahead", :style => "width:300px;", :data => {:link => search_user_places_path, :provide => "typeahead"}
         = image_tag "ajax-loader.gif", :id => "geocoding_indicator", :style => "display:none;margin-top:-9px;", :class => "loading-indicator"
 
-      = f.input :name, :label => translate_helper_translate(:place_name), :placeholder => translate_helper_translate(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
-      = f.input :home, as: :boolean, :label => false, :inline_label => translate_helper_translate(:my_home_chkbox_label)
+      = f.input :name, :label => translate_helper(:place_name), :placeholder => translate_helper(:new_name), :autocomplete => "off", :input_html => {:style => "width:300px;"}
+      = f.input :home, as: :boolean, :label => false, :inline_label => translate_helper(:my_home_chkbox_label)
       = f.hidden_field :place_type_id, :id => "place_type_field"
       = f.hidden_field :place_id, :id => "place_id_field"
 
       .form-actions
         = button_tag :type => 'submit', :class => "btn action-button" do
           %i.fa.fa-check
-          = @place_proxy.id.nil? ? translate_helper_translate(:save) : translate_helper_translate(:update)
+          = @place_proxy.id.nil? ? translate_helper(:save) : translate_helper(:update)
         = link_to :back, :class => "cancel_link" do
           %i.fa.fa-reply
-          = translate_helper_translate(:cancel)
+          = translate_helper(:cancel)
 
 #select_place{:style => "display:none;"}
   = render :partial => 'trips/alt_address_select', :locals => {:results => [], :type => "place"}
 
 .row
   .col-sm-12
-    %h6= translate_helper_translate(:found_x_places, :count => @places.count )
+    %h6= translate_helper(:found_x_places, :count => @places.count )
 
 .row
   .places-list.col-sm-12.thumbnail{:style => "height:200px;overflow:auto;"}
@@ -52,10 +52,10 @@
   .col-sm-12{:style => "padding-top:5px"}
     = link_to "#", :class => "btn action-button", :id => "delete_button" do
       %i.fa.fa-times
-      = translate_helper_translate(:delete)
+      = translate_helper(:delete)
     = link_to "#", :class => "btn action-button", :id => "edit_button" do
       %i.fa.fa-edit
-      = translate_helper_translate(:edit)
+      = translate_helper(:edit)
 
 :javascript
   // Configure UI behaviors
@@ -63,7 +63,7 @@
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
-  var delete_message = "#{translate_helper_translate(:confirm_remove_message)}"
+  var delete_message = "#{translate_helper(:confirm_remove_message)}"
 
   // Hide the name editing div on page load
   $(document).ready(function(){

@@ -5,18 +5,18 @@
       = f.hidden_field :trip_id, value: @trip.id
 
       %p
-        = translate_helper_translate(:trip_satisfaction_notes)
+        = translate_helper(:trip_satisfaction_notes)
 
       %p
-        = f.label :satisfied, translate_helper_translate(:satisfied_by_trips)
+        = f.label :satisfied, translate_helper(:satisfied_by_trips)
         %br
         = f.input_field :satisfied, as: :radio_buttons, item_wrapper_class: "radio-inline"
-        = f.input :reasoning, as: :check_boxes, collection: [translate_helper_translate(:fare), translate_helper_translate(:walk_distance_sorter), translate_helper_translate(:travel_time), translate_helper_translate(:number_of_transfers)], label: translate_helper_translate(:tell_us_what_went_wrong)
-        = f.input :comment, label: translate_helper_translate(:comment)
+        = f.input :reasoning, as: :check_boxes, collection: [translate_helper(:fare), translate_helper(:walk_distance_sorter), translate_helper(:travel_time), translate_helper(:number_of_transfers)], label: translate_helper(:tell_us_what_went_wrong)
+        = f.input :comment, label: translate_helper(:comment)
       .col-sm-6.col-sm-offset-3
-        = f.button :submit, translate_helper_translate(:save), :class => 'btn action-button', id: "save_survey", disabled: "disabled"
+        = f.button :submit, translate_helper(:save), :class => 'btn action-button', id: "save_survey", disabled: "disabled"
         %button.btn.action-button{"data-dismiss" => "modal"}
-          = translate_helper_translate(:close)
+          = translate_helper(:close)
 
 :javascript
   $('#satisfaction_survey input.check_boxes').removeClass('form-control');

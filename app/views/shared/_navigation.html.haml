@@ -11,10 +11,10 @@
       #userMenuNavbar.navbar-right
         %ul.nav.navbar-nav
           - if can? :see, :admin_menu
-            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => translate_helper_translate(:admin_actions) }
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => admin_actions, :title => translate_helper(:admin_actions) }
           / end of nav navbar-nav
           - if can? :see, :staff_menu
-            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => translate_helper_translate(:staff_actions) }
+            = render partial: 'admin/admin_home/admin_dropdown_menus', locals: { :available_actions => staff_actions, :title => translate_helper(:staff_actions) }
           - if user_signed_in?
             = render partial: 'shared/user_menus'
           - else
