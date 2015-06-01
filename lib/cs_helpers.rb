@@ -35,7 +35,7 @@ module CsHelpers
     a = [
       {label: TranslationEngine.translate_text(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
       {label: TranslationEngine.translate_text(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
-      {label: TranslationEngine.translate_text(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
+      {label: TranslationEngine.translate_text(:translations), target: translation_engine.translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
     if Rating.feedback_on?
       a.push({label: TranslationEngine.translate_text(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
