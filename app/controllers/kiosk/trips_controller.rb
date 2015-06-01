@@ -34,7 +34,7 @@ module Kiosk
           :error_message => @tripResponseHash['status_text'],
           :parameters    => @tripResponseHash
         )
-        flash.now[:alert] = t(:error_couldnt_plan)
+        flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
       end
 
       respond_to do |format|
@@ -67,7 +67,7 @@ module Kiosk
     else
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
-      flash[:notice] = t(:correct_errors_to_create_a_trip)
+      flash[:notice] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
       render action: "new"
       return
     end
@@ -92,13 +92,13 @@ module Kiosk
         else
           # TODO Will this get handled correctly?
           Rails.logger.info "\nError render 2\n"
-          format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+          format.html { render action: "new", flash[:alert] => TranslationEngine.translate_text(:correct_errors_to_create_a_trip) }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         # TODO Will this get handled correctly?
         Rails.logger.info "\nError render 3\n"
-        format.html { render action: "new", flash[:alert] => t(:correct_errors_to_create_a_trip) }
+        format.html { render action: "new", flash[:alert] => TranslationEngine.translate_text(:correct_errors_to_create_a_trip) }
       end
     end
   end

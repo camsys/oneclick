@@ -5,7 +5,7 @@ class FareZonesController < ApplicationController
     error_msgs = []
 
     if !can?(:create, FareZone)
-      error_msgs << t(:not_authorized)
+      error_msgs << TranslationEngine.translate_text(:not_authorized)
     else
       service = Service.find(params[:service_id])
       file = params[:fare_zone][:file] if params[:fare_zone]

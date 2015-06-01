@@ -50,7 +50,7 @@ class Admin::UsersController < Admin::BaseController
             UserMailer.agency_helping_email(@agency_user_relationship.user.email, @agency_user_relationship.user.email, current_user.agency).deliver
           end
         end
-        flash[:notice] = t(:user_created)
+        flash[:notice] = TranslationEngine.translate_text(:user_created)
         format.html { redirect_to admin_user_path(@user)}
       else # invalid user
         format.html { render action: "new"}
@@ -112,7 +112,7 @@ class Admin::UsersController < Admin::BaseController
     @user.soft_delete
     @user.disabled_comment = params[:user][:disabled_comment]
     @user.save
-    flash[:notice] = t(:user_deleted)
+    flash[:notice] = TranslationEngine.translate_text(:user_deleted)
     respond_to do |format|
       format.html { redirect_to admin_users_path }
       format.json { head :no_content }
@@ -166,13 +166,13 @@ class Admin::UsersController < Admin::BaseController
       msg = I18n.t(:no_user_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
-      msg = t(:you_can_t_be_your_own_buddy)
+      msg = TranslationEngine.translate_text(:you_can_t_be_your_own_buddy)
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
-      msg = t(:you_ve_already_asked_them_to_be_a_buddy)
+      msg = TranslationEngine.translate_text(:you_ve_already_asked_them_to_be_a_buddy)
     else
       success = true
-      msg = t(:please_save_buddies, name: user.first_name)
+      msg = TranslationEngine.translate_text(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource except: [:edit, :assist]
 
   def index
-    authorize! :index, User, :message => t(:not_authorized_as_an_administrator)
+    authorize! :index, User, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     @users = User.all
   end
 
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, @user, :message => t(:not_authorized_as_an_administrator)
+    authorize! :destroy, @user, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     user = User.find(params[:id])
     unless user == current_user
       user.destroy
@@ -220,13 +220,13 @@ class UsersController < ApplicationController
       msg = I18n.t(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
-      msg = t(:you_can_t_be_your_own_buddy)
+      msg = TranslationEngine.translate_text(:you_can_t_be_your_own_buddy)
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
-      msg = t(:you_ve_already_asked_them_to_be_a_buddy)
+      msg = TranslationEngine.translate_text(:you_ve_already_asked_them_to_be_a_buddy)
     else
       success = true
-      msg = t(:please_save_buddies, name: user.first_name)
+      msg = TranslationEngine.translate_text(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,
@@ -247,7 +247,7 @@ class UsersController < ApplicationController
 
     if UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
       set_traveler_id params[:buddy_id]
-      flash[:notice] = t(:assisting_turned_on)
+      flash[:notice] = TranslationEngine.translate_text(:assisting_turned_on)
       redirect_to new_user_trip_path(params[:buddy_id])
     end
   end

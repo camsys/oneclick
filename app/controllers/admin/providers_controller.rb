@@ -98,7 +98,7 @@ class Admin::ProvidersController < ApplicationController
 
         set_staff(staff_ids)
 
-        format.html { redirect_to [:admin, @provider], notice: t(:provider) + ' ' + t(:was_successfully_updated) }
+        format.html { redirect_to [:admin, @provider], notice: TranslationEngine.translate_text(:provider) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -141,7 +141,7 @@ class Admin::ProvidersController < ApplicationController
       msg = I18n.t(:already_a_provider_staff)
     else
       success = true
-      msg = t(:please_save_staffs, name: user.name)
+      msg = TranslationEngine.translate_text(:please_save_staffs, name: user.name)
       output = user.id
       row = [
               user.id,
