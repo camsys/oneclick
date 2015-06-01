@@ -90,7 +90,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names')[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -163,7 +163,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names')[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",
@@ -308,7 +308,7 @@
             = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare_structure}
             .row_fluid
               .col-sm-3
-                = I18n.t('comments')
+                = translate_helper('comments')
               .col-sm-9
                 %input.form-control.text-right{value: fare_structure.desc, name: "service[base_fare_structure_desc]"}
         
