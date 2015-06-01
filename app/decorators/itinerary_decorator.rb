@@ -84,7 +84,6 @@ class ItineraryDecorator < Draper::Decorator
 
   def transfers_in_words
     transfers || TranslationEngine.translate_text(:none)
-    # I18n.translate(:transfer, count: i.transfers)
   end
 
 

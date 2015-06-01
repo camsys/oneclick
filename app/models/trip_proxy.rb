@@ -199,20 +199,20 @@ class TripProxy < Proxy
   def datetime_cannot_be_before_now
     true if trip_datetime.count(nil) == 2
     if trip_datetime[0] < Date.today
-      errors.add(:outbound_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      errors.add(:outbound_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
       false
     end
     if trip_datetime[0] < Time.current
-      errors.add(:outbound_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      errors.add(:outbound_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
       false
     end
     if is_round_trip == 1
       if trip_datetime[1] < Date.today
-        errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+        errors.add(:return_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
         false
       end
       if trip_datetime[1] < Time.current
-        errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+        errors.add(:return_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
         false
       end
     end

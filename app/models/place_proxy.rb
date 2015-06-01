@@ -23,7 +23,7 @@ protected
             
   def validate_selection
     if place_type_id.blank? 
-      errors.add(:raw_address, I18n.translate(:nothing_found))
+      errors.add(:raw_address, TranslationEngine.translate_text(:nothing_found))
       return false      
     end
   end

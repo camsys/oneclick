@@ -32,7 +32,7 @@
                 = itinerary.cost_comments.html_safe
           -if itinerary.transfers
             %li
-              = I18n.translate(:transfer, count: itinerary.transfers)
+              = TranslationEngine.translate_text(:transfer, count: itinerary.transfers)
           -if itinerary.start_time
             %li
               = translate_helper(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)

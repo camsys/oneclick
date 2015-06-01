@@ -165,24 +165,24 @@ module ApplicationHelper
     time_string = ''
 
     if time_in_seconds > 60*60*24 and options[:days_only]
-      return I18n.translate(:day, count: hours / 24)
+      return TranslationEngine.translate_text(:day, count: hours / 24)
     end
 
     if hours > 0
       format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
-      time_string << I18n.translate(format, count: hours)  + ' '
+      time_string << TranslationEngine.translate_text(format, count: hours)  + ' '
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << I18n.translate(:minute, count: minutes)
+      time_string << TranslationEngine.translate_text(:minute, count: minutes)
     end
 
     if time_in_seconds < 60
-      time_string = I18n.translate(:less_than_one_minute)
+      time_string = TranslationEngine.translate_text(:less_than_one_minute)
     end
 
     if options[:days_only]
-      time_string = I18n.translate(:day, count: hours/24.round)
+      time_string = TranslationEngine.translate_text(:day, count: hours/24.round)
     end
 
     time_string
@@ -197,7 +197,7 @@ module ApplicationHelper
     start_days = start_time_in_seconds/3600/24.round
     end_days = end_time_in_seconds/3600/24.round
 
-    start_days.to_s + " " + I18n.translate(:to).downcase + " " + I18n.translate(:day, count: end_days)
+    start_days.to_s + " " + TranslationEngine.translate_text(:to).downcase + " " + TranslationEngine.translate_text(:day, count: end_days)
   end
 
   def get_boolean(val)
