@@ -5,7 +5,7 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
-  before_action :detect_ui_mode, :get_kiosk_code
+  before_action :detect_ui_mode, :get_kiosk_code, :get_trip_purposes
 
   def index
 
@@ -1196,6 +1196,18 @@ private
     @modes = mode_hash[:modes]
     @transit_modes = mode_hash[:transit_modes]
     @selected_modes = mode_hash[:selected_modes]
+  end
+
+  def get_trip_purposes
+
+    @trip_purposes = []
+    TripPurpose.all.each do |trip_purpose|
+      new_trip_purpose = []
+      new_trip_purpose[0] = TranslationEngine.translate_text(trip_purpose.name)
+      new_trip_purpose[1] = trip_purpose.id
+      @trip_purposes.push(new_trip_purpose)
+    end
+
   end
 
   def detect_ui_mode
