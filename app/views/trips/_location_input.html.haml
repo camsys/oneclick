@@ -13,10 +13,10 @@
   = f.input_field "#{dir}_place".to_sym, class: 'form-control place_picker', tabindex: 0, "aria-autocomplete" => 'inline'
   - if dir=='from' && TranslationEngine.translation_exists?("leaving_from_help")
     :javascript
-      addHelperTooltip('#from_place_label', "#{t(:leaving_from_help)}");
+      addHelperTooltip('#from_place_label', "#{translate_helper(:leaving_from_help)}");
   - elsif dir=='to' && TranslationEngine.translation_exists?("going_to_help")
     :javascript
-      addHelperTooltip('#to_place_label', "#{t(:going_to_help)}");
+      addHelperTooltip('#to_place_label', "#{translate_helper(:going_to_help)}");
   %span.input-group-btn
     %button.btn.btn-default.hidden-md.hidden-lg{type: "button", id: "#{dir}CenterMyLocation", tabindex: '-1', aria: {label: "Click button to center my location"}}   
       %i.fa.fa-location-arrow
