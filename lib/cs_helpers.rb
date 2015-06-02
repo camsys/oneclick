@@ -235,7 +235,7 @@ module CsHelpers
   def format_time(time)
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
-    formatted_time = I18n.l time, :format => :oneclick_short unless time.nil?
+    formatted_time = TranslationEngine.localize_time(time) unless time.nil?
     I18n.locale = :tags if is_in_tags
 
     formatted_time || ""
