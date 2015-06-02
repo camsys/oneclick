@@ -81,7 +81,7 @@ class Admin::ReportsController < Admin::BaseController
         format.html
         format.csv do
           send_data get_csv,
-                filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
+                filename: "#{TranslationEngine.translate_text(@report.class_name).parameterize.underscore}.csv", type: :text
         end
       end
     end
@@ -102,7 +102,7 @@ class Admin::ReportsController < Admin::BaseController
       xlated_columns = if is_standard_system_report
         @report_instance.get_localized_columns
       else
-        @columns.map {|col| I18n.t(col)}
+        @columns.map {|col| TranslationEngine.translate_text(col)}
       end
 
       if xlated_columns[0].start_with? "ID"

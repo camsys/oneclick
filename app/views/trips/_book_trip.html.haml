@@ -11,19 +11,19 @@
               =t(:book)
         -elsif is_either_booking_code_available
           = button_tag id: 'bookingSubmitButton', type: :submit, class: 'btn action-button' do
-            = t(:submit)
+            = translate_helper(:submit)
           :javascript
             $('#bookingSubmitButton').on('click', function(event) {
               $('#bookingModal form').submit();
             });
         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
-          = t(:close)
+          = translate_helper(:close)
       .modal-title{:style => "text-align:left;"}
         %b
           -if @trip.is_booked?
-            = t(:trip_booked)
+            = translate_helper(:trip_booked)
           -else
-            = t(:book_your_trip)
+            = translate_helper(:book_your_trip)
     .modal-body#bookingContent
       -if is_either_part_bookable
         .panel.panel-default
@@ -52,13 +52,13 @@
                   =@trip.outbound_part.to_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  = @trip.outbound_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+                  = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
                 .col-sm-8.text-left
                   =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
               -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable?
                 .row
                   %label.col-sm-4.text-right
-                    = @trip.return_part.is_depart ? t(:cap_returning_at) + ":" : t(:returning_by) + ":"
+                    = @trip.return_part.is_depart ? translate_helper(:cap_returning_at) + ":" : translate_helper(:returning_by) + ":"
                   .col-sm-8.text-left
                     =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
                 .row
@@ -79,7 +79,7 @@
                   =@trip.return_part.to_trip_place.name
               .row
                 %label.col-sm-4.text-right
-                  = @trip.return_part.is_depart ? t(:departing_at) + ":" : t(:arriving_by) + ":"
+                  = @trip.return_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
                 .col-sm-8.text-left
                   =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
               .row
@@ -128,11 +128,11 @@
             = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: selected_itinerary.service.id}
             = f.input :itinerary_id, :as => :hidden, :input_html => {value: selected_itinerary.id}
-            = f.input :external_user_id,label: "Shared Ride " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-            = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+            = f.input :external_user_id,label: "Shared Ride " + translate_helper(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+            = f.input :dob, label: translate_helper(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: translate_helper(:dob_notice)
 
         -if selected_itinerary.service.phone
-          =t(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + t(:for_assistance) + "."
+          =t(:if_no_client_id) + " " + selected_itinerary.service.phone + " " + translate_helper(:for_assistance) + "."
         -else
           =t(:if_no_client_id) + " " + selected_itinerary.service.name + "."
 :javascript

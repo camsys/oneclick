@@ -6,7 +6,7 @@ class Report < ActiveRecord::Base
   default_scope {where(:active => true).order(:id)}
 
   def name_and_id
-    [I18n.t(class_name), id]
+    [TranslationEngine.translate_text(class_name), id]
   end
 
   def self.names_and_ids

@@ -76,7 +76,7 @@ class UserCharacteristicsProxy < UserProfileProxy
           if characteristic.datatype == 'date' and (new_value != '')
             if(new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
               errors.add(characteristic.code.to_sym,
-                         I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
+                         TranslationEngine.translate_text(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
               valid = false
               next
             else

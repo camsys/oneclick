@@ -4,31 +4,31 @@
 .header
   .pull-right{style: 'padding-bottom:10px;'}
     - if can? :assist, @user
-      = link_to t(:assist), admin_agency_agency_assist_path(current_user.agency, @user),
+      = link_to translate_helper(:assist), admin_agency_agency_assist_path(current_user.agency, @user),
         {class: 'btn action-button', role: 'button'}
     - if can?(:destroy, @user) && !@user.deleted_at
       = button_tag type: 'button', "data-target" => "#deleteConfirmDialog",
         "data-toggle" => "modal", class: "btn action-button" do
-        = t(:delete)
+        = translate_helper(:delete)
     - if can?(:destroy, @user) && @user.deleted_at
       = button_tag type: 'button', "data-target" => "#undeleteUserConfirmDialog",
         "data-toggle" => "modal", class: "btn action-button" do
-        = t(:undelete)
-      #undeleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => t(:restore_user), role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
+        = translate_helper(:undelete)
+      #undeleteUserConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:restore_user), role: "dialog", "aria-hidden" => 'true', tabindex: "-1"}
         .modal-dialog
           .modal-content
             .modal-header
               = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-                = t(:cancel)
-              = button_to t(:ok), { action: "undelete", id: @user.id }, method: :patch,
+                = translate_helper(:cancel)
+              = button_to translate_helper(:ok), { action: "undelete", id: @user.id }, method: :patch,
                 style: "margin-right: 5px;", class: "btn action-button pull-right"
               .modal-title{:style => "text-align:left;"}
                 %b
-                  = t(:site_title)
+                  = translate_helper(:site_title)
             .modal-body{:style => "text-align:left;"}
-              = t(:confirm_restore_message) + " #{@user.name} ?"
+              = translate_helper(:confirm_restore_message) + " #{@user.name} ?"
     - if can? :edit, @user
-      = link_to t(:edit), edit_admin_user_path(@user),
+      = link_to translate_helper(:edit), edit_admin_user_path(@user),
         {class: 'btn action-button pull-right', role: 'button'}
     - if can?(:destroy, @user) && !@user.deleted_at
       = render partial: "admin/shared/disable_form", locals: { deleteable: @user }

@@ -10,38 +10,38 @@
         .panel-body
           .form-horizontal
             .form-group
-              %label.col-sm-3.control-label= t(:first_name)
+              %label.col-sm-3.control-label= translate_helper(:first_name)
               .col-sm-9
                 %p.form-control-static= user.first_name
             .form-group
-              %label.col-sm-3.control-label= t(:last_name)
+              %label.col-sm-3.control-label= translate_helper(:last_name)
               .col-sm-9
                 %p.form-control-static= user.last_name
             .form-group
-              %label.col-sm-3.control-label= t(:email)
+              %label.col-sm-3.control-label= translate_helper(:email)
               .col-sm-9
                 %p.form-control-static= user.email
             -if user.phone
               .form-group
-                %label.col-sm-3.control-label= t(:phone)
+                %label.col-sm-3.control-label= translate_helper(:phone)
                 .col-sm-9
                   %p.form-control-static= user.phone
             -if user.title
               .form-group
-                %label.col-sm-3.control-label= t(:title)
+                %label.col-sm-3.control-label= translate_helper(:title)
                 .col-sm-9
                   %p.form-control-static= user.title
             .form-group
-              %label.col-sm-3.control-label= t(:preferred_locale)
+              %label.col-sm-3.control-label= translate_helper(:preferred_locale)
               .col-sm-9
-                %p.form-control-static= I18n.t("locales.#{user.preferred_locale}")
+                %p.form-control-static= translate_helper("locales.#{user.preferred_locale}")
             - if user.walking_speed_id
               - user_walk_speed = WalkingSpeed.where(id:user.walking_speed_id).first
             - else
               - user_walk_speed = WalkingSpeed.where(is_default:true).first
             - if user_walk_speed
               .form-group
-                %label.col-sm-3.control-label= t(:walking_speed)
+                %label.col-sm-3.control-label= translate_helper(:walking_speed)
                 .col-sm-9
                   %p.form-control-static= user_walk_speed.label
             - if user.walking_maximum_distance_id
@@ -50,11 +50,11 @@
               - user_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
             - if user_walk_max_dist
               .form-group
-                %label.col-sm-3.control-label= t(:walking_maximum_distance)
+                %label.col-sm-3.control-label= translate_helper(:walking_maximum_distance)
                 .col-sm-9
                   %p.form-control-static= user_walk_max_dist.label
             .form-group
-              %label.col-sm-3.control-label= t(:maximum_wait_time)
+              %label.col-sm-3.control-label= translate_helper(:maximum_wait_time)
               .col-sm-9
                 %p.form-control-static= "#{user.max_wait_time} #{t(:minutes)}"
     - if can? :full_read, user
@@ -85,15 +85,15 @@
         .panel.panel-default#buddies
           .panel-heading
             %h2.panel-title
-              = t(:buddies)
+              = translate_helper(:buddies)
               = add_tooltip("buddies_help")
           .panel-body
             %table.table.table.condensed.table-striped.table-hover.table-bordered.table-responsive#buddies_table
               %thead
-                %th= t(:buddy)
-                %th.email= t(:email)
-                %th= t(:can_assist_me)
-                %th= t(:i_can_assist)
+                %th= translate_helper(:buddy)
+                %th.email= translate_helper(:email)
+                %th= translate_helper(:can_assist_me)
+                %th= translate_helper(:i_can_assist)
               %tbody
                 -# initial load from user record
                 - @user.related_users.each do |ou|
@@ -108,7 +108,7 @@
         .panel.panel-default#eligibility
           .panel-heading
             %h2.panel-title
-              = t(:eligibility)
+              = translate_helper(:eligibility)
               = add_tooltip("eligibility_help")
           .panel-body
             = render :partial =>'users/show_characteristics_answers', :locals => { :user_characteristics => @user_characteristics_proxy, collection: Characteristic.active.enabled }
@@ -116,7 +116,7 @@
         .panel.panel-default#accommodations
           .panel-heading
             %h2.panel-title
-              = t(:accommodations)
+              = translate_helper(:accommodations)
               = add_tooltip("accommodations_help")
           .panel-body
             = render :partial =>'users/show_characteristics_answers', :locals => { :user_characteristics => @user_accommodations_proxy, collection: Accommodation.where(:datatype => 'bool') }
@@ -133,20 +133,20 @@
         .panel.panel-default#preferred_modes
           .panel-heading
             %h2.panel-title
-              = t(:preferred_modes)
+              = translate_helper(:preferred_modes)
               = add_tooltip("preferred_modes_help")
           .panel-body
-            %legend.sr-only= t(:preferred_modes)
-            - Mode.top_level.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.each do |m|
+            %legend.sr-only= translate_helper(:preferred_modes)
+            - Mode.top_level.where(visible: true).sort{|a, b| translate_helper(a.name) <=> translate_helper(b.name)}.each do |m|
               .row
                 .col-sm-12
                   = check_box_tag "user[preferred_mode_ids][#{m.id}]", m.id, @user.preferred_modes.include?(m), name: "user[preferred_mode_ids][]", disabled: true
-                  = label_tag "user[preferred_mode_ids][#{m.id}]", t(m.name)
+                  = label_tag "user[preferred_mode_ids][#{m.id}]", translate_helper(m.name)
                   - m.submodes.where(visible: true).each do |sm|
                     .row
                       .col-sm-12.col-sm-push-1
                         = check_box_tag "user[preferred_mode_ids][#{sm.id}]", sm.id, @user.preferred_modes.include?(sm), name: "user[preferred_mode_ids][]", disabled: true
-                        = label_tag "user[preferred_mode_ids][#{sm.id}]", t(sm.name)
+                        = label_tag "user[preferred_mode_ids][#{sm.id}]", translate_helper(sm.name)
 
 :javascript
   $(document).ready(function() {

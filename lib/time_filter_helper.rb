@@ -27,7 +27,7 @@ class TimeFilterHelper
     @time_filter_array.each do |f|
       a << {
         :id     => f[:id],
-        :value  => I18n.translate(f[:value])        
+        :value  => TranslationEngine.translate_text(f[:value])        
       }
     end
     return a

@@ -2,7 +2,6 @@ class Agency < ActiveRecord::Base
   include DisableCommented
   include Rateable # mixin to handle all rating methods
   include Commentable
-  extend LocaleHelpers
   resourcify
 
   belongs_to :parent, class_name: 'Agency'
@@ -73,11 +72,11 @@ class Agency < ActiveRecord::Base
 
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:name),
-      I18n.t(:parent_agency),
-      I18n.t(:subagencies),
-      I18n.t(:status)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:parent_agency),
+      TranslationEngine.translate_text(:subagencies),
+      TranslationEngine.translate_text(:status)
     ]
   end
 
@@ -87,7 +86,7 @@ class Agency < ActiveRecord::Base
       name,
       parent ? parent.name : '',
       sub_agencies.pluck(:name).join(';'),
-      active ? '' : I18n.t(:inactive)
+      active ? '' : TranslationEngine.translate_text(:inactive)
     ].to_csv
   end
 

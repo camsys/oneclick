@@ -20,16 +20,16 @@ class UserRelationshipsController < ApplicationController
         UserMailer.buddy_request_email(@delegate_relationship.delegate.email, @delegate_relationship.traveler).deliver
         @delegate_relationship.relationship_status = RelationshipStatus.pending
         @delegate_relationship.save
-        flash[:notice] = t(:buddy_request_sent)
+        flash[:notice] = TranslationEngine.translate_text(:buddy_request_sent)
       else
-        flash[:alert] = t(:something_went_wrong)
+        flash[:alert] = TranslationEngine.translate_text(:something_went_wrong)
       end       
     else
       @delegate_relationship = UserRelationship.new
       if email.blank?
-        flash[:alert] = t(:no_buddy_email_address)       
+        flash[:alert] = TranslationEngine.translate_text(:no_buddy_email_address)       
       else
-        flash[:alert] = t(:no_user_with_email_address, :email => email)    
+        flash[:alert] = TranslationEngine.translate_text(:no_user_with_email_address, :email => email)    
       end
     end
 
@@ -130,9 +130,9 @@ private
     if @delegate_relationship
       @delegate_relationship.relationship_status = new_status
       if @delegate_relationship.save
-        flash[:notice] = t(:request_processed)
+        flash[:notice] = TranslationEngine.translate_text(:request_processed)
       else
-        flash[:alert] = t(:something_went_wrong)
+        flash[:alert] = TranslationEngine.translate_text(:something_went_wrong)
       end       
     end
   end   
@@ -146,9 +146,9 @@ private
       if @traveler_relationship.save
         # TODO: All emails should be sent from a worker thread not here!
         send_update_email(@traveler_relationship.delegate, @traveler_relationship.traveler, email_type)
-        flash[:notice] = t(:request_processed)
+        flash[:notice] = TranslationEngine.translate_text(:request_processed)
       else
-        flash[:alert] = t(:something_went_wrong)
+        flash[:alert] = TranslationEngine.translate_text(:something_went_wrong)
       end       
     end
   end   

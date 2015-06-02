@@ -1,5 +1,5 @@
 - content_for :title, "#{t(:site_title)} - #{t(:plan_a_trip)}"
-- is_splash_available = whether_show_tranlatation_item?(:splash)
+- is_splash_available = TranslationEngine.show_translation_item?(:splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
 - if is_splash_available
@@ -27,7 +27,7 @@
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
 .row
-  - is_splash_available = whether_show_tranlatation_item?(:splash)
+  - is_splash_available = TranslationEngine.show_translation_item?(:splash)
   - non_splash_css = 'col-sm-12'
   - splash_css = ''
   - if is_splash_available
@@ -68,7 +68,7 @@
 
             = field_set_tag do
               / .inline-radio
-              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
+              /   = f.input :is_round_trip, as: :radio_buttons, label: translate_helper(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -93,7 +93,7 @@
                       %br
 
             = field_set_tag do
-              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
+              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: translate_helper(:modes)
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
@@ -122,13 +122,13 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            = f.input :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => :id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
 
@@ -145,7 +145,7 @@
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
                 %h2.panel-title
-                  %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                  %button#mapCloseButton.close.pull-right{type: "button", title: translate_helper(:close)}
                     %i.fa.fa-close
                     %span.hide Close
                   %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
@@ -196,7 +196,7 @@
                   %i.fa.fa-compress
                 %span.sr-only Minimize
               %h3.modal-title{id: "modalLabel2"}
-                = t(:map)
+                = translate_helper(:map)
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
 

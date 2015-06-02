@@ -12,12 +12,12 @@
               
         -else
           = button_tag id: 'bookingSubmitButton', type: :submit, class: 'btn action-button' do
-            = t(:submit)
+            = translate_helper(:submit)
           :javascript
             $('#bookingSubmitButton').on('click', function(event) {
               $('#bookingSignupModal form').submit();
             });
-          %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= t(:initial_booking_close)
+          %button{"type" => "button", "class" => "btn action-button", "data-dismiss" => "modal"}= translate_helper(:initial_booking_close)
       %h3.modal-title=t(:initial_booking_title)
     .modal-body#bookingSignupContent
       -if @traveler.can_book?
@@ -29,5 +29,5 @@
           .form-inputs
             = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: Service.where(booking_service_code: 'ecolane').first.id}
-            = f.input :external_user_id,label: "Rabbit Transit " + t(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
-            = f.input :dob, label: t(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: t(:dob_notice)
+            = f.input :external_user_id,label: "Rabbit Transit " + translate_helper(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+            = f.input :dob, label: translate_helper(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: translate_helper(:dob_notice)

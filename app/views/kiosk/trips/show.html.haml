@@ -52,7 +52,7 @@
             - if not itinerary.service.booking_service_code.blank? and user_signed_in?
               .row-fluid
                 .span12
-                  = link_to t(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
+                  = link_to translate_helper(:book), '#book-ecolane', {class: 'btn btn-block', data: {trip: @trip.id, traveler: @traveler.id, itin: itinerary.id}}
                   .ecolane-booking-results.hide
                     .success.hide
                       Booking successful. Your confirmation code
@@ -73,7 +73,7 @@
             = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.outbound_part}
       - else
         %p
-          = t(:depart)
+          = translate_helper(:depart)
         .prev-btn
     %div.span10.card-view-resize
       %div{id: 'outbound_section'}
@@ -99,7 +99,7 @@
             - if @trip.return_part.has_selected?
               = render partial: 'hidden_trips_notice', locals: {trip_part: @trip.return_part}
           - else
-            = t(:return)
+            = translate_helper(:return)
             .prev-btn
         .card-prev
       %div.span10.card-view-resize
@@ -113,7 +113,7 @@
     Trip Overview
   / .new-trip.pull-right
   /   = link_to new_user_trip_path do
-  /     = t(:plan_a_new_trip)
+  /     = translate_helper(:plan_a_new_trip)
 
 #overview-modal.hide
   .row-fluid
@@ -142,7 +142,7 @@
 
       %h5 Purpose
       %p.reason
-        = t(@trip.trip_purpose)
+        = translate_helper(@trip.trip_purpose)
       .close-overview
         .close-btn
           Close Trip Overview

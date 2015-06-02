@@ -3,21 +3,21 @@
   .row.info-header
     .col-sm-6
       %h1
-        = t(:thanks_for_the_feedback)
+        = translate_helper(:thanks_for_the_feedback)
       %small 
-        = t(:did_not_take_feedback_prompt)
+        = translate_helper(:did_not_take_feedback_prompt)
     .col-sm-6.btns
       .pull-right
-        = f.submit t(:apply), class: "btn action-button"
+        = f.submit translate_helper(:apply), class: "btn action-button"
         = link_to user_trip_path_for_ui_mode(@traveler, @trip), class: "btn action-button" do
-          = t(:cancel)
+          = translate_helper(:cancel)
 
   .row
     .col-sm-12
       = f.input :hash, as: :hidden, input_html: { :value => @trip.md5_hash }
       = simple_fields_for @trip.ratings.build do |ratings_form|
         = ratings_form.input :value, as: :hidden, :input_html => { :value => Rating::DID_NOT_TAKE}
-        = ratings_form.input :comments, label: t(:comments)
-        - if translation_exists?("comments_help")
+        = ratings_form.input :comments, label: translate_helper(:comments)
+        - if TranslationEngine.translation_exists?("comments_help")
           :javascript
             addHelperTooltip('#comments_label', "#{t(:comments_help)}");

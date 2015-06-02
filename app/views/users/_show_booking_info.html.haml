@@ -3,8 +3,8 @@
     %table.table.table.condensed.table-striped.table-hover.table-bordered#bookingtable
       %thead
         %tr
-          %th= t(:service_name)
-          %th= t(:client_id)
+          %th= translate_helper(:service_name)
+          %th= translate_helper(:client_id)
       %tbody
         - user.user_profile.user_services.each do |user_service|
           -if user_service.service.active

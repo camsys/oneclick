@@ -1,6 +1,6 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < Devise::RegistrationsController
-  include LocaleHelpers
+
   before_filter :configure_permitted_parameters
   before_filter :set_locale
   # set the @traveler variable before any actions are invoked

@@ -33,7 +33,7 @@ class TripSerializer < ActiveModel::Serializer
       return object.desired_modes.collect do |m|
         {
           mode: m.code,
-          mode_name: I18n.t(m.name),
+          mode_name: TranslationEngine.translate_text(m.name),
           urls: object.trip_parts.collect do |tp|
             {
               trip_part_id: tp.id,

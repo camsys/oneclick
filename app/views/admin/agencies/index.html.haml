@@ -3,23 +3,23 @@
   .col-sm-12
     .btns.pull-right
       - if can? :create, Agency
-        = link_to t(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
-      = button_tag t(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
-    %h1= t(:agencies)
+        = link_to translate_helper(:create), new_admin_agency_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
+    %h1= translate_helper(:agencies)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:agencies)
+      = translate_helper(:agencies)
       = add_tooltip("agencies_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_agencies_table
       %thead
         %tr
-          %th= t(:id)
-          %th= t(:name)
-          %th= t(:parent_agency)
-          %th= t(:subagencies)
-          %th#status= t(:status)
+          %th= translate_helper(:id)
+          %th= translate_helper(:name)
+          %th= translate_helper(:parent_agency)
+          %th= translate_helper(:subagencies)
+          %th#status= translate_helper(:status)
       %tbody
         - @agencies.each do |agency|
           %tr
@@ -32,6 +32,6 @@
               = render partial: agency.sub_agencies
             %td
               - if agency.active == false
-                = t(:inactive)
+                = translate_helper(:inactive)
 
 = render partial: 'admin/shared/datatable_js', locals: {key: 'admin_agencies', entity: 'agencies'}

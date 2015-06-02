@@ -1,6 +1,6 @@
-= t(:feedback_email_header).to_s
+= translate_helper(:feedback_email_header).to_s
 
-- product_name = t(:site_title)
+- product_name = translate_helper(:site_title)
 
 %hr
 =t(:follow_up_email_template).sub('%{trip_created_date}', format_date(@trip.created_at.in_time_zone)).sub('%{product_name}', product_name).sub('%{trip_date}', format_date(@trip.trip_parts.first.trip_time.in_time_zone)).sub('%{trip_from_address}', @trip.from_place.name).sub('%{trip_to_address}', @trip.to_place.name)
@@ -18,7 +18,7 @@
 
 %br
 %br
-= t(:thanks_for_feedback)
+= translate_helper(:thanks_for_feedback)
 
 %hr
-= t(:feedback_email_footer).to_s
+= translate_helper(:feedback_email_footer).to_s

@@ -1,5 +1,4 @@
 class DateOption < ActiveRecord::Base
-  extend LocaleHelpers
   
   DEFAULT = 'date_option_all'
 

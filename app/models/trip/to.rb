@@ -19,7 +19,7 @@ protected
     # TODO Just check that somethign was selected, for now
     return !to_place_object.nil?
     if to_place_selected.blank? || to_place_selected_type.blank?
-      errors.add(:to_place, I18n.translate(:nothing_found))
+      errors.add(:to_place, TranslationEngine.translate_text(:nothing_found))
       return false
     end
   end
