@@ -97,7 +97,7 @@ class RatingsController < ApplicationController
       Rating.find(k).update_attributes(status: v)
     end
 
-    flash[:notice] = TranslationEngine.translate_text(:rating_update, count: parsed_ratings.count) if parsed_ratings.count != 0
+    flash[:notice] = TranslationEngine.translate_text(:rating_update) if parsed_ratings.count != 0
     respond_to do |format|
       format.js {render nothing: true}
       format.html {redirect_to action: :index}
