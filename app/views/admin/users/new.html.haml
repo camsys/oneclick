@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:create_user)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:create_user)}"
 = simple_form_for [:admin, @user], html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
@@ -22,9 +22,9 @@
           = f.input :last_name, label: translate_helper(:last_name)
           = f.input :email, label: translate_helper(:email), :required => true
           .col-md-3
-            .pull-right= f.label "#{t(:admin)}?"
+            .pull-right= f.label "#{translate_helper(:admin)}?"
           .col-md-9{style: "margin-bottom:1em;margin-top:-0.5em;padding:0 10px;"}
-            = f.input_field :roles, :label => "#{t(:admin)}?", :collection => Role.order(:name).reject{|role| role.name != "system_administrator"}, :as => :check_boxes, :label_method => lambda {|t| translate_helper(:yes_str)}
+            = f.input_field :roles, :label => "#{translate_helper(:admin)}?", :collection => Role.order(:name).reject{|role| role.name != "system_administrator"}, :as => :check_boxes, :label_method => lambda {|t| translate_helper(:yes_str)}
           = f.input :preferred_locale, label: translate_helper(:preferred_locale), :collection => Translation.available_locales, :include_blank => false, label_method: lambda {|pl| translate_helper("locales.#{pl}")}
           = f.input :password
           = f.input :password_confirmation

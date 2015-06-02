@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - " + (current_page?(action: 'new') ? "#{t(:new_provider)}" : "#{t(:edit)} #{@provider.name}")
+- content_for :title, "#{translate_helper(:site_title)} - " + (current_page?(action: 'new') ? "#{translate_helper(:new_provider)}" : "#{translate_helper(:edit)} #{@provider.name}")
 = simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
@@ -25,7 +25,7 @@
             = f.input :remove_logo, label: translate_helper(:remove_logo), :as => :boolean, input_html: {checked: false}
           = f.input :logo, label: translate_helper(:upload_logo) + ' (' + Oneclick::Application.config.provider_logo_format_list.join(',') + ')', :as => :file
           = f.input :address
-          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+          = f.input :city, label: "#{translate_helper(:city)}/#{translate_helper(:state)}/#{translate_helper(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
             = f.input_field :city, class: "col-sm-3"
             %label.col-sm-1

@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:trip_summaries)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:trip_summaries)}"
 - if !@is_plan_valid
   - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -68,7 +68,7 @@
           },3000);
         }, 1);
         window.onbeforeunload = dontShowPopup;
-        return "#{t(:did_not_take_feedback_prompt)} #{t(:stay_on_page)}";
+        return "#{translate_helper(:did_not_take_feedback_prompt)} #{translate_helper(:stay_on_page)}";
       }
       function dontShowPopup() { }
 
@@ -92,7 +92,7 @@
         success: function() {
           $('#satisfaction_survey .modal-header').remove();
           $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
-          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{t(:success)}</strong>");
+          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper(:success)}</strong>");
           setTimeout(function(){
             $('#satisfaction_survey').modal('hide');
           }, 1000);

@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{@agency.name}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:edit)} #{@agency.name}"
 = simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
@@ -21,7 +21,7 @@
             = add_tooltip("contact_info_help")
         .panel-body
           = f.input :address
-          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+          = f.input :city, label: "#{translate_helper(:city)}/#{translate_helper(:state)}/#{translate_helper(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
             = f.input_field :city, class: "col-sm-3"
             %label.col-sm-1
