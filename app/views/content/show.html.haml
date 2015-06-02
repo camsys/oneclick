@@ -1,2 +1,2 @@
-- content_for :title, "#{t(:site_title)} - #{params[:id].titleize}"
+- content_for :title, "#{translate_helper(:site_title)} - #{params[:id].titleize}"
 = translate_helper(params[:id]).html_safe

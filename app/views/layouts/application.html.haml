@@ -56,12 +56,12 @@
           .pull-left
             - unless Rails.env.production?
               %span#versionInfo
-                = "#{t(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
+                = "#{translate_helper(:version)} #{ENV['ONECLICK_APP_VERSION'] || Rails.application.config.version}"
                 |
                 - %w{xs sm md lg}.each do |s|
                   %span{class: "oc-visible-#{s}"}= s
             - else
-              %span#versionInfo= "#{t(:version)} #{Rails.application.config.version}"
+              %span#versionInfo= "#{translate_helper(:version)} #{Rails.application.config.version}"
     / end of footer
 
     = yield :footer

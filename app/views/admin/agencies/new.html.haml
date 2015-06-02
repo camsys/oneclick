@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:new_agency)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:new_agency)}"
 = simple_form_for([:admin, @agency]) do |f|
   = f.error_notification message: print_messages(f)
 
@@ -20,9 +20,9 @@
         = f.input :name, label: translate_helper(:name)
         - if TranslationEngine.translation_exists?("name_help")
           :javascript
-            addHelperTooltip('#name_label', "#{t(:name_help)}");
+            addHelperTooltip('#name_label', "#{translate_helper(:name_help)}");
 
         = f.association :parent, collection: @agency.possible_parents, label: translate_helper(:parent)
         - if TranslationEngine.translation_exists?("agency_parent_help")
           :javascript
-            addHelperTooltip('#parent_id_label', "#{t(:agency_parent_help)}");
+            addHelperTooltip('#parent_id_label', "#{translate_helper(:agency_parent_help)}");

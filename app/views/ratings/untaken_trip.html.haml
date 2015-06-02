@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:feedback)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:feedback)}"
 =simple_form_for @trip, url: trip_only_rating_path(@trip), method: "post" do |f|
   .row.info-header
     .col-sm-6
@@ -20,4 +20,4 @@
         = ratings_form.input :comments, label: translate_helper(:comments)
         - if TranslationEngine.translation_exists?("comments_help")
           :javascript
-            addHelperTooltip('#comments_label', "#{t(:comments_help)}");
+            addHelperTooltip('#comments_label', "#{translate_helper(:comments_help)}");

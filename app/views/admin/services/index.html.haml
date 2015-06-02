@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:services)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:services)}"
 .row
   .col-sm-12
     = link_to translate_helper(:all_providers), admin_providers_path, class: 'btn action-button btn-arrow-left'

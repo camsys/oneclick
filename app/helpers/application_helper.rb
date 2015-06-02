@@ -170,11 +170,11 @@ module ApplicationHelper
 
     if hours > 0
       format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
-      time_string << TranslationEngine.translate_text(format, count: hours)  + ' '
+      time_string << TranslationEngine.translate_text(format)  + ' '
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << TranslationEngine.translate_text(:minute, count: minutes)
+      time_string << TranslationEngine.translate_text(:minute)
     end
 
     if time_in_seconds < 60
@@ -182,7 +182,7 @@ module ApplicationHelper
     end
 
     if options[:days_only]
-      time_string = TranslationEngine.translate_text(:day, count: hours/24.round)
+      time_string = TranslationEngine.translate_text(:day)
     end
 
     time_string

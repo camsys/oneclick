@@ -139,7 +139,7 @@
   $('#book_button_btn').unbind('click');
   $('#book_button_btn').on('click', function(event) {
     event.stopPropagation();
-    var text = "#{t(:please_wait)}" + "..."
+    var text = "#{translate_helper(:please_wait)}" + "..."
     $('#book_button_btn').text(text);
 
     $('#book_button_btn').addClass('disabled');
@@ -208,7 +208,7 @@
         $('#results1').html(confirmation_numbers);
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
+        contact_message = "#{translate_helper(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
 
 
@@ -219,7 +219,7 @@
         var confirmation_message = "Your trip could not be booked at this time."
         $('#results2').html(confirmation_message)
 
-        contact_message = "#{t(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
+        contact_message = "#{translate_helper(:more_info_call)}" + " " + "Shared Ride at " + result['trips'][4] + "."
         $('#results3').html(contact_message);
       }
 

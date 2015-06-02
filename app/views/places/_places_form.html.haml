@@ -63,7 +63,7 @@
   var typeahead_min_chars = +"#{Rails.application.config.ui_typeahead_min_chars}"
   var typeahead_list_length = +"#{Rails.application.config.ui_typeahead_list_length}"
   var geocoder_min_chars = +"#{Rails.application.config.ui_min_geocode_chars}"
-  var delete_message = "#{t(:confirm_remove_message)}"
+  var delete_message = "#{translate_helper(:confirm_remove_message)}"
 
   // Hide the name editing div on page load
   $(document).ready(function(){

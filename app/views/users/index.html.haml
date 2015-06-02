@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:users)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:users)}"
 %h3{role: "main", aria: {label: "Users Table"}}= translate_helper(:users)
 .col-sm-8
   %table.table.table-condensed
