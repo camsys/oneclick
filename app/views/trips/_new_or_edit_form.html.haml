@@ -122,7 +122,7 @@
                 });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            = f.input :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => :id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }input_html: { class: 'form-control' }
             - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
