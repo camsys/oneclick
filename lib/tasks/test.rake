@@ -6,7 +6,6 @@ namespace :oneclick do
   	Rake::Task["db:create"].invoke
   	Rake::Task["db:reset"].invoke
   	Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke
-    binding.pry
   end
 
 end
