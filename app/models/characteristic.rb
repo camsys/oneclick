@@ -64,7 +64,7 @@ class Characteristic < ActiveRecord::Base
 
     options = a['datatype']=='bool' ? [{text: TranslationEngine.translate_text(:yes_str), value: true}, {text: TranslationEngine.translate_text(:no_str), value: false}] : nil
     {
-      'question' => TranslationEngine.translate_text(a['note'], age: age),
+      'question' => TranslationEngine.translate_text(a['note']),
       #'description' => TranslationEngine.translate_text(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',

@@ -53,7 +53,7 @@ class UserMailer < ActionMailer::Base
   def buddy_request_email(to_email, from_traveler)
     @to_email = to_email
     @traveler = from_traveler
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_buddy_request_from_from_email, from: from_traveler))
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_buddy_request_from_from_email))
   end
 
   def buddy_revoke_email(to_email, from_email)
@@ -61,7 +61,7 @@ class UserMailer < ActionMailer::Base
     @from_email = from_email
 
     # TODO localize
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_buddy_revoke_from_from_email, by: @from_email))
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_buddy_revoke_from_from_email))
   end
 
   def traveler_confirmation_email(to_email, from_email)
@@ -69,7 +69,7 @@ class UserMailer < ActionMailer::Base
     @from_email = from_email
 
     # TODO localize
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_confirmation_from_from_email, by: @from_email))
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_confirmation_from_from_email))
   end
 
   def traveler_decline_email(to_email, from_email)
@@ -77,7 +77,7 @@ class UserMailer < ActionMailer::Base
     @from_email = from_email
 
     # TODO localize
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_decline_by_from_email, by: @from_email))
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_decline_by_from_email))
   end
 
   def traveler_revoke_email(to_email, from_email)
@@ -85,7 +85,7 @@ class UserMailer < ActionMailer::Base
     @from_email = from_email
 
     # TODO localize
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_revoke_by_from_email, by: @from_email))
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translation_text(:one_click_traveler_revoke_by_from_email))
   end
 
   def feedback_email(trip)

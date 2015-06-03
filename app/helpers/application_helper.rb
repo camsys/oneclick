@@ -165,16 +165,17 @@ module ApplicationHelper
     time_string = ''
 
     if time_in_seconds > 60*60*24 and options[:days_only]
-      return TranslationEngine.translate_text(:day, count: hours / 24)
+      count = hours / 24
+      return count.to_s + " " + TranslationEngine.translate_text("day")
     end
 
     if hours > 0
-      format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
-      time_string << TranslationEngine.translate_text(format)  + ' '
+      time_string << hours.to_s + " " + TranslationEngine.translate_text("hour")[0] + " "
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << TranslationEngine.translate_text(:minute)
+      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minute")[0..2]
+      time_string << "s" if minutes != 1
     end
 
     if time_in_seconds < 60
@@ -182,7 +183,7 @@ module ApplicationHelper
     end
 
     if options[:days_only]
-      time_string = TranslationEngine.translate_text(:day)
+      time_string = (hours/24.round).to_s + " " + TranslationEngine.translate_text("day")
     end
 
     time_string
@@ -196,8 +197,13 @@ module ApplicationHelper
 
     start_days = start_time_in_seconds/3600/24.round
     end_days = end_time_in_seconds/3600/24.round
+    count = end_days - start_days
 
-    start_days.to_s + " " + TranslationEngine.translate_text(:to).downcase + " " + TranslationEngine.translate_text(:day, count: end_days)
+    result = start_days.to_s + " " + TranslationEngine.translate_text(:to).downcase + " " + end_days.to_s + " " + TranslationEngine.translate_text("day")
+    result << "s"
+
+    result
+
   end
 
   def get_boolean(val)

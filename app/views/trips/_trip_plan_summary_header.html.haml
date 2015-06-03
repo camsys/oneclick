@@ -12,7 +12,7 @@
     %tbody
       %tr
         %td.itinerary_icons{:width => '10%', :style => "text-align: left;"}
-          %img{:src => logo_url_helper(i), alt: "#{t(i.mode)} icon"}
+          %img{:src => logo_url_helper(i), alt: "#{translate_helper(i.mode)} icon"}
         %td{:width => '15%'}
           .itinerary_text
             %strong= translate_helper(:fare)
