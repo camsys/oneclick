@@ -46,7 +46,7 @@ class ItinerarySerializer < ActiveModel::Serializer
 
   def logo_link
     return "http://www.taxifarefinder.com" if logo_url.include? "taxifarefinder"
-    return object.service.url if object.service.present?
+    return object.service.url if object.service.present? && object.service.url.present?
     return ""
   end
 
