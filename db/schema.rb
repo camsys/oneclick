@@ -137,8 +137,8 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -221,6 +221,12 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.string   "addr"
     t.float    "lat"
     t.float    "lon"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locales", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -562,17 +568,25 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.datetime "updated_at"
   end
 
+  create_table "translation_keys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"
-    t.boolean  "is_proc",        default: false
+    t.boolean  "is_proc",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "locale"
     t.text     "value"
-    t.boolean  "is_html",        default: false
-    t.boolean  "complete",       default: false
-    t.boolean  "is_list",        default: false
+    t.boolean  "is_html",            default: false
+    t.boolean  "complete",           default: false
+    t.boolean  "is_list",            default: false
+    t.integer  "locale_id"
+    t.integer  "translation_key_id"
   end
 
   create_table "traveler_notes", force: true do |t|
