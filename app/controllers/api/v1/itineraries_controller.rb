@@ -158,7 +158,9 @@ module Api
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
             status  = bi.status
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation, negotiated_pu_time: status[1][:pu_time], negotiated_do_time: status[1][:do_time] })
+            negotiated_pu_time = status[1][:pu_time].nil? ? nil : status[1][:pu_time].to_time.iso8601
+            negotiated_do_time = status[1][:do_time].nil? ? nil : status[1][:do_time].to_time.iso8601
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation, negotiated_pu_time: negotiated_pu_time, negotiated_do_time: negotiated_do_time })
           end
 
         #Build Failure Response
