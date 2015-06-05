@@ -44,8 +44,15 @@
       / end of trip container
   .col-xs-12#action_footer{style: "margin-bottom: 5px;padding: 0px;"}
     .pull-right
-      = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
-        = translate_helper(:feedback)
+      - if SatisfactionSurvey.enabled?
+        - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
+          %button#open_survey.btn.action-button{"data-toggle" => "modal", "data-target" => "#satisfaction_survey"}
+            %i.fa.fa-thumbs-up
+            %i.fa.fa-thumbs-down.fa-flip-horizontal
+            = translate_helper(:feedback)
+      - else
+        = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
+          = translate_helper(:feedback)
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =t(:next)
   .col-sm-12
