@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527193325) do
+ActiveRecord::Schema.define(version: 20150608210827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,8 +137,8 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_id"
     t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -209,10 +209,6 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
-    t.boolean  "assistant"
-    t.integer  "companions"
-    t.integer  "children"
-    t.integer  "other_passengers"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -227,6 +223,14 @@ ActiveRecord::Schema.define(version: 20150527193325) do
 
   create_table "locales", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", force: true do |t|
+    t.text     "body"
+    t.datetime "from_date"
+    t.datetime "to_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -546,8 +550,8 @@ ActiveRecord::Schema.define(version: 20150527193325) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.boolean  "use_gtfs_colors"
     t.string   "disabled_comment"
+    t.boolean  "use_gtfs_colors"
   end
 
   create_table "services_users", id: false, force: true do |t|
