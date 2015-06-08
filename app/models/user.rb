@@ -59,6 +59,9 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
 
+  has_many :user_messages
+  has_many :messages, through: :user_messages
+
   belongs_to :agency
   belongs_to :provider
   belongs_to :walking_speed
