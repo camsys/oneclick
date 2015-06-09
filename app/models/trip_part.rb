@@ -151,8 +151,11 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    self.itineraries << itins
-    itins
+    itins.each do |itinerary|
+      itinerary.trip_part_id = self.id
+      puts "Saving Itinerary: " + itinerary.save.to_s
+    end
+
   end
 
   def check_for_duplicates(new_i, existing_itins)
@@ -196,27 +199,11 @@ class TripPart < ActiveRecord::Base
 
     result, response = OTPService.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
 
-    #TODO: Save errored results to an event log
-    if result
-      tp.convert_itineraries(response, mode_code).each do |itinerary|
-        serialized_itinerary = {}
-
-        itinerary.each do |k,v|
-          if v.is_a? Array
-            serialized_itinerary[k] = v.to_yaml
-          else
-            serialized_itinerary[k] = v
-          end
-        end
-
-        itins << Itinerary.new(serialized_itinerary)
-
-      end
-    end
+    tp.convert_itineraries(response, mode_code)
 
     #Check to see special fare rules exist
     fh = FareHelper.new
-    itins.each do |itin|
+    self.itineraries.each do |itin|
       fh.calculate_fixed_route_fare(self, itin)
     end
 

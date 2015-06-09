@@ -64,7 +64,7 @@ class Itinerary < ActiveRecord::Base
 
   def self.is_walk?(legs)
     legs ||= []
-    return legs.size == 1 && legs.first.mode == Leg::TripLeg::WALK
+    return legs.size == 1 && legs.first.mode == Leg::WALK
   end
 
   # return true if this itinerary is a car-only trip. These are a special case of transit
@@ -77,7 +77,7 @@ class Itinerary < ActiveRecord::Base
 
   def self.is_car?(legs)
     legs ||= []
-    return legs.size == 1 && legs.first.mode == Leg::TripLeg::CAR
+    return legs.size == 1 && legs.first.mode == Leg::CAR
   end
 
   # returns true if this itinerary is contains only bicycle and walking legs. These are a special case of Transit
@@ -92,7 +92,7 @@ class Itinerary < ActiveRecord::Base
     legs ||= []
     
     modes = legs.collect{ |m| m.mode }.uniq
-    unless Leg::TripLeg::BICYCLE.in? modes
+    unless Leg::BICYCLE.in? modes
       return false
     end
 
@@ -101,7 +101,7 @@ class Itinerary < ActiveRecord::Base
     elsif modes.count > 2
       return false
     else
-      return Leg::TripLeg::WALK.in? modes
+      return Leg::WALK.in? modes
     end
   end
 
@@ -307,7 +307,7 @@ class Itinerary < ActiveRecord::Base
       walk_time = 0
       walk_distance = 0
       get_legs(false).each do |leg|
-        if leg.mode == Leg::TripLeg::WALK
+        if leg.mode == Leg::WALK
           walk_time += leg.duration
           walk_distance += leg.distance
         end

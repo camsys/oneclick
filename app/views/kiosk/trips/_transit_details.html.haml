@@ -13,7 +13,7 @@
       %td.itinerary_icons
         %i.transit_itinerary_icons.mode_icon_formatting{:class => get_mode_icon(leg.mode)}
       %td
-        -if leg.mode == Leg::TripLeg::WALK
+        -if leg.mode == Leg::WALK
           .itinerary_text
             %p= leg.mode + ' ' + translate_helper(:to) + ' ' + leg.end_place.name
           .itinerary_text_small

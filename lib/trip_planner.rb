@@ -18,12 +18,16 @@ class TripPlanner
   end
 
   def convert_itineraries(plan, mode_code='mode_transit')
+
     match_score = -0.3
     match_score_incr = 0.1
-    plan['itineraries'].collect do |itinerary|
+
+    plan['itineraries'].collect do |otp_itinerary|
+
       trip_itinerary = {}
 
       returned_mode_code = mode_code
+
       case mode_code.to_s
         when 'mode_car'
           trip_itinerary['mode'] = Mode.car
@@ -36,7 +40,8 @@ class TripPlanner
           returned_mode_code = Mode.transit.code
 
           # further check if is_walk, is_car, or is_bicycle
-          legs = ItineraryParser.parse(itinerary['legs'], false)
+          legs = OTPService.parse_otp_legs(otp_itinerary['legs'], false)
+
           if Itinerary.is_walk?(legs)
             returned_mode_code = Mode.walk.code
           elsif Itinerary.is_car?(legs)
@@ -44,38 +49,59 @@ class TripPlanner
           elsif Itinerary.is_bicycle?(legs)
             returned_mode_code = Mode.bicycle.code
           end
+          
       end
 
       trip_itinerary['returned_mode_code'] = returned_mode_code
-      trip_itinerary['duration'] = itinerary['duration'].to_f # in seconds
-      trip_itinerary['walk_time'] = itinerary['walkTime']
-      trip_itinerary['transit_time'] = itinerary['transitTime']
-      trip_itinerary['wait_time'] = itinerary['waitingTime']
-      trip_itinerary['start_time'] = Time.at((itinerary['startTime']).to_f/1000).in_time_zone("UTC")
-      trip_itinerary['end_time'] = Time.at((itinerary['endTime']).to_f/1000).in_time_zone("UTC")
-      trip_itinerary['transfers'] = fixup_transfers_count(itinerary['transfers'])
-      trip_itinerary['walk_distance'] = itinerary['walkDistance']
-      trip_itinerary['legs'] = itinerary['legs'].to_yaml
+      trip_itinerary['duration'] = otp_itinerary['duration'].to_f # in seconds
+      trip_itinerary['walk_time'] = otp_itinerary['walkTime']
+      trip_itinerary['transit_time'] = otp_itinerary['transitTime']
+      trip_itinerary['wait_time'] = otp_itinerary['waitingTime']
+      trip_itinerary['start_time'] = Time.at((otp_itinerary['startTime']).to_f/1000).in_time_zone("UTC")
+      trip_itinerary['end_time'] = Time.at((otp_itinerary['endTime']).to_f/1000).in_time_zone("UTC")
+      trip_itinerary['transfers'] = fixup_transfers_count(otp_itinerary['transfers'])
+      trip_itinerary['walk_distance'] = otp_itinerary['walkDistance']
+
+      #handle legs
+      #trip_itinerary['legs'] = create_legs(otp_itinerary['legs'])
+
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
+
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+        trip_itinerary['cost'] = otp_itinerary['fare']['fare']['regular']['cents'].to_f/100.0
       rescue Exception => e
         Rails.logger.error e
-        Rails.logger.error itinerary['fare'].ai
+        Rails.logger.error otp_itinerary['fare'].ai
         #do nothing, leave the cost element blank
       end
-      agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
+
+      agency_id = otp_itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
       if agency_id
         s = Service.where(external_id: agency_id).first
         if s
           trip_itinerary['service'] = s
         end
       end
+
       match_score += match_score_incr
-      trip_itinerary
+      
+      Itinerary.create!(trip_itinerary)
+
     end
+
+  end
+
+  def create_legs(otp_legs)
+
+    parsed_legs = OTPService.parse_otp_legs(otp_legs)
+
+    parsed_legs.each do |otp_leg|
+      new_leg = Leg.new
+    end
+
+    return otp_legs.to_yaml
   end
 
   def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
@@ -145,7 +171,7 @@ class TripPlanner
 
   def get_drive_time arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
     tp = TripPlanner.new
-    result, response = get_fixed_itineraries([from_lat, from_lon],
+    result, response = OTPService.get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
     itinerary = response['itineraries'].first
     return [itinerary['duration'], itinerary['legs'].to_yaml]
@@ -153,7 +179,7 @@ class TripPlanner
 
   def get_drive_distance arrive_by, trip_time, from_lat, from_lon, to_lat, to_lon
     tp = TripPlanner.new
-    result, response = get_fixed_itineraries([from_lat, from_lon],
+    result, response = OTPService.get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
     itinerary = response['itineraries'].first
     return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
