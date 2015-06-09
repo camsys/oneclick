@@ -2,14 +2,14 @@
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
-      %button#newMessage.btn.action-button.pull-right{data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
-        = translate_helper(:message)
-      %button#selectAll.btn.action-button.pull-right
+      %button#selectAll.btn.action-button
         = translate_helper(:select_all)
-      %button#selectNone.btn.action-button.pull-right
+      %button#selectNone.btn.action-button
         = translate_helper(:select_none)
+      %button#newMessage.btn.action-button{data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
+        = translate_helper(:message)
       = render partial: 'messages/modal', locals: {user: current_user}
+      = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
       = button_tag translate_helper(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
     %h1= translate_helper(:users)
 .panel.panel-default{style: 'padding: 0px;'}
@@ -82,6 +82,15 @@
     window.onbeforeunload = function(){
       localStorage.setItem(localStorageKey, selectedUserIds.toString());
     };
+
+    // update recipient_ids in message form (modal dialog)
+    $('#newMessageDialog').on('show.bs.modal', function () { 
+      // reset form
+      $('#messageForm')[0].reset();
+      $('#newMessageDialog .modal-flash').html('');
+      $('input[name=recipient_ids]').val(selectedUserIds);
+
+    });
 
     // enable/disable Message button
     var updateMessageButtonStatus = function() {
