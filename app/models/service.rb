@@ -476,6 +476,15 @@ class Service < ActiveRecord::Base
 
   end
 
+  def endpoint_contains?(lat,lng)
+    mercator_factory = RGeo::Geographic.simple_mercator_factory
+     test_point = mercator_factory.point(lng, lat)
+    unless self.endpoint_area_geom.nil?
+      return false unless self.endpoint_area_geom.geom.contains? test_point
+    end
+    return true
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)

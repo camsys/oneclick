@@ -415,8 +415,8 @@ Oneclick::Application.routes.draw do
     namespace :v1 do
       resources :trip_purposes do
         collection do
-          get 'list'
-          get 'index'
+          post 'list' => 'trip_purposes#list'
+          post 'index' => 'trip_purposes#index'
         end
       end
 

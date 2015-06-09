@@ -14,6 +14,11 @@ class EcolaneHelpers
     BASE_URL = nil
   end
 
+  def get_ecolane_customer_id_from_itinerary(itinerary)
+    user_service = UserService.where(user_profile: itinerary.trip_part.trip.user.user_profile, service: itinerary.service).order('created_at').last
+    return get_ecolane_customer_id(user_service.external_user_id)
+  end
+
   def get_ecolane_customer_id(customer_number)
     resp = search_for_customers(terms = {customer_number: customer_number})
     resp_xml = Nokogiri::XML(resp.body)
@@ -276,6 +281,37 @@ class EcolaneHelpers
 
 
   ## GET Operations
+  def get_trip_purposes_from_itinerary(itinerary)
+    get_trip_purposes(get_ecolane_customer_id_from_itinerary(itinerary))
+  end
+
+  def get_trip_purposes_from_traveler(traveler)
+    user_service = UserService.where(user_profile: traveler.user_profile).order('created_at').last
+    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id))
+  end
+
+  def get_trip_purposes_from_customer_number(customer_number)
+    get_trip_purposes(get_ecolane_customer_id(customer_number))
+  end
+
+  def get_trip_purposes(customer_id)
+    purposes = []
+    customer_information = fetch_customer_information(customer_id, funding = true)
+    resp_xml = Nokogiri::XML(customer_information)
+    resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
+      funding_source.xpath("allowed").each do |allowed|
+        purpose = allowed.xpath("purpose").text
+        unless purpose.in? purposes
+          purposes.append(purpose)
+        end
+      end
+
+    end
+
+    purposes.sort
+
+  end
+
   def verify_client_id(client_id, dob)
     search_for_customers([['customer_number', client_id], ['date_of_birth', dob]])
   end
