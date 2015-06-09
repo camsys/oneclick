@@ -1,8 +1,4 @@
-#
-# Concrete implementation of a walking leg
-#
-module Leg
-  class WalkLeg < TripLeg
+class WalkLeg < Leg
 
     def initialize(attrs = {})
 
@@ -19,5 +15,4 @@ module Leg
       desc = [TranslationEngine.translate_text(mode.downcase.to_sym), TranslationEngine.translate_text(:to), end_place.name].join(' ')
     end
 
-  end
 end
