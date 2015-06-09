@@ -8,7 +8,7 @@
         = translate_helper(:select_none)
       %button#newMessage.btn.action-button{data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
         = translate_helper(:message)
-      = render partial: 'messages/modal', locals: {user: current_user}
+      = render partial: 'messages/send_message_modal', locals: {user: current_user}
       = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
       = button_tag translate_helper(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
     %h1= translate_helper(:users)
