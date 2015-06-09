@@ -228,12 +228,15 @@ ActiveRecord::Schema.define(version: 20150608211244) do
   end
 
   create_table "messages", force: true do |t|
+    t.integer  "sender_id"
     t.text     "body"
     t.datetime "from_date"
     t.datetime "to_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
 
   create_table "mileage_fares", force: true do |t|
     t.float    "base_rate"
@@ -701,7 +704,7 @@ ActiveRecord::Schema.define(version: 20150608211244) do
   end
 
   create_table "user_messages", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "recipient_id"
     t.integer  "message_id"
     t.boolean  "read"
     t.datetime "created_at"
@@ -709,7 +712,7 @@ ActiveRecord::Schema.define(version: 20150608211244) do
   end
 
   add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
-  add_index "user_messages", ["user_id"], :name => "index_user_messages_on_user_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
 
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
