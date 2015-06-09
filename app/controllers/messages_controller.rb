@@ -4,10 +4,10 @@ class MessagesController < ApplicationController
     authorize! :create, @message
     @message.sender = current_user
 
-    if !@message.save
-      UserMessenger.new(@message.id, params[:recipients]).send
+    if @message.save
+      UserMessenger.new(@message.id, recipient_ids).send
     end
-
+    
     respond_to do |format|
       format.js
     end
@@ -17,5 +17,9 @@ class MessagesController < ApplicationController
 
   def message_params
     params.require(:message).permit(:body, :from_date, :to_date)
+  end
+
+  def recipient_ids
+    params[:recipient_ids].split(',').map(&:to_i)
   end
 end
