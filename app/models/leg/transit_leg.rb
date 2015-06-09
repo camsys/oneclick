@@ -1,5 +1,4 @@
-module Leg
-  class TransitLeg < TripLeg
+class TransitLeg < Leg
 
     TRANSIT_LEGS = [TRAM, SUBWAY, RAIL, BUS, FERRY, CABLE_CAR, GONDOLA, FUNICULAR]
     RAIL_LEGS = [TRAM, SUBWAY, RAIL, CABLE_CAR, GONDOLA, FUNICULAR]
@@ -31,5 +30,4 @@ module Leg
       end
     end
 
-  end
 end

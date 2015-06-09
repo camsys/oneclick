@@ -1,9 +1,4 @@
-#
-# Abstract transient class for storing information about a leg of an itinerary
-#
-#
-module Leg
-  class TripLeg
+class TripLeg
 
     #Transit Modes and Rail Modes should be Added to TransitLeg
     WALK    = 'WALK'
@@ -87,4 +82,3 @@ module Leg
     end
 
   end
-end
