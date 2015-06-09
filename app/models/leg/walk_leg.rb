@@ -1,4 +1,4 @@
-class WalkLeg < Leg
+class Leg::WalkLeg < Leg
 
     def initialize(attrs = {})
 
