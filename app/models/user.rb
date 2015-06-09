@@ -59,8 +59,9 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
 
-  has_many :user_messages
-  has_many :messages, through: :user_messages
+  has_many :received_messages, class_name: 'UserMessage', foreign_key: 'recipient_id'
+  has_many :messages, through: :received_messages
+  has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
 
   belongs_to :agency
   belongs_to :provider
