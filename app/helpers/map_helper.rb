@@ -173,7 +173,7 @@ module MapHelper
   end
 
   def query_sidewalk_feedback_near_one_walk_leg(leg)
-    return [] unless (leg.mode == Leg::TripLeg::WALK and not leg.geometry.nil?)
+    return [] unless (leg.mode == Leg::WALK and not leg.geometry.nil?)
 
     feedbacks = []
     min_lat = min_lon = max_lat = max_lon = nil

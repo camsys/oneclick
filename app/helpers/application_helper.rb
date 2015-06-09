@@ -6,14 +6,14 @@ module ApplicationHelper
   include CsHelpers
 
   KIOSK_ICON_DICTIONARY = {
-    Leg::TripLeg::WALK => 'travelcon-walk',
-    Leg::TripLeg::TRAM => 'travelcon-subway',
-    Leg::TripLeg::SUBWAY => 'travelcon-subway',
-    Leg::TripLeg::RAIL => 'travelcon-rail',
-    Leg::TripLeg::BUS => 'travelcon-bus',
-    Leg::TripLeg::FERRY => 'travelcon-boat',
-    Leg::TripLeg::CAR => 'travelcon-car',
-    Leg::TripLeg::BICYCLE => 'travelcon-bicycle'
+    Leg::WALK => 'travelcon-walk',
+    Leg::TRAM => 'travelcon-subway',
+    Leg::SUBWAY => 'travelcon-subway',
+    Leg::RAIL => 'travelcon-rail',
+    Leg::BUS => 'travelcon-bus',
+    Leg::FERRY => 'travelcon-boat',
+    Leg::CAR => 'travelcon-car',
+    Leg::BICYCLE => 'travelcon-bicycle'
   }
 
   # Returns the name of the logo image based on the oneclick configuration
