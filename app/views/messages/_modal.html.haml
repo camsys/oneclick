@@ -1,0 +1,16 @@
+= simple_form_for Message.new, method: :post, remote: true do |f|
+  #newMessageDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:send_message), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+            = translate_helper(:cancel)
+          = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
+            = translate_helper(:send)
+          .modal-title{:style => "text-align:left;"}
+            %b
+              = translate_helper(:send_message)
+        .modal-body{:style => "text-align:left;"}
+          = f.input :body, as: :text
+          = f.input :from_date
+          = f.input :to_date
