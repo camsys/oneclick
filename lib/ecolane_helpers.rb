@@ -197,6 +197,76 @@ class EcolaneHelpers
     return true, fare
   end
 
+  def query_guest_fare(itinerary)
+
+    url_options =  "/api/order/" + SYSTEM_ID + "/queryfare"
+    url = BASE_URL + url_options
+
+    #First: Find Gen Public Fare
+    service = itinerary.service
+    funding_source = service.funding_sources.where(general_public: true).first
+    guest_id = service.fare_user
+
+    order = build_discount_order(itinerary, funding_source.code, guest_id)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '2')
+    order = order.to_s
+    resp = send_request(url, 'POST', order)
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    if resp_code != "200"
+      Honeybadger.notify(
+          :error_class   => "Unable to query fare",
+          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
+          :parameters    => {resp_code: resp_code, resp: resp}
+      )
+      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
+    end
+    fare = unpack_fare_response(resp, itinerary)
+
+    return true, fare
+
+  end
+
+  def build_discount_array(itinerary)
+    url_options =  "/api/order/" + SYSTEM_ID + "/queryfare"
+    url = BASE_URL + url_options
+
+    #First: Find Gen Public Fare
+    service = itinerary.service
+    funding_sources = service.funding_sources.where(general_public: false)
+    guest_id = service.fare_user
+    discount_array = []
+
+    funding_sources.each do |funding_source|
+      order = build_discount_order(itinerary, funding_source.code, guest_id)
+      order = Nokogiri::XML(order)
+      order.children.first.set_attribute('version', '2')
+      order = order.to_s
+      resp = send_request(url, 'POST', order)
+
+      begin
+        resp_code = resp.code
+      rescue
+        resp_code = nil
+      end
+
+      if resp_code == "200"
+        fare = unpack_fare_response(resp, itinerary)
+        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code})
+      end
+    end
+
+    discount_array
+
+  end
+
+
   def unpack_fare_response (resp, itinerary)
     resp_xml = Nokogiri::XML(resp.body)
     Rails.logger.info(resp_xml)
@@ -339,6 +409,8 @@ class EcolaneHelpers
     send_request(url)
   end
 
+
+
   ## Building hash objects that become XML nodes
   def build_order(itinerary, funding_xml=nil)
 
@@ -361,8 +433,6 @@ class EcolaneHelpers
   end
 
   def build_order_hash(itinerary, funding_xml=nil)
-
-    #TODO: Pull Passengers from itinerary
     order = {customer_id: get_customer_id(itinerary), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
 
     if funding_xml
@@ -370,6 +440,7 @@ class EcolaneHelpers
     end
     Rails.logger.info(order)
     order
+
   end
 
   def build_funding_hash(itinerary, funding_xml)
@@ -415,6 +486,27 @@ class EcolaneHelpers
 
   end
 
+  ############################################################
+  #Find Fares for users that do not have accounts with ecolane
+  ############################################################
+  def build_discount_order(itinerary, funding_source, guest_id)
+    order_hash = build_discount_order_hash(itinerary, funding_source, guest_id)
+    order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
+    order_xml
+  end
+
+  def build_discount_order_hash(itinerary, funding_source, guest_id)
+    order = {customer_id: get_ecolane_customer_id(guest_id), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order[:funding] = build_discount_funding_hash(itinerary, funding_source)
+    order
+  end
+
+  def build_discount_funding_hash(itinerary, funding_source)
+    #TODO: This purpose has to be updated when trip purposes are pulled in on-the-fly
+    return {funding_source: funding_source, purpose: "Other"}
+  end
+  ############################################################
+
 
   #Find the default funding source for a customer id
   # (customer_id is the internal id and not the client id)
@@ -427,9 +519,7 @@ class EcolaneHelpers
         return funding_source.xpath("name").text
       end
     end
-
     nil
-
   end
 
   #Build the hash for the pickup request

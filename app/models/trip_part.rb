@@ -428,41 +428,6 @@ class TripPart < ActiveRecord::Base
     end
   end
 
-  def create_paratransit_itineraries
-    eh = EligibilityService.new
-    fh = FareHelper.new
-    itins = eh.get_accommodating_and_eligible_services_for_traveler(self)
-    itins = eh.remove_ineligible_itineraries(self, itins)
-
-    itins = itins.collect do |itinerary|
-      new_itinerary = Itinerary.new(itinerary)
-      new_itinerary.trip_part = self
-      fh.calculate_fare(self, new_itinerary)
-      new_itinerary
-    end
-
-    unless itins.empty?
-      unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
-        begin
-          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first, from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[0]
-        rescue Exception => e
-          Rails.logger.error "Exception #{e} while getting trip duration."
-          base_duration = nil
-        end
-      else
-        Rails.logger.info "SKIP_DYNAMIC_PARATRANSIT_DURATION is set, skipping it"
-        base_duration = Oneclick::Application.config.default_paratransit_duration
-      end
-      Rails.logger.info "Base duration: #{base_duration} minutes"
-      itins.each do |i|
-        service_window = i.service.service_window if i && i.service
-        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration,
-                            i.service.time_factor || Oneclick::Application.config.paratransit_duration_factor, service_window, trip_time, is_depart)
-      end
-    end
-    itins
-  end
-
   def create_rideshare_itineraries
     itins = []
     tp = TripPlanner.new

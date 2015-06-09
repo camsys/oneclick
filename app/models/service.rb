@@ -24,6 +24,7 @@ class Service < ActiveRecord::Base
   has_many :user_services
   has_and_belongs_to_many :users # primarily for internal contact
   has_many :fare_zones
+  has_many :funding_sources
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }

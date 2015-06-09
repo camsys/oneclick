@@ -63,7 +63,7 @@ module Api
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
-          # Create the outbound trip part              ssss
+          # Create the outbound trip part
           tp = TripPart.new
           tp.trip = trip
 
@@ -106,16 +106,15 @@ module Api
             i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
+
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
               i_hash[:json_legs] = nil
             end
+
             final_itineraries.append(i_hash)
           end
-
-
-
 
 
           #Unpack and return the itineraries
