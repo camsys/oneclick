@@ -1,4 +1,4 @@
-  class LegPlace
+  class Leg::LegPlace
 
     attr_accessor :lat
     attr_accessor :lon

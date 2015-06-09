@@ -194,7 +194,7 @@ class TripPart < ActiveRecord::Base
       max_walk_distance = trip.user.walking_maximum_distance.value
     end
 
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
+    result, response = OTPService.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
 
     #TODO: Save errored results to an event log
     if result
@@ -297,7 +297,7 @@ class TripPart < ActiveRecord::Base
           replaced_leg = legs.first
 
           ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
+          result, response = OTPService.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
                                                       'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
           #TODO: Save errored results to an event log
@@ -352,7 +352,7 @@ class TripPart < ActiveRecord::Base
           legs = legs[0...-1]
 
           ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
+          result, response = OTPService.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
                                                       'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
           #TODO: Save errored results to an event log
