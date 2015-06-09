@@ -5,4 +5,13 @@ class Message < ActiveRecord::Base
 
   validates :sender, presence: true
   validates :body, presence: true
+  validate :check_date_range
+
+  private
+
+  def check_date_range
+    if from_date && to_date && from_date > to_date
+      errors.add(:delivery_date_range, TranslationEngine.translate_text(:from_date_not_later_than_to_date))
+    end
+  end
 end
