@@ -6,7 +6,7 @@ class Admin::UsersController < Admin::BaseController
 
   def index
     usertable = UsersDatatable.new(view_context)
-
+    @all_user_ids = usertable.valid_users.select(:id).distinct.pluck(:id)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: usertable}

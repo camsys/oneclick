@@ -1,14 +1,20 @@
 # caged from http://railscasts.com/episodes/340-datatables
 class UsersDatatable
   include Rails.application.routes.url_helpers
-  delegate :params, :h, :link_to, to: :@view
+  delegate :params, :h, :link_to, :check_box_tag, to: :@view
 
   def initialize(view)
     @view = view
   end
 
+  def valid_users
+    users = User.without_role(:anonymous_traveler)
+
+    users = users.where(deleted_at: nil) unless params[:bIncludeDeleted] == 'true'
+  end
+
   def as_json(options = {})
-    total_count = User.without_role(:anonymous_traveler).where(deleted_at: nil).count
+    total_count = valid_users.count
 
     json = {
       sEcho: params[:sEcho].to_i, # note this must be .to_i for security reasons
@@ -60,6 +66,10 @@ private
   def paged_users_data
     paged_users.map do |user|
       [
+        check_box_tag("recipient-#{user.id}", 1, false, {
+          class: 'message-checkbox', 
+          data: { id: user.id }
+        }),
         user.id,
         link_to(user.name, admin_user_path(user, locale: I18n.locale)),
         user.email,
@@ -93,8 +103,7 @@ private
     @users ||= fetch_all_users
   end
 
-  def fetch_users(users = User.all)
-    users = users.where(deleted_at: nil) unless params[:bIncludeDeleted] == 'true'
+  def fetch_users(users)
     if sort_column == 'roles.name'
       users = users.includes(:roles)
     end
@@ -102,17 +111,16 @@ private
       users = users.includes(:roles).where("UPPER(first_name) like :search or UPPER(email) like :search or UPPER(roles.name) like :search", search: "%#{params[:sSearch].upcase}%").references(:roles)
     end
 
-    # puts users.to_sql
-    users.without_role(:anonymous_traveler)
+    users
   end
 
   def fetch_paged_users
-    users = User.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
+    users = valid_users.order("#{sort_column} #{sort_direction}").limit(per_page).offset(page)
     fetch_users(users)
   end
 
   def fetch_all_users
-    users = User.order("#{sort_column} #{sort_direction}")
+    users = valid_users.order("#{sort_column} #{sort_direction}")
     fetch_users(users)
   end
 
@@ -126,7 +134,7 @@ private
 
   def sort_column
     columns = %w[users.id users.first_name users.email users.created_at roles.name users.deleted_at]
-    columns[params[:iSortCol_0].to_i]
+    columns[params[:iSortCol_0].to_i - 1]
   end
 
   def sort_direction

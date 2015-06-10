@@ -19,6 +19,9 @@ Oneclick::Application.routes.draw do
 
     resources :content
 
+    resources :messages, :only => [:create]
+    post "mark_message_as_read" => "user_messages#mark_as_read", as: :read_message
+
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users, except: [:index] do
