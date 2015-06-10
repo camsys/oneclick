@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150609145601) do
+ActiveRecord::Schema.define(version: 20150609231759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,6 +262,17 @@ ActiveRecord::Schema.define(version: 20150609145601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "messages", force: true do |t|
+    t.integer  "sender_id"
+    t.text     "body"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
 
   create_table "mileage_fares", force: true do |t|
     t.float    "base_rate"
@@ -740,6 +751,17 @@ ActiveRecord::Schema.define(version: 20150609145601) do
     t.datetime "verified_at"
     t.integer  "verified_by_id"
   end
+
+  create_table "user_messages", force: true do |t|
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.boolean  "read",         default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
 
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
