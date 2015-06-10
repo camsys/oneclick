@@ -24,35 +24,25 @@ class TripPlanner
 
     plan['itineraries'].collect do |otp_itinerary|
 
-      trip_itinerary = {}
+      trip_itinerary = Itinerary.create
 
       returned_mode_code = mode_code
 
       case mode_code.to_s
         when 'mode_car'
-          trip_itinerary['mode'] = Mode.car
+          trip_itinerary.mode = Mode.car
         when 'mode_bicycle'
-          trip_itinerary['mode'] = Mode.bicycle
+          trip_itinerary.mode = Mode.bicycle
         when 'mode_walk'
-          trip_itinerary['mode'] = Mode.walk
+          trip_itinerary.mode = Mode.walk
         else
-          trip_itinerary['mode'] = Mode.transit
+          trip_itinerary.mode = Mode.transit
           returned_mode_code = Mode.transit.code
 
-          # further check if is_walk, is_car, or is_bicycle
-          legs = OTPService.parse_otp_legs(otp_itinerary['legs'], false)
-
-          if Itinerary.is_walk?(legs)
-            returned_mode_code = Mode.walk.code
-          elsif Itinerary.is_car?(legs)
-            returned_mode_code = Mode.car.code
-          elsif Itinerary.is_bicycle?(legs)
-            returned_mode_code = Mode.bicycle.code
-          end
+          legs = Leg.find_by_itinerary_id_id(trip_itinerary.id)
           
       end
 
-      trip_itinerary['returned_mode_code'] = returned_mode_code
       trip_itinerary['duration'] = otp_itinerary['duration'].to_f # in seconds
       trip_itinerary['walk_time'] = otp_itinerary['walkTime']
       trip_itinerary['transit_time'] = otp_itinerary['transitTime']
@@ -62,9 +52,7 @@ class TripPlanner
       trip_itinerary['transfers'] = fixup_transfers_count(otp_itinerary['transfers'])
       trip_itinerary['walk_distance'] = otp_itinerary['walkDistance']
 
-      #handle legs
-      #trip_itinerary['legs'] = create_legs(otp_itinerary['legs'])
-      create_legs(otp_itinerary['legs'])
+      OTPService.parse_and_create_otp_legs(trip_itinerary, otp_itinerary['legs'])
 
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
@@ -88,21 +76,10 @@ class TripPlanner
 
       match_score += match_score_incr
       
-      Itinerary.create!(trip_itinerary)
+      trip_itinerary.save!query
 
     end
 
-  end
-
-  def create_legs(otp_legs)
-
-    parsed_legs = OTPService.parse_otp_legs(otp_legs)
-
-    parsed_legs.each do |otp_leg|
-      new_leg = Leg.new(otp_leg)
-    end
-
-    return otp_legs.to_yaml
   end
 
   def convert_paratransit_itineraries(service, match_score = 0, missing_information = false, missing_information_text = '')
@@ -118,7 +95,6 @@ class TripPlanner
     trip_itinerary['missing_information_text'] = missing_information_text
     trip_itinerary['missing_accommodations'] = ''
     trip_itinerary
-
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)

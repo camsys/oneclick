@@ -81,29 +81,33 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
   end
 
-  def self.parse_otp_legs(legs, include_geometry = true)
+
+
+  def self.parse_and_create_otp_legs(itinerary, legs, include_geometry = true)
 
     Rails.logger.debug "Parsing Itinerary Legs"
 
-    itin = []
-
     if legs.is_a? Array
       legs.each do |leg|
-        leg_itin = parse_leg(leg, include_geometry)
-
-        Rails.logger.debug leg_itin.inspect
-
-        itin << leg_itin unless leg_itin.nil?
+        parse_and_create_leg(itinerary.id, leg, include_geometry)
       end
     end
 
-    return itin
+    if itinerary.is_walk?(legs)
+      returned_mode_code = Mode.walk.code
+    elsif itinerary.is_car?
+      returned_mode_code = Mode.car.code
+    elsif itinerary.is_bicycle?
+      returned_mode_code = Mode.bicycle.code
+    end
+
+    itinerary['returned_mode_code'] = returned_mode_code
+
+    itinerary.save
 
   end
 
-  def self.parse_leg(leg, include_geometry = true)
-
-    binding.pry
+  def self.parse_and_create_leg(itinerary_id, leg, include_geometry = true)
 
     return if leg.blank?
 
@@ -111,31 +115,34 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
     Rails.logger.debug "Leg = " + leg.inspect
 
     if leg['mode'] == 'WALK'
-      obj = parse_walk_leg(leg)
+      new_leg = parse_walk_leg(leg)
     elsif leg['mode'] ==  'CAR'
-      obj = parse_car_leg(leg)
+      new_leg = parse_car_leg(leg)
     elsif leg['mode'] == 'BICYCLE'
-      obj = parse_bicycle_leg(leg)
+      new_leg = parse_bicycle_leg(leg)
     elsif leg['mode'].in? TransitLeg::TRANSIT_LEGS
-      obj = parse_transit_leg(leg)
+      new_leg = parse_transit_leg(leg)
     end
 
     # parse the common properties
-    if obj.present?
+    if new_leg.present?
 
-      obj.distance = leg['distance'].to_f
-      obj.start_time = convert_time(leg['startTime'])
-      obj.end_time = convert_time(leg['endTime'])
-      obj.duration = leg['duration'].to_i / 1000
+      new_leg.distance = leg['distance'].to_f
+      new_leg.start_time = convert_time(leg['startTime'])
+      new_leg.end_time = convert_time(leg['endTime'])
+      new_leg.duration = leg['duration'].to_i / 1000
 
-      obj.start_place = parse_place(leg['from'])
-      obj.end_place = parse_place(leg['to'])
+      new_leg.start_place = parse_place(leg['from'])
+      new_leg.end_place = parse_place(leg['to'])
 
-      obj.geometry = parse_geometry(leg['legGeometry']) if include_geometry
+      new_leg.geometry = parse_geometry(leg['legGeometry']) if include_geometry
       
     end
 
-    return obj
+    new_leg.itinerary_id_id = itinerary_id
+
+    return new_leg
+
   end
 
   def self.parse_transit_leg(leg)
@@ -168,6 +175,8 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
     new_transit_leg.route_short_name = leg['routeShortName']
     new_transit_leg.route_long_name = leg['routeLongName']
 
+    new_transit_leg.save
+
     return new_transit_leg
 
   end
@@ -188,7 +197,7 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
     Rails.logger.debug "Parsing BICYCLE leg"
 
-    bicycle = Leg::BicycleLeg.new
+    bicycle = BicycleLeg.new
     bicycle.steps = leg['steps']
     return bicycle
 
