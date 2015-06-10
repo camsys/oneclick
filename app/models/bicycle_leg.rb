@@ -1,4 +1,4 @@
-class Leg::BicycleLeg < Leg
+class BicycleLeg < Leg
 
     def initialize(attrs = {})
 
