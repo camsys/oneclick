@@ -13,7 +13,6 @@ class Leg < ActiveRecord::Base
   GONDOLA = 'GONDOLA'
   FUNICULAR = 'FUNICULAR'
 
-
   # Type of mode
   attr_accessor :mode
 
@@ -46,13 +45,6 @@ class Leg < ActiveRecord::Base
 
   def route_id
     "n/a"
-  end
-
-  #
-  def initialize(attrs = {})
-    attrs.each do |k, v|
-      self.send "#{k}=", v
-    end
   end
 
   def duration

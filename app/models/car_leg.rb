@@ -1,4 +1,4 @@
-class Leg::CarLeg < Leg
+class CarLeg < Leg
 
   def initialize(attrs = {})
 
