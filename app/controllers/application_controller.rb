@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :get_traveler
   before_filter :set_locale
   before_filter :setup_actions
+  before_filter :get_unread_messages
   before_action do |controller|
     @current_ability ||= Ability.new(get_traveler)
   end
@@ -27,6 +28,10 @@ class ApplicationController < ActionController::Base
     else
       redirect_to root_path, :alert => exception.message
     end
+  end
+
+  def get_unread_messages
+    @unread_messages = current_user.try(:unread_received_messages) if current_user
   end
 
   def current_traveler
