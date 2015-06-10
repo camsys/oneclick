@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :user_message do
-    user nil
+    recipient nil
     message nil
     read false
   end
