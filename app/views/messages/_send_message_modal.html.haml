@@ -13,7 +13,7 @@
         .modal-body{:style => "text-align:left;"}
           .modal-flash
           %input{type: "hidden", name: 'recipient_ids'}
-          = f.input :body, as: :text
+          = f.input :body, label: translate_helper(:message_body), as: :text
           %label{for: "message_from_date"}= translate_helper(:message_from_date)
           = f.input :from_date, label: false do
             - if mobile?

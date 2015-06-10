@@ -4,7 +4,7 @@
   - user_messages.each do |user_message|
     - msg_id = user_message.id
     - message_ids << msg_id
-    .unread-message.modal.fade.col-sm-12{id: "messageDialog-#{msg_id}", data: {id: msg_id}, "aria-describedby" => translate_helper(:you_have_unread_messages), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+    .unread-message.modal.fade.col-sm-12{id: "messageDialog-#{msg_id}", data: {id: msg_id}, "aria-describedby" => translate_helper(:you_have_unread_message), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
       .modal-dialog
         .modal-content
           .modal-header
@@ -12,18 +12,17 @@
               = translate_helper(:close)
             .modal-title{:style => "text-align:left;"}
               %b
-                = translate_helper(:unread_messages)
+                = translate_helper(:unread_message)
           .modal-body{:style => "text-align:left;"}
             .row
               .col-sm-12
                 = user_message.message.body
               .col-sm-12.form-group
-                /= link_to translate_helper(:read), read_message_path(user_message), remote: true, method: :patch, class: 'btn action-button'
                 %label.mobile-checkbox{for: "readCheckbox-#{msg_id}"}
                   %input.mobile-input-checkbox{type:'checkbox',id:"readCheckbox-#{msg_id}","aria-labelledby"=>"readCheckbox-label-#{msg_id}", "aria-describedby"=>"readCheckbox-description"}
                   .mobile-checkbox__checkmark
                   %span{id:"readCheckbox-label-#{msg_id}"}
-                  = translate_helper(:read)
+                  = translate_helper(:mark_as_read)
   :javascript
     $(document).ready(function(){
       if (!sessionStorage.getItem("unread_messages_shown")) {
