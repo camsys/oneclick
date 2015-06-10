@@ -181,6 +181,7 @@ class TripPart < ActiveRecord::Base
   end
 
   def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
+    
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
