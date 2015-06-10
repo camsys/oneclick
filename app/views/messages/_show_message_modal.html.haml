@@ -1,0 +1,56 @@
+- if !user_messages.empty?
+  - message_ids = []
+  - user_messages.each do |user_message|
+    - msg_id = user_message.id
+    - message_ids << msg_id
+    .unread-message.modal.fade.col-sm-12{id: "messageDialog-#{msg_id}", data: {id: msg_id}, "aria-describedby" => translate_helper(:you_have_unread_messages), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+              = translate_helper(:close)
+            .modal-title{:style => "text-align:left;"}
+              %b
+                = translate_helper(:unread_messages)
+          .modal-body{:style => "text-align:left;"}
+            .row
+              .col-sm-12
+                = user_message.message.body
+              .col-sm-12.form-group
+                /= link_to translate_helper(:read), read_message_path(user_message), remote: true, method: :patch, class: 'btn action-button'
+                %label.mobile-checkbox{for: "readCheckbox-#{msg_id}"}
+                  %input.mobile-input-checkbox{type:'checkbox',id:"readCheckbox-#{msg_id}","aria-labelledby"=>"readCheckbox-label-#{msg_id}", "aria-describedby"=>"readCheckbox-description"}
+                  .mobile-checkbox__checkmark
+                  %span{id:"readCheckbox-label-#{msg_id}"}
+                  = translate_helper(:read)
+  :javascript
+    var messageIds = #{message_ids};
+    var firstMsgId = 'messageDialog-' + messageIds[0];
+    $('#' + firstMsgId).modal('show');
+
+    var flagMessageRead = function(msgId) {
+      $.ajax({
+        type: "POST",
+        url: "#{read_message_path}",
+        data: {
+          id: msgId
+        },
+        dataType: 'json'
+      });
+    };
+
+    $('.unread-message').on('hidden.bs.modal', function( event ) {
+      var msgId = $(this).data('id');
+    
+      var msgIndex = messageIds.indexOf(msgId);
+      if(messageIds.length > (msgIndex + 1)) {
+        var nextMsgId = 'messageDialog-' + messageIds[msgIndex + 1];
+        $('#' + nextMsgId).modal('show');
+      }
+
+      // flag message as Read if user checked on Read checkbox
+      if($(this).find('input[type=checkbox]').prop('checked')) {
+        flagMessageRead(msgId);
+      }
+    });
+        
