@@ -4,4 +4,8 @@ class UserMessage < ActiveRecord::Base
 
   validates :recipient, presence: true
   validates :message, presence: true
+
+  def mark_as_read!
+    update_attribute(:read, true)
+  end
 end
