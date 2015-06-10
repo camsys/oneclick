@@ -1,4 +1,5 @@
-- if !user_messages.empty?
+- if user_messages && !user_messages.empty?
+  - session[:unread_messages_shown] = true
   - message_ids = []
   - user_messages.each do |user_message|
     - msg_id = user_message.id
@@ -24,33 +25,45 @@
                   %span{id:"readCheckbox-label-#{msg_id}"}
                   = translate_helper(:read)
   :javascript
-    var messageIds = #{message_ids};
-    var firstMsgId = 'messageDialog-' + messageIds[0];
-    $('#' + firstMsgId).modal('show');
+    $(document).ready(function(){
+      if (!sessionStorage.getItem("unread_messages_shown")) {
+        var messageIds = #{message_ids};
+        var firstMsgId = 'messageDialog-' + messageIds[0];
+        $('#' + firstMsgId).modal('show');
 
-    var flagMessageRead = function(msgId) {
-      $.ajax({
-        type: "POST",
-        url: "#{read_message_path}",
-        data: {
-          id: msgId
-        },
-        dataType: 'json'
-      });
-    };
+        var flagMessageRead = function(msgId) {
+          $.ajax({
+            type: "POST",
+            url: "#{read_message_path}",
+            data: {
+              id: msgId
+            },
+            dataType: 'json'
+          });
+        };
 
-    $('.unread-message').on('hidden.bs.modal', function( event ) {
-      var msgId = $(this).data('id');
-    
-      var msgIndex = messageIds.indexOf(msgId);
-      if(messageIds.length > (msgIndex + 1)) {
-        var nextMsgId = 'messageDialog-' + messageIds[msgIndex + 1];
-        $('#' + nextMsgId).modal('show');
-      }
+        $('.unread-message').on('hidden.bs.modal', function( event ) {
+          var msgId = $(this).data('id');
+        
+          var msgIndex = messageIds.indexOf(msgId);
+          if(messageIds.length > (msgIndex + 1)) {
+            var nextMsgId = 'messageDialog-' + messageIds[msgIndex + 1];
+            $('#' + nextMsgId).modal('show');
+          }
 
-      // flag message as Read if user checked on Read checkbox
-      if($(this).find('input[type=checkbox]').prop('checked')) {
-        flagMessageRead(msgId);
+          // flag message as Read if user checked on Read checkbox
+          if($(this).find('input[type=checkbox]').prop('checked')) {
+            flagMessageRead(msgId);
+          }
+        });
+
+        $('#browser_warning').modal('show');
+        sessionStorage.setItem("unread_messages_shown", true);
       }
     });
-        
+:javascript
+  $(document).ready(function(){
+    if(!#{user_signed_in?}) {
+     sessionStorage.setItem("unread_messages_shown", ''); 
+    }
+  });        
