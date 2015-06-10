@@ -103,6 +103,8 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
   def self.parse_leg(leg, include_geometry = true)
 
+    binding.pry
+
     return if leg.blank?
 
     Rails.logger.debug "Leg mode = " + leg['mode']
@@ -114,7 +116,7 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
       obj = parse_car_leg(leg)
     elsif leg['mode'] == 'BICYCLE'
       obj = parse_bicycle_leg(leg)
-    elsif leg['mode'].in? Leg::TransitLeg::TRANSIT_LEGS
+    elsif leg['mode'].in? TransitLeg::TRANSIT_LEGS
       obj = parse_transit_leg(leg)
     end
 
@@ -140,7 +142,7 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
     Rails.logger.debug "Parsing TRANSIT leg"
 
-    new_transit_leg = Leg::TransitLeg.new
+    new_transit_leg = TransitLeg.new
     new_transit_leg.mode = leg['mode']
     new_transit_leg.agency_name = leg['agencyName']
     agencyId = leg['agencyId']
@@ -174,9 +176,11 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
     Rails.logger.debug "Parsing WALK leg"
 
-    walk = Leg::WalkLeg.new
-    walk.steps = leg['steps']
-    return walk
+    walk_leg = WalkLeg.new
+    walk_leg.steps = leg['steps']
+    walk_leg.save
+
+    return walk_leg
 
   end
 
@@ -193,7 +197,7 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
   def self.parse_car_leg(leg)
     Rails.logger.debug "Parsing CAR leg"
 
-    car = Leg::CarLeg.new
+    car = CarLeg.new
     car.steps = leg['steps']
     return car
 
@@ -201,7 +205,7 @@ def self.get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,
 
   def self.parse_place(place_part)
 
-    place = Leg::LegPlace.new
+    place = LegPlace.new
     place.name = place_part['name']
     place.lat = place_part['lat'].to_f
     place.lon = place_part['lon'].to_f

@@ -1,14 +1,9 @@
-class Leg::WalkLeg < Leg
+class WalkLeg < Leg
 
-    def initialize(attrs = {})
+    before_create :set_mode, on: :create
 
-      super(attrs)
-      attrs.each do |k, v|
-        self.send "#{k}=", v
-      end
-
-      self.mode = WALK
-
+    def set_mode
+      self.mode = WalkLeg
     end
 
     def short_description

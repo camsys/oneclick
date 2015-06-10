@@ -64,6 +64,7 @@ class TripPlanner
 
       #handle legs
       #trip_itinerary['legs'] = create_legs(otp_itinerary['legs'])
+      create_legs(otp_itinerary['legs'])
 
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
@@ -98,7 +99,7 @@ class TripPlanner
     parsed_legs = OTPService.parse_otp_legs(otp_legs)
 
     parsed_legs.each do |otp_leg|
-      new_leg = Leg.new
+      new_leg = Leg.new(otp_leg)
     end
 
     return otp_legs.to_yaml

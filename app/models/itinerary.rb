@@ -120,7 +120,7 @@ class Itinerary < ActiveRecord::Base
         when 'bus'
           bus = true
           next
-        when *Leg::TransitLeg::RAIL_LEGS
+        when *TransitLeg::RAIL_LEGS
           rail = true
           next
         when 'car'
