@@ -40,13 +40,16 @@ class TripPartsController < PlaceSearchingController
     if (@itineraries.empty?)
       Rails.logger.info "itineraries is empty, generating itineraries."
 
-      @itineraries = @trip_part.create_itineraries(@modes)
+      @trip_part.create_itineraries(@modes)
       #end
     else
       Rails.logger.info "itineraries is not empty, not generating itineraries."
     end
 
+
+    @itineraries = @trip_part.itineraries
     @itineraries = filter_itineraries_by_max_offset_time(@itineraries, @trip_part.is_depart, @trip_part.trip_time)
+
     if @itineraries.each {|i| i.save }
       respond_to do |f|
         f.json { render json: @itineraries, root: 'itineraries', each_serializer: ItinerarySerializer }

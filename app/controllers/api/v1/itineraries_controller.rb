@@ -67,8 +67,6 @@ module Api
           tp = TripPart.new
           tp.trip = trip
 
-
-
           tp.sequence = trip_part[:segment_index]
           tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
 

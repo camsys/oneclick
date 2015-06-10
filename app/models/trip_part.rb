@@ -151,8 +151,11 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    self.itineraries << itins
-    itins
+    itins.each do |itinerary|
+      itinerary.trip_part_id = self.id
+      puts "Saving Itinerary: " + itinerary.save.to_s
+    end
+
   end
 
   def check_for_duplicates(new_i, existing_itins)
@@ -178,6 +181,7 @@ class TripPart < ActiveRecord::Base
   end
 
   def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
+    
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
@@ -194,29 +198,13 @@ class TripPart < ActiveRecord::Base
       max_walk_distance = trip.user.walking_maximum_distance.value
     end
 
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
+    result, response = OTPService.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
 
-    #TODO: Save errored results to an event log
-    if result
-      tp.convert_itineraries(response, mode_code).each do |itinerary|
-        serialized_itinerary = {}
-
-        itinerary.each do |k,v|
-          if v.is_a? Array
-            serialized_itinerary[k] = v.to_yaml
-          else
-            serialized_itinerary[k] = v
-          end
-        end
-
-        itins << Itinerary.new(serialized_itinerary)
-
-      end
-    end
+    tp.convert_itineraries(response, mode_code)
 
     #Check to see special fare rules exist
     fh = FareHelper.new
-    itins.each do |itin|
+    self.itineraries.each do |itin|
       fh.calculate_fixed_route_fare(self, itin)
     end
 
@@ -297,7 +285,7 @@ class TripPart < ActiveRecord::Base
           replaced_leg = legs.first
 
           ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
+          result, response = OTPService.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
                                                       'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
           #TODO: Save errored results to an event log
@@ -352,7 +340,7 @@ class TripPart < ActiveRecord::Base
           legs = legs[0...-1]
 
           ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
+          result, response = OTPService.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
                                                       'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
 
           #TODO: Save errored results to an event log

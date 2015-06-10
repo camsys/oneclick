@@ -1,4 +1,3 @@
-module Leg
   class LegPlace
 
     attr_accessor :lat
@@ -6,4 +5,3 @@ module Leg
     attr_accessor :name
 
   end
-end

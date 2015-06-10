@@ -176,11 +176,11 @@ class TripDecorator < Draper::Decorator
       when 'mode_transit', 'mode_bus', 'mode_rail'
         itinerary.get_legs(false).each do |leg|
           case leg.mode
-          when Leg::TripLeg::WALK
+          when Leg::WALK
             summary += "#{TranslationEngine.translate_text(leg.mode.downcase)}"
-          when Leg::TripLeg::BICYCLE
+          when Leg::BICYCLE
             summary += "#{TranslationEngine.translate_text(leg.mode.downcase)}"
-          when Leg::TripLeg::CAR
+          when Leg::CAR
             summary += "#{TranslationEngine.translate_text(:drive)}/#{TranslationEngine.translate_text(:taxi)}"
           else
             summary += "#{leg.agency_id} #{TranslationEngine.translate_text(leg.mode.downcase)} #{leg.route}"
