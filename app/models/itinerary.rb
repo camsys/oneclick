@@ -6,13 +6,13 @@ class Itinerary < ActiveRecord::Base
   mount_uploader :map_image, BaseUploader
 
   # Callbacks
-  after_initialize :set_defaults
   before_save :clear_walk_time
 
   # Associations
   belongs_to :trip_part
   belongs_to :mode
   belongs_to :service
+  has_many :legs
 
   # You should usually *always* used the valid scope
   scope :valid, -> {where('mode_id is not null and server_status=200')}
@@ -54,42 +54,19 @@ class Itinerary < ActiveRecord::Base
     return mode.code.in? ['mode_transit', 'mode_bicycle', 'mode_car', 'mode_walk', 'mode_paratransit', 'mode_taxi', 'mode_rideshare']
   end
 
-  # returns true if this itinerary is a walk-only trip. These are a special case of Transit
-  # trips that only include a WALK leg
-  def is_walk
+  def is_walk?
     return true if self.returned_mode_code == "mode_walk"
-
-    return Itinerary.is_walk? get_legs(false)
-  end
-
-  def self.is_walk?(legs)
-    legs ||= []
     return legs.size == 1 && legs.first.mode == Leg::WALK
   end
 
-  # return true if this itinerary is a car-only trip. These are a special case of transit
-  # trips that only include a CAR leg
-  def is_car
+  def is_car?
+    binding.pry
     return true if self.returned_mode_code == "mode_car"
-
-    return Itinerary.is_car? get_legs(false)
-  end
-
-  def self.is_car?(legs)
-    legs ||= []
     return legs.size == 1 && legs.first.mode == Leg::CAR
   end
 
-  # returns true if this itinerary is contains only bicycle and walking legs. These are a special case of Transit
-  # trips that only include a BICYCLE leg
-  def is_bicycle
+  def is_bicycle?
     return true if self.returned_mode_code == "mode_bicycle"
-
-    return Itinerary.is_bicycle? get_legs(false)
-  end
-
-  def self.is_bicycle?(legs)
-    legs ||= []
     
     modes = legs.collect{ |m| m.mode }.uniq
     unless Leg::BICYCLE.in? modes
@@ -298,12 +275,12 @@ class Itinerary < ActiveRecord::Base
 
   #OTP is setting drive time and bicycle time as walk time.  This is a temporary work-around
   def clear_walk_time
-    if self.is_car
+    if self.is_car?
       self.walk_time = 0
       self.walk_distance = 0
     end
 
-    if self.is_bicycle
+    if self.is_bicycle?
       walk_time = 0
       walk_distance = 0
       get_legs(false).each do |leg|
@@ -315,12 +292,6 @@ class Itinerary < ActiveRecord::Base
       self.walk_distance = walk_distance
       self.walk_time = walk_time
     end
-  end
-
-  # Set resonable defaults for a new itinerary
-  def set_defaults
-    self.hidden ||= false
-    @legs = []
   end
 
 end
