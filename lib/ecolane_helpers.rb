@@ -244,7 +244,7 @@ class EcolaneHelpers
 
     #First: Find Gen Public Fare
     service = itinerary.service
-    funding_sources = service.funding_sources.where(general_public: false)
+    funding_sources = service.funding_sources
     guest_id = service.fare_user
     discount_array = []
 

@@ -67,8 +67,6 @@ module Api
           tp = TripPart.new
           tp.trip = trip
 
-
-
           tp.sequence = trip_part[:segment_index]
           tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
 
@@ -107,6 +105,9 @@ module Api
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
 
+            if itinerary.discounts
+              i_hash[:discounts] = JSON.parse(itinerary.discounts)
+            end
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else

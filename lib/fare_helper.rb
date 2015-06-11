@@ -38,10 +38,7 @@ class FareHelper
 
     #Get the official fare for this itinerary
     eh = EcolaneHelpers.new
-    result, my_fare = eh.query_guest_fare itinerary
-    if result
-      itinerary.cost = my_fare
-    end
+    itinerary.cost = nil
 
     #Get an array of potential discounts
     itinerary.discounts = eh.build_discount_array(itinerary).to_json
