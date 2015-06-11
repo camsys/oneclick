@@ -25,7 +25,7 @@
             %td= service.id
             %td= link_to service.name, service_path(service.id)
             %td= service.provider.name
-            %td= cms_snippet_content(service.service_type.name)
+            %td= translate_helper(service.service_type.name)
             %td
               - if service.active == false
                 = translate_helper(:inactive)

@@ -24,8 +24,7 @@
         %td= service.phone
         %td= service.email
         %td= service.external_id
-        %td
-          = cms_snippet_content(service.service_type.name)
+        %td= translate_helper(service.service_type.name)
         %td
           - if service.active == false
             = translate_helper(:inactive)
