@@ -1,9 +1,9 @@
 .row_fluid
-  %b= translate_helper(:fare_type) + ": " + translate_helper(:flat_fare)
+  %strong= translate_helper(:fare_type) + ": " + translate_helper(:flat_fare)
 
 - if fare
   .row_fluid
-    %b= translate_helper(:one_way_fare) + ": "
+    %strong= translate_helper(:one_way_fare) + ": "
     -if fare.one_way_rate
       - if fare.one_way_rate
         = number_to_currency(fare.one_way_rate.to_f).to_s
@@ -14,7 +14,7 @@
 
   -if fare.round_trip_rate
     .row_fluid
-      %b= translate_helper(:round_trip_fare) + ": "
+      %strong= translate_helper(:round_trip_fare) + ": "
       - if fare.round_trip_rate
         = number_to_currency(fare.round_trip_rate.to_f).to_s
       - else

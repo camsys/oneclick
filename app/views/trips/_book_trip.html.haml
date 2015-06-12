@@ -19,7 +19,7 @@
         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
           = translate_helper(:close)
       .modal-title{:style => "text-align:left;"}
-        %b
+        %strong
           -if @trip.is_booked?
             = translate_helper(:trip_booked)
           -else

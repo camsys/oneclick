@@ -5,6 +5,6 @@
       = "#{translate_helper(:welcome)}, #{get_traveler.welcome}"
     - else
       = translate_helper(:assisting_assisted_user_email, assisted_user: @traveler.name)
-    %b.caret
+    %strong.caret
   %ul.dropdown-menu{:role => "menu"}
     = render partial: 'menu_item', collection: traveler_actions(with_logout: true) 

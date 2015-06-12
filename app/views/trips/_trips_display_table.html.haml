@@ -79,7 +79,7 @@
                         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
                           = translate_helper(:cancel)
                       .modal-title{:style => "text-align:left;"}
-                        %b
+                        %strong
                           = translate_helper(:site_title)
                     .modal-body{:style => "text-align:left;"}
                       = translate_helper(:confirm_cancel_trip)
@@ -106,7 +106,7 @@
                       = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
                         = translate_helper(:cancel)
                     .modal-title{:style => "text-align:left;"}
-                      %b
+                      %strong
                         = translate_helper(:site_title)
                   .modal-body{:style => "text-align:left;"}
                     = translate_helper(:confirm_remove_trip)

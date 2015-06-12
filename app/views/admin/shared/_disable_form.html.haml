@@ -8,7 +8,7 @@
           = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
             = icon_label(:delete)
           .modal-title{:style => "text-align:left;"}
-            %b
+            %strong
               = translate_helper(:site_title)
         .modal-body{:style => "text-align:left;"}
           = f.input :disabled_comment, label: "#{ translate_helper(:why_are_you_deleting).to_s.capitalize }. #{ deleteable.name }?"

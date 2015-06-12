@@ -1329,7 +1329,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             "</div>" +
             "<div class='col-xs-12' style='padding:0px;'>" +
             "<div class='trip-plan-first-column' style='padding: 0px; vertical-align: top;'>" +
-            "<table style='width: 100%;'><tbody><tr>" +
+            "<table style='width: 100%;' role='presentation'><tbody><tr>" +
             "<td class='trip-mode-icon'></td>" +
             "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-cost' aria-label=" + localeDictFinder["fare"] +  ">" +
             "<div class='itinerary-text'>" + localeDictFinder["fare"] + "</div>" +
@@ -1507,7 +1507,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tripPlanTags =
             "<div class='col-xs-12 single-plan-review " + (isSelected ? "single-plan-selected" : "single-plan-unselected") + "' style='padding: 0px;" + (eligibleCode === -1 ? "display: none;" : "") + "'" + dataTags + ">" +
             "<div class='trip-plan-first-column' style='padding: 0px; height: 100%;'>" +
-            "<table style='width: 100%;'>" +
+            "<table style='width: 100%;' role='presentation'>" +
             "<tbody>" +
             "<tr>" +
             "<td tabindex=" + (isDepartAt ? '17' : '16') + " class='trip-mode-icon' aria-label='" + modeName + "' style=''>" +

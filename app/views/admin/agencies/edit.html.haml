@@ -52,13 +52,13 @@
         = add_tooltip("staff_actions_help")
     .panel-body
       .col-sm-6
-        %b
+        %strong
           = translate_helper(:administrators)
         .scrolling-checkbox-list.agency_admin
           = f.association :administrators, collection: @agency.agents.order(:first_name),
                   as: :check_boxes, wrapper: :inline_checkboxes, label: false
       .col-sm-6
-        %b
+        %strong
           = translate_helper(:agents)
         %input{:name => "agency[agent_ids]", :type => 'hidden'}
         .row

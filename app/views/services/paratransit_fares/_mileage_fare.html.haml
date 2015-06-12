@@ -1,8 +1,8 @@
-%b= translate_helper(:fare_type) + ": " + translate_helper(:mileage_fare)
+%strong= translate_helper(:fare_type) + ": " + translate_helper(:mileage_fare)
 
 - if fare
   .row_fluid
-    %b= translate_helper(:base_rate) + ": "
+    %strong= translate_helper(:base_rate) + ": "
     -if fare.base_rate
       = number_to_currency(fare.base_rate.to_f).to_s
     -else
@@ -10,7 +10,7 @@
 
   - if fare.mileage_rate
     .row_fluid
-      %b= translate_helper(:mileage_rate) + ": "
+      %strong= translate_helper(:mileage_rate) + ": "
       - if fare.mileage_rate
         = number_to_currency(fare.mileage_rate.to_f).to_s
       - else

@@ -10,32 +10,32 @@
           %td.text-right
             = translate_helper(:address) + ":"
           %td.text-left
-            %b= agency.address.to_s
+            %strong= agency.address.to_s
           %td.text-left
-            %b= agency.city.to_s
+            %strong= agency.city.to_s
           %td.text-left
-            %b= agency.state.to_s
+            %strong= agency.state.to_s
           %td.text-left
-            %b= agency.zip.to_s
+            %strong= agency.zip.to_s
         %tr
           %td.text-right
             = translate_helper(:phone)+ ":  "
           %td.text-left{colspan: 4}
-            %b= agency.phone.to_s
+            %strong= agency.phone.to_s
         %tr
           %td.text-right
             = translate_helper(:email)+ ":  "
           %td.text-left{colspan: 4}
             - unless agency.email.blank?
-              %b= mail_to agency.email.to_s
+              %strong= mail_to agency.email.to_s
         %tr
           %td.text-right
             = translate_helper(:url)+ ":  "
           %td.text-left{colspan: 4}
             - unless agency.url.blank?
-              %b= link_to agency.url, agency.url
+              %strong= link_to agency.url, agency.url
         %tr
           %td.text-right
             = translate_helper(:parent_agency) + ":  "
           %td.text-left{colspan: 4}
-            %b= agency.parent.name if agency.parent
+            %strong= agency.parent.name if agency.parent

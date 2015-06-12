@@ -15,7 +15,7 @@
             = button_tag class: 'btn action-button pull-right', action: 'confirm_delete', data: {dismiss: 'modal'} do
               = translate_helper(:ok)
             .modal-title{:style => "text-align:left;"}
-              %b
+              %strong
                 = translate_helper(:site_title)
           .modal-body{:style => "text-align:left;"}
             = translate_helper(:confirm_remove_message) + translate_helper(:sidewalk_obstructions).downcase + " ?"

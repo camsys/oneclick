@@ -35,7 +35,7 @@
                   = translate_helper(:cancel)
                 = button_to translate_helper(:ok), { action: "undelete", id: @agency.id }, method: :patch, style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
-                  %b
+                  %strong
                     = translate_helper(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = translate_helper(:confirm_restore_message) + " #{@agency.name} ?"
@@ -59,28 +59,28 @@
               %td.text-right
                 = translate_helper(:name) + ": "
               %td.text-left
-                %b= @agency.internal_contact_name
+                %strong= @agency.internal_contact_name
             %tr
               %td.text-right
                 = translate_helper(:title)+": "
               %td.text-left
-                %b= @agency.internal_contact_title
+                %strong= @agency.internal_contact_title
             %tr
               %td.text-right
                 = translate_helper(:phone)+ ": "
               %td.text-left
-                %b= @agency.internal_contact_phone
+                %strong= @agency.internal_contact_phone
             %tr
               %td.text-right
                 = translate_helper(:email)+ ":  "
               %td.text-left
-                %b= mail_to @agency.internal_contact_email
+                %strong= mail_to @agency.internal_contact_email
             - if @contact
               %tr
                 %td.text-right
                   = translate_helper(:user) + ": "
                 %td.text-left
-                  %b= @contact.name
+                  %strong= @contact.name
 - if can_manage_agency
   .panel.panel-default#staff
     .panel-heading

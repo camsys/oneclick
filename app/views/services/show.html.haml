@@ -44,7 +44,7 @@
                   = translate_helper(:cancel)
                 = button_to translate_helper(:ok), { action: "undelete", id: @service.id }, method: :patch,  style: "margin-right: 5px;", class: "btn action-button pull-right"
                 .modal-title{:style => "text-align:left;"}
-                  %b
+                  %strong
                     = translate_helper(:site_title)
               .modal-body{:style => "text-align:left;"}
                 = translate_helper(:confirm_restore_message) + " #{@service.name} ?"
@@ -69,28 +69,28 @@
               %td.text-right
                 = translate_helper(:name) + ": "
               %td.text-left
-                %b= @service.internal_contact_name
+                %strong= @service.internal_contact_name
             %tr
               %td.text-right
                 = translate_helper(:title)+": "
               %td.text-left
-                %b= @service.internal_contact_title
+                %strong= @service.internal_contact_title
             %tr
               %td.text-right
                 = translate_helper(:phone)+ ": "
               %td.text-left
-                %b= @service.internal_contact_phone
+                %strong= @service.internal_contact_phone
             %tr
               %td.text-right
                 = translate_helper(:email)+ ":  "
               %td.text-left
-                %b= mail_to @service.internal_contact_email
+                %strong= mail_to @service.internal_contact_email
             - if @contact
               %tr
                 %td.text-right
                   = translate_helper(:user) + ": "
                 %td.text-left
-                  %b= @contact.name
+                  %strong= @contact.name
 -if can_manage_provider
   .row
     - unless is_transit
@@ -127,7 +127,7 @@
               = translate_helper(:advance_notice_required)
               = add_tooltip("advance_notice_required_help")
           .panel-body
-            %b
+            %strong
               = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
             =" " + translate_helper(:advance_notice_required).downcase + "."
             - # booking cut off times
@@ -207,20 +207,20 @@
                   = render partial: 'services/paratransit_fares/show', locals: {fare_structure: fare}
               - else
                 .row_fluid
-                  %b= translate_helper(:base_rate) + ": "
+                  %strong= translate_helper(:base_rate) + ": "
                   -if fare.base
                     = number_to_currency(fare.base.to_f).to_s
                   -else
                     = translate_helper(:flat_fare_unavailable) + "."
                 .row_fluid
-                  %b= translate_helper(:taxi_fare_finder_city) + ": "
+                  %strong= translate_helper(:taxi_fare_finder_city) + ": "
                   -if @service.taxi_fare_finder_city.present?
                     = @service.taxi_fare_finder_city
                   -else
                     = translate_helper(:none)
                 .row_fluid
                   - if fare.rate
-                    %b= translate_helper(:mileage_rate) + ": "
+                    %strong= translate_helper(:mileage_rate) + ": "
                     = number_to_currency(fare.rate.to_f).to_s
               - if fare.public_comments.empty?
                 = translate_helper(:no_comments)
@@ -281,7 +281,7 @@
                         =t(:geometry_defined_by_shapefile)
                       - else
                         - types.each do |type|
-                          %b
+                          %strong
                             =type.humanize.split[0].pluralize + ' ' + translate_helper(:served_areas)
                           .well.white-well.text-left
                             -coverage_string = ""

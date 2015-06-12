@@ -23,7 +23,7 @@
               = button_to translate_helper(:ok), { action: "undelete", id: @user.id }, method: :patch,
                 style: "margin-right: 5px;", class: "btn action-button pull-right"
               .modal-title{:style => "text-align:left;"}
-                %b
+                %strong
                   = translate_helper(:site_title)
             .modal-body{:style => "text-align:left;"}
               = translate_helper(:confirm_restore_message) + " #{@user.name} ?"
