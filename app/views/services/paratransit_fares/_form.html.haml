@@ -1,8 +1,8 @@
 .col-sm-3
   = translate_helper(:fare_type)
 .col-sm-9
-  %input.hidden{name:'service[fare_structures_attributes][id]', value: fare_structure.id}
-  %select.form-control#fare_type_select{name: 'service[fare_structures_attributes][fare_type]'}
+  %input.hidden{name:'service[base_fare_structure_attributes][id]', value: fare_structure.id}
+  %select.form-control#fare_type_select{name: 'service[base_fare_structure_attributes][fare_type]'}
     %option{value: FareStructure::FLAT}
       = translate_helper(:flat_fare)
     %option{value: FareStructure::MILEAGE}

@@ -5,7 +5,7 @@
         =itinerary.service.name + " - "  + itinerary.service.phone
 %br
 
-- if itinerary.service.public_comments
+- if !itinerary.service.public_comments.empty?
   .row
     .col-sm-12
       .well.well-sm.comments
@@ -13,10 +13,10 @@
           = comment.comment.html_safe
           %br
 
-- if itinerary.service.fare_structures
+- if !itinerary.service.fare_structures.empty?
   - itinerary.service.fare_structures.each do |fare|
-    -if fare.desc
+    -if fare.comments.for_locale
       .row
         .col-sm-12
           .well.well-sm.comments
-            = fare.desc.html_safe
+            = fare.comments.for_locale.comment.html_safe

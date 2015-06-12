@@ -12,10 +12,11 @@
         .col-sm-12
           .well.well-sm
             =itinerary.service.public_comments.for_locale.comment.html_safe
-    -unless itinerary.cost_comments.blank?
+    - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
+    -unless cost_comments.blank?
       %h4
         = translate_helper(:cost_details)
-      =itinerary.cost_comments.html_safe
+      =cost_comments.html_safe
 
     -if itinerary.missing_information and itinerary.missing_information_text.split('\n').count > 0
       %h4

@@ -1,5 +1,6 @@
 class FareStructure < ActiveRecord::Base
-
+  include Commentable
+  
   #associations
   belongs_to :service
 

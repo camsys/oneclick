@@ -61,12 +61,23 @@ class FareHelper
 
     #Check for comments.
     begin
-      itinerary.cost_comments = itinerary.service.fare_structures.pluck(:desc).first
+      itinerary.cost_comments = itinerary.service.fare_structures.first.public_comments.for_locale.try(:comment)
       itinerary.save
     rescue
       return
     end
 
+  end
+
+  # if itinerary belongs to a service that has cost comments, then get it
+  # otherwise, use Itinerary#cost_comments
+  def get_itinerary_cost_comments itinerary
+    base_fare_structure = itinerary.try(:service).try(:fare_structures).first
+    if base_fare_structure
+      base_fare_structure.public_comments.for_locale.try(:comment)
+    else
+      itinerary.cost_comments
+    end
   end
 
   def calculate_paratransit_fare(itinerary, skip_calculation = false)

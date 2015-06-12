@@ -278,7 +278,7 @@ protected
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
-                                      [ :id, :base, :rate, :desc, :fare_type ] },
+                                      [ :id, :base, :rate, :fare_type, public_comments_attributes: COMMENT_ATTRIBUTES ] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
                                     comments_attributes: COMMENT_ATTRIBUTES,
@@ -320,7 +320,7 @@ protected
       @service.fare_structures.build
     end
 
-    fs_attrs = service_params[:fare_structures_attributes]
+    fs_attrs = params[:service][:base_fare_structure_attributes]
 
     if fs_attrs[:id]
       fs = FareStructure.find(fs_attrs[:id])
@@ -328,8 +328,6 @@ protected
       fs = @service.fare_structures.first
     end
     fs.fare_type == fs_attrs[:fare_type].to_i
-
-    fs.desc = params[:service][:base_fare_structure_desc]
 
     case fs.fare_type
     when FareStructure::FLAT

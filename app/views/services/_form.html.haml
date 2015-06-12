@@ -304,20 +304,26 @@
             = add_tooltip("fare_help")
         .panel-body
           .row_fluid.paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
-            - fare_structure = @service.fare_structures.first
-            = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare_structure}
-            .row_fluid
-              .col-sm-3
-                = translate_helper('comments')
-              .col-sm-9
-                %input.form-control.text-right{value: fare_structure.desc, name: "service[base_fare_structure_desc]"}
+            = f.simple_fields_for :fare_structures do |fare|
+              = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare.object}
+              - setup_comments(fare.object, %w{public})
+              - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
+              = fare.simple_fields_for :public_comments do |comment|
+                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :locale, as: :hidden
+                = comment.input :visibility, as: :hidden
         
           .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
             = f.simple_fields_for :fare_structures do |fare|
               = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}
               = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
               = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
-              = fare.input :desc, label: translate_helper(:comments), as: :text, input_html: {class: "form-control"}
+              - setup_comments(fare.object, %w{public})
+              - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
+              = fare.simple_fields_for :public_comments do |comment|
+                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :locale, as: :hidden
+                = comment.input :visibility, as: :hidden
 
   .row#time-and-booking-panels
     .col-sm-6
@@ -338,7 +344,6 @@
             = add_tooltip("booking_information_help")
         .panel-body        
           = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
-
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @service}
 
   .row#coverage-areas-panel

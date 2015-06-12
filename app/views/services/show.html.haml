@@ -222,9 +222,13 @@
                   - if fare.rate
                     %b= translate_helper(:mileage_rate) + ": "
                     = number_to_currency(fare.rate.to_f).to_s
-              %b= translate_helper(:comments) + ":  "
-              -if fare.desc
-                = fare.desc.html_safe
+              - if fare.public_comments.empty?
+                = translate_helper(:no_comments)
+              - else
+                %dl
+                  - fare.public_comments.each do |comment|
+                    %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
+                    %dd= comment.comment.html_safe
 
   - unless is_transit || is_taxi
     .row

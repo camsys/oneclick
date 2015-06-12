@@ -27,9 +27,10 @@
                 %li
                   = translate_helper(:no_cost_for_service)
           -else
-            -if itinerary.cost_comments
+            - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
+            -if cost_comments
               %li
-                = itinerary.cost_comments.html_safe
+                = cost_comments.html_safe
           -if itinerary.transfers
             %li
               = TranslationEngine.translate_text(:transfer).sub!("count", itinerary.transfers.to_s)

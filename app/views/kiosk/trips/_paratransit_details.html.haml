@@ -1,7 +1,8 @@
 .row-fluid
-  - unless itinerary.cost_comments.blank?
+  - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
+  - unless cost_comments.blank?
     %h4 =t(:cost_details)
-    = itinerary.cost_comments.html_safe
+    = cost_comments.html_safe
 
   - if itinerary.missing_information
     %h4
