@@ -108,13 +108,13 @@
             weekdaysShort : weekdaysShort
             });
         }
-        var months = #{translate_helper('date.month_names').split(",").reject(&:blank?).join(",")};
+        var months = #{translate_helper('date.month_names')};
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months
             });
         }
-        var monthsShort = #{translate_helper('date.abbr_month_names').split(",").reject(&:blank?).join(",")};
+        var monthsShort = #{translate_helper('date.abbr_month_names')};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
             monthsShort : monthsShort
