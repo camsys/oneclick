@@ -61,8 +61,11 @@ class FareHelper
 
     #Check for comments.
     begin
-      itinerary.cost_comments = itinerary.service.fare_structures.first.public_comments.for_locale.try(:comment)
-      itinerary.save
+      base_fare_structure = itinerary.service.fare_structures.first rescue nil
+      if base_fare_structure
+        itinerary.cost_comments = base_fare_structure.public_comments.for_locale.try(:comment)
+        itinerary.save
+      end
     rescue
       return
     end
@@ -72,7 +75,7 @@ class FareHelper
   # if itinerary belongs to a service that has cost comments, then get it
   # otherwise, use Itinerary#cost_comments
   def get_itinerary_cost_comments itinerary
-    base_fare_structure = itinerary.try(:service).try(:fare_structures).first
+    base_fare_structure = itinerary.service.fare_structures.first rescue nil
     if base_fare_structure
       base_fare_structure.public_comments.for_locale.try(:comment)
     else
