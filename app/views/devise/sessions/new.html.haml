@@ -19,7 +19,7 @@
     .col-sm-6
       .panel.panel-default
         .panel-heading
-          %h1.panel-title= translate_helper(:user_information)
+          %h2.panel-title= translate_helper(:user_information)
         .panel-body
           = f.hidden_field :redirect_to, value: params[:redirect_to]
           - unless Rails.env.development? and ENV['DROPDOWN_USERS']

@@ -39,7 +39,7 @@
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
-        %h2.panel-title
+        %h3.panel-title
           =t(:trip_parameters)
           = add_tooltip("trip_parameters_help")
       .panel-body
@@ -144,7 +144,7 @@
           .hidden-xs.hidden-sm{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
-                %h2.panel-title
+                %h3.panel-title
                   %button#mapCloseButton.close.pull-right{type: "button", title: translate_helper(:close)}
                     %i.fa.fa-close
                     %span.hide Close

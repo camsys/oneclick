@@ -1275,7 +1275,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             localeDictFinder['arriving_by'] + ' ' + formatDate(tripEndTime)  + ' ' + formatTime(tripEndTime);
         //var headerAriaLabel = tripDescription + "; " + tripDatetimeDescritpion;
         //trip description
-        var tripDescTag = "<div class='panel-heading'><h2 class='panel-title' tabindex=" + (isDepartAt ? '17' : '16') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + " - " + tripDescriptionWithoutDirection + "</h2></div>";
+        var tripDescTag = "<div class='panel-heading'><h3 class='panel-title' tabindex=" + (isDepartAt ? '17' : '16') + ">" + addReviewTooltip(inlineHelperKey) + tripDescription + " - " + tripDescriptionWithoutDirection + "</h3></div>";
 
         var tickLabelTags = getTickLabelHtmlTags(tickLabels);
 
