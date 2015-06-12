@@ -1,3 +1,6 @@
+# This service object accepts two users.  The first user is the main account,
+# and the second is merged into the first account.
+
 class User
 
   class MergeTwoAccounts

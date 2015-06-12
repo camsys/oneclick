@@ -1,3 +1,8 @@
+# This service object will return a hash in which the name of each
+# join table associated with the user model is a key that points to 'true'
+# Join tables should not be reassigned because the objects inside them are
+# already reassigned.
+
 class User
 
   class FindUserJoinTables
