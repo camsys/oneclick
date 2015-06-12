@@ -1,5 +1,5 @@
 .btn-group
-  %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+  %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false", "tabindex" => "2"}
     %i.fa.fa-user
     - unless is_assisting
       = "#{translate_helper(:welcome)}, #{get_traveler.welcome}"

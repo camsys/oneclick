@@ -4,10 +4,6 @@
       #navHeader
         %a.navbar-brand{:href => root_url, :style => 'padding: 0px;', tabindex: "1"}
           %img.img-responsive.pull-left{:id => 'logo', :src => "#{get_logo_path}", :alt => "#{get_logo_text}"}
-        .pull-right
-          %a#help{:href => root_url + "/content/faq", tabindex: "5"}
-            %i.fa.fa-question-circle
-            %span.sr-only Help
       #userMenuNavbar.navbar-right
         %ul.nav.navbar-nav
           - if can? :see, :admin_menu
@@ -19,6 +15,10 @@
             = render partial: 'shared/user_menus'
           - else
             = render partial: 'shared/visitor_menus'
+        .pull-right
+          %a#help{:href => root_url + "/content/faq", "tabindex" => "2"}
+            %i.fa.fa-question-circle
+            %span.sr-only Help
       / end of #navHeader
   / end of publicNav
 :javascript

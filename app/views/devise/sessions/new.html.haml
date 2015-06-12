@@ -1,36 +1,33 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:log_in)}"
 = simple_form_for resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal' }, wrapper: :horizontal_form do |f|
-  .row.info-header
-    .col-sm-6
-      %h1= translate_helper(:log_in)
-    .col-sm-6.btns
-      .pull-right
-        = button_tag type: :submit, class: 'btn action-button' do
-          = translate_helper(:ok)   
-        - unless params[:redirect_to] #TODO: URI valid check?             
-          - if devise_mapping.registerable? && controller_name != 'registrations'
-            = link_to( :back, class: "btn action-button") { translate_helper(:cancel) }
 
   .row
     .col-sm-6
       = render partial: 'shared/page_comments', locals: {key: :sign_in_header_comment}
       
   .row
-    .col-sm-6
+    .col-sm-6.col-sm-offset-3
+      %h1{style: "margin-top:0;"}= translate_helper(:log_in)
       .panel.panel-default
         .panel-heading
           %h2.panel-title= translate_helper(:user_information)
         .panel-body
           = f.hidden_field :redirect_to, value: params[:redirect_to]
           - unless Rails.env.development? and ENV['DROPDOWN_USERS']
-            = f.input :email, :autofocus => true, :required => true, :label => translate_helper(:email)
+            = f.input :email, :required => true, :label => translate_helper(:email)
             = f.input :password, :required => true, :label => translate_helper(:password)
           - else
-            = f.input :email, :autofocus => true, :required => true, :label => translate_helper(:email), collection: User.any_role.order(:email).pluck(:email)
+            = f.input :email, :required => true, :label => translate_helper(:email), collection: User.any_role.order(:email).pluck(:email)
             = f.input :password, :required => true, :label => translate_helper(:password), input_html: {value: 'welcome1'}
           = f.input :remember_me, :label => translate_helper(:remember_me), :as => :boolean if devise_mapping.rememberable?
           - unless params[:redirect_to] #TODO: URI valid check?             
-            = render "devise/shared/links"
+            = render "devise/shared/links"  
+      .pull-right
+        = button_tag type: :submit, class: 'btn action-button' do
+          = translate_helper(:ok)   
+        - unless params[:redirect_to] #TODO: URI valid check?             
+          - if devise_mapping.registerable? && controller_name != 'registrations'
+            = link_to( :back, class: "btn action-button") { translate_helper(:cancel) }
 
   .row
     .col-sm-6

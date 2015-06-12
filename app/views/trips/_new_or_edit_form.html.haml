@@ -17,7 +17,7 @@
                 $('#bookingSignupModal').modal('show');
               });
             });
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
         =t(:next)
         :javascript
           $(function() {

@@ -8,7 +8,7 @@
 .row
   %div{class: non_splash_css}
     .pull-right
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
         =t(:next)
         :javascript
           $(function() {
