@@ -338,4 +338,12 @@ namespace :oneclick do
     end
   end
 
+  desc "Move FareStructure#desc to Comment table"
+  task transfer_fare_comments_to_comments_table: :environment do
+    FareStructure.where.not(desc: nil).each do |fare_structure|
+      comment_en = fare_structure.public_comments.first_or_create(locale: 'en')
+      comment_en.update_attributes(comment: fare_structure.desc, visibility: 'public')
+    end
+  end
+
 end
