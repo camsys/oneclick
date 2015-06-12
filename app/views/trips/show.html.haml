@@ -1,4 +1,4 @@
-- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:plan_a_trip)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:review)}"
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 .row
@@ -108,13 +108,13 @@
             weekdaysShort : weekdaysShort
             });
         }
-        var months = #{translate_helper('date.month_names')};
+        var months = #{translate_helper('date.month_names').split(",").reject(&:blank?).join(",")};
         if(months instanceof Array && months.length > 0) {
           moment.lang(localeLang, {
             months : months
             });
         }
-        var monthsShort = #{translate_helper('date.abbr_month_names')};
+        var monthsShort = #{translate_helper('date.abbr_month_names').split(",").reject(&:blank?).join(",")};
         if(monthsShort instanceof Array && monthsShort.length > 0) {
           moment.lang(localeLang, {
             monthsShort : monthsShort
