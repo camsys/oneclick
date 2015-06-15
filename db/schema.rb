@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615142617) do
+ActiveRecord::Schema.define(version: 20150615193018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +211,10 @@ ActiveRecord::Schema.define(version: 20150615142617) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
     t.text     "discounts"
   end
 
@@ -577,9 +581,10 @@ ActiveRecord::Schema.define(version: 20150615142617) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
     t.string   "fare_user"
+    t.string   "booking_system_id"
   end
 
   create_table "services_users", id: false, force: true do |t|

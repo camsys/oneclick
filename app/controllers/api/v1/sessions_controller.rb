@@ -21,7 +21,7 @@ module Api
         if email and password
           return standard_sign_in(email, password)
         elsif external_user_id and dob
-          return ecolane_sign_in(external_user_id, dob)
+          return ecolane_sign_in(external_user_id, dob, county)
         else
           render status: 401, json: { message: 'Invalid Sign in.' }
         end
@@ -47,11 +47,12 @@ module Api
         end
       end
 
-      def ecolane_sign_in(external_user_id, dob)
+      def ecolane_sign_in(external_user_id, dob, county)
         eh = EcolaneHelpers.new
         #If the formatting is correct, check to see if this is a valid user
+        system_id = eh.county_to_system county
 
-        result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, system_id)
         unless result
           render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
           return

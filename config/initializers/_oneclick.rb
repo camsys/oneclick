@@ -208,6 +208,7 @@ Oneclick::Application.configure do
     config.kiosk_available = true
     config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
     config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
+    config.ecolane_county_mapping = {york:'rabbit'}
 
   when 'jta'
     config.host = 'transportal.net'

@@ -31,7 +31,7 @@ module Api
           end
 
           if service
-            trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user)
+            trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id)
           end
 
         end
