@@ -4,6 +4,6 @@
   = f.input :first_name, label: translate_helper(:first_name), :autofocus => true, :required => true
   = f.input :last_name, label: translate_helper(:last_name), :required => true
   = f.input :email, label: translate_helper(:email), :required => true
-  = f.input :preferred_locale, label: translate_helper(:preferred_locale), :collection => Translation.available_locales, :include_blank => false
+  = f.input :preferred_locale, label: translate_helper(:preferred_locale), :collection => I18n.available_locales, :include_blank => false
   = f.input :password, label: translate_helper(:password), :autocomplete => "off", :required => false
   = f.input :password_confirmation, label: translate_helper(:password_confirmation), :hint => translate_helper(:leave_password_blank), :required => false
