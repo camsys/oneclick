@@ -21,6 +21,7 @@ module Api
         if email and password
           return standard_sign_in(email, password)
         elsif external_user_id and dob
+          county = params[:session][:county]
           return ecolane_sign_in(external_user_id, dob, county)
         else
           render status: 401, json: { message: 'Invalid Sign in.' }
