@@ -1,5 +1,4 @@
 - if user_messages && !user_messages.empty?
-  - session[:unread_messages_shown] = true
   - message_ids = []
   - user_messages.each do |user_message|
     - msg_id = user_message.id
@@ -30,6 +29,17 @@
         var firstMsgId = 'messageDialog-' + messageIds[0];
         $('#' + firstMsgId).modal('show');
 
+        var openMessage = function(msgId) {
+          $.ajax({
+            type: "POST",
+            url: "#{open_message_path}",
+            data: {
+              id: msgId
+            },
+            dataType: 'json'
+          });
+        };
+
         var flagMessageRead = function(msgId) {
           $.ajax({
             type: "POST",
@@ -40,6 +50,13 @@
             dataType: 'json'
           });
         };
+
+        // message dialog shown: then update message last_displayed_
+        $('.unread-message').on('shown.bs.modal', function( event ) {
+          var msgId = $(this).data('id');
+        
+          openMessage(msgId);
+        });
 
         $('.unread-message').on('hidden.bs.modal', function( event ) {
           var msgId = $(this).data('id');

@@ -6,6 +6,10 @@ class UserMessage < ActiveRecord::Base
   validates :message, presence: true
 
   def mark_as_read!
-    update_attribute(:read, true)
+    update_attributes(read: true, read_at: DateTime.now)
+  end
+
+  def open
+    update_attributes(last_displayed_at: DateTime.now)
   end
 end

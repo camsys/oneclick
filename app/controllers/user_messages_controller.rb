@@ -8,4 +8,14 @@ class UserMessagesController < ApplicationController
       format.json { render json: {status: status} }
     end
   end
+
+  def open
+    @user_message = UserMessage.find(params[:id])
+
+    status = @user_message.open if @user_message.try(:recipient) == current_user
+    
+    respond_to do |format|
+      format.json { render json: {status: status} }
+    end
+  end
 end
