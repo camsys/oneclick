@@ -5,4 +5,4 @@
     .form-group
       %label.col-sm-7.control-label= translate_helper(c.note)
       .col-sm-5
-        %p.form-control-static= human_readable(user_characteristics.get_answer_description(c.code))
+        %p.form-control-static= translate_helper(user_characteristics.get_answer_description(c.code))
