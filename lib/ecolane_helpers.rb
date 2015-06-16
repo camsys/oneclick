@@ -285,11 +285,11 @@ class EcolaneHelpers
 
   def get_trip_purposes_from_traveler(traveler)
     user_service = UserService.where(user_profile: traveler.user_profile).order('created_at').last
-    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id), user_service.service.booking_system_id)
+    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id), user_service.service.booking_system_id)
   end
 
   def get_trip_purposes_from_customer_number(customer_number, system_id)
-    get_trip_purposes(get_ecolane_customer_id(customer_number), system_id)
+    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id), system_id)
   end
 
   def get_trip_purposes(customer_id, system_id)
@@ -337,6 +337,8 @@ class EcolaneHelpers
   end
 
   def search_for_customers(terms = {}, system_id)
+
+
     url_options = "/api/customer/" + system_id + '/search?'
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
@@ -469,7 +471,7 @@ class EcolaneHelpers
 
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
-    default_funding = get_default_funding_source(get_customer_id(itinerary))
+    default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id)
     funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
     purpose = itinerary.trip_part.trip.trip_purpose.code
@@ -518,7 +520,7 @@ class EcolaneHelpers
   end
 
   def build_discount_order_hash(itinerary, funding_source, guest_id)
-    order = {customer_id: get_ecolane_customer_id(guest_id), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
     order[:funding] = build_discount_funding_hash(itinerary, funding_source)
     order
   end
@@ -578,7 +580,6 @@ class EcolaneHelpers
   ## Send the Requests
   def send_request(url, type='GET', message=nil)
 
-
     url.sub! " ", "%20"
 
     Rails.logger.info(url)
@@ -627,7 +628,7 @@ class EcolaneHelpers
   def get_customer_id(itinerary)
     user_service = itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first
     if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
-      user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id)
+      user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id)
       user_service.save
     end
     return user_service.customer_id

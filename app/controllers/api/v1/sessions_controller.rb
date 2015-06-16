@@ -62,7 +62,7 @@ module Api
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = eh.get_ecolane_traveler(external_user_id, dob, first_name, last_name)
         @traveler.reset_authentication_token!
-        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token}
+        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: first_name, last_name: last_name}
       end
 
 
