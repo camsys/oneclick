@@ -31,7 +31,7 @@ class User
     end
 
     def appropriate?(r)
-      @main.respond_to?(r.name) && r.name != :multi_o_d_trips && r.options.has_key?(:through)
+      @main.respond_to?(r.name) && r.name != :multi_o_d_trips
     end
   end
 end
