@@ -10,7 +10,7 @@ class ParatransitItinerary < Itinerary
     itins = itins.collect do |itinerary|
       new_itinerary = ParatransitItinerary.new(itinerary)
       new_itinerary.trip_part = trip_part
-      fh.calculate_paratransit_fare new_itinerary
+      fh.calculate_fare new_itinerary
       new_itinerary
     end
 

@@ -52,6 +52,7 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
+      can [:create], Message
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency # all agencies are viewable
@@ -96,6 +97,7 @@ class Ability
       can [:show, :results, :trips_datatable], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       can :send_follow_up, Trip
+      can [:create], Message
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -116,6 +118,7 @@ class Ability
       can :create, Service
       can :send_follow_up, Trip
       can :create, FareZone
+      can [:create], Message
 
     end
 

@@ -11,14 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521192345) do
+ActiveRecord::Schema.define(version: 20150615142617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "postgis_topology"
-  enable_extension "pg_stat_statements"
-  enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -69,11 +67,6 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.integer  "cut_off_seconds",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "boolean_lookup", force: true do |t|
-    t.string "name", limit: 16
-    t.string "note", limit: 16
   end
 
   create_table "boundaries", force: true do |t|
@@ -131,11 +124,6 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "updated_at"
   end
 
-  create_table "day_of_week", force: true do |t|
-    t.string "name", limit: 16
-    t.string "note", limit: 16
-  end
-
   create_table "fare_structures", force: true do |t|
     t.integer "service_id",                                                 null: false
     t.string  "note",       limit: 254
@@ -164,6 +152,16 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
+
+  create_table "funding_sources", force: true do |t|
+    t.string   "code",                           null: false
+    t.integer  "index"
+    t.integer  "service_id",                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.text     "comment"
+    t.boolean  "general_public", default: false
+  end
 
   create_table "geo_coverages", force: true do |t|
     t.string  "value"
@@ -213,6 +211,7 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.text     "discounts"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -224,6 +223,44 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "legs", force: true do |t|
+    t.integer  "itinerary_id_id"
+    t.integer  "leg_sequence"
+    t.integer  "service_id_id"
+    t.integer  "mode_id_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.float    "leg_time"
+    t.float    "leg_distance"
+    t.decimal  "cost",                            precision: 10, scale: 0
+    t.string   "cost_comments"
+    t.text     "otp_leg"
+    t.string   "returned_mode_id",     limit: 50
+    t.boolean  "is_bookable"
+    t.string   "booking_confirmation"
+    t.boolean  "duration_estimated"
+    t.text     "order_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locales", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", force: true do |t|
+    t.integer  "sender_id"
+    t.text     "body"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
 
   create_table "mileage_fares", force: true do |t|
     t.float    "base_rate"
@@ -332,8 +369,10 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
+    t.string  "old_logo_url"
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "icon"
     t.string  "logo"
     t.string  "disabled_comment"
   end
@@ -505,17 +544,17 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "services", force: true do |t|
-    t.text     "name",                                                      null: false
-    t.integer  "provider_id",                                               null: false
-    t.integer  "service_type_id",                                           null: false
-    t.integer  "advanced_notice_minutes",                  default: 0,      null: false
-    t.boolean  "volunteer_drivers_used",                   default: false,  null: false
-    t.boolean  "accepting_new_clients",                    default: true,   null: false
-    t.boolean  "wait_list_in_effect",                      default: false,  null: false
-    t.boolean  "requires_prior_authorization",             default: false,  null: false
-    t.boolean  "active",                                   default: true,   null: false
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.text     "name",                                                     null: false
+    t.integer  "provider_id",                                              null: false
+    t.integer  "service_type_id",                                          null: false
+    t.integer  "advanced_notice_minutes",                  default: 0,     null: false
+    t.boolean  "volunteer_drivers_used",                   default: false, null: false
+    t.boolean  "accepting_new_clients",                    default: true,  null: false
+    t.boolean  "wait_list_in_effect",                      default: false, null: false
+    t.boolean  "requires_prior_authorization",             default: false, null: false
+    t.boolean  "active",                                   default: true,  null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
     t.string   "email"
     t.string   "external_id",                  limit: 100
     t.string   "phone",                        limit: 25
@@ -527,18 +566,20 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
     t.text     "public_comments_old"
     t.text     "private_comments_old"
     t.string   "logo"
-    t.integer  "max_advanced_book_minutes",                default: 525600, null: false
+    t.integer  "max_advanced_book_minutes",                default: 0,     null: false
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
     t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "fare_user"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -559,31 +600,25 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "updated_at"
   end
 
-  create_table "temp_translations", id: false, force: true do |t|
-    t.integer  "id"
-    t.string   "key"
-    t.text     "interpolations"
-    t.boolean  "is_proc"
+  create_table "translation_keys", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "locale"
-    t.text     "value"
-    t.boolean  "is_html"
-    t.boolean  "complete"
-    t.boolean  "is_list"
   end
 
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"
-    t.boolean  "is_proc",        default: false
+    t.boolean  "is_proc",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "locale"
     t.text     "value"
-    t.boolean  "is_html",        default: false
-    t.boolean  "complete",       default: false
-    t.boolean  "is_list",        default: false
+    t.boolean  "is_html",            default: false
+    t.boolean  "complete",           default: false
+    t.boolean  "is_list",            default: false
+    t.integer  "locale_id"
+    t.integer  "translation_key_id"
   end
 
   create_table "traveler_notes", force: true do |t|
@@ -610,7 +645,6 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
-  add_index "trip_parts", ["trip_id"], :name => "idxTrip_ID"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -694,6 +728,19 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.integer  "verified_by_id"
   end
 
+  create_table "user_messages", force: true do |t|
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.boolean  "read",              default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "last_displayed_at"
+    t.datetime "read_at"
+  end
+
+  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
+
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
     t.integer  "mode_id"
@@ -728,8 +775,8 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "external_user_id",                                 null: false
     t.boolean  "disabled",         default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-09-19 17:13:41', null: false
-    t.datetime "created_at",       default: '2014-09-19 17:13:41', null: false
+    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
   end
 
   create_table "users", force: true do |t|

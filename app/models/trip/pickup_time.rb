@@ -32,7 +32,7 @@ protected
       end
     rescue Exception => e
       puts e
-      errors.add(:outbound_trip_date, I18n.translate(:date_wrong_format))
+      errors.add(:outbound_trip_date, TranslationEngine.translate_text(:date_wrong_format))
     end
   end
 
@@ -46,7 +46,7 @@ protected
       end
     rescue Exception => e
       puts e
-      errors.add(:outbound_trip_time, I18n.translate(:time_wrong_format))
+      errors.add(:outbound_trip_time, TranslationEngine.translate_text(:time_wrong_format))
     end
   end
 end

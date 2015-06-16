@@ -5,6 +5,13 @@ class PrintMapWorker
 
   def perform(print_url, itinerary_id)
     Rails.logger.info "PrintMapWorker#perform, print_url=#{print_url}"
+
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app,
+        :phantomjs_options => ['--debug=no', '--ignore-ssl-errors=yes', '--ssl-protocol=TLSv1'], 
+        :debug => false)
+    end
+
     session = Capybara::Session.new :poltergeist
     tempfile = Tempfile.new(['itinerary_map','.png'])
 

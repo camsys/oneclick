@@ -21,11 +21,11 @@ module TripsHelper
   end
 
   def round_trip trip
-    trip.is_return_trip ? t(:round_trip) : t(:one_way)
+    trip.is_return_trip ? TranslationEngine.translate_text(:round_trip) : TranslationEngine.translate_text(:one_way)
   end
 
   def depart_arrive trip_part
-    trip_part.is_depart ? t(:departing_at) : t(:arriving_by)
+    trip_part.is_depart ? TranslationEngine.translate_text(:departing_at) : TranslationEngine.translate_text(:arriving_by)
   end
 
   def outbound_itineraries options = {selected_only: false}

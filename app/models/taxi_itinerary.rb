@@ -19,7 +19,7 @@ class TaxiItinerary < Itinerary
     itineraries = []
 
     taxi_mode = Mode.find_by_code("mode_taxi")
-    taxi_services = Service.where("mode_id = ?", taxi_mode.id)
+    taxi_services = TaxiService.where("mode_id = ?", taxi_mode.id)
 
     api_key = Oneclick::Application.config.taxi_fare_finder_api_key
 

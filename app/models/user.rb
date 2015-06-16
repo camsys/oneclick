@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   include DisableCommented
   include ActiveModel::Validations
-  extend LocaleHelpers
 
   # enable roles for this model
   rolify
@@ -59,6 +58,10 @@ class User < ActiveRecord::Base
   has_many :user_accommodations, through: :user_profile
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
+
+  has_many :received_messages, class_name: 'UserMessage', foreign_key: 'recipient_id'
+  has_many :messages, through: :received_messages
+  has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
 
   belongs_to :agency
   belongs_to :provider
@@ -248,5 +251,11 @@ class User < ActiveRecord::Base
 
   def undelete
     update_attribute(:deleted_at, nil)
+  end
+
+  def unread_received_messages
+    received_messages.where(read: false)
+      .joins(:message).where('messages.from_date is ? or messages.from_date >= ?',nil,Date.today)
+      .where('messages.to_date is ? or messages.to_date <= ?',nil,Date.today)
   end
 end

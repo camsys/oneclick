@@ -1,6 +1,6 @@
 .btn-group
-  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false", "id" => "#{available_actions == staff_actions ? 'staff_menu' : 'admin_menu'}"}
+  %button.btn.action-button.dropdown-toggle{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false", "id" => "#{available_actions == staff_actions ? 'staff_menu' : 'admin_menu'}", "tabindex" => "2"}
     %i.fa.fa-wrench
     = title
-    %b.caret
+    %strong.caret
   = render partial: 'admin/admin_home/admin_dropdown_menu_items', locals: { :available_actions => available_actions}

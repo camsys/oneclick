@@ -1,7 +1,7 @@
 %table.center
   %tr
     %td
-      %b
+      %strong
         =itinerary.service.name + " - "  + itinerary.service.phone
 %br
 
@@ -15,8 +15,8 @@
 
 - if itinerary.service.fare_structures
   - itinerary.service.fare_structures.each do |fare|
-    -if fare.desc
+    -if fare.comments.for_locale
       .row
         .col-sm-12
           .well.well-sm.comments
-            = fare.desc.html_safe
+            = fare.comments.for_locale.comment.html_safe

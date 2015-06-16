@@ -1,0 +1,4 @@
+- if @message.errors.count == 0
+  $('#newMessageDialog').modal('hide');
+- else
+  $('#newMessageDialog .modal-flash').html("<div class='alert alert-danger'>#{@message.errors.messages.map{|k,v| "#{k} #{v}"}.join(';')}</div>");

@@ -1,4 +1,4 @@
-- label= t(dir)
+- label= translate_helper(dir)
 - ad = "#{dir}_arrive_depart"
 - field = "#{dir}_trip_date".to_sym
 - time_field = "#{dir}_trip_time".to_sym
@@ -11,12 +11,12 @@
 .col-md-3
   -# Note that the collection assumes that the departing_at option evaluates as true in the proxy.  This should mirror trip_part.is_depart behavior
   = f.input ad, wrapper: :horizontal_labelless_select, collection: [[t(:arriving_by), false], [t(:departing_at), true]], include_blank: false, label_method: :first, value_method: :last
-  - if dir=='outbound' && translation_exists?("outbound_help")
+  - if dir=='outbound' && TranslationEngine.translation_exists?("outbound_help")
     :javascript
-      addHelperTooltip('#outbound_label', "#{t(:outbound_help)}");
-  - elsif dir=='return' && translation_exists?("return_help")
+      addHelperTooltip('#outbound_label', "#{translate_helper(:outbound_help)}");
+  - elsif dir=='return' && TranslationEngine.translation_exists?("return_help")
     :javascript
-      addHelperTooltip('#return_label', "#{t(:return_help)}");
+      addHelperTooltip('#return_label', "#{translate_helper(:return_help)}");
 
 .col-md-6{:style => "padding: 0px;"}
 

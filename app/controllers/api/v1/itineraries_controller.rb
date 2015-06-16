@@ -63,11 +63,9 @@ module Api
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
-          # Create the outbound trip part              ssss
+          # Create the outbound trip part
           tp = TripPart.new
           tp.trip = trip
-
-
 
           tp.sequence = trip_part[:segment_index]
           tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
@@ -106,16 +104,18 @@ module Api
             i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
+
+            if itinerary.discounts
+              i_hash[:discounts] = JSON.parse(itinerary.discounts)
+            end
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
               i_hash[:json_legs] = nil
             end
+
             final_itineraries.append(i_hash)
           end
-
-
-
 
 
           #Unpack and return the itineraries
@@ -157,13 +157,26 @@ module Api
         #Build Success Response
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation})
+            status  = bi.status
+
+            negotiated_pu_time = status[1][:pu_time]
+            if negotiated_pu_time.nil?
+              wait_start = nil
+              wait_end = nil
+            else
+              #Create +/- fifteen minute window around pickup time
+              wait_start = (negotiated_pu_time.to_time - 15*60).iso8601
+              wait_end = (negotiated_pu_time.to_time + 15*60).iso8601
+            end
+
+            negotiated_do_time = status[1][:do_time].nil? ? nil : status[1][:do_time].to_time.iso8601
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
           end
 
         #Build Failure Response
         else
           booking_request.each do |i|
-            results_array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], success: false, confirmation_id: nil})
+            results_array.append({trip_id: i[:trip_id], itinerary_id: i[:itinerary_id], booked: false, confirmation: nil, wait_start: nil, wait_end: nil, arrival: nil, message: nil})
           end
         end
 

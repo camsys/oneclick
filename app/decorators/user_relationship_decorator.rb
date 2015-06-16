@@ -6,13 +6,13 @@ def buttons
     rtn = ""
     unless object.nil? # return a blank if no relationship exists
       if object.revokable
-        rtn << button_tag(I18n.t(:revoke), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::REVOKED) }, class: "btn btn-default action-button")
+        rtn << button_tag(TranslationEngine.translate_text(:revoke), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::REVOKED) }, class: "btn btn-default action-button")
       end
       if object.acceptable
-        rtn << button_tag(I18n.t(:accept), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::CONFIRMED) }, class: "btn btn-default action-button")
+        rtn << button_tag(TranslationEngine.translate_text(:accept), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::CONFIRMED) }, class: "btn btn-default action-button")
       end
       if object.declinable
-        rtn << button_tag(I18n.t(:decline), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::DENIED) }, class: "btn btn-default action-button")
+        rtn << button_tag(TranslationEngine.translate_text(:decline), type: "button", data: {source: check_update_user_relationship_path(object, status: RelationshipStatus::DENIED) }, class: "btn btn-default action-button")
       end
     end
     rtn.html_safe
@@ -28,7 +28,7 @@ def buttons
 
   def assist_btn
     if object && object.confirmed
-      link_to(I18n.t(:assist),
+      link_to(TranslationEngine.translate_text(:assist),
               assist_user_path(id: object.delegate_id, buddy_id: object.user_id),
               {class: "btn btn-default action-button"})
     else

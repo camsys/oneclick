@@ -1,4 +1,4 @@
-class TranslationsDecorator < Draper::Decorator
+class MessageDecorator < Draper::Decorator
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through

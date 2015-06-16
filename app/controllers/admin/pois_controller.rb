@@ -16,13 +16,13 @@ class Admin::PoisController < Admin::BaseController
     error_msgs = []
 
     if !can?(:load_pois, :pois)
-      error_msgs << t(:not_authorized)
+      error_msgs << TranslationEngine.translate_text(:not_authorized)
     else
       poi_file = params[:poi][:file] if params[:poi]
       
       if !poi_file.nil?
         if Rails.application.config.poi_is_loading
-          error_msgs << t(:pois_being_loading)
+          error_msgs << TranslationEngine.translate_text(:pois_being_loading)
         else
           uploader = PoiUploader.new
           begin
@@ -39,7 +39,7 @@ class Admin::PoisController < Admin::BaseController
           end
         end
       else
-        error_msgs << t(:select_pois_file_to_upload)
+        error_msgs << TranslationEngine.translate_text(:select_pois_file_to_upload)
       end
     end
 

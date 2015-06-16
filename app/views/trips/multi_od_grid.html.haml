@@ -7,7 +7,7 @@
 .panel.panel-default
   .panel-heading
     %h2.panel-title
-      = t(:trip_summaries)
+      = translate_helper(:trip_summaries)
       = add_tooltip("trip_summaries_help")
   .panel-body
     .row#gridBaseContainer
@@ -47,14 +47,14 @@
   $(document).ready(function() {
     //include all possible localized words to be used in review.js
     var localeDictFinder = {
-      outbound: '#{t(:outbound)}',
-      return: '#{t(:return)}',
-      routes: '#{t(:routes)}',
-      minutes: '#{t(:minutes)}',
-      walk: '#{t(:walk)}',
-      miles: '#{t(:miles)}',
-      unknown_cost: '#{t(:unknown_cost)}',
-      plus: '#{t(:plus)}'
+      outbound: '#{translate_helper(:outbound)}',
+      return: '#{translate_helper(:return)}',
+      routes: '#{translate_helper(:routes)}',
+      minutes: '#{translate_helper(:minutes)}',
+      walk: '#{translate_helper(:walk)}',
+      miles: '#{translate_helper(:miles)}',
+      unknown_cost: '#{translate_helper(:unknown_cost)}',
+      plus: '#{translate_helper(:plus)}'
     };
 
     var trip_configs = #{trip_summary_configs.to_json};

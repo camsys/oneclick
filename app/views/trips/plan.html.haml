@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:trip_summaries)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:plan)}"
 - if !@is_plan_valid
   - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -16,7 +16,7 @@
     .col-xs-12.well{style: "padding: 5px;"}
       .col-sm-12{style: "padding: 0px;"}
         =t(:trip_planned_assistance)
-        %b=@assisting_agency.name
+        %strong=@assisting_agency.name
       -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
           =@assisting_agency.public_comments.for_locale.comment.html_safe
@@ -39,7 +39,7 @@
         .modal-dialog
           .modal-content
             .modal-header
-              = t(:feedback)
+              = translate_helper(:feedback)
             .modal-body
               = render "satisfaction_surveys/form"
 
@@ -68,7 +68,7 @@
           },3000);
         }, 1);
         window.onbeforeunload = dontShowPopup;
-        return "#{t(:did_not_take_feedback_prompt)} #{t(:stay_on_page)}";
+        return "#{translate_helper(:did_not_take_feedback_prompt)} #{translate_helper(:stay_on_page)}";
       }
       function dontShowPopup() { }
 
@@ -92,7 +92,7 @@
         success: function() {
           $('#satisfaction_survey .modal-header').remove();
           $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
-          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{t(:success)}</strong>");
+          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper(:success)}</strong>");
           setTimeout(function(){
             $('#satisfaction_survey').modal('hide');
           }, 1000);

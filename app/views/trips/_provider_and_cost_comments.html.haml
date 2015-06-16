@@ -5,13 +5,14 @@
       .col-sm-12
         .well.well-sm.comments
           =provider_public_comments.comment.html_safe
--if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
+-if itinerary.service.public_comments.for_locale && !itinerary.service.public_comments.for_locale.comment.blank?
   .row
     .col-sm-12
       .well.well-sm.comments
         =itinerary.service.public_comments.for_locale.comment.html_safe
--unless itinerary.cost_comments.blank?
+- cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
+-unless cost_comments.blank?
   .row
     .col-sm-12
       .well.well-sm.comments
-        =itinerary.cost_comments.html_safe
+        =cost_comments.html_safe

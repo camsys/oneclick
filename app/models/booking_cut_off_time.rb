@@ -69,8 +69,8 @@ class BookingCutOffTime < ActiveRecord::Base
 protected
 
   def times_valid_present
-    errors.add(:"#{day_of_week}cut_off_time", I18n.t(:presence_msg)) if !@cut_off_time_present
-    errors.add(:"#{day_of_week}cut_off_time", I18n.t(:valid_time_msg)) if !@cut_off_time_valid
+    errors.add(:"#{day_of_week}cut_off_time", TranslationEngine.translate_text(:presence_msg)) if !@cut_off_time_present
+    errors.add(:"#{day_of_week}cut_off_time", TranslationEngine.translate_text(:valid_time_msg)) if !@cut_off_time_valid
   end
 
 end

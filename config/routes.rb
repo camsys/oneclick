@@ -1,5 +1,7 @@
 Oneclick::Application.routes.draw do
+  
   get '/configuration' => 'configuration#configuration'
+  mount TranslationEngine::Engine => "/translation_engine"
 
   scope "(:locale)", locale: oneclick_available_locales do
 
@@ -16,6 +18,10 @@ Oneclick::Application.routes.draw do
     devise_for :users, controllers: {registrations: "registrations", sessions: "sessions", passwords: 'passwords'}
 
     resources :content
+
+    resources :messages, :only => [:create]
+    post "mark_message_as_read" => "user_messages#mark_as_read", as: :read_message
+    post "open_message" => "user_messages#open"
 
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
@@ -415,8 +421,8 @@ Oneclick::Application.routes.draw do
     namespace :v1 do
       resources :trip_purposes do
         collection do
-          get 'list'
-          get 'index'
+          post 'list' => 'trip_purposes#list'
+          post 'index' => 'trip_purposes#index'
         end
       end
 

@@ -7,20 +7,20 @@
         %div{ :data => {:index => 0}}
           .input-header
             .step-number
-            .step-title= t(:questions)
+            .step-title= translate_helper(:questions)
           .pull-right
             %table#characteristics_one
               %thead
                 %tr
                   %th
-                  %th= t(:yes_str)
-                  %th= t(:no_str)
-                  %th= t(:unsure_str)
+                  %th= translate_helper(:yes_str)
+                  %th= translate_helper(:no_str)
+                  %th= translate_helper(:unsure_str)
               %tbody
                 -Accommodation.where(:datatype => 'bool').each do |accommodation|
                   %tr
                     %td
-                      = f.label t(accommodation.note)
+                      = f.label translate_helper(accommodation.note)
                     %td
                       = f.radio_button accommodation.code.to_sym, true
                       = f.label accommodation.code.to_sym, nil, :text => nil, :class => 'yes', :value => true

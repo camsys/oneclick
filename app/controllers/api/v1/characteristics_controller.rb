@@ -7,7 +7,7 @@ module Api
 
         characteristics_questions = []
         characteristics.each do |characteristic|
-          note = I18n.t(characteristic.note)
+          note = TranslationEngine.translate_text(characteristic.note)
           code = characteristic.code
           type = characteristic.datatype
           characteristics_questions.append({text: note, code: code, type: type})

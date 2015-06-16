@@ -21,7 +21,7 @@
                 - Characteristic.personal_factors.where(:datatype => 'bool').each do |characteristic|
                   %tr
                     %td
-                      = f.label t(characteristic.note)
+                      = f.label translate_helper(characteristic.note)
                     %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
@@ -98,13 +98,13 @@
           = button_tag :type => 'submit', :class => "btn btn-primary hidden" do
             %i.fa.fa-arrow-right
             Next step
-            / = t(:save)
+            / = translate_helper(:save)
         - else
           = button_tag type: :submit, class: 'btn btn-primary controls hidden' do
             %i.fa.fa-check
-            = t(:update)
+            = translate_helper(:update)
         = link_to :back, :class => "cancel_link hidden" do
           %i.fa.fa-reply
-          = t(:cancel)
+          = translate_helper(:cancel)
 
   / SO...somehow we gotta get that to look like this.

@@ -24,6 +24,7 @@ class Service < ActiveRecord::Base
   has_many :user_services
   has_and_belongs_to_many :users # primarily for internal contact
   has_many :fare_zones
+  has_many :funding_sources
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
@@ -313,7 +314,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
     else
       unless temp_endpoints_shapefile_path.nil?
-        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(endpoint_rule).to_s
+        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(endpoint_rule).to_s
       end
       if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
         self.endpoint_area_geom = nil
@@ -329,7 +330,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
     else
       unless temp_coverages_shapefile_path.nil?
-        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(coverage_rule).to_s
+        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(coverage_rule).to_s
       end
       if self.service_coverage_maps.where(rule: coverage_rule).count > 0
         self.coverage_area_geom = nil
@@ -405,13 +406,13 @@ class Service < ActiveRecord::Base
 
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:name),
-      I18n.t(:provider),
-      I18n.t(:phone),
-      I18n.t(:email),
-      I18n.t(:service_id),
-      I18n.t(:status)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:provider),
+      TranslationEngine.translate_text(:phone),
+      TranslationEngine.translate_text(:email),
+      TranslationEngine.translate_text(:service_id),
+      TranslationEngine.translate_text(:status)
     ]
   end
 
@@ -423,7 +424,7 @@ class Service < ActiveRecord::Base
       phone,
       email,
       external_id,
-      active ? '' : I18n.t(:inactive)
+      active ? '' : TranslationEngine.translate_text(:inactive)
     ].to_csv
   end
 
@@ -475,6 +476,15 @@ class Service < ActiveRecord::Base
 
   end
 
+  def endpoint_contains?(lat,lng)
+    mercator_factory = RGeo::Geographic.simple_mercator_factory
+     test_point = mercator_factory.point(lng, lat)
+    unless self.endpoint_area_geom.nil?
+      return false unless self.endpoint_area_geom.geom.contains? test_point
+    end
+    return true
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
@@ -499,7 +509,7 @@ class Service < ActiveRecord::Base
     min_mins = self.advanced_notice_minutes
     max_mins = self.max_advanced_book_minutes
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
-      errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
+      errors.add(:max_advanced_book_days_part, TranslationEngine.translate_text(:advanced_book_day_range_msg))
     end
   end
 

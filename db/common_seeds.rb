@@ -1,6 +1,7 @@
 include SeedsHelpers
 include Rake
 
+Rake::Task["translation_engine:implement_new_database_schema"].invoke
 
 ### Non Internationlized Records ###
 
@@ -40,10 +41,18 @@ end
   rep.delete :active
   report = Report.unscoped.find_or_create_by!(rep)
   report.update_attributes(active: is_active)
-  Translation.find_or_create_by!(key: rep[:class_name], locale: :en,
-                                 value: rep[:name] + " Report")
+
+
+  locale = Locale.find_or_create_by!(name: "en")
+  translation_key = TranslationKey.find_or_create_by!(name: rep[:class_name])
+
+  Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id, value: rep[:name] + " Report")
+
   I18n.available_locales.reject{|x| x == :en}.each do |l|
-    Translation.find_or_create_by!(key: rep[:class_name], locale: l, value: "[#{l}]#{rep[:name]} Report[/#{l}]")
+    locale = Locale.find_or_create_by!(name: l.to_s)
+    translation_key = TranslationKey.find_or_create_by!(name: rep[:class_name])
+    translation_value = "[#{l}]#{rep[:name]} Report[/#{l}]"
+    Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id, value: translation_value)
   end
 end
 
@@ -246,3 +255,4 @@ Oneclick::Application.load_tasks
 Rake::Task['oneclick:set_default_logo'].invoke
 Rake::Task['oneclick:set_mode_icons'].invoke
 Rake::Task['oneclick:add_otp_modes'].invoke
+Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke

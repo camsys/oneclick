@@ -228,6 +228,11 @@ class Itinerary < ActiveRecord::Base
     eh.book_itinerary self
   end
 
+  def status
+    eh = EcolaneHelpers.new
+    eh.get_trip_info self
+  end
+
   def cancel
     eh = EcolaneHelpers.new
     eh.cancel_itinerary self

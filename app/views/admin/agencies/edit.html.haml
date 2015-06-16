@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{@agency.name}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:edit)} #{@agency.name}"
 = simple_form_for @agency, url: admin_agency_path, html: { class: 'form-horizontal' },wrapper: :horizontal_form do |f|
   .row.info-header
     .col-sm-6
@@ -17,11 +17,11 @@
       .panel.panel-default
         .panel-heading
           %h4.panel-title
-            = t(:contact_info)
+            = translate_helper(:contact_info)
             = add_tooltip("contact_info_help")
         .panel-body
           = f.input :address
-          = f.input :city, label: "#{t(:city)}/#{t(:state)}/#{t(:zip)}",
+          = f.input :city, label: "#{translate_helper(:city)}/#{translate_helper(:state)}/#{translate_helper(:zip)}",
             input_html: {class: "col-sm-6 form-control"}, wrapper_html: {class: ""} do
             = f.input_field :city, class: "col-sm-3"
             %label.col-sm-1
@@ -35,7 +35,7 @@
       .panel.panel-default
         .panel-heading
           %h4.panel-title
-            = t(:internal_contact)
+            = translate_helper(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
@@ -43,33 +43,33 @@
           = f.input :internal_contact_phone
           = f.input :internal_contact_email
           = f.input :internal_contact, collection: @agency.users, class: "form-control",
-                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
+                selected: (@contact.id if @contact) , include_blank: "None", label: translate_helper(:user)
 
   .panel.panel-default
     .panel-heading
       %h4.panel-title
-        = t(:staff_actions)
+        = translate_helper(:staff_actions)
         = add_tooltip("staff_actions_help")
     .panel-body
       .col-sm-6
-        %b
-          = t(:administrators)
+        %strong
+          = translate_helper(:administrators)
         .scrolling-checkbox-list.agency_admin
           = f.association :administrators, collection: @agency.agents.order(:first_name),
                   as: :check_boxes, wrapper: :inline_checkboxes, label: false
       .col-sm-6
-        %b
-          = t(:agents)
+        %strong
+          = translate_helper(:agents)
         %input{:name => "agency[agent_ids]", :type => 'hidden'}
         .row
           .col-sm-12
             %button#add_agent_btn.btn.action-button.pull-right{data: {toggle: 'modal', target: '#add_agent'}}
-              = t(:add)
+              = translate_helper(:add)
             %table.table.table.condensed.table-striped.table-hover.table-bordered#agents_table
               %thead
-                %th= t(:id)
-                %th= t(:name)
-                %th.email= t(:email)
+                %th= translate_helper(:id)
+                %th= translate_helper(:name)
+                %th.email= translate_helper(:email)
                 %th
               %tbody
                 -# initial load from user record
@@ -89,20 +89,20 @@
                       .col-sm-12
                         .pull-right
                           %button.btn.action-button#search
-                            = t(:apply)
+                            = translate_helper(:apply)
                           %button.btn.action-button{data: {dismiss: 'modal'}}
-                            = t(:cancel)
+                            = translate_helper(:cancel)
                   .modal-body
                     .modal-flash
                     .panel.panel-default
                       .panel-heading
                         %h2.panel-title
-                          = t(:find_agent)
+                          = translate_helper(:find_agent)
                           = add_tooltip("find_agent_help")
                       .panel-body
                         .row
                           .col-sm-12
-                            = label_tag :email, t(:email)
+                            = label_tag :email, translate_helper(:email)
                             = text_field_tag :email,nil
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @agency}

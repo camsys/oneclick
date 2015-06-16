@@ -38,4 +38,4 @@ deploy:
     branch: develop
 after_deploy:
  - heroku run rake db:migrate --app oneclick-arc-int
- - heroku run rake oneclick:load_locales --app oneclick-arc-int
+ - heroku run rake translation_engine:load_locales --app oneclick-arc-int

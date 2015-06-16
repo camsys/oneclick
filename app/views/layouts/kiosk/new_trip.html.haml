@@ -2,7 +2,7 @@
   %div.responsive-mbp.row-fluid
     .span4.info
       #left-description
-        %h1= t(:plan_a_trip)
+        %h1= translate_helper(:plan_a_trip)
 
         .js-sidebar-text-series
           - (t(:new_trip)[current_step.to_sym] || []).each do |text|

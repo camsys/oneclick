@@ -180,14 +180,14 @@ class ServicesController < ApplicationController
           if temp_endpoints_shapefile.content_type.include?('zip')
             temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
           else
-            zip_alert_msg = t(:upload_zip_alert)
+            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
           end
         end
         unless temp_coverages_shapefile.nil?
           if temp_coverages_shapefile.content_type.include?('zip')
             temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
           else
-            zip_alert_msg = t(:upload_zip_alert)
+            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
           end
         end
 
@@ -210,7 +210,7 @@ class ServicesController < ApplicationController
         if alert_msgs.count > 0
           format.html { redirect_to @service, alert: alert_msgs.join('; ') }
         else
-          format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) }
+          format.html { redirect_to @service, notice: TranslationEngine.translate_text(:service) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         end
         format.json { head :no_content }
       else
@@ -278,7 +278,7 @@ protected
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
-                                      [ :id, :base, :rate, :desc, :fare_type ] },
+                                      [ :id, :base, :rate, :fare_type, public_comments_attributes: COMMENT_ATTRIBUTES ] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
                                     comments_attributes: COMMENT_ATTRIBUTES,
@@ -320,7 +320,7 @@ protected
       @service.fare_structures.build
     end
 
-    fs_attrs = service_params[:fare_structures_attributes]
+    fs_attrs = params[:service][:base_fare_structure_attributes]
 
     if fs_attrs[:id]
       fs = FareStructure.find(fs_attrs[:id])
@@ -328,8 +328,6 @@ protected
       fs = @service.fare_structures.first
     end
     fs.fare_type == fs_attrs[:fare_type].to_i
-
-    fs.desc = params[:service][:base_fare_structure_desc]
 
     case fs.fare_type
     when FareStructure::FLAT
