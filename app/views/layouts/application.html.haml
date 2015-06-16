@@ -45,6 +45,7 @@
 
         = yield
 
+      #screen-reader-errors{style: "height:1px;width:1px;position:absolute;overflow:hidden;top:-10px;", aria: {live: "assertive"}}
       #footer{:role => "contentinfo", :aria => {:label => 'Footer'}}
         #feedback.col-xs-12
           .pull-left

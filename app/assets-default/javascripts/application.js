@@ -26,7 +26,24 @@
 
 $(document).ready(function(){
   createPopover(".label-help");
+  alertScreenReader();
 });
+
+function alertScreenReader() {
+  errored_fields = $.map($('.required.has-error label'), function(val, i){ return $(val).text() });
+  error_messages = $.map($('.help-block'), function(val, i){ return $(val).text() });
+  toDisplay = [];
+
+  $.each(errored_fields, function(i, val) {
+    toDisplay.push("'" + errored_fields[i] + "' " + error_messages[i]);
+  });
+
+  if (toDisplay.length > 0) {
+    setTimeout(function(){
+      $("#screen-reader-errors").html( $('.alert.alert-danger strong, #flash_alert').text() + " " + toDisplay.join(". ") );
+    }, 1000);
+  }
+}
 
 moment.fn.next15 = function() {
     var intervals = Math.floor(this.minutes() / 15);
