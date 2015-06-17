@@ -64,6 +64,8 @@
                   %span{class: "oc-visible-#{s}"}= s
             - else
               %span#versionInfo= "#{translate_helper(:version)} #{Rails.application.config.version}"
+          .pull-right
+            = links_to_each_locale(can? :manage, :translations)
     / end of footer
 
     = yield :footer
