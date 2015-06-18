@@ -90,7 +90,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = translate_helper('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names').split(",")[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -163,7 +163,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = translate_helper('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names').split(",")[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",
