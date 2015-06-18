@@ -1,17 +1,17 @@
 = form_tag(merge_admin_user_path(@user), id: "search-for-merge-form", method: :get) do
-  #searchForUserToMerge.modal.fade.col-sm-12{"aria-describedby" => t(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+  #searchForUserToMerge.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:remove_provider), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
     .modal-dialog
       .modal-content
         .modal-header
           = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
-            = t(:cancel)
+            = translate_helper(:cancel)
           = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
-            = t(:merge)
+            = translate_helper(:merge)
           .modal-title{:style => "text-align:left;"}
             %b
-              = t(:site_title)
+              = translate_helper(:site_title)
         .modal-body{:style => "text-align:left;"}
-          = t(:type_email_to_merge_with)
+          = translate_helper(:type_email_to_merge_with)
           = text_field_tag(:search, params[:search], size: "57%;")
 
 

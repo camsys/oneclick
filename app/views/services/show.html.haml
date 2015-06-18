@@ -276,9 +276,9 @@
                         = add_tooltip("#{rule}_help")
                     .panel-body
                       - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper(:geometry_defined_by_shapefile)
                       - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper(:geometry_defined_by_shapefile)
                       - else
                         - types.each do |type|
                           %strong

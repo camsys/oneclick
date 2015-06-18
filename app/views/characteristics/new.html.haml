@@ -9,7 +9,7 @@
   %div{class: non_splash_css}
     .pull-right
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
-        =t(:next)
+        =translate_helper(:next)
         :javascript
           $(function() {
             $('button[name=planTrip]').click(function() {
@@ -25,14 +25,14 @@
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'About Eligibility and Accommodation'}, :style => 'padding: 0px;'}
       .panel-heading
         %h2.panel-title
-          =t(:eligibility_accommodation_questions)
+          =translate_helper(:eligibility_accommodation_questions)
           = add_tooltip("eligibility_accommodation_questions_help")
       .panel-body
         = render partial: 'form', :locals => {:path => user_characteristic_path(@traveler, @user_characteristics_proxy.id, inline: 1), :inline => true}
         / end of options column
     .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn pull-right action-button" do
-        =t(:next)
+        =translate_helper(:next)
     .col-sm-12
       = render partial: 'shared/page_comments', locals: {key: :options_footer_comment}
   - if is_splash_available

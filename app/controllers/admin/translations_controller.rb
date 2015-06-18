@@ -49,7 +49,6 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        binding.pry
         translation_key_id = params[:id].to_s
         translations = Translation.where(translation_key_id: translation_key_id)
         translations.each do |translation|

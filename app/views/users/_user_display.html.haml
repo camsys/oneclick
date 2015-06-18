@@ -5,7 +5,7 @@
         / Everybody can see this
         .panel-heading
           %h2.panel-title
-            =t(:user_information)
+            =translate_helper(:user_information)
             = add_tooltip("user_information_help")
         .panel-body
           .form-horizontal
@@ -62,7 +62,7 @@
         .panel.panel-default#agencies
           .panel-heading
             %h2.panel-title
-              =t(:agencies)
+              =translate_helper(:agencies)
               = add_tooltip("agencies_help")
           .panel-body
             = render partial: 'users/agency_table', locals: { user: user }
@@ -73,7 +73,7 @@
         .panel.panel-default
           .panel-heading
             %h2.panel-title
-              =t(:traveler_notes)
+              =translate_helper(:traveler_notes)
               = add_tooltip("traveler_notes_help")
           .panel-body
             -TravelerNote.where(user: @user, agency: current_user.agency).each do |note|
@@ -125,7 +125,7 @@
         .panel.panel-default#booking
           .panel-heading
             %h2.panel-title
-              =t(:booking_information)
+              =translate_helper(:booking_information)
               = add_tooltip("booking_information_help")
           .panel-body
             = render :partial => 'users/show_booking_info', locals: { user: user }

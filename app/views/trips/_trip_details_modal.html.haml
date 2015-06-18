@@ -3,7 +3,7 @@
     .modal-body{style: "padding: 5px;"}
       .col-sm-12.well{style: "padding: 5px; height: 100%; margin-bottom: 0; overflow-y: scroll;"}
         .col-sm-12#trip_details_header{style: "padding: 5px 0px;"}
-          %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=t(:close)
+          %button.btn.btn-default.pull-right.action-button{"type" => "button", "data-dismiss" => "modal"}=translate_helper(:close)
           %b.modal-title
             = "#{translate_helper(:trip_details)} - " + @itinerary.trip_part.description_without_direction
             = add_tooltip("trip_details_help")

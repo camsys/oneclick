@@ -15,7 +15,7 @@
   - if @assisting_agency
     .col-xs-12.well{style: "padding: 5px;"}
       .col-sm-12{style: "padding: 0px;"}
-        =t(:trip_planned_assistance)
+        =translate_helper(:trip_planned_assistance)
         %strong=@assisting_agency.name
       -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
