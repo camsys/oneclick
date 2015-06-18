@@ -35,22 +35,23 @@
         %tr
           %th= t(:key)
           - @locales.each do |locale|
-            %th= locale
+            %th= locale.name
           %th= t(:delete)
       %tbody
-        - @translations_proxies.each do |tp|
+        - @translation_keys.each do |translation_key|
           %tr
-            %td= tp.key
+            %td= translation_key.name
             - @locales.each do |locale|
-              - t = tp.translations.find{|t| t.locale==locale.to_s}
+              - current_translation = Translation.where("translation_key_id = ? AND locale_id = ?",translation_key.id,locale.id)[0]
+              - binding.pry if translation_key.name[0..1] == "__"
               %td
-                - if (t && t.value && !t.value.blank?)
-                  = link_to t.value.truncate(30), edit_admin_translation_path(t)
+                - if (current_translation.present? && current_translation.value.present?)
+                  = link_to current_translation.value.truncate(30), edit_admin_translation_path(current_translation)
                 - else
-                  - path = (t && t.value && t.value.blank?) ? edit_admin_translation_path(t) : new_admin_translation_path(key: tp.key, key_locale: locale.to_s)
+                  - path = (current_translation.present? && current_translation.value.blank?) ? edit_admin_translation_path(current_translation) : new_admin_translation_path(key: translation_key.name, key_locale: locale.name.to_s)
                   = link_to t(:add), path, class: 'btn action-button'
             %td.text-center
-              = check_box_tag "translation", tp.translations[0].id
+              = check_box_tag "translation", translation_key.id
               
 :javascript
   $(document).ready(function() {

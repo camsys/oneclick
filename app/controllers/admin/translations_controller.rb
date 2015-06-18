@@ -1,23 +1,25 @@
 class Admin::TranslationsController < Admin::BaseController
-    include LocaleHelpers
+
     authorize_resource
 
     def index
-      @locales = I18n.available_locales      
-      @translations_proxies = []
-      translation_keys = Translation.uniq.pluck(:key).sort{|a, b| a.downcase <=> b.downcase} ## Get list of unique keys
-      translation_keys.each do |k|
-          @translations_proxies << TranslationProxy.new(key: k, translations: Translation.where("key = ?", k))    ## Build proxies with key mapping to its locales
-      end
+      @locales = Locale.all
+      @translation_keys = TranslationKey.order(:name)
       render 'index' 
     end
 
     def new
-        @translation = Translation.new(key: params[:key] || nil, locale: params[:key_locale] || nil)
+        locale = Locale.find_by_name(params[:key_locale])
+        @translation = Translation.new(key: params[:key] || nil, locale: locale || nil)
     end
 
     def create
-        @translation = Translation.new(trans_params)
+        locale = Locale.find_by_name(trans_params["locale"])
+        translation_key = TranslationKey.find_by_name(trans_params["key"])
+        @translation = Translation.new()
+        @translation.value = trans_params["value"]
+        @translation.locale = locale
+        @translation.translation_key = translation_key
         if @translation.save
             flash[:success] = "Translation Successfully Saved"
             redirect_to admin_translations_path
@@ -32,7 +34,13 @@ class Admin::TranslationsController < Admin::BaseController
 
     def update
         @translation = Translation.find_by_id params[:id]
-        if @translation.update_attributes trans_params
+
+        translation_key = TranslationKey.find_by_name(trans_params["key"])
+
+        @translation.value = trans_params["value"]
+        @translation.translation_key = translation_key
+
+        if @translation.save
             flash[:success] = "Translation Successfully Updated"
             redirect_to admin_translations_path
         else
@@ -41,10 +49,11 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        translation_ids = params[:id].split(",")
-        translations = Translation.find(translation_ids)
+        binding.pry
+        translation_key_id = params[:id].to_s
+        translations = Translation.where(translation_key_id: translation_key_id)
         translations.each do |translation|
-            Translation.where(key: translation.key).destroy_all
+            translation.destroy
         end
         flash[:success] = "Translation Removed"
         redirect_to admin_translations_path
