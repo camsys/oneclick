@@ -6,12 +6,12 @@
         .row
           .col-sm-12
             .well.well-sm.comments
-              =provider_public_comments.comment.html_safe
+              =provider_public_comments.comment.try(:html_safe)
     -if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
       .row
         .col-sm-12
           .well.well-sm
-            =itinerary.service.public_comments.for_locale.comment.html_safe
+            =itinerary.service.public_comments.for_locale.comment.try(:html_safe)
     - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
     -unless cost_comments.blank?
       %h4
