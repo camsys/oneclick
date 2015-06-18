@@ -228,7 +228,7 @@
                 %dl
                   - fare.public_comments.each do |comment|
                     %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
-                    %dd= comment.comment.html_safe
+                    %dd= comment.comment.try(:html_safe)
 
   - unless is_transit || is_taxi
     .row
