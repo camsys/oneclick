@@ -98,13 +98,13 @@
           .panel.panel-default
             .panel-heading
               %h2.panel-title
-                =t(:traveler_notes)
+                =translate_helper(:traveler_notes)
                 = add_tooltip("traveler_notes_help")
             .panel-body
               -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
               =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
                 =note_form.input :note, :input_html => {:cols => 20}, :label => false
-              =t(:only_agency_can_see, :agency => current_user.agency.name)
+              =translate_helper(:only_agency_can_see, :agency => current_user.agency.name)
 
     - if can? :full_read, @user
       .new_buddies.hidden
@@ -218,7 +218,7 @@
           .panel.panel-default#booking
             .panel-heading
               %h2.panel-title
-                =t(:booking_information)
+                =translate_helper(:booking_information)
                 = add_tooltip("booking_information_help")
             .panel-body
               =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|

@@ -23,10 +23,10 @@
           =link_to service.url, service.url
       -if service.service_type and service.service_type.name
         %p
-          =t(:service_type).to_s + ": " + translate_helper(service.service_type.name.downcase.to_sym)
+          =translate_helper(:service_type).to_s + ": " + translate_helper(service.service_type.name.downcase.to_sym)
       -if service.external_id.present?
         %p
-          =t(:service_id).to_s + ": " + service.external_id.to_s
+          =translate_helper(:service_id).to_s + ": " + service.external_id.to_s
       -if service.use_gtfs_colors.present?
         %p
-          =t(:use_gtfs_colors).to_s + ": " + service.use_gtfs_colors.to_s
+          =translate_helper(:use_gtfs_colors).to_s + ": " + service.use_gtfs_colors.to_s

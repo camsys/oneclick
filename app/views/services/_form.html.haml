@@ -366,7 +366,7 @@
                       = translate_helper(rule)
                       = add_tooltip("#{rule}_help")
                   .panel-body
-                    %label=t(:coverage_area_edit_instruction)
+                    %label=translate_helper(:coverage_area_edit_instruction)
                     = f.input rule+'_shapefile', :label => translate_helper(:upload_shapefile),:as => :file
                     - types.each do |type|
                       %b

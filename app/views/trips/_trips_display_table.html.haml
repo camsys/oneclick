@@ -118,7 +118,7 @@
               - translate_helper(:send)
         %td.center
           = link_to plan_user_trip_path(traveler, trip) do
-            =t(:details)
+            =translate_helper(:details)
 - rateable_trip_ids.each do |rateable_trip_id|
   = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
 

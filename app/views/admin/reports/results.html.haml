@@ -5,7 +5,7 @@
     .btns.pull-right
       - if @report && @report.exportable  
         = button_tag id: 'export', class: "#{@url_for_csv ? '' : 'disabled '}btn action-button controls" do
-          =t(:export)
+          =translate_helper(:export)
 
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading

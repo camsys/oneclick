@@ -32,7 +32,7 @@
         {class: 'btn action-button pull-right', role: 'button'}
     - if can?(:merge, @user)
       = button_tag type: 'button', "data-target" => "#searchForUserToMerge","data-toggle" => "modal", class: "btn action-button" do
-        = t(:merge)
+        = translate_helper(:merge)
       = render 'find_user_to_merge'
     - if can?(:destroy, @user) && !@user.deleted_at
       = render partial: "admin/shared/disable_form", locals: { deleteable: @user }
