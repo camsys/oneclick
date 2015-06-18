@@ -440,6 +440,8 @@ Oneclick::Application.routes.draw do
         collection do
           get 'status_from_token'
           get 'details_from_token'
+          get 'list'
+          get 'index'
         end
 
         member do
