@@ -59,7 +59,6 @@ module Api
       def list
         trips_array = []
         @traveler.trips.order(created_at: :desc).limit(20).each do |trip|
-          puts 'tset'
           trip_hash =  trip.attributes
           trip_hash[:from_place] = trip.from_place.name
           trip_hash[:to_place] = trip.to_place.name
