@@ -1,0 +1,87 @@
+- content_for :title, "#{t(:site_title)} - #{t(:translations)}"
+.row.info-header
+  .col-sm-12
+    .btns.pull-right
+      = link_to new_admin_translation_path, :class => "btn action-button" do
+        Add Key
+      %button.btn.action-button#deleteTranslationsBtn{type: 'button', "data-toggle" => "modal", "data-target" => "#deleteTranslationsModal", disabled: 'disabled'}
+        = t(:delete)
+
+      .modal.fade.text-center#deleteTranslationsModal{tabindex: "-1", role: "dialog",  aria: {labelledby: "modalLabel", hidden: "true"}}
+        .modal-dialog.modal-sm
+          .modal-content.panel.panel-default
+            .modal-header.panel-heading
+              %button.close{type: "button", data: {dismiss: "modal"}}
+                %span{aria: {hidden: "true"}}
+                  %i.fa.fa-close
+                %span.sr-only Close
+              %h3.modal-title{id: "modalLabel"}= t(:confirm_msg)
+            .modal-body
+              = link_to "#{admin_translations_path}/", :data => {:ids => []}, :method => :delete, :class => "btn action-button", :id => "deleteTranslations" do
+                = t(:delete)
+            
+      
+    %h1
+      Content Translations
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title
+      Content Translations
+      = add_tooltip("content_translations_help")
+  .panel-body
+    %p Note: All content translations can be entered as HTML
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#translations_table
+      %thead
+        %tr
+          %th= t(:key)
+          - @locales.each do |locale|
+            %th= locale.name
+          %th= t(:delete)
+      %tbody
+        - @translation_keys.each do |translation_key|
+          %tr
+            %td= translation_key.name
+            - @locales.each do |locale|
+              - current_translation = Translation.where("translation_key_id = ? AND locale_id = ?",translation_key.id,locale.id)[0]
+              - binding.pry if translation_key.name[0..1] == "__"
+              %td
+                - if (current_translation.present? && current_translation.value.present?)
+                  = link_to current_translation.value.truncate(30), edit_admin_translation_path(current_translation)
+                - else
+                  - path = (current_translation.present? && current_translation.value.blank?) ? edit_admin_translation_path(current_translation) : new_admin_translation_path(key: translation_key.name, key_locale: locale.name.to_s)
+                  = link_to t(:add), path, class: 'btn action-button'
+            %td.text-center
+              = check_box_tag "translation", translation_key.id
+              
+:javascript
+  $(document).ready(function() {
+    var oTable = $('#translations_table').dataTable( {
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ translations per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ translations",
+              "sInfoEmpty": "Showing 0 to 0 of 0 translations",
+              "sInfoFiltered": "(filtered from _MAX_ total translations)"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+    } );
+
+    $("#translations_table tbody").on("change", "input[type='checkbox']", function(e){
+      box = $(e.target);
+      deleteUrl = "#{admin_translations_path}/";
+      ids = $('#deleteTranslations').data('ids');
+      if (box.prop('checked')) {
+        ids.push(box.val());
+      } else {
+        idx = ids.indexOf(box.val());
+        ids.splice(idx, 1);
+      }
+      $('#deleteTranslations').attr('href', deleteUrl + ids.join(","));
+
+      if (ids.length == 0) {
+        $('#deleteTranslationsBtn').attr('disabled', 'disabled');
+      } else {
+        $('#deleteTranslationsBtn').removeAttr('disabled');
+      }
+    });
+  });

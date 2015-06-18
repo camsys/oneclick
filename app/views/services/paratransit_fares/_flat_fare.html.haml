@@ -3,7 +3,7 @@
 
 - if fare
   .row_fluid
-    %strong= translate_helper(:one_way_fare) + ": "
+    %strong= translate_helper(:one_way_rate) + ": "
     -if fare.one_way_rate
       - if fare.one_way_rate
         = number_to_currency(fare.one_way_rate.to_f).to_s

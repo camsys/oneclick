@@ -1,6 +1,10 @@
 class MessagesController < ApplicationController
   def create
-    @message = Message.new message_params
+    new_message_params = message_params
+    new_message_params[:from_date] = Chronic.parse(message_params[:from_date])
+    new_message_params[:to_date] = Chronic.parse(message_params[:to_date])
+    
+    @message = Message.new new_message_params
     authorize! :create, @message
     @message.sender = current_user
 

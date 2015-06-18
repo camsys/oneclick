@@ -934,7 +934,7 @@ class TripsController < PlaceSearchingController
     trip.trip_parts.each do |tp|
       booked_itineraries = tp.itineraries.where.not(booking_confirmation: nil)
       booked_itineraries.each do |booked_itinerary|
-        res = eh.cancel(booked_itinerary.booking_confirmation)
+        res = eh.cancel_itinerary(booked_itinerary)
         service_number = booked_itinerary.service.phone || ""
         service_name = booked_itinerary.service.name || ""
         if res

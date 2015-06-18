@@ -2,13 +2,12 @@
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      %button#selectAll.btn.action-button
+      %button#selectAll.btn.action-button{role: 'button'}
         = translate_helper(:select_all)
-      %button#selectNone.btn.action-button
+      %button#selectNone.btn.action-button{role: 'button'}
         = translate_helper(:select_none)
-      %button#newMessage.btn.action-button{data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
+      %button#newMessage.btn.action-button{role: 'button', data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
         = translate_helper(:message)
-      = render partial: 'messages/send_message_modal', locals: {user: current_user}
       = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
       = button_tag translate_helper(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
     %h1= translate_helper(:users)
@@ -29,8 +28,11 @@
           %th= translate_helper(:roles)
           %th#status= translate_helper(:status)
           %th= translate_helper(:provider)
-          %th= translate_helper(:authorized_agency)
+          %th= translate_helper(:agency)
       %tbody
+
+= render partial: 'messages/send_message_modal', locals: {user: current_user}
+
 :javascript
   $(document).ready(function() {
     var oTable = $('#admin_users_table').dataTable( {
@@ -120,6 +122,8 @@
 
       // check each checkbox on page
       $('#admin_users_table .message-checkbox').prop('checked', true);
+
+      updateMessageButtonStatus();
     });
 
     // button to deselect all users as recipient
@@ -128,6 +132,8 @@
 
       // uncheck each checkbox on page
       $('#admin_users_table .message-checkbox').prop('checked', false);
+
+      updateMessageButtonStatus();
     });
 
 

@@ -45,6 +45,7 @@
 
         = yield
 
+      #screen-reader-errors{style: "height:1px;width:1px;position:absolute;overflow:hidden;top:-10px;", aria: {live: "assertive"}}
       #footer{:role => "contentinfo", :aria => {:label => 'Footer'}}
         #feedback.col-xs-12
           .pull-left
@@ -63,6 +64,8 @@
                   %span{class: "oc-visible-#{s}"}= s
             - else
               %span#versionInfo= "#{translate_helper(:version)} #{Rails.application.config.version}"
+          .pull-right
+            = links_to_each_locale(can? :manage, :translations)
     / end of footer
 
     = yield :footer

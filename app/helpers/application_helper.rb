@@ -336,6 +336,53 @@ module ApplicationHelper
     end
   end
 
+  
+  def links_to_each_locale(show_translations = false)
+    links = []
+    I18n.available_locales.each do |l|
+      links << link_using_locale(I18n.t("locales.#{l}"), l)
+    end
+    if show_translations
+      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
+    end
+
+    return '' if links.size <= 1
+
+    links.join(' | ').html_safe
+  end
+
+  def link_using_locale link_text, locale
+    path = session[:location] || request.fullpath
+    parts = path.split('/', 3)
+
+    current_locale = I18n.available_locales.detect do |l|
+      parts[1] == l.to_s
+    end
+    parts.delete_at(1) if current_locale or I18n.locale == :tags
+    parts = parts.join('/')
+    parts = '' if parts=='/'
+    newpath = "/#{locale}#{parts}"
+
+    if (newpath == path) or
+      (newpath == "/#{I18n.locale}#{path}") or
+      (newpath == "/#{I18n.locale}")
+      link_text
+    else
+      link_to link_text, newpath
+    end
+  end
+
+  def link_without_locale link_text
+    parts = link_text.split('/', 3)
+    has_locale = I18n.available_locales.detect do |l|
+      parts[1] == l.to_s
+    end
+    parts.delete_at(1) if has_locale
+    parts = parts.join('/')
+    return '/' if parts.empty?
+    parts
+  end
+
   def add_tooltip(key)
     if TranslationEngine.translation_exists?(key)
       html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
