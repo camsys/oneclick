@@ -599,6 +599,7 @@ class EcolaneHelpers
       end
 
       req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
+      req.add_field 'X-Ecolane-Agent', 'ococtest'
       req.add_field 'Content-Type', 'text/xml'
 
       http = Net::HTTP.new(uri.host, uri.port)
