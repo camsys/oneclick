@@ -128,6 +128,61 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def merge_edit
+    @user = User.find(params[:id])
+    @sub = User.find_by(email: params[:search])
+
+    if @sub.nil?
+      redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
+    end
+
+    session[:location] = edit_user_registration_path
+    @agency_user_relationship = AgencyUserRelationship.new
+    @user_relationship = UserRelationship.new
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
+    @user_programs_proxy = UserProgramsProxy.new(@user)
+    @user_accommodations_proxy = UserAccommodationsProxy.new(@user)
+
+  end
+
+  def merge_submit
+    @user = User.find(params[:id])
+    main = @user
+    sub = User.find_by(email: params[:user][:sub])
+
+    if sub.nil?
+      redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:user][:sub] }."
+    end
+
+
+    User::MergeTwoAccounts.call(main, sub)
+
+    @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
+
+    # prep for password validation in @user.update by removing the keys if neither one is set.  Otherwise, we want to catch with password validation in User.rb
+    if params[:user][:password].blank? and params[:user][:password_confirmation].blank?
+      params[:user].except! :password, :password_confirmation
+    end
+
+    if @user.update(user_params_with_password) # .update is a Devise method, not the standard update_attributes from Rails
+      params[:user][:roles].reject(&:blank?).empty? ? @user.remove_role(:system_administrator) : @user.add_role(:system_administrator)
+      @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
+      set_approved_agencies(params[:user][:approved_agency_ids])
+      booking_alert = set_booking_services(@user, params[:user_service])
+      @user.update_relationships(params[:user][:relationship])
+      @user.add_buddies(params[:new_buddies])
+      if booking_alert
+        redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."
+      else
+        redirect_to admin_user_path(@user, locale: current_user.preferred_locale), :notice => "User merged with #{ sub.email }'s account."
+      end
+
+
+    else
+      redirect_to admin_user_path(@user), :alert => "Unable to merge user."
+    end
+  end
+
   # def add_to_agency # no longer applicable, iteration 5 workflow runs from the agency, not the user
   #   agency = Agency.find(params[:agency_id])
   #   params[:agency][:user_ids].reject{|u| u.blank?}.each do |user_id|
