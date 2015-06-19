@@ -1,8 +1,8 @@
 class MessagesController < ApplicationController
   def create
     new_message_params = message_params
-    new_message_params[:from_date] = Chronic.parse(message_params[:from_date])
-    new_message_params[:to_date] = Chronic.parse(message_params[:to_date])
+    new_message_params[:from_date] = Chronic.parse(message_params[:from_date]).try(:at_beginning_of_day)
+    new_message_params[:to_date] = Chronic.parse(message_params[:to_date]).try(:at_end_of_day)
     
     @message = Message.new new_message_params
     authorize! :create, @message
