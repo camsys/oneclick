@@ -52,7 +52,11 @@ GIT
 
 GIT
   remote: git://github.com/camsys/translation_engine.git
+<<<<<<< HEAD
   revision: e1a724e924fe889e8a4842830303729b04ef270a
+=======
+  revision: bda19289f0ef6183036025dbb6992374d702ab3f
+>>>>>>> f4d05c2... move load locales task back to oneclick
   specs:
     translation_engine (1.3.2)
       honeybadger
