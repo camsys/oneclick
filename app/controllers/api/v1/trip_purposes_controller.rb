@@ -9,14 +9,23 @@ module Api
         #See if the current user is registered to book with a service
 
         user_service = nil
-        if current_traveler
-          user_service = UserService.where(user_profile_id: current_traveler.user_profile).first
+        if @traveler
+          user_service = UserService.where(user_profile_id: @traveler.user_profile).first
         end
 
         if user_service
+
           service = user_service.service
-          trip_purposes = eh.get_trip_purposes_from_traveler(current_traveler)
+          begin
+            trip_purposes = eh.get_trip_purposes_from_traveler(current_traveler)
+          rescue Exception=>e
+            Honeybadger.notify(
+                :error_class   => "Trip Purposes Failure #1",
+            )
+            trip_purposes = []
+          end
         else
+          puts 'should not be in here'
           origin = params[:geometry]
           lat = origin[:location][:lat]
           lng = origin[:location][:lng]
@@ -32,7 +41,14 @@ module Api
 
           if service
             unless service.booking_system_id.nil?
-              trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id)
+              begin
+                trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id)
+              rescue Exception=>e
+                Honeybadger.notify(
+                    :error_class   => "Trip Purposes Failure #2",
+                )
+                trip_purposes = []
+              end
             end
           end
 
