@@ -32,7 +32,6 @@ class User
       uniques = @sub.send(@r.name).select { |assoc| !from_main.has_key?(assoc.id.to_s) }
       uniques
     end
-
   end
 
 end
