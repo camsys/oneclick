@@ -3,8 +3,8 @@
 	.col-sm-12
 		.btns.pull-right
 			= button_tag id:'save_translation', type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
-				= t(:save)
-			= link_to t(:cancel), admin_translations_path, { class: "btn action-button" }
+				= translate_helper(:save)
+			= link_to translate_helper(:cancel), admin_translations_path, { class: "btn action-button" }
 		%h1 Edit A Translation
 
 .panel.panel-default{style: 'padding: 0px;'}
@@ -17,8 +17,8 @@
 			.row
 				.col-sm-12
 					= simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
-						= t.input :key
-						= t.input :locale, readonly: true
+						= t.input :key, :input_html => { :value => @translation.translation_key.name }
+						= t.input :locale, readonly: true, :input_html => { :value => @translation.locale.name }
 						= t.input :is_list
 						= t.input :value, input_html: {rows: 10}
 :javascript

@@ -22,17 +22,17 @@
                   - if relationship.retractable
                     = link_to traveler_retract_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
                       %i.fa.fa-times
-                      =t(:retract)
+                      =translate_helper(:retract)
                   - if relationship.revokable
                     = link_to traveler_revoke_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
                       %i.fa.fa-times
-                      =t(:revoke)
+                      =translate_helper(:revoke)
                   - if relationship.hidable
                     = link_to traveler_hide_user_user_relationship_path(user, relationship), remote: true, class: "btn btn-xs btn-warning text-center" do
                       %i.fa.fa-times
-                      =t(:hide)
+                      =translate_helper(:hide)
     - else
-      =t(:not_any_buddies)
+      =translate_helper(:not_any_buddies)
 
 = render partial: 'shared/parameterized_datatable_javascript', locals: { table_id: '#buddiesdatatable',
   object_plural: 'buddies',

@@ -1,6 +1,6 @@
 .row-fluid
   %button.btn.action-button.pull-right#showAddBuddyModalButton{"data-target" => "#addBuddyModal", "data-toggle" => "modal", :type => "button"}= translate_helper(:add)
-  %h3=t(:buddies)
+  %h3=translate_helper(:buddies)
 #buddy_table
   = render partial: 'devise/registrations/buddy_table', locals: {user: user}
 /MODAL STUFF

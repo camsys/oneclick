@@ -113,7 +113,7 @@
                 -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
                   %tr
                     %td.text-center
-                      = translate_helper('date.day_names')[schedule.day_of_week]
+                      = translate_helper('date.day_names').split(",")[schedule.day_of_week]
 
                     %td.text-center
                       =schedule.start_string
@@ -141,7 +141,7 @@
                 -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
                   %tr
                     %td.text-center
-                      = translate_helper('date.day_names')[cut_off_time.day_of_week]
+                      = translate_helper('date.day_names').split(",")[cut_off_time.day_of_week]
                     %td.text-center
                       =cut_off_time.cut_off_time_string
     - unless is_transit
@@ -228,7 +228,7 @@
                 %dl
                   - fare.public_comments.each do |comment|
                     %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
-                    %dd= comment.comment.html_safe
+                    %dd= comment.comment.try(:html_safe)
 
   - unless is_transit || is_taxi
     .row
@@ -276,9 +276,9 @@
                         = add_tooltip("#{rule}_help")
                     .panel-body
                       - if rule == 'endpoints' and @service.service_coverage_maps.where(rule: 'endpoint_area').count == 0 and not @service.endpoint_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper(:geometry_defined_by_shapefile)
                       - elsif rule == 'coverages' and @service.service_coverage_maps.where(rule: 'coverage_area').count == 0 and not @service.coverage_area_geom.nil?
-                        =t(:geometry_defined_by_shapefile)
+                        =translate_helper(:geometry_defined_by_shapefile)
                       - else
                         - types.each do |type|
                           %strong

@@ -1,13 +1,13 @@
 .row-fluid
   - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
   - unless cost_comments.blank?
-    %h4 =t(:cost_details)
+    %h4 =translate_helper(:cost_details)
     = cost_comments.html_safe
 
   - if itinerary.missing_information
     %h4
       %i.icon.icon-question-sign
-      =t(:this_service_is_for)
+      =translate_helper(:this_service_is_for)
       %ul
         -itinerary.missing_information_text.split(':').each do |info|
           %li

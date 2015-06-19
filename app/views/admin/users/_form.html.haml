@@ -23,7 +23,7 @@
           .col-sm-12
             %a.btn.btn-success{:alt => 'alt words', :title => 'title here', :href => skip_user_trip_path(@traveler, @trip.id)}
               %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-              =t(:no_thanks_just_plan_it)
+              =translate_helper(:no_thanks_just_plan_it)
 
     - Rails.logger.debug "In view, I18n: #{I18n.locale}"
     - Rails.logger.debug translate_helper(:first_name)
@@ -37,7 +37,7 @@
       .form-actions
         = button_tag :type => 'submit', :class => "btn action-button" do
           %i{class: "icon #{CsHelpers::ACTION_ICONS[:plan_a_trip]}"}
-          =t(:sign_up_and_plan)
+          =translate_helper(:sign_up_and_plan)
     - else
       .actions
         = button_tag type: :submit, class: 'btn action-button controls' do

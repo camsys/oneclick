@@ -10,7 +10,7 @@
     .pull-right
       -if @show_booking
         = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
-          =t(:ecolane_login_button)
+          =translate_helper(:ecolane_login_button)
           :javascript
             $(function() {
               $('button[name=ecolaneSignin]').click(function() {
@@ -18,7 +18,7 @@
               });
             });
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
-        =t(:next)
+        =translate_helper(:next)
         :javascript
           $(function() {
             $('button[name=planTrip]').click(function() {
@@ -40,7 +40,7 @@
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
         %h3.panel-title
-          =t(:trip_parameters)
+          =translate_helper(:trip_parameters)
           = add_tooltip("trip_parameters_help")
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
@@ -57,7 +57,7 @@
             #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
                 %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
-                  =t(:trip_dir)
+                  =translate_helper(:trip_dir)
                   = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
@@ -67,8 +67,6 @@
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{translate_helper(:one_way)}
 
             = field_set_tag do
-              / .inline-radio
-              /   = f.input :is_round_trip, as: :radio_buttons, label: translate_helper(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -83,7 +81,7 @@
             #baseModes
               .form-group.check_boxes.optional.trip_proxy_modes
                 %legend.col-sm-3.check_boxes.optional.control-label#legend_label
-                  =t(:modes)
+                  =translate_helper(:modes)
                   = add_tooltip("modes_help")
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
@@ -151,7 +149,7 @@
                   %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
                     %i.fa.fa-expand
 
-                  =t(:map)
+                  =translate_helper(:map)
                   = add_tooltip("map_help")
                   :javascript
                     $('#tripMapContainer .label-help').removeClass('pull-right fa-2x');
@@ -161,9 +159,9 @@
       .pull-right
         -if @show_booking
           = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
-            =t(:ecolane_login_button)
+            =translate_helper(:ecolane_login_button)
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-          =t(:next)
+          =translate_helper(:next)
 
       .pull-left
         %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}

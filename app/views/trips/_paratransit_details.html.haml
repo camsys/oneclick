@@ -5,7 +5,7 @@
     -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
       %h4
         %i.fa.fa-question-circle
-        =t(:this_service_is_for)
+        =translate_helper(:this_service_is_for)
         %ul
           -itinerary.missing_information_text.split(':').each do |info|
             %li

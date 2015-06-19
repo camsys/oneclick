@@ -6,12 +6,12 @@
         .row
           .col-sm-12
             .well.well-sm.comments
-              =provider_public_comments.comment.html_safe
+              =provider_public_comments.comment.try(:html_safe)
     -if itinerary.service.public_comments.for_locale and !itinerary.service.public_comments.for_locale.comment.blank?
       .row
         .col-sm-12
           .well.well-sm
-            =itinerary.service.public_comments.for_locale.comment.html_safe
+            =itinerary.service.public_comments.for_locale.comment.try(:html_safe)
     - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
     -unless cost_comments.blank?
       %h4
@@ -21,7 +21,7 @@
     -if itinerary.missing_information and itinerary.missing_information_text.split('\n').count > 0
       %h4
         %i.fa.fa-question-circle
-        =t(:this_service_is_for)
+        =translate_helper(:this_service_is_for)
         %ul
           -itinerary.missing_information_text.split(':').each do |info|
             %li
@@ -47,7 +47,7 @@
     -if itinerary.accommodation_mismatch
       %h4
         %i.fa.fa-warning
-        =t(:trip_needs_more_accommodations) + ":"
+        =translate_helper(:trip_needs_more_accommodations) + ":"
       %ul
         -itinerary.missing_accommodations.split(',').each do |accommodation|
           %li

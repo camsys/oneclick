@@ -17,7 +17,7 @@
     .col-sm-12
       .well.well-sm.comments
         - itinerary.service.public_comments.each do |comment|
-          = comment.comment.html_safe
+          = comment.comment.try(:html_safe)
           %br
 
 - if !itinerary.service.fare_structures.empty?
@@ -26,4 +26,4 @@
       .row
         .col-sm-12
           .well.well-sm.comments
-            = fare.comments.for_locale.comment.html_safe
+            = fare.comments.for_locale.comment.try(:html_safe)
