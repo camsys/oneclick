@@ -6,7 +6,7 @@ module Api
         eh = EcolaneHelpers.new
 
         service = nil
-        #See if the current user is registered to book with a service
+        #See if the @traveler is registered to book with a service
 
         user_service = nil
         if @traveler
@@ -17,7 +17,7 @@ module Api
 
           service = user_service.service
           begin
-            trip_purposes = eh.get_trip_purposes_from_traveler(current_traveler)
+            trip_purposes = eh.get_trip_purposes_from_traveler(@traveler)
           rescue Exception=>e
             Honeybadger.notify(
                 :error_class   => "Trip Purposes Failure #1",
@@ -25,7 +25,6 @@ module Api
             trip_purposes = []
           end
         else
-          puts 'should not be in here'
           origin = params[:geometry]
           lat = origin[:location][:lat]
           lng = origin[:location][:lng]
