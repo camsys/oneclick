@@ -14,8 +14,9 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def create
+        #same form is used to create new keys as well as new translations with existing keys
         locale = Locale.find_by_name(trans_params["locale"])
-        translation_key = TranslationKey.find_by_name(trans_params["key"])
+        translation_key = TranslationKey.find_or_create_by!(name: trans_params["key"])
         @translation = Translation.new()
         @translation.value = trans_params["value"]
         @translation.locale = locale
@@ -24,6 +25,7 @@ class Admin::TranslationsController < Admin::BaseController
             flash[:success] = "Translation Successfully Saved"
             redirect_to admin_translations_path
         else
+            flash[:alert] = "Error creating translation."
             render 'new'
         end
     end
