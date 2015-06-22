@@ -474,7 +474,7 @@ class EcolaneHelpers
     default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id)
     funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
-    purpose = itinerary.trip_part.trip.trip_purpose.code
+    purpose = itinerary.trip_part.trip.trip_purpose_raw
     min_index = 10000
     best_funding_source = nil
     best_sponsor = nil
