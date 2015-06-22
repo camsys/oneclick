@@ -138,18 +138,14 @@ class User < ActiveRecord::Base
   end
 
   def requires_wheelchair_access?
-    folding_accommodation = Accommodation.where(code: 'folding_wheelchair_accessible').first
-    motorized_accommodation = Accommodation.where(code: 'motorized_wheelchair_accessible').first
+    wheelchair_accoms = user_profile.user_accommodations
+        .includes(:accommodation).references(:accommodation)
+        .where(
+          accommodations: 
+            { code: ['folding_wheelchair_accessible', 'motorized_wheelchair_accessible'] }, 
+          value: 'true')
 
-    needs_folding = user_profile.user_accommodations.where(accommodation: folding_accommodation, value: "true").first
-    needs_motorized = user_profile.user_accommodations.where(accommodation: motorized_accommodation, value: "true").first
-
-    if needs_folding or needs_motorized
-      return true
-    else
-      return false
-    end
-
+    !wheelchair_accoms.empty?
   end
 
   def has_vehicle?
