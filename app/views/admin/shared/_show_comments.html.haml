@@ -15,7 +15,7 @@
           - if can? :full_read, commentable
             %dl
               - commentable.public_comments.each do |comment|
-                %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ')
+                %dt= [translate_helper("locales.#{comment.locale}"), translate_helper(:comment)].join(' ')
                 %dd= comment.comment.try(:html_safe)
           - else
             %p= commentable.public_comments.where(locale: I18n.locale).first.comment.html_safe rescue translate_helper(:no_comments)
@@ -35,5 +35,5 @@
           - else
             %dl
               - commentable.private_comments.each do |comment|
-                %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ')
+                %dt= [translate_helper("locales.#{comment.locale}"), translate_helper(:comment)].join(' ')
                 %dd= comment.comment.try(:html_safe)
