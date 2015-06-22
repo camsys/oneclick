@@ -343,7 +343,7 @@ module ApplicationHelper
       links << link_using_locale(l)
     end
     if show_translations
-      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
+      links << link_using_locale(:tags)
     end
 
     return '' if links.size <= 1
