@@ -453,6 +453,7 @@ Oneclick::Application.routes.draw do
       resources :places do
         collection do
           get 'search'
+          post 'within_area'
         end
       end
 
