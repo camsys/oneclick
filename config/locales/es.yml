@@ -854,8 +854,16 @@ es:
   assisting_turned_on: "[es572]Assisting has been turned on.[/es]"
   ask_age: "[es]Are you age %{age} or older?[/es]"
 
+   # Merging
+  merge: "[es]Merge[/es]"
+  merge_message_1: "[es]Clicking on 'Apply' will merge [/es]"
+  merge_message_2: "[es]'s account into [/es]"
+  merge_message_3: "[es]'s account.  You may also edit [/es]"
+  merge_message_4: "[es]'s account using the fields below.[/es]"
+
   #user deletion
   why_are_you_deleting: "[es]Why are you deleting [/es]"
+  reason_for_deleting: "[es] Reason for deleting: [/es]"
 
   # UI Modes
   ui_mode: '[es]UI Mode[/es]'
