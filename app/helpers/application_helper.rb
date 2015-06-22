@@ -340,7 +340,7 @@ module ApplicationHelper
   def links_to_each_locale(show_translations = false)
     links = []
     I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
+      links << link_using_locale(l)
     end
     if show_translations
       links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
@@ -351,7 +351,7 @@ module ApplicationHelper
     links.join(' | ').html_safe
   end
 
-  def link_using_locale link_text, locale
+  def link_using_locale locale
     path = session[:location] || request.fullpath
     parts = path.split('/', 3)
 
@@ -366,9 +366,9 @@ module ApplicationHelper
     if (newpath == path) or
       (newpath == "/#{I18n.locale}#{path}") or
       (newpath == "/#{I18n.locale}")
-      link_text
+      locale
     else
-      link_to link_text, newpath
+      link_to locale, newpath
     end
   end
 
