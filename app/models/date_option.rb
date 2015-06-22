@@ -4,7 +4,17 @@ class DateOption < ActiveRecord::Base
 
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
-    form_collection_from_relation include_all, all
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      list << [name, r.id]
+    end
+    list
   end
   
   def get_date_range from_date, to_date

@@ -93,10 +93,18 @@ class User < ActiveRecord::Base
   before_create :make_user_profile
 
   def self.agent_form_collection include_all=true, agency=:any
-    form_collection_from_relation(include_all,
-                                  # any_role.where(roles: {name: 'agent'}).order(:first_name),
-                                  with_role(:agent, agency).order(:first_name),
-                                  false)
+    relation = with_role(:agent, agency).order(:first_name)
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      list << [name, r.id]
+    end
+    list
   end
 
   def make_user_profile
