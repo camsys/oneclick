@@ -589,7 +589,7 @@ es:
   select_pois_file_to_upload: '[es]Select POIs file (.csv)[/es]'
   pois_file_not_csv: '[es]The file is not in CSV format.[es]'
   pois_load_summary: "[es]POI file was uploaded. Loaded %{count_poi_type} POI Types and %{count_good} POIs. %{count_bad} bad were skipped, %{count_failed} failed to save, %{count_possible_existing} possible existing.[/es]"
-  
+
 
   #map
   map: '[es]Map[/es]'
@@ -853,6 +853,17 @@ es:
   assisting_turned_off: "[es10]Assisting has been turned off.[/es]"
   assisting_turned_on: "[es572]Assisting has been turned on.[/es]"
   ask_age: "[es]Are you age %{age} or older?[/es]"
+
+   # Merging
+  merge: "[es]Merge[/es]"
+  merge_message_1: "[es]Clicking on 'Apply' will merge [/es]"
+  merge_message_2: "[es]'s account into [/es]"
+  merge_message_3: "[es]'s account.  You may also edit [/es]"
+  merge_message_4: "[es]'s account using the fields below.[/es]"
+
+  #user deletion
+  why_are_you_deleting: "[es]Why are you deleting [/es]"
+  reason_for_deleting: "[es] Reason for deleting: [/es]"
 
   # UI Modes
   ui_mode: '[es]UI Mode[/es]'

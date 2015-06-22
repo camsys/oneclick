@@ -1,7 +1,9 @@
 # This service object will return a hash in which the name of each
 # join table associated with the user model is a key that points to 'true'
 # Join tables should not be reassigned because the objects inside them are
-# already reassigned.
+# already reassigned.  The only exception is when a user 'has_many' through
+# another class that has_many of the association.  For example, this object
+# should not reassign trip_places because it should reassign the trips instead.
 
 class User
 
@@ -18,8 +20,14 @@ class User
     def self.find_keys
       reflections = User.reflect_on_all_associations
       throughs = reflections.select { |r| r.name != :multi_od_trips && r.options.has_key?(:through) }
-      join_table_names = throughs.inject([]) { |memo, r| memo << r.options[:through] }
-      join_table_names
+      throughs.select! { |r| !self.ignored[r.name] }
+      throughs.map { |r| r.options[:through] }
+    end
+
+    def self.ignored
+      {
+        trips: true
+      }
     end
 
   end

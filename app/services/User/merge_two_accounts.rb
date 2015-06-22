@@ -23,15 +23,18 @@ class User
     end
 
     def merge_all_possible
-      @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if mergeable?(r) && appropriate?(r) }
+      @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if mergeable?(r) && !ignored[r.name] }
     end
 
     def mergeable?(r)
       (r.macro == :has_many || r.macro == :has_and_belongs_to_many) && !@join_tables.has_key?(r.name)
     end
 
-    def appropriate?(r)
-      @main.respond_to?(r.name) && r.name != :multi_o_d_trips
+    def ignored
+      {
+        multi_o_d_trips: true,
+        trip_places: true
+      }
     end
   end
 end
