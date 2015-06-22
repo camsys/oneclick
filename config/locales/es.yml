@@ -862,6 +862,7 @@ es:
 
   #merging
   merge: "[es]Merge[/es]"
+  type_email_to_merge_with: "[es]What is the email address of the account that you want to merge with?[/es]"
   merge_message_1: "[es]Clicking on 'Apply' will merge [/es]"
   merge_message_2: "[es]'s account into [/es]"
   merge_message_3: "[es]'s account.  You may also edit [/es]"
