@@ -40,7 +40,7 @@ module Api
         trip = Trip.new
         trip.creator = @traveler
         trip.user = @traveler
-        trip.trip_purpose = TripPurpose.where(code: purpose).first
+        trip.trip_purpose_raw = purpose
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
         trip.save
