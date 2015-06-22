@@ -174,24 +174,42 @@ class ServicesController < ApplicationController
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
-        temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
-        temp_coverages_shapefile = params[:service][:coverages_shapefile]
-        unless temp_endpoints_shapefile.nil?
-          if temp_endpoints_shapefile.content_type.include?('zip')
-            temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
-          else
-            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+        if params[:service][:delete_endpoints_shapefile]
+          if @service.endpoint_area_geom
+            @service.endpoint_area_geom.destroy
+            @service.endpoint_area_geom = nil
           end
-        end
-        unless temp_coverages_shapefile.nil?
-          if temp_coverages_shapefile.content_type.include?('zip')
-            temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
-          else
-            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+        else
+          temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
+          unless temp_endpoints_shapefile.nil?
+            if temp_endpoints_shapefile.content_type.include?('zip')
+              temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
           end
         end
 
-        polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
+        if params[:service][:delete_coverages_shapefile]
+          if @service.coverage_area_geom
+            @service.coverage_area_geom.destroy
+            @service.coverage_area_geom = nil
+          end
+        else
+          temp_coverages_shapefile = params[:service][:coverages_shapefile]
+          unless temp_coverages_shapefile.nil?
+            if temp_coverages_shapefile.content_type.include?('zip')
+              temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
+          end
+        end
+
+        unless params[:service][:delete_endpoints_shapefile] && params[:service][:delete_coverages_shapefile]
+          polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
+        end
+
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
           @service.save

@@ -672,6 +672,7 @@ en:
   coverages: "Coverage Area"
   coverage_area_edit_instruction: "You can either upload a shapefile or select served areas below"
   upload_shapefile: "Upload a zipped shapefile (*.zip)"
+  remove_file: "Remove file"
   upload_zip_alert: "Please upload a zipped shapefile (*.zip)"
   geometry_defined_by_shapefile: "Geometry is defined by user uploaded shapefile"
   no_polygon_geometry_parsed: "No polygon geometry was parsed from uploaded file for %{area_type}"

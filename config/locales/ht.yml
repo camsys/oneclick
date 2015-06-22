@@ -687,6 +687,7 @@ ht:
   served_areas: "[ht]served[/ht]"
   coverage_area_edit_instruction: "[ht]You can either upload a shapefile or select served areas below[/ht]"
   upload_shapefile: "[ht]Upload a zipped shapefile (*.zip)[/ht]"
+  remove_file: "[ht]Remove file[/ht]"
   upload_zip_alert: "[ht]Please upload a zipped shapefile (*.zip)[/ht]"
   geometry_defined_by_shapefile: "[ht]Geometry is defined by user uploaded shapefile[/ht]"
   no_polygon_geometry_parsed: "[ht]No polygon geometry was parsed from uploaded file for %{area_type}[/ht]"

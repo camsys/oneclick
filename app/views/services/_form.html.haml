@@ -367,7 +367,11 @@
                       = add_tooltip("#{rule}_help")
                   .panel-body
                     %label=translate_helper(:coverage_area_edit_instruction)
-                    = f.input rule+'_shapefile', :label => translate_helper(:upload_shapefile),:as => :file
+                    = f.input "#{rule}_shapefile", :label => translate_helper(:upload_shapefile),:as => :file
+                    .col-sm-9.pull-right.checkbox
+                      %label
+                        %input{type: "checkbox", name: "service[delete_#{rule}_shapefile]"}
+                          = translate_helper(:remove_file)
                     - types.each do |type|
                       %b
                         = type.humanize.split[0].pluralize + ' ' + translate_helper(:served_areas)
