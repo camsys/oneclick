@@ -59,6 +59,7 @@ es:
   more_about_this_initiative: '[es]More About This Initiative[/es]'
   send_your_feedback: '[es]Send your Feedback[/es]'
   test_translation: "[es]here is some test text[/es]"
+  relationship_status_confirmed_name: "Confirmado"
 
   # Agent View strings
   find_traveler: "Encontrar al Viajero"
