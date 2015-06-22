@@ -39,6 +39,20 @@ module Api
 
       end
 
+      def within_area
+        origin = params[:geometry]
+        lat = origin[:location][:lat]
+        lng = origin[:location][:lng]
+
+        Service.active.paratransit.each do |service |
+          if service.endpoint_contains?(lat,lng)
+            render json: {result: true}
+            return
+          end
+        end
+        render json: {result: false}
+      end
+
     end
   end
 end
