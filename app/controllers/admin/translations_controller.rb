@@ -17,7 +17,7 @@ class Admin::TranslationsController < Admin::BaseController
         #same form is used to create new keys as well as new translations with existing keys
         locale = Locale.find_by_name(trans_params["locale"])
         translation_key = TranslationKey.find_or_create_by!(name: trans_params["key"])
-        @translation = Translation.new()
+        @translation = Translation.new
         @translation.value = trans_params["value"]
         @translation.locale = locale
         @translation.translation_key = translation_key

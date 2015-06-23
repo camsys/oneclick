@@ -18,7 +18,7 @@
 				.col-sm-12
 					= simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
 						= t.input :key
-						= t.input :locale, collection: Locale.all.uniq.pluck(:name), include_blank: false
+						= t.input :locale, collection: Locale.all.uniq.pluck(:name), include_blank: false, :selected => @translation.locale.name
 						= t.input :is_list
 						= t.input :value, input_html: {rows: 10}
 :javascript
