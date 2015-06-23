@@ -58,7 +58,7 @@ module Api
 
       def list
         trips_array = []
-        @traveler.trips.selected.order(created_at: :desc).limit(20).each do |trip|
+        @traveler.trips.selected.order(created_at: :desc)[0..19].each do |trip|
           trip_hash =  trip.attributes
           trip_hash[:from_place] = trip.from_place.nil? ? '' : trip.from_place.name
           trip_hash[:to_place] = trip.to_place.nil? ? ' ' : trip.to_place.name
