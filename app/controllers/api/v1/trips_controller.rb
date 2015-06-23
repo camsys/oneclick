@@ -60,8 +60,8 @@ module Api
         trips_array = []
         @traveler.trips.order(created_at: :desc).limit(20).each do |trip|
           trip_hash =  trip.attributes
-          trip_hash[:from_place] = trip.from_place.name
-          trip_hash[:to_place] = trip.to_place.name
+          trip_hash[:from_place] = trip.from_place.nil? ? '' : trip.from_place.name
+          trip_hash[:to_place] = trip.to_place.nil? ? ' ' : trip.to_place.name
           itineraries_array = []
           trip.selected_itineraries.each do |itinerary|
             itinerary_hash = itinerary.attributes
