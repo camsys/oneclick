@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/camsys/translation_engine.git
-  revision: e1a724e924fe889e8a4842830303729b04ef270a
+  revision: abd62ec813d92a664915b5b742ce4259f62b8431
   specs:
     translation_engine (1.3.2)
       honeybadger
