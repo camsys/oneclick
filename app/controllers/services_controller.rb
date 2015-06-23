@@ -212,11 +212,11 @@ class ServicesController < ApplicationController
 
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
-          @service.save
         elsif params[:service][:remove_logo] == '1' #confirm to delete it
           @service.remove_logo!
-          @service.save
         end
+
+        @service.save
 
         # fare
         if @service.is_paratransit?
