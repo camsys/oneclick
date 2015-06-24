@@ -20,4 +20,4 @@
           %td
             %a.btn.btn-xs{"data-toggle" => "modal", :href => "#role-options-#{user.id}", :type => "button"}= translate_helper(:change_role)
             = render user
-          %td= link_to(t(:delete_user), user_path(user), :data => { :confirm => translate_helper(:confirm_msg) }, :method => :delete, :class => 'btn btn-xs') unless user == current_user
+          %td= link_to(translate_helper(:delete_user), user_path(user), :data => { :confirm => translate_helper(:confirm_msg) }, :method => :delete, :class => 'btn btn-xs') unless user == current_user
