@@ -46,6 +46,15 @@ class Admin::TranslationsController < Admin::BaseController
             flash[:success] = "Translation Successfully Updated"
             redirect_to admin_translations_path
         else
+            begin
+                @translation.save!
+            rescue Exception => e
+                Honeybadger.notify(
+                    :error_class   => "Translation update failed",
+                    :error_message => "Translation update failed",
+                    :parameters    => e
+                )
+            end
             render 'edit'
         end
     end
