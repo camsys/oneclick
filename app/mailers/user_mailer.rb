@@ -99,7 +99,7 @@ class UserMailer < ActionMailer::Base
     @to_email = to_email
     @from_email = from_email
 
-    mail(to: @to_email, from: @@from, subject: TranslationEngine.translate_text(:agency_now_assisting) % {agency: agency.name})
+    mail(to: @to_email, from: @@from, subject: TranslationEngine.translate_text(:agency_now_assisting, agency: agency.name))
   end
 
 end
