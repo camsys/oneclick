@@ -338,6 +338,83 @@ namespace :oneclick do
     end
   end
 
+  desc "Setup Ecolane Services"
+  task setup_ecolane_services: :environment do
+    county_hash = {}
+    ['ococtest', 'rabbit'].each do |system_id|
+
+      #Funding source array cheat sheet
+      # 0: code
+      # 1: index (lower gives higher priority when trying to match funding sources to trip purposes)
+      # 2: general_public (is the the general public funding source?)
+      # 3: comment
+
+      service = Service.find_by(external_id: system_id, booking_service_code: "ecolane")
+      if service
+        puts 'Setting up ' + service.name || service.id.to_s
+        case system_id
+        when 'rabbit'
+
+          #Setup county array:  Associate a county with each of these system_ids
+          county_hash[:york] = system_id
+          county_hash[:adams] = system_id
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
+            fs.index = fs[1]
+            fs.general_public = fs[2]
+            fs.comment = fs[3]
+            fs.save
+          end
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = system_id
+
+          service.save
+
+        when 'ococtest' #This is currently setup for lebanon
+
+          #Setup county array:  Associate a county with each of these system_ids
+          county_hash[:lebanon] = system_id
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
+            fs.index = fs[1]
+            fs.general_public = fs[2]
+            fs.comment = fs[3]
+            fs.save
+          end
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = system_id
+
+          service.save
+        end
+      else
+        puts 'Cannot find service with external_id: ' + system_id
+      end
+    end
+
+      oc = OneclickConfiguration.where(code: "ecolane_county_mapping").first_or_create
+      oc.value = county_hash
+      oc.save
+      puts "County Mapping Updated to:"
+      puts county_hash
+
+end
+
   desc "Move FareStructure#desc to Comment table"
   task transfer_fare_comments_to_comments_table: :environment do
     FareStructure.where.not(desc: nil).each do |fare_structure|
