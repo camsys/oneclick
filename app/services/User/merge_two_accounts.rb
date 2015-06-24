@@ -35,7 +35,8 @@ class User
         multi_o_d_trips: true,
         trip_places: true,
         trip_parts: true,
-        characteristics: true
+        characteristics: true,
+        user_characteristics: true
 
       }
     end
