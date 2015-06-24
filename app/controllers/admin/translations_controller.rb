@@ -17,7 +17,7 @@ class Admin::TranslationsController < Admin::BaseController
         #same form is used to create new keys as well as new translations with existing keys
         locale = Locale.find_by_name(trans_params["locale"])
         translation_key = TranslationKey.find_or_create_by!(name: trans_params["key"])
-        @translation = Translation.new()
+        @translation = Translation.new
         @translation.value = trans_params["value"]
         @translation.locale = locale
         @translation.translation_key = translation_key
@@ -37,15 +37,24 @@ class Admin::TranslationsController < Admin::BaseController
     def update
         @translation = Translation.find_by_id params[:id]
 
-        translation_key = TranslationKey.find_by_name(trans_params["key"])
-
         @translation.value = trans_params["value"]
-        @translation.translation_key = translation_key
+        # not going to allow change of translation key for now.  May be related to QA issue
+        #translation_key = TranslationKey.find_by_name(trans_params["key"])
+        #@translation.translation_key = translation_key
+
+        Rails.logger.info "Saving translation.  Params = "
+        Rails.logger.info params
 
         if @translation.save
             flash[:success] = "Translation Successfully Updated"
             redirect_to admin_translations_path
         else
+            begin
+                @translation.save!
+            rescue Exception => e
+                Rails.logger.info "Exception saving translation"
+                Rails.logger.info e 
+            end
             render 'edit'
         end
     end

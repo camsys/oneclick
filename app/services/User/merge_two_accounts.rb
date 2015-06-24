@@ -36,6 +36,7 @@ class User
         trip_places: true,
         trip_parts: true,
         characteristics: true
+
       }
     end
   end

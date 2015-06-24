@@ -261,7 +261,7 @@ class EcolaneHelpers
 
       if resp_code == "200"
         fare = unpack_fare_response(resp, itinerary)
-        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code})
+        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code, base_fare: funding_source.general_public})
       end
     end
 

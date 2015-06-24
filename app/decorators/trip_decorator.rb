@@ -149,9 +149,15 @@ class TripDecorator < Draper::Decorator
     I18n.t object.trip_purpose.name if object.trip_purpose
   end
 
-  def modes
-    TranslationEngine.translate_text(desired_modes.map{|m| m.name}).join ', ' if desired_modes
-  end
+    def modes
+      return_array = []
+      if desired_modes.present?
+        desired_modes.each do |desired_mode|
+          return_array.push(TranslationEngine.translate_text(desired_mode.name))
+        end
+        return return_array
+      end
+    end
 
   def get_trip_summary itinerary
     summary = ''
