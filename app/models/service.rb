@@ -366,6 +366,16 @@ class Service < ActiveRecord::Base
     nil
   end
 
+  def destroy_endpoint_geom
+    endpoint_area_geom.destroy if endpoint_area_geom
+    endpoint_area_geom = nil
+  end
+
+  def destroy_coverage_geom
+    coverage_area_geom.destroy if coverage_area_geom
+    coverage_area_geom = nil
+  end
+
   def wkt_to_array(rule = 'endpoint_area')
     myArray = []
     case rule
