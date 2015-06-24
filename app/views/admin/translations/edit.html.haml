@@ -17,7 +17,7 @@
 			.row
 				.col-sm-12
 					= simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
-						= t.input :key, :input_html => { :value => @translation.translation_key.name }
+						= t.input :key, readonly: true, :input_html => { :value => @translation.translation_key.name }
 						= t.input :locale, readonly: true, :input_html => { :value => @translation.locale.name }
 						= t.input :is_list
 						= t.input :value, input_html: {rows: 10}
