@@ -42,8 +42,8 @@
           %tr
             %td= translation_key.name
             - @locales.each do |locale|
-              - current_translation = Translation.where("translation_key_id = ? AND locale_id = ?",translation_key.id,locale.id)[0]
               %td
+                - current_translation = Translation.where("translation_key_id = ? AND locale_id = ?",translation_key.id,locale.id).first
                 - if (current_translation.present? && current_translation.value.present?)
                   = link_to current_translation.value.truncate(30), edit_admin_translation_path(current_translation)
                 - else
