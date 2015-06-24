@@ -37,10 +37,13 @@ class Admin::TranslationsController < Admin::BaseController
     def update
         @translation = Translation.find_by_id params[:id]
 
-        translation_key = TranslationKey.find_by_name(trans_params["key"])
-
         @translation.value = trans_params["value"]
-        @translation.translation_key = translation_key
+        # not going to allow change of translation key for now.  May be related to QA issue
+        #translation_key = TranslationKey.find_by_name(trans_params["key"])
+        #@translation.translation_key = translation_key
+
+        Rails.logger.info "Saving translation.  Params = "
+        Rails.logger.info params
 
         if @translation.save
             flash[:success] = "Translation Successfully Updated"
@@ -49,11 +52,8 @@ class Admin::TranslationsController < Admin::BaseController
             begin
                 @translation.save!
             rescue Exception => e
-                Honeybadger.notify(
-                    :error_class   => "Translation update failed",
-                    :error_message => "Translation update failed",
-                    :parameters    => e
-                )
+                Rails.logger.info "Exception saving translation"
+                Rails.logger.info e 
             end
             render 'edit'
         end
