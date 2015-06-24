@@ -363,12 +363,14 @@ module ApplicationHelper
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
 
-    if (newpath == path) or
-      (newpath == "/#{I18n.locale}#{path}") or
-      (newpath == "/#{I18n.locale}")
-      locale
+    if (newpath == path) or (newpath == "/#{I18n.locale}#{path}") or (newpath == "/#{I18n.locale}")
+      TranslationEngine.translate_text("locales.#{locale}")
     else
-      link_to locale, newpath
+      if locale == :tags
+        link_to "Tags", newpath
+      else
+        link_to TranslationEngine.translate_text("locales.#{locale}"), newpath
+      end
     end
   end
 
