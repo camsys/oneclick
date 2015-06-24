@@ -34,7 +34,8 @@ class User
       {
         multi_o_d_trips: true,
         trip_places: true,
-        trip_parts: true
+        trip_parts: true,
+        characteristics: true
       }
     end
   end
