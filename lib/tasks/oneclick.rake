@@ -340,8 +340,7 @@ namespace :oneclick do
 
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
-    county_hash = {}
-    ['ococtest', 'rabbit'].each do |system_id|
+    ['lebabon', 'york'].each do |county|
 
       #Funding source array cheat sheet
       # 0: code
@@ -349,15 +348,12 @@ namespace :oneclick do
       # 2: general_public (is the the general public funding source?)
       # 3: comment
 
-      service = Service.find_by(external_id: system_id, booking_service_code: "ecolane")
+      service = Service.find_by(external_id: county, booking_service_code: "ecolane")
       if service
         puts 'Setting up ' + service.name || service.id.to_s
-        case system_id
-        when 'rabbit'
+        case county
+        when 'york'
 
-          #Setup county array:  Associate a county with each of these system_ids
-          county_hash[:york] = system_id
-          county_hash[:adams] = system_id
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
@@ -374,14 +370,12 @@ namespace :oneclick do
           service.fare_user = "79109"
 
           #Booking System Id
-          service.booking_system_id = system_id
+          service.booking_system_id = 'rabbit'
 
           service.save
 
-        when 'ococtest' #This is currently setup for lebanon
+        when 'lebanon' #This is currently setup for OCOCTEST
 
-          #Setup county array:  Associate a county with each of these system_ids
-          county_hash[:lebanon] = system_id
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
@@ -398,20 +392,14 @@ namespace :oneclick do
           service.fare_user = "79109"
 
           #Booking System Id
-          service.booking_system_id = system_id
-
+          service.booking_system_id = 'ococtest'
           service.save
+
         end
       else
-        puts 'Cannot find service with external_id: ' + system_id
+        puts 'Cannot find service with external_id: ' + county
       end
     end
-
-      oc = OneclickConfiguration.where(code: "ecolane_county_mapping").first_or_create
-      oc.value = county_hash
-      oc.save
-      puts "County Mapping Updated to:"
-      puts county_hash
 
 end
 

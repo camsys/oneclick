@@ -380,9 +380,10 @@ class EcolaneHelpers
     return resp[0], resp[2][0], resp[2][1]
   end
 
-  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+  def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
 
-    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
+    Service.find_by(external_id: county.downcase.strip)
+    user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
     else
@@ -693,6 +694,9 @@ class EcolaneHelpers
     Oneclick::Application.config.ecolane_county_mapping[county.downcase.to_sym]
   end
 
+  def county_to_service(county)
+    Service.find_by(external_id: county.downcase.strip)
+  end
 
   ### Testing functions:
   def test_build_location_hash(place)
