@@ -132,6 +132,10 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     @sub = User.find_by(email: params[:search])
 
+    if @user.buddies.include?(@sub) || @sub.buddies.include?(@main)
+      redirect_to admin_user_path(@user), :alert => TranslationEngine.translate_text(:cannot_merge_buddies)
+    end
+
     if @sub.nil?
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
     end

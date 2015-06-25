@@ -910,6 +910,7 @@ en:
   merge_message_4: "'s account using the fields below."
   merged_into: "This account was merged into the account for"
   merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
+  cannot_merge_buddies: "You cannot merge two buddy accounts.  You should revoke the buddy status these two accounts if you want to merge them."
 
   # UI Modes
   ui_mode: 'UI Mode'
