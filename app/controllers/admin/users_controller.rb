@@ -149,7 +149,12 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     main = @user
     sub = User.find_by(email: params[:user][:sub])
-    existing_relationships = params[:user][:relationship].select { |id, value| UserRelationship.exists?(id.to_i) }
+
+    if params[:user][:relationship]
+      existing_relationships = params[:user][:relationship].select { |id, value| UserRelationship.exists?(id.to_i) }
+    else
+      existing_relationships = params[:user][:relationship]
+    end
 
     if sub.nil?
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:user][:sub] }."
