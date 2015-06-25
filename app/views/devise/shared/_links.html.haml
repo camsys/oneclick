@@ -18,6 +18,6 @@
 
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
-    - links << link_to(t(:sign_in_with_provider_to_s_titleize, provider: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider))
+    - links << link_to(translate_helper(:sign_in_with_provider_to_s_titleize, provider: provider.to_s.titleize), omniauth_authorize_path(resource_name, provider))
 
 = links.map(&:html_safe).join(' | ').html_safe

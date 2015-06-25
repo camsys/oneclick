@@ -309,7 +309,7 @@
               - setup_comments(fare.object, %w{public})
               - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
               = fare.simple_fields_for :public_comments do |comment|
-                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
                 = comment.input :locale, as: :hidden
                 = comment.input :visibility, as: :hidden
         
@@ -319,7 +319,7 @@
               = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
               = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
               = fare.simple_fields_for :public_comments do |comment|
-                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
                 = comment.input :locale, as: :hidden
                 = comment.input :visibility, as: :hidden
 

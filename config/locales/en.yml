@@ -66,6 +66,10 @@ en:
   comments: 'Comments'
   no_comments: 'No comments'
   initial_booking_title: 'Register to book online.'
+  initial_booking_message: 'If you know your Shared Ride Client Id, you can use FindMyRidePA to book trips with Shared Ride.'
+  initial_booking_close: "No Thanks"
+  booking_link_success: "Success!  You can now book trips with Shared Ride."
+  ecolane_login_button: "Shared Ride Login"
   one_click_trip_planner: '1-Click Trip Planner'
   # Actions
   plan_a_trip: 'Plan a Trip'

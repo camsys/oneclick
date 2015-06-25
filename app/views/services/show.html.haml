@@ -158,7 +158,7 @@
               %ul
                 -@service.accommodations.each do |accom|
                   %li
-                    =t(accom.name)
+                    =translate_helper(accom.name)
   .row
     - unless is_transit || is_taxi
       .col-sm-4
@@ -191,7 +191,7 @@
               %ul
                 -@service.trip_purposes.each do |purpose|
                   %li
-                    =t(purpose.name)
+                    =translate_helper(purpose.name)
 
     - unless is_transit
       .col-sm-4#fare-panel
@@ -227,7 +227,7 @@
               - else
                 %dl
                   - fare.public_comments.each do |comment|
-                    %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
+                    %dt= [translate_helper("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
                     %dd= comment.comment.try(:html_safe)
 
   - unless is_transit || is_taxi

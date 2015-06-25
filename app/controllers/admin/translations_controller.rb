@@ -3,7 +3,10 @@ class Admin::TranslationsController < Admin::BaseController
     authorize_resource
 
     def index
-      @locales = Locale.all
+      @locales = []
+      I18n.available_locales.each do |locale_sym|
+        @locales.push(Locale.find_by_name(locale_sym))
+      end
       @translation_keys = TranslationKey.order(:name)
       render 'index' 
     end

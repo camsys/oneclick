@@ -61,7 +61,7 @@ class ItineraryDecorator < Draper::Decorator
       # h.duration_to_words(service.advanced_notice_minutes*60, suppress_minutes: true, days_only: true)
       h.day_range_to_words(service.advanced_notice_minutes*60, service.max_advanced_book_minutes*60)
     when 'mode_rideshare'
-      h.t(:possible_rideshares, count: ride_count) + ' ' + h.t(:view_details)
+      TranslationEngine.translate_text(:possible_rideshares, count: ride_count) + ' ' + TranslationEngine.translate_text(:view_details)
     else
       'None'
     end

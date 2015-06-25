@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{@user.name}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:edit)} #{@user.name}"
 %p= "Clicking on 'Apply' will merge #{ @sub.email }'s account into #{ @user.email }'s account.  You may also edit #{ @user.email }'s account using the fields below."
 =simple_form_for [:admin, @user], url: { action: 'merge_submit' }, :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
   =f.hidden_field :sub, value: @sub.email
