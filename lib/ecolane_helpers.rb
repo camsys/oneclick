@@ -382,7 +382,7 @@ class EcolaneHelpers
 
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
 
-    Service.find_by(external_id: county.downcase.strip)
+    service = Service.find_by(external_id: county.downcase.strip)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
