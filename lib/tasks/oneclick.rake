@@ -398,10 +398,11 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'ococtest'
           service.save
-
+        else
+          puts 'Cannot find service with external_id: ' + county
         end
       else
-        puts 'Cannot find service with external_id: ' + county
+
       end
     end
 
