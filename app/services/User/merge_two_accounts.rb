@@ -9,6 +9,7 @@ class User
     def self.call(user1, user2)
       merger = new(user1, user2)
       merger.main.save
+      merger.disabled_comment = "#{ TranslationEngine.translate_text(:merged_into)} #{ merger.main.email }'s account.' "
       merger.sub.soft_delete
     end
 

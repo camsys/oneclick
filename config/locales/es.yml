@@ -867,6 +867,8 @@ es:
   merge_message_2: "[es]'s account into [/es]"
   merge_message_3: "[es]'s account.  You may also edit [/es]"
   merge_message_4: "[es]'s account using the fields below. [/es]"
+  merged_into: "[es]This account was merged into the account for[/es]"
+  merge_warning: "[es]WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this.[/es]"
 
   # UI Modes
   ui_mode: '[es]UI Mode[/es]'

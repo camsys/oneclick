@@ -908,6 +908,8 @@ en:
   merge_message_2: "'s account into "
   merge_message_3: "'s account.  You may also edit "
   merge_message_4: "'s account using the fields below."
+  merged_into: "This account was merged into the account for"
+  merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
 
   # UI Modes
   ui_mode: 'UI Mode'

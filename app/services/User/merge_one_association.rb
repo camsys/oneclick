@@ -18,7 +18,7 @@ class User
     end
 
     def merge_association
-      unique_to_sub.each { |assoc| @main.send(@r.name) << assoc.dup }
+      unique_to_sub.each { |assoc| @main.send(@r.name) << assoc }
     end
 
     def ids_from_main
