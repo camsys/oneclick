@@ -343,7 +343,7 @@ namespace :oneclick do
     services = Service.where(booking_service_code: "ecolane")
 
     services.each do |service|
-      county = service.external_id
+
 
       #Funding source array cheat sheet
       # 0: code
@@ -351,8 +351,9 @@ namespace :oneclick do
       # 2: general_public (is the the general public funding source?)
       # 3: comment
 
-      service = Service.find_by(external_id: county, booking_service_code: "ecolane")
+
       if service
+        county = service.external_id
         puts 'Setting up ' + service.name || service.id.to_s
         case county
         when 'york'
