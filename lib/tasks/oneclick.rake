@@ -340,7 +340,10 @@ namespace :oneclick do
 
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
-    ['lebabon', 'york'].each do |county|
+    services = Service.where(booking_service_code: "ecolane")
+
+    services.each do |service|
+      county = service.external_id
 
       #Funding source array cheat sheet
       # 0: code
