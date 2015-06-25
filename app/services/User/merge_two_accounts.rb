@@ -31,50 +31,8 @@ class User
       total_relationships.each { |rel| rel.destroy }
     end
 
-    def get_all_relationships(user)
-      user.traveler_
-    end
-
     def merge_all_possible
       @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if User::CheckAssociationMergeability.call(r) }
     end
-
-    # def mergeable?(r)
-    #   many_relationship(r) && included(r)
-    # end
-
-    # def many_relationship(r)
-    #   (r.macro == :has_many || r.macro == :has_and_belongs_to_many)
-    # end
-
-    # def included(r)
-    #   if ignored[r.name]
-    #     false
-    #   elsif keep[r.name]
-    #     true
-    #   elsif join_tables.has_key?(r.name)
-    #     false
-    #   else
-    #     true
-    #   end
-    # end
-
-    # def ignored
-    #   {
-    #     multi_o_d_trips: true,
-    #     trip_places: true,
-    #     trip_parts: true,
-    #     characteristics: true,
-    #     user_characteristics: true,
-    #     user_roles: true,
-    #     roles: true
-    #   }
-    # end
-
-    # def keep
-    #   {
-    #     trips: true
-    #   }
-    # end
   end
 end

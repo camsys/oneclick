@@ -44,7 +44,8 @@ class User
         user_roles: true,
         roles: true,
         accomodations: true,
-        user_accomodations: true
+        user_accomodations: true,
+        ratings: true
       }
     end
 
