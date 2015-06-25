@@ -520,10 +520,7 @@ ht:
   trips_cannot_be_entered_for_days: "[ht]Trips cannot be entered for days earlier than today.[/ht]"
   trips_cannot_be_entered_for_times: "[ht]Trips cannot be entered for past times.[/ht]"
   return_trip_time_before_start: "[ht]A return trip must begin after the departing trip.[/ht]"
-  link_to_georgia_commute_options: {
-    one:   'Visit %{url} to view 1 possible rideshare.',
-    other: '[ht]Visit %{url} to view %{count} possible rideshares.',
-    }
+  link_to_georgia_commute_options: "[ht]Visit %{url} to view %{count} possible rideshares.[/ht]"
   possible_rideshares: "[ht]%{count} possible rideshares.[/ht]"
   view_details: "[ht]View details for more.[/ht]"
   # Next 4 are prev 2 broken apart to deal with some UI issues.
