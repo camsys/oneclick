@@ -352,7 +352,7 @@ module ApplicationHelper
   end
 
   def link_using_locale locale
-    path = session[:location] || request.fullpath
+    path = request.fullpath
     parts = path.split('/', 3)
 
     current_locale = I18n.available_locales.detect do |l|

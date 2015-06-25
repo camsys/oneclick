@@ -59,7 +59,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
@@ -68,7 +67,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def edit
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
@@ -140,7 +138,6 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
     end
 
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)

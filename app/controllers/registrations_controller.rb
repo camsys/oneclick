@@ -25,7 +25,6 @@ class RegistrationsController < Devise::RegistrationsController
   # Overrides the Devise create method for new registrations
   def create
     #puts ">>>>> IN CREATE"
-    session[:location] = new_user_registration_path
     if Oneclick::Application.config.initial_signup_question
       session[:first_login] = true
     end
@@ -74,7 +73,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def update
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
