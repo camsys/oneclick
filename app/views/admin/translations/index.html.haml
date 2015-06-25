@@ -35,22 +35,23 @@
         %tr
           %th= translate_helper(:key)
           - @locales.each do |locale|
-            %th= locale.name
+            %th= translate_helper("locales.#{locale}")
           %th= translate_helper(:delete)
       %tbody
         - @translation_keys.each do |translation_key|
           %tr
-            %td= translation_key.name
+            %td= translation_key
             - @locales.each do |locale|
+              - locale = locale.to_s
               %td
-                - current_translation = Translation.where("translation_key_id = ? AND locale_id = ?",translation_key.id,locale.id).first
-                - if (current_translation.present? && current_translation.value.present?)
-                  = link_to current_translation.value.truncate(30), edit_admin_translation_path(current_translation)
+                - current_translation = @translations_hash[translation_key][locale]
+                - if (current_translation.present? && current_translation[:value].present?)
+                  = link_to current_translation[:value].truncate(30), edit_admin_translation_path(current_translation[:id])
                 - else
-                  - path = (current_translation.present? && current_translation.value.blank?) ? edit_admin_translation_path(current_translation) : new_admin_translation_path(key: translation_key.name, key_locale: locale.name.to_s)
+                  - path = (current_translation.present? && current_translation[:value].blank?) ? edit_admin_translation_path(current_translation[:id]) : new_admin_translation_path(key: translation_key, key_locale: locale.to_s)
                   = link_to translate_helper(:add), path, class: 'btn action-button'
             %td.text-center
-              = check_box_tag "translation", translation_key.id
+              = check_box_tag "translation", translation_key
               
 :javascript
   $(document).ready(function() {
