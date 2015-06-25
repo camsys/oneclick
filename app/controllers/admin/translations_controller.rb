@@ -20,10 +20,20 @@ class Admin::TranslationsController < Admin::BaseController
         #same form is used to create new keys as well as new translations with existing keys
         locale = Locale.find_by_name(trans_params["locale"])
         translation_key = TranslationKey.find_or_create_by!(name: trans_params["key"])
-        @translation = Translation.new
-        @translation.value = trans_params["value"]
-        @translation.locale = locale
-        @translation.translation_key = translation_key
+
+        #check for existing translation
+        existing_translation = Translation.where("locale_id = #{locale.id} AND translation_key_id = #{translation_key.id}")
+
+        if existing_translation.count > 0
+            flash[:alert] = "Error: that translation already exists."
+            redirect_to admin_translations_path and return
+        else
+            @translation = Translation.new
+            @translation.value = trans_params["value"]
+            @translation.locale = locale
+            @translation.translation_key = translation_key
+        end
+
         if @translation.save
             flash[:success] = "Translation Successfully Saved"
             redirect_to admin_translations_path
@@ -31,6 +41,7 @@ class Admin::TranslationsController < Admin::BaseController
             flash[:alert] = "Error creating translation."
             render 'new'
         end
+
     end
 
     def edit
@@ -41,9 +52,6 @@ class Admin::TranslationsController < Admin::BaseController
         @translation = Translation.find_by_id params[:id]
 
         @translation.value = trans_params["value"]
-        # not going to allow change of translation key for now.  May be related to QA issue
-        #translation_key = TranslationKey.find_by_name(trans_params["key"])
-        #@translation.translation_key = translation_key
 
         Rails.logger.info "Saving translation.  Params = "
         Rails.logger.info params

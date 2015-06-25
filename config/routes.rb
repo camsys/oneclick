@@ -1,7 +1,6 @@
 Oneclick::Application.routes.draw do
   
   get '/configuration' => 'configuration#configuration'
-  mount TranslationEngine::Engine => "/translation_engine"
 
   scope "(:locale)", locale: oneclick_available_locales do
 
