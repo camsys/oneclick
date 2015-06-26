@@ -29,7 +29,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
       SidewalkObstruction.find(k).update_attributes(status: v)
     end
 
-    flash[:notice] = TranslationEngine.translate_text(:sidewalk_obstructions_update, count: parsed_feedbacks.count) if parsed_feedbacks.count != 0
+    flash[:notice] = TranslationEngine.translate_text(:sidewalk_obstructions_update) if parsed_feedbacks.count != 0
     respond_to do |format|
       format.js {render nothing: true}
       format.html {redirect_to action: :index}

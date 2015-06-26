@@ -216,9 +216,7 @@ en:
   send_follow_up_email: "Send Follow-up Email"
   sidewalk_obstructions: "Sidewalk Obstructions"
   remove_sidewalk_obstructions: "Remove sidewalk obstructions"
-  sidewalk_obstructions_update:
-    one: "The sidewalk obstruction has been updated"
-    other: "The sidewalk obstructions have been updated"
+  sidewalk_obstructions_update: "The sidewalk obstruction has been updated"
   multi_od_trip: 'Multiple Origin-Destination Trip'
   restore_user: 'Restore user'
   remove_user: 'Remove user'
@@ -362,11 +360,9 @@ en:
   no_rating: "No Rating"
   no_ratings_yet: "No ratings approved yet"
   rating_submitted_for_approval:
-    one: "Your %{rateable} rating has been submitted for approval"
-    other: "Your %{rateable} ratings have been submitted for approval"
-  rating_update:
-    one: "The rating has been updated"
-    other: "The ratings have been updated"
+    one: "%{count} rating has been submitted for approval"
+    other: "%{count} ratings have been submitted for approval"
+  rating_update: The rating has been updated
   rating_targets: "Trip/Agency/Service"
   submit_review: "Submit Feedback"
   did_not_take_feedback_prompt: "We're sorry to hear you didn't take your trip.  Can you tell us what went wrong?"
