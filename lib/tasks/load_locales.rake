@@ -21,17 +21,20 @@ namespace :oneclick do
 	          translation_key_name = parents.join('.')
 	          translation_value = v.join(',')
 	          translation_key = TranslationKey.find_or_create_by!(name: translation_key_name)
-	          new_translation = Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id) do |new_translation|
-	          	new_translation.value = translation_value
-	          	new_translation.is_list = true
-	          end
+
+	          #UPDATE / CREATE TRANSLATION
+	          new_translation = Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id)
+	          new_translation.value = translation_value
+	          new_translation.is_list = true
+	          new_translation.save!
 	        else
 	          translation_key_name = parents.join('.')
 	          translation_value = v
 	          translation_key = TranslationKey.find_or_create_by!(name: translation_key_name)
-	          new_translation = Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id) do |new_translation|
-	          	new_translation.value = translation_value
-	          end
+	          #UPDATE / CREATE TRANSLATION
+	          new_translation = Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id)
+	          new_translation.value = translation_value
+	          new_translation.save!
 	        end
 	        new_translation.id.nil? ? failed += 1 : success += 1
 	      end
