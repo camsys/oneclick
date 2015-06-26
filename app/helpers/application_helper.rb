@@ -170,11 +170,11 @@ module ApplicationHelper
     end
 
     if hours > 0
-      time_string << hours.to_s + " " + TranslationEngine.translate_text("hour")[0] + " "
+      time_string << hours.to_s + " " + TranslationEngine.translate_text("datetime.prompts.hour") + " "
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minute")[0..2]
+      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minutes")[0..2]
       time_string << "s" if minutes != 1
     end
 
