@@ -21,9 +21,13 @@ CREATE OR REPLACE VIEW "v_trip_purposes" AS
     trip_purposes.sort_order,
     trip_purposes.code,
     translations.value AS translation
-   FROM translations,
+   FROM translations 
+   INNER JOIN translation_keys 
+   ON translation_keys.id = translations.translation_key_id 
+   INNER JOIN locales 
+   ON locales.id = translations.locale_id,
     trip_purposes
-  WHERE translations.key::text = trip_purposes.name::text AND translations.locale::text = 'en'::text;
+  WHERE translation_keys.name::text = trip_purposes.name::text AND locales.name::text = 'en'::text;
 
 -- main view: trip_parts_view
 DROP VIEW IF EXISTS "trip_parts_view";
