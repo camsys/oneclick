@@ -121,6 +121,9 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
+        if @service.is_paratransit?
+          update_fare
+        end
         @service.build_polygons
         format.html { redirect_to [:admin, @provider], notice: 'Service was successfully added.' } #TODO Internationalize
         format.json { render json: @service, status: :created, location: @service }
@@ -346,12 +349,12 @@ protected
 
     fs_attrs = params[:service][:base_fare_structure_attributes]
 
-    if fs_attrs[:id]
+    if !fs_attrs[:id].blank?
       fs = FareStructure.find(fs_attrs[:id])
     else
       fs = @service.fare_structures.first
     end
-    fs.fare_type == fs_attrs[:fare_type].to_i
+    fs.fare_type = fs_attrs[:fare_type].to_i
 
     case fs.fare_type
     when FareStructure::FLAT
