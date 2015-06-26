@@ -14,7 +14,7 @@
 
   -if fare.round_trip_rate
     .row_fluid
-      %strong= translate_helper(:round_trip_fare) + ": "
+      %strong= translate_helper(:round_trip_rate) + ": "
       - if fare.round_trip_rate
         = number_to_currency(fare.round_trip_rate.to_f).to_s
       - else
