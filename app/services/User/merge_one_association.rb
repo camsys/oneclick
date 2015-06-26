@@ -14,7 +14,12 @@ class User
       @main = user1
       @sub = user2
       @r = reflection
-      merge_association
+
+      if !special_case[@r.name]
+        merge_association
+      else
+        special_merge
+      end
     end
 
     def merge_association
@@ -31,6 +36,25 @@ class User
       from_main = ids_from_main
       uniques = @sub.send(@r.name).select { |assoc| !from_main.has_key?(assoc.id.to_s) }
       uniques
+    end
+
+    def special_merge
+      @sub.send(r.name).each { |assoc| assoc.update!(user_id: @main.id) }
+    end
+
+    def special_case
+      {
+        ratings: true,
+        buddies: true,
+        buddy_relationships: true,
+        delegates: true,
+        delegate_relationships: true,
+        confirmed_delegates: true,
+        pending_and_confirmed_delegates: true,
+        traveler_relationships: true,
+        travelers: true,
+        confirmed_travelers: true
+      }
     end
   end
 

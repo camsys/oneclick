@@ -45,9 +45,20 @@ class User
         roles: true,
         accomodations: true,
         user_accomodations: true,
-        ratings: true
+        ratings: true,
+        buddies: true,
+        buddy_relationships: true,
+        delegates: true,
+        delegate_relationships: true,
+        confirmed_delegates: true,
+        pending_and_confirmed_delegates: true,
+        traveler_relationships: true,
+        travelers: true,
+        confirmed_travelers: true
       }
     end
+
+
 
     def keep
       {

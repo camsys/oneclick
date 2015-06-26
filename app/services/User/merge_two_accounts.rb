@@ -22,6 +22,7 @@ class User
 
       unbuddy_users
       merge_all_possible
+      merge_special_cases
     end
 
     def unbuddy_users
@@ -34,6 +35,13 @@ class User
 
     def merge_all_possible
       @reflections.each { |r| User::MergeOneAssociation.call(@main, @sub, r) if User::CheckAssociationMergeability.call(r) }
+    end
+
+    def merge_special_cases
+      @sub.ratings.each { |rating| rating.update(user_id: @main.id) }
+      UserRelationship.where(user_id: @sub.id).each { |relation| relation.update(user_id: @main.id) }
+      UserRelationship.where(delegate_id: @sub.id).each { |relation| relation.update(delegate_id: @main.id) }
+      @sub.user_mode_preferences.each { |preference| preference.update(user_id: @main.id) }
     end
   end
 end
