@@ -60,11 +60,14 @@ class Characteristic < ActiveRecord::Base
       age = sc.value.to_s
       a['note'] = :ask_age
       success_condition = '== true'
+      question_text = TranslationEngine.translate_text(a['note'], age: age)
+    else
+      question_text = TranslationEngine.translate_text(a['note'])
     end
 
     options = a['datatype']=='bool' ? [{text: TranslationEngine.translate_text(:yes_str), value: true}, {text: TranslationEngine.translate_text(:no_str), value: false}] : nil
     {
-      'question' => TranslationEngine.translate_text(a['note']),
+      'question' => question_text,
       #'description' => TranslationEngine.translate_text(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',
