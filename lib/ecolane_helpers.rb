@@ -607,6 +607,9 @@ class EcolaneHelpers
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       resp = http.start {|http| http.request(req)}
+      Rails.logger.info("REQ BEGIN")
+      Rails.logger.info(req.inspect)
+      Rails.logger.info("REQ END")
       Rails.logger.info(resp.inspect)
       return resp
     rescue Exception=>e
