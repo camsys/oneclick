@@ -12,7 +12,7 @@
                   - if TranslationEngine.translation_exists?("#{item.code}_help")
                   - help_tag = "#{item.code}_help".to_sym
                     :javascript
-                      addHelperTooltip("##{item.code}_label", "#{t(help_tag)}");
+                      addHelperTooltip("##{item.code}_label", "#{translate_helper(help_tag)}");
                 .col-sm-5
                   = f.input item.code.to_sym, id: item.code, :collection =>  [[translate_helper(:yes_str), 'true'], [translate_helper(:no_str), 'false'], [translate_helper(:not_sure_str), UserProfileProxy::PARAM_NOT_SET]], :selected => item.selected_option(@traveler), input_html: { class: 'form-control', style: 'min-width:120px;' }, label: false
             - else
