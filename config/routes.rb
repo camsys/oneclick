@@ -1,7 +1,6 @@
 Oneclick::Application.routes.draw do
   
   get '/configuration' => 'configuration#configuration'
-  mount TranslationEngine::Engine => "/translation_engine"
 
   scope "(:locale)", locale: oneclick_available_locales do
 
@@ -440,6 +439,8 @@ Oneclick::Application.routes.draw do
         collection do
           get 'status_from_token'
           get 'details_from_token'
+          get 'list'
+          get 'index'
         end
 
         member do
@@ -451,6 +452,7 @@ Oneclick::Application.routes.draw do
       resources :places do
         collection do
           get 'search'
+          post 'within_area'
         end
       end
 

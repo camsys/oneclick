@@ -170,11 +170,11 @@ module ApplicationHelper
     end
 
     if hours > 0
-      time_string << hours.to_s + " " + TranslationEngine.translate_text("hour")[0] + " "
+      time_string << hours.to_s + " " + TranslationEngine.translate_text("datetime.prompts.hour") + " "
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minute")[0..2]
+      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minutes")[0..2]
       time_string << "s" if minutes != 1
     end
 
@@ -340,10 +340,10 @@ module ApplicationHelper
   def links_to_each_locale(show_translations = false)
     links = []
     I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
+      links << link_using_locale(l)
     end
     if show_translations
-      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
+      links << link_using_locale(:tags)
     end
 
     return '' if links.size <= 1
@@ -351,8 +351,8 @@ module ApplicationHelper
     links.join(' | ').html_safe
   end
 
-  def link_using_locale link_text, locale
-    path = session[:location] || request.fullpath
+  def link_using_locale locale
+    path = request.fullpath
     parts = path.split('/', 3)
 
     current_locale = I18n.available_locales.detect do |l|
@@ -363,12 +363,14 @@ module ApplicationHelper
     parts = '' if parts=='/'
     newpath = "/#{locale}#{parts}"
 
-    if (newpath == path) or
-      (newpath == "/#{I18n.locale}#{path}") or
-      (newpath == "/#{I18n.locale}")
-      link_text
+    if (newpath == path) or (newpath == "/#{I18n.locale}#{path}") or (newpath == "/#{I18n.locale}")
+      TranslationEngine.translate_text("locales.#{locale}")
     else
-      link_to link_text, newpath
+      if locale == :tags
+        link_to "Tags", newpath
+      else
+        link_to TranslationEngine.translate_text("locales.#{locale}"), newpath
+      end
     end
   end
 

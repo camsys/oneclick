@@ -121,6 +121,9 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
+        if @service.is_paratransit?
+          update_fare
+        end
         @service.build_polygons
         format.html { redirect_to [:admin, @provider], notice: 'Service was successfully added.' } #TODO Internationalize
         format.json { render json: @service, status: :created, location: @service }
@@ -159,6 +162,9 @@ class ServicesController < ApplicationController
 
     @service = Service.find(params[:id])
 
+    had_endpoints = !@service.endpoints.empty?
+    had_coverages = !@service.coverages.empty?
+
     respond_to do |format|
 
       par = service_params
@@ -174,31 +180,52 @@ class ServicesController < ApplicationController
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
-        temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
-        temp_coverages_shapefile = params[:service][:coverages_shapefile]
-        unless temp_endpoints_shapefile.nil?
-          if temp_endpoints_shapefile.content_type.include?('zip')
-            temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
-          else
-            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+        # update endpoint and coverage area geometry
+        has_endpoints = !@service.endpoints.empty?
+        has_coverages = !@service.coverages.empty? 
+
+        #binding.pry
+
+        is_to_delete_endpoint_shp = params[:service][:delete_endpoints_shapefile]
+        if (had_endpoints && !has_endpoints) || (!has_endpoints && is_to_delete_endpoint_shp)
+          @service.destroy_endpoint_geom
+        end
+
+        if !is_to_delete_endpoint_shp
+          temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
+          unless temp_endpoints_shapefile.nil?
+            if temp_endpoints_shapefile.content_type.include?('zip')
+              temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
           end
         end
-        unless temp_coverages_shapefile.nil?
-          if temp_coverages_shapefile.content_type.include?('zip')
-            temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
-          else
-            zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+
+        is_to_delete_coverage_shp = params[:service][:delete_coverages_shapefile]
+        if (had_coverages && !has_coverages) || (!has_coverages && is_to_delete_coverage_shp)
+          @service.destroy_coverage_geom
+        end
+        if !is_to_delete_coverage_shp
+          temp_coverages_shapefile = params[:service][:coverages_shapefile]
+          unless temp_coverages_shapefile.nil?
+            if temp_coverages_shapefile.content_type.include?('zip')
+              temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
           end
         end
 
         polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
+
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
-          @service.save
         elsif params[:service][:remove_logo] == '1' #confirm to delete it
           @service.remove_logo!
-          @service.save
         end
+
+        @service.save
 
         # fare
         if @service.is_paratransit?
@@ -322,12 +349,12 @@ protected
 
     fs_attrs = params[:service][:base_fare_structure_attributes]
 
-    if fs_attrs[:id]
+    if !fs_attrs[:id].blank?
       fs = FareStructure.find(fs_attrs[:id])
     else
       fs = @service.fare_structures.first
     end
-    fs.fare_type == fs_attrs[:fare_type].to_i
+    fs.fare_type = fs_attrs[:fare_type].to_i
 
     case fs.fare_type
     when FareStructure::FLAT

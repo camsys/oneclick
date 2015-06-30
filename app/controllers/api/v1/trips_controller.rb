@@ -45,7 +45,6 @@ module Api
 
       def get_trip_details trip
 
-
         # This is a stub.
         # More details will be added as-needed.
         if trip
@@ -55,6 +54,30 @@ module Api
         end
         respond_with hash
 
+      end
+
+      def list
+        trips_array = []
+        @traveler.trips.selected.order(created_at: :desc)[0..19].each do |trip|
+          trip_hash =  trip.attributes
+          trip_hash[:from_place] = trip.from_place.nil? ? '' : trip.from_place.name
+          trip_hash[:to_place] = trip.to_place.nil? ? ' ' : trip.to_place.name
+          itineraries_array = []
+          trip.selected_itineraries.each do |itinerary|
+            itinerary_hash = itinerary.attributes
+            mode = itinerary.mode
+            itinerary_hash[:mode] = {name: I18n.t(mode.name), code: mode.code}
+            itineraries_array.append(itinerary_hash)
+          end
+          trip_hash[:itineraries] = itineraries_array
+          trips_array.append(trip_hash)
+        end
+        hash = {trips: trips_array}
+        respond_with hash
+      end
+
+      def index
+        list
       end
     end
   end

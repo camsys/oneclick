@@ -6,6 +6,8 @@ class TripPurpose < ActiveRecord::Base
 
   validates :code, uniqueness: true
 
+  default_scope {order("sort_order ASC")}
+  
   def to_s
     name
   end

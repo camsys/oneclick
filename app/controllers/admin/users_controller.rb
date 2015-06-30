@@ -59,7 +59,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
@@ -68,7 +67,6 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def edit
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
@@ -132,11 +130,14 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     @sub = User.find_by(email: params[:search])
 
+    if @user.buddies.include?(@sub) || @sub.buddies.include?(@main)
+      redirect_to admin_user_path(@user), :alert => TranslationEngine.translate_text(:cannot_merge_buddies)
+    end
+
     if @sub.nil?
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
     end
 
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
@@ -149,6 +150,12 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     main = @user
     sub = User.find_by(email: params[:user][:sub])
+
+    if params[:user][:relationship]
+      existing_relationships = params[:user][:relationship].select { |id, value| UserRelationship.exists?(id.to_i) }
+    else
+      existing_relationships = params[:user][:relationship]
+    end
 
     if sub.nil?
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:user][:sub] }."
@@ -169,7 +176,7 @@ class Admin::UsersController < Admin::BaseController
       @user_characteristics_proxy.update_maps(params[:user_characteristics_proxy])
       set_approved_agencies(params[:user][:approved_agency_ids])
       booking_alert = set_booking_services(@user, params[:user_service])
-      @user.update_relationships(params[:user][:relationship])
+      @user.update_relationships(existing_relationships)
       @user.add_buddies(params[:new_buddies])
       if booking_alert
         redirect_to admin_user_path(@user), :alert => "Invalid Client Id or Date of Birth."

@@ -325,8 +325,8 @@ ht:
   no_rating: "[ht]No Rating[/ht]"
   no_ratings_yet: "[ht]No ratings approved yet[/ht]"
   rating_submitted_for_approval:
-    one: "[ht]Your %{rateable} rating has been submitted for approval[/ht]"
-    other: "[ht]Your %{rateable} ratings have been submitted for approval[/ht]"
+    one: "[ht]%{count} rating has been submitted for approval[/ht]"
+    other: "[ht]%{count} ratings have been submitted for approval[/ht]"
   rating_update:
     one: "[ht]The rating has been updated[/ht]"
     other: "[ht]The ratings have been updated[/ht]"
@@ -520,10 +520,7 @@ ht:
   trips_cannot_be_entered_for_days: "[ht]Trips cannot be entered for days earlier than today.[/ht]"
   trips_cannot_be_entered_for_times: "[ht]Trips cannot be entered for past times.[/ht]"
   return_trip_time_before_start: "[ht]A return trip must begin after the departing trip.[/ht]"
-  link_to_georgia_commute_options: {
-    one:   'Visit %{url} to view 1 possible rideshare.',
-    other: '[ht]Visit %{url} to view %{count} possible rideshares.',
-    }
+  link_to_georgia_commute_options: "[ht]Visit %{url} to view %{count} possible rideshares.[/ht]"
   possible_rideshares: "[ht]%{count} possible rideshares.[/ht]"
   view_details: "[ht]View details for more.[/ht]"
   # Next 4 are prev 2 broken apart to deal with some UI issues.
@@ -687,6 +684,7 @@ ht:
   served_areas: "[ht]served[/ht]"
   coverage_area_edit_instruction: "[ht]You can either upload a shapefile or select served areas below[/ht]"
   upload_shapefile: "[ht]Upload a zipped shapefile (*.zip)[/ht]"
+  remove_file: "[ht]Remove file[/ht]"
   upload_zip_alert: "[ht]Please upload a zipped shapefile (*.zip)[/ht]"
   geometry_defined_by_shapefile: "[ht]Geometry is defined by user uploaded shapefile[/ht]"
   no_polygon_geometry_parsed: "[ht]No polygon geometry was parsed from uploaded file for %{area_type}[/ht]"

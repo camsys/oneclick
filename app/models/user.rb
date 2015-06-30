@@ -93,10 +93,18 @@ class User < ActiveRecord::Base
   before_create :make_user_profile
 
   def self.agent_form_collection include_all=true, agency=:any
-    form_collection_from_relation(include_all,
-                                  # any_role.where(roles: {name: 'agent'}).order(:first_name),
-                                  with_role(:agent, agency).order(:first_name),
-                                  false)
+    relation = with_role(:agent, agency).order(:first_name)
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      list << [name, r.id]
+    end
+    list
   end
 
   def make_user_profile
@@ -130,18 +138,14 @@ class User < ActiveRecord::Base
   end
 
   def requires_wheelchair_access?
-    folding_accommodation = Accommodation.where(code: 'folding_wheelchair_accessible').first
-    motorized_accommodation = Accommodation.where(code: 'motorized_wheelchair_accessible').first
+    wheelchair_accoms = user_profile.user_accommodations
+        .includes(:accommodation).references(:accommodation)
+        .where(
+          accommodations: 
+            { code: ['folding_wheelchair_accessible', 'motorized_wheelchair_accessible'] }, 
+          value: 'true')
 
-    needs_folding = user_profile.user_accommodations.where(accommodation: folding_accommodation, value: "true").first
-    needs_motorized = user_profile.user_accommodations.where(accommodation: motorized_accommodation, value: "true").first
-
-    if needs_folding or needs_motorized
-      return true
-    else
-      return false
-    end
-
+    !wheelchair_accoms.empty?
   end
 
   def has_vehicle?
@@ -255,7 +259,7 @@ class User < ActiveRecord::Base
 
   def unread_received_messages
     received_messages.where(read: false)
-      .joins(:message).where('messages.from_date is ? or messages.from_date >= ?',nil,Date.today.at_beginning_of_day)
-      .where('messages.to_date is ? or messages.to_date <= ?',nil,Date.today.at_end_of_day)
+      .joins(:message).where('messages.from_date is ? or messages.from_date <= ?',nil,DateTime.now)
+      .where('messages.to_date is ? or messages.to_date >= ?',nil,DateTime.now)
   end
 end

@@ -83,13 +83,6 @@
                 = translate_helper(:agencies)
                 = add_tooltip("agencies_help")
             .panel-body
-              / %label.sr-only{aria: {label: "#{translate_helper(:agencies)}"}}
-              / - Agency.all.order(:name).each do |agency|
-              /   %div
-              /     %input.check_boxes.optional{id: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids][]", type: "checkbox", size: 10, value: "#{agency.id}"}
-              /     %label.check_boxes.optional{for: "user_approved_agency_ids_#{agency.id}", name: "user[approved_agency_ids]"} #{agency}
-              /     %br
-
               = f.association :approved_agencies, collection: Agency.active.order(:name), input_html: {size: 10}, value_method: :agency_id,  as: :check_boxes, wrapper: :inline_checkboxes, label: translate_helper(:agencies), label_html: {class: 'sr-only'}
 
     - if current_user.agency
@@ -104,7 +97,7 @@
               -traveler_note = TravelerNote.where(user: @user, agency: current_user.agency).first_or_create
               =simple_fields_for traveler_note, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |note_form|
                 =note_form.input :note, :input_html => {:cols => 20}, :label => false
-              =translate_helper(:only_agency_can_see, :agency => current_user.agency.name)
+              =translate_helper(:only_agency_can_see)
 
     - if can? :full_read, @user
       .new_buddies.hidden

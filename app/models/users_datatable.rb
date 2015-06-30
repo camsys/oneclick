@@ -11,6 +11,8 @@ class UsersDatatable
     users = User.without_role(:anonymous_traveler)
 
     users = users.where(deleted_at: nil) unless params[:bIncludeDeleted] == 'true'
+
+    users
   end
 
   def as_json(options = {})

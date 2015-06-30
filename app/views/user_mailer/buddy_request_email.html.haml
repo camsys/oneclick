@@ -1,6 +1,6 @@
 = translate_helper(:buddy_request_email_header).to_s
 %br
-/=cms_snippet_content('buddy_request_email')
+/=translate_helper(:buddy_request_email).to_s
 - user_name = get_user_name(@traveler) 
 %h3
   = translate_helper(:buddy_request_email_intro).sub('%{name}', user_name).sub('%{site_title}', translate_helper(:site_title))

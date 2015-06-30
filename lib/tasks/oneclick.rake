@@ -338,6 +338,76 @@ namespace :oneclick do
     end
   end
 
+  desc "Setup Ecolane Services"
+  task setup_ecolane_services: :environment do
+    services = Service.where(booking_service_code: "ecolane")
+
+    services.each do |service|
+
+
+      #Funding source array cheat sheet
+      # 0: code
+      # 1: index (lower gives higher priority when trying to match funding sources to trip purposes)
+      # 2: general_public (is the the general public funding source?)
+      # 3: comment
+
+
+      if service
+        county = service.external_id
+        puts 'Setting up ' + service.name || service.id.to_s
+        case county
+        when 'york'
+
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
+            fs.index = fs[1]
+            fs.general_public = fs[2]
+            fs.comment = fs[3]
+            fs.save
+          end
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = 'rabbit'
+
+          service.save
+
+        when 'lebanon' #This is currently setup for OCOCTEST
+
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
+            fs.index = fs[1]
+            fs.general_public = fs[2]
+            fs.comment = fs[3]
+            fs.save
+          end
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = 'ococtest'
+          service.save
+        else
+          puts 'Cannot find service with external_id: ' + county
+        end
+      else
+
+      end
+    end
+
+end
+
   desc "Move FareStructure#desc to Comment table"
   task transfer_fare_comments_to_comments_table: :environment do
     FareStructure.where.not(desc: nil).each do |fare_structure|

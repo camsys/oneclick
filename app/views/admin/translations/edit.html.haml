@@ -1,4 +1,4 @@
-- content_for :title, "#{t(:site_title)} - #{t(:edit)} #{t(:translations)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:edit)} #{translate_helper(:translations)}"
 .row.info-header
 	.col-sm-12
 		.btns.pull-right
@@ -17,7 +17,7 @@
 			.row
 				.col-sm-12
 					= simple_form_for [:admin, @translation], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |t|
-						= t.input :key, :input_html => { :value => @translation.translation_key.name }
+						= t.input :key, readonly: true, :input_html => { :value => @translation.translation_key.name }
 						= t.input :locale, readonly: true, :input_html => { :value => @translation.locale.name }
 						= t.input :is_list
 						= t.input :value, input_html: {rows: 10}

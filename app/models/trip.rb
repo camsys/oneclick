@@ -34,6 +34,7 @@ class Trip < ActiveRecord::Base
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
+  scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
 
   def self.planned_between(start_time = nil, end_time = nil)
     base_trips = Trip.where(is_planned: true)

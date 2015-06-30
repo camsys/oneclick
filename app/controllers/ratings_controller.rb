@@ -49,7 +49,7 @@ class RatingsController < ApplicationController
         r.valid? ? successful_ratings << rateable_class.name.downcase : ''
       end
     end
-    flash[:notice] = TranslationEngine.translate_text(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
+    flash[:notice] = TranslationEngine.translate_text(:rating_submitted_for_approval, count: successful_ratings.count) # only flash on creation
     if user_signed_in?
       if rating_params.count == 1 #only one rateable object, can assume it's either Service or Agency
         case first_rateable

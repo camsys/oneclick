@@ -152,7 +152,7 @@ class UsersController < ApplicationController
     unless @errors
       #Todo: This will need to be updated when more services are able to book.
       if @traveler.is_visitor?
-        @traveler = eh.get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+        @traveler = eh.get_ecolane_traveler(external_user_id, dob, 'york', first_name, last_name)
         sign_in @traveler, :bypass => true
       end
       Service.where(booking_service_code: 'ecolane').each do |booking_service|

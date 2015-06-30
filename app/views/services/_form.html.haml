@@ -309,7 +309,7 @@
               - setup_comments(fare.object, %w{public})
               - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
               = fare.simple_fields_for :public_comments do |comment|
-                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
                 = comment.input :locale, as: :hidden
                 = comment.input :visibility, as: :hidden
         
@@ -318,10 +318,8 @@
               = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}
               = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
               = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
-              - setup_comments(fare.object, %w{public})
-              - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
               = fare.simple_fields_for :public_comments do |comment|
-                = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
                 = comment.input :locale, as: :hidden
                 = comment.input :visibility, as: :hidden
 
@@ -367,7 +365,11 @@
                       = add_tooltip("#{rule}_help")
                   .panel-body
                     %label=translate_helper(:coverage_area_edit_instruction)
-                    = f.input rule+'_shapefile', :label => translate_helper(:upload_shapefile),:as => :file
+                    = f.input "#{rule}_shapefile", :label => translate_helper(:upload_shapefile),:as => :file
+                    .col-sm-9.pull-right.checkbox
+                      %label
+                        %input{type: "checkbox", name: "service[delete_#{rule}_shapefile]"}
+                          = translate_helper(:remove_file)
                     - types.each do |type|
                       %b
                         = type.humanize.split[0].pluralize + ' ' + translate_helper(:served_areas)

@@ -24,9 +24,23 @@ class Agency < ActiveRecord::Base
   validates :name, :presence => true
 
   def self.form_collection include_all=true, agency_id=false
+
     relation = agency_id ? where(id: agency_id).order(:name) : order(:name)
 
-    form_collection_from_relation include_all, relation, false, true
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    inactive_label = " (#{TranslationEngine.translate_text(:inactive)})"
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      name = name + inactive_label if !r.active
+      list << [name, r.id]
+    end
+    list
+    
   end
 
   def unselected_users

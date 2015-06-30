@@ -9,7 +9,7 @@
         =translate_helper(:public_comments_message)
         - commentable.public_comments.sort!{|a, b| a.locale <=> b.locale}
         = f.simple_fields_for :public_comments do |comment|
-          = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+          = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
           = comment.input :locale, as: :hidden
           = comment.input :visibility, as: :hidden
   .col-sm-6
@@ -22,6 +22,6 @@
         =translate_helper(:private_comments_message)
         - commentable.private_comments.sort!{|a, b| a.locale <=> b.locale}
         = f.simple_fields_for :private_comments do |comment|
-          = comment.input :comment, label: [t("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+          = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
           = comment.input :locale, as: :hidden
           = comment.input :visibility, as: :hidden

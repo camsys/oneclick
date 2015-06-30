@@ -261,7 +261,7 @@ class EcolaneHelpers
 
       if resp_code == "200"
         fare = unpack_fare_response(resp, itinerary)
-        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code})
+        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code, base_fare: funding_source.general_public})
       end
     end
 
@@ -380,14 +380,15 @@ class EcolaneHelpers
     return resp[0], resp[2][0], resp[2][1]
   end
 
-  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+  def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
 
-    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
+    service = Service.find_by(external_id: county.downcase.strip)
+    user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
     else
       new_user = true
-      u = User.where(email: external_user_id + '@ecolane_user.com').first_or_create
+      u = User.where(email: external_user_id + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob
@@ -474,7 +475,7 @@ class EcolaneHelpers
     default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id)
     funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
-    purpose = itinerary.trip_part.trip.trip_purpose.code
+    purpose = itinerary.trip_part.trip.trip_purpose_raw
     min_index = 10000
     best_funding_source = nil
     best_sponsor = nil
@@ -606,6 +607,9 @@ class EcolaneHelpers
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       resp = http.start {|http| http.request(req)}
+      Rails.logger.info("REQ BEGIN")
+      Rails.logger.info(req.inspect)
+      Rails.logger.info("REQ END")
       Rails.logger.info(resp.inspect)
       return resp
     rescue Exception=>e
@@ -693,6 +697,9 @@ class EcolaneHelpers
     Oneclick::Application.config.ecolane_county_mapping[county.downcase.to_sym]
   end
 
+  def county_to_service(county)
+    Service.find_by(external_id: county.downcase.strip)
+  end
 
   ### Testing functions:
   def test_build_location_hash(place)

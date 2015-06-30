@@ -73,7 +73,7 @@ Oneclick::Application.configure do
   config.force_ssl = false
 
   #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
-  config.api_activated = false
+  config.api_activated = true
 
   # the ability to see the legend on the review page
   config.show_legend = true
@@ -208,7 +208,7 @@ Oneclick::Application.configure do
     config.kiosk_available = true
     config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
     config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
-    config.ecolane_county_mapping = {york:'rabbit'}
+    config.ecolane_county_mapping = {york:'rabbit', lebanon: "ococtest"}
 
   when 'jta'
     config.host = 'transportal.net'
