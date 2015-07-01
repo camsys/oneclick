@@ -1,0 +1,18 @@
+es:
+
+  arrival_time_sorter: 'Hora de Llegada'
+  departure_time_sorter: 'Hora de Salida'
+  fare_sorter: 'Tarifa'
+  satisfied_by_trips: "¿Alguno de estos viajes satisfacer sus necesidades?"
+  success: "Exito!"
+  travel_time_sorter: 'Tiempo del Viaje'
+  walk_distance_sorter: 'Tiempo caminando'
+  wait_time_sorter: "Tiempo de Espera"
+  wait_time_filter: "Tiempo de Espera"
+  trip_time_filter: 'Tiempo'
+
+  driver_assistance_name: "Asistencia al conductor"
+  driver_assistance_note: "¿Necesita asistencia personal del conductor?"
+  wheelchair_lift_equipped_note: "Necesita un vehiculo para asistir silla de rueda?"
+  wheelchair_lift_equipped_name: "Equipado con una silla de ruedas"
+  wheelchair_dependent_missing_info: "personas que requieren el uso de sillas de ruedas"

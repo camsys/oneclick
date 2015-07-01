@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
@@ -121,7 +122,7 @@ es:
   delete_user: "[es41]Delete user[/es]"
   walking_speed: '[es]Walking Speed[/es]'
   walking_maximum_distance: '[es]Walking Maximum Distance[/es]'
-  walk_distance: '[es]Walk Distance[/es]'
+  walk_distance: 'Tiempo caminando'
   # Agent and Admin string
   reports: "Reportes"
   report_name: "[es46]Report Name[/es]"
@@ -352,14 +353,13 @@ es:
   rate_recent: "[es118]Feedback on your recent trip[/es]"
   plan_trip: "Continuar la planificación de este viaje *44*"
   max_notes: '[es133]Max notes[/es]'
-  satisfied_by_trips: "[es]Do any of these trips satisfy your needs?[/es]"
+  
   stay_on_page: "[es]Stay on this page to leave feedback.[/es]"
   trip_satisfaction_notes: ""
   survey_submitted: "[es]Survey submitted.[/es]"
   saving_survey_failed: "[es]Saving survey failed.[/es]"
   survey_updated: "[es]Survey updated.[/es]"
   problem_saving: "[es]There was a problem saving.[/es]"
-  success: "[es]Success![/es]"
 
   # Page comments
   trip_header_comment: ''
@@ -428,15 +428,9 @@ es:
   trip_purposes: "[es118]Trip Purposes[/es]"
   departing_at: 'Con salida a las *3*'
   arriving_by: 'Que lleguen en *4*'
-  arrival_time: '[es]Arrival Time[/es]'
+  arrival_time: 'Hora de Llegada'
   departure_time: '[es]Departure Time[/es]'
   travel_time: '[es]Travel Time[/es]'
-  arrival_time_sorter: '[es]Arrival Time[/es]'
-  departure_time_sorter: '[es]Departure Time[/es]'
-  walk_distance_sorter: '[es]Walking Distance[/es]'
-  fare_sorter: '[es]Fare[/es]'
-  travel_time_sorter: '[es]Travel Time[/es]'
-  wait_time_sorter: "[es]Wait Time[/es]"
   correct_errors_to_create_a_trip: 'Por favor corrige los errores señalados para crear un viaje.'
   no_thanks_just_plan_it: "[es127]No thanks, just plan my trip[/es]"
   disability_explanation_str: "[es128]We noticed you mentioned a disability and/or difficulty walking for certain periods of time.  Would you please tell us more about which accommodations you require for your trip?[/es]"
@@ -772,8 +766,6 @@ es:
   accommodations_filter: '[es]Accommodations[/es]'
   fare_filter: '[es]Fare[/es]'
   number_of_transfers_filter: '[es]Number of Transfers[/es]'
-  trip_time_filter: '[es]Time[/es]'
-  wait_time_filter: "[es]Wait Time[/es]"
   number_of_paratransit_count_filter: '[es]Number of specialized services[/es]'
   walk_distance_filter: '[es]Walking Distance[/es]'
   legends: '[es]Legends[/es]'
