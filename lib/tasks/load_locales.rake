@@ -85,4 +85,56 @@ namespace :oneclick do
 
     end
   end
+
+  desc "Load a select group of Spanish translations requiring update."
+  task patch_spanish_translations: :environment do
+
+		locales_directory = Rails.root.to_s + "/config/locales/"
+		filename = locales_directory + "es_corrected_translations_07_01_2015.yml"
+
+      puts "Loading locale file #{filename}"
+
+      y = YAML.load_file(filename)
+
+      failed = success = skipped = 0
+      y.each_with_parents do |parents, v|
+
+      locale = parents.shift
+      locale = Locale.find_by(name: locale)
+
+      translation_key_name = parents.join('.')
+
+        translation_value = v
+        translation_key = TranslationKey.find_or_create_by!(name: translation_key_name)
+
+        #Check if translation exists.  DO NOT overwrite existing translations.
+        existing_translation = Translation.where("translation_key_id = ? AND locale_id = ?", translation_key.id, locale.id)
+
+        if existing_translation.count > 0
+
+        	puts "Warning: duplicate translation detected. es #{translation_key_name}" if existing_translation.count > 1
+
+        	translation_to_update = existing_translation.first
+
+        	if translation_to_update.value.to_s[0..3].downcase == '[es]'
+        		translation_to_update.value = translation_value 
+        		translation_to_update.save!
+        		puts "Success patching translation.  Translation Key: #{translation_key_name}"
+        		success += 1
+        	else
+        		puts "Warning patching translation.  Value doesn't start with [es].  Rather: #{translation_to_update.value.to_s[0..3]}"
+        		skipped += 1
+        	end
+
+        else
+        	puts "Warning patching translation - not found: es. #{translation_key_name}"
+        	skipped += 1
+        end
+
+      end
+
+      puts "Read #{success+failed} keys, #{success} successful, #{failed} failed, #{skipped} skipped"
+
+		end
+
 end
