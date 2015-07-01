@@ -10,7 +10,7 @@ module AdminHelper
 
   def icon_label(action)
     # "<i class='icon #{ACTION_ICONS[action]}'>&nbsp;</i>#{t(action)}".html_safe
-    "#{t(action)}".html_safe
+    "#{TranslationEngine.translate_text(action)}".html_safe
   end
 
   # Construct a name for an iput control appropriate for setting nested attributes

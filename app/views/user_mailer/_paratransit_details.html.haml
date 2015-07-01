@@ -81,7 +81,7 @@
         = translate_helper(:no_accommodations)
       -else
         -itinerary.service.accommodations.each do |accom|
-          =t(accom.name)
+          =translate_helper(accom.name)
           %br
 - if @current_ability and can? :read, itinerary.service.ratings.build(user: @traveler)
   %table{:style => "width: 100%;"}
