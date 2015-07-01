@@ -24,7 +24,7 @@ module Api
         end
 
         # Global POIs
-        pois = Poi.get_by_query_str(search_string, max_results)
+        pois = Poi.get_by_query_str(search_string, max_results, true)
         pois.each do |poi|
           locations.append(poi.build_place_details_hash)
           count += 1

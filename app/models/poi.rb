@@ -10,10 +10,15 @@ class Poi < GeocodedAddress
 
   # set the default scope
   default_scope {order('pois.name')}
+  scope :has_address, -> { where.not(:address1 => nil) }
 
-  def self.get_by_query_str(query_str, limit)
+  def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)
-    pois = Poi.where(rel).limit(limit)
+    if has_address
+      pois = Poi.has_address.where(rel).limit(limit)
+    else
+      pois = Poi.where(rel).limit(limit)
+    end
     pois
   end
 
