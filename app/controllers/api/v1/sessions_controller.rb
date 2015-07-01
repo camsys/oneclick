@@ -59,6 +59,9 @@ module Api
           return
         end
 
+        Rails.logger.info('Logged in with: ' + county.to_s)
+        Rails.logger.info(county.to_s + ' uses system_id: ' + service.booking_system_id)
+
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
         @traveler.reset_authentication_token!
