@@ -33,6 +33,7 @@ module Api
       def get_api_traveler
         unless is_visitor_request?
           @traveler = User.find_by(email: request.headers['X-User-Email'])
+          Rails.logger.info("Traveler Id: " + @traveler.id.to_s)
         else
           @traveler = guest_user
         end

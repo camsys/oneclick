@@ -363,11 +363,11 @@ namespace :oneclick do
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
           service.funding_sources.destroy_all
           funding_source_array.each do |fs|
-            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
-            fs.index = fs[1]
-            fs.general_public = fs[2]
-            fs.comment = fs[3]
-            fs.save
+            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+            new_funding_source.index = fs[1]
+            new_funding_source.general_public = fs[2]
+            new_funding_source.comment = fs[3]
+            new_funding_source.save
           end
 
           #Dummy User
@@ -385,11 +385,11 @@ namespace :oneclick do
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
           service.funding_sources.destroy_all
           funding_source_array.each do |fs|
-            fs = FundingSource.where(service: service, code: fs[0]).first_or_create
-            fs.index = fs[1]
-            fs.general_public = fs[2]
-            fs.comment = fs[3]
-            fs.save
+            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+            new_funding_source.index = fs[1]
+            new_funding_source.general_public = fs[2]
+            new_funding_source.comment = fs[3]
+            new_funding_source.save
           end
 
           #Dummy User

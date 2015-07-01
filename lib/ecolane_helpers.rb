@@ -175,7 +175,9 @@ class EcolaneHelpers
     url = BASE_URL + url_options
     funding_options = query_funding_options(itinerary)
     funding_xml = Nokogiri::XML(funding_options.body)
+    Rails.logger.info("Begin Funding info")
     Rails.logger.info(funding_xml)
+    Rails.logger.info("End Funding info")
     order =  build_order(itinerary, funding_xml)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
@@ -410,11 +412,9 @@ class EcolaneHelpers
     end
 
     if new_user #Create User Service
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
-        user_service = UserService.where(user_profile: u.user_profile, service: booking_service).first_or_initialize
-        user_service.external_user_id = external_user_id
-        user_service.save
-      end
+      user_service = UserService.where(user_profile: u.user_profile, service: service).first_or_initialize
+      user_service.external_user_id = external_user_id
+      user_service.save
     end
     u
   end
@@ -574,17 +574,20 @@ class EcolaneHelpers
       [parsable_address.number, parsable_address.street.first]
     end
 
-    {street_number: street_number, street: street, city: place.city, state: place.state, zip: place.zip}
+    {street_number: street_number, street: street, city: place.city, state: place.state, zip: place.zip, latitude: place.lat, longitude: place.lon}
   end
 
 
   ## Send the Requests
   def send_request(url, type='GET', message=nil)
 
+    Rails.logger.info("Sending Request . . .")
+
     url.sub! " ", "%20"
 
+    Rails.logger.info("URL")
     Rails.logger.info(url)
-
+    Rails.logger.info("MESSAGE")
     Rails.logger.info(message)
 
     begin
@@ -607,10 +610,11 @@ class EcolaneHelpers
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       resp = http.start {|http| http.request(req)}
-      Rails.logger.info("REQ BEGIN")
+      Rails.logger.info("REQ")
       Rails.logger.info(req.inspect)
-      Rails.logger.info("REQ END")
+      Rails.logger.info("RESPONSE")
       Rails.logger.info(resp.inspect)
+      Rails.logger.info("Sending End")
       return resp
     rescue Exception=>e
       Honeybadger.notify(
@@ -618,6 +622,7 @@ class EcolaneHelpers
           :error_message => "Service failure: fixed: #{e.message}",
           :parameters    => {url: url}
       )
+      Rails.logger.info("Sending Error")
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
   end

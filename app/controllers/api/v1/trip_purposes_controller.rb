@@ -15,6 +15,8 @@ module Api
 
         if user_service
 
+          Rails.logger.info("User is Registered")
+
           service = user_service.service
           begin
             trip_purposes = eh.get_trip_purposes_from_traveler(@traveler)
@@ -25,6 +27,7 @@ module Api
             trip_purposes = []
           end
         else
+          Rails.logger.info("No user service")
           origin = params[:geometry]
           lat = origin[:location][:lat]
           lng = origin[:location][:lng]
@@ -52,6 +55,8 @@ module Api
           end
 
         end
+        Rails.logger.info("Trip Purposes:")
+        Rails.logger.info(trip_purposes)
 
         purposes = []
         index =  0
