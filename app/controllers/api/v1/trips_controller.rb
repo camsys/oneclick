@@ -66,7 +66,7 @@ module Api
           trip.selected_itineraries.each do |itinerary|
             itinerary_hash = itinerary.attributes
             mode = itinerary.mode
-            itinerary_hash[:mode] = {name: I18n.t(mode.name), code: mode.code}
+            itinerary_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
             itineraries_array.append(itinerary_hash)
           end
           trip_hash[:itineraries] = itineraries_array

@@ -470,6 +470,13 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :users do
+        collection do
+          post 'update'
+          get  'profile'
+        end
+      end
+
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
