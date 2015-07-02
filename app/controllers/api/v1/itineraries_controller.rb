@@ -95,6 +95,7 @@ module Api
 
           #Build the itineraries
           tp.create_itineraries
+          tp.save
 
           #Append data for API
           tp.itineraries.each do |itinerary|
@@ -117,9 +118,6 @@ module Api
             final_itineraries.append(i_hash)
           end
 
-
-          #Unpack and return the itineraries
-          #MORE TO WRITE HERE
         end
         render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
