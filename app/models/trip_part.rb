@@ -116,6 +116,9 @@ class TripPart < ActiveRecord::Base
     itins = []
     
     modes.each do |mode|
+
+      Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
+      Rails.logger.info(mode)
       case mode
         # start with the non-OTP modes
       when Mode.taxi

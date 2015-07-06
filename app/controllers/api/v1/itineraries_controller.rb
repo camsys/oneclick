@@ -95,7 +95,8 @@ module Api
 
           #Build the itineraries
           tp.create_itineraries
-          tp.save
+
+          Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
 
           #Append data for API
           tp.itineraries.each do |itinerary|
@@ -121,6 +122,8 @@ module Api
             end
 
             final_itineraries.append(i_hash)
+            Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
+
           end
 
         end
