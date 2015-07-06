@@ -153,7 +153,8 @@ class TripPart < ActiveRecord::Base
         end
       end
     end
-
+    Rails.logger.info('Adding NEW ITINERARIES TO THIS TRIP PART')
+    Rails.logger.info(itins.inspect)
     self.itineraries << itins
     itins
   end

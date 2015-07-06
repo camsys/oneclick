@@ -96,10 +96,16 @@ module Api
           #Build the itineraries
           tp.create_itineraries
 
-          Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
+          my_itins = Itinerary.where(trip_part: tp)
+          #my_itins = tp.itineraries
+          my_itins.each do |itin|
+            Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
+          end
 
+          Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
+          Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
-          tp.itineraries.each do |itinerary|
+          my_itins.each do |itinerary|
             i_hash = itinerary.as_json
             i_hash[:segment_index] = itinerary.trip_part.sequence
             i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
@@ -122,11 +128,13 @@ module Api
             end
 
             final_itineraries.append(i_hash)
-            Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
+
+
 
           end
 
         end
+        Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
         render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
       end
