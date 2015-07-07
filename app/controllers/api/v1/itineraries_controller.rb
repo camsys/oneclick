@@ -225,12 +225,9 @@ module Api
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
           itineraries = email_itinerary[:itineraries]
-
-          itineraries.each do |itinerary|
-            itin = Itinerary.find(itinerary[:itinerary_id].to_i)
-            trip = itin.trip_part.trip
-            UserMailer.user_itinerary_email([email_address], trip, itin, 'SUBJECT', '')
-          end
+          trip_to_email = itineraries.first
+          trip = Trip.find(trip_to_email[:trip_id].to_i)
+          UserMailer.user_trip_email([email_address], trip, 'FindMyRidePA', '', @traveler).deliver
         end
 
         render json: {result: 200}
