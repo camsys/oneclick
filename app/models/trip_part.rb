@@ -501,4 +501,11 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
     return new_time > trip.prev_part(self).scheduled_time
   end
 
+  def unselect
+    selected_itinerary = self.selected_itinerary
+    if selected_itinerary
+      selected_itinerary.selected = false
+      selected_itinerary.save
+    end
+  end
 end

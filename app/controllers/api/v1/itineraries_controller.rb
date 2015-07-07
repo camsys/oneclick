@@ -146,6 +146,11 @@ module Api
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
+          #Unselect any other itinerary and mark this one as selected
+          itinerary.trip_part.unselect
+          itinerary.selected = true
+          itinerary.save
+
           #Set Companions
           trip_part = itinerary.trip_part
           trip_part.assistant = itinerary_hash[:assistant].to_bool
