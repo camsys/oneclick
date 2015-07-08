@@ -487,7 +487,7 @@ class EcolaneHelpers
       ecolane_purpose = options.xpath("purpose").text
       simplified_ecolane_purpose = ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
 
-      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose
+      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose.gsub(%r{[ /]}, '_')
         funding_source = options.xpath("funding_source").text
         index = funding_array.index(funding_source)
 
