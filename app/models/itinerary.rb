@@ -263,14 +263,14 @@ class Itinerary < ActiveRecord::Base
 
       questions =
         [
-          {question: "Will you be traveling with an ADA-approved escort", choices: [true, false], code: "assistant"},
+          {question: "Will you be traveling with an ADA-approved escort?", choices: [true, false], code: "assistant"},
           {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
         ]
 
     else
       questions =
         [
-          {question: "Will you be traveling with an approved escort", choices: [true, false], code: "assistant"},
+          {question: "Will you be traveling with an approved escort?", choices: [true, false], code: "assistant"},
           {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
         ]
 
