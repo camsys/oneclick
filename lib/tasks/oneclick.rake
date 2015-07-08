@@ -360,7 +360,7 @@ namespace :oneclick do
 
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
           service.funding_sources.destroy_all
           funding_source_array.each do |fs|
             new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
@@ -382,7 +382,7 @@ namespace :oneclick do
 
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 3, false, "Eligible for ADA"], ["Gen Pub", 4, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
           service.funding_sources.destroy_all
           funding_source_array.each do |fs|
             new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
