@@ -489,7 +489,7 @@ class EcolaneHelpers
 
       Rails.logger.info("Comparing Trip Purposes - Ecolane: " + simplified_ecolane_purpose + ', 1-Click: ' + purpose.downcase.gsub(%r{[ /]}, '_'))
 
-      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose.gsub(%r{[ /]}, '_')
+      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose.downcase.gsub(%r{[ /]}, '_')
         funding_source = options.xpath("funding_source").text
         index = funding_array.index(funding_source)
 
