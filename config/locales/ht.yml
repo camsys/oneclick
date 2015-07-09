@@ -9,9 +9,14 @@ ht:
   traveler_notes: "[ht]Traveler Notes[/ht]"
   base_rate: "[ht]Base Fare[/ht]"
   mileage_rate: "[ht]Mileage Rate[/ht]"
+  mileage_rate_unavailable: "[ht]Mileage rate unavailable[/ht]"
   fare_type: '[ht]Fare Type[/ht]'
   flat_fare: '[ht]Flat Fare[/ht]'
   mileage_fare: '[ht]Mileage Fare[/ht]'
+  base_fare_unavailable: '[ht]Base fare unavailable[/ht]'
+  fare_unavailable: '[ht]Fare unavailable[/ht]'
+  complex_fare: '[ht]Complex fare[/ht]'
+  use_gtfs_colors: '[ht]Use GTFS colors[/ht]'
   zone_fare: '[ht]Zone Fare[/ht]'
   zone_fare_new_service_warning: '[ht]Please save the service first, then go to service editng page to further edit zone fares. Fare zone shapefile is needed.[/ht]'
   one_way_rate: '[ht]One Way Rate[/ht]'
@@ -196,6 +201,7 @@ ht:
   not_authorized: '[ht]You are not authorized.[/ht]'
   failed_to_update_application_logo: '[ht]There was an error in updating application logo. Please try again.[/ht]'
   select_logo_image_to_upload: '[ht]Please select an image to upload[/ht]'
+  select_image_to_upload: '[ht]Please select an image to upload[/ht]'
   upload_application_logo: '[ht]Upload Application Logo[/ht]'
   upload_application_logo_notes: '[ht]Refer to 1-Click Deployment Document on file specfications.[/ht]'
 
@@ -375,6 +381,7 @@ ht:
   select_or_enter_address: '[ht]Select or enter address[/ht]'
   select: '[ht]Select[/ht]'
   trip_date: '[ht]Date[/ht]'
+  trip_datetime: '[ht]Trip Datetime[/ht]'
   depart_at: '[ht]Depart at[/ht]'
   arrive_by: '[ht]Arrive by[/ht]'
   arrive_at: '[ht]Arrive at[/ht]'
