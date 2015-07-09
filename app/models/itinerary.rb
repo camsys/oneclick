@@ -235,7 +235,11 @@ class Itinerary < ActiveRecord::Base
 
   def cancel
     eh = EcolaneHelpers.new
-    eh.cancel_itinerary self
+    result = eh.cancel_itinerary self
+    if result
+      self.selected = false
+      self.save
+    end
   end
 
   #Booking Information
