@@ -528,7 +528,7 @@ class EcolaneHelpers
 
   def build_discount_funding_hash(itinerary, funding_source)
     #TODO: This purpose has to be updated when trip purposes are pulled in on-the-fly
-    return {funding_source: funding_source, purpose: "Other"}
+    return {funding_source: funding_source, purpose: itinerary.trip_part.trip.trip_purpose_raw}
   end
   ############################################################
 
