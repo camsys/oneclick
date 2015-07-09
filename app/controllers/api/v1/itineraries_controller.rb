@@ -146,11 +146,6 @@ module Api
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
-          #Unselect any other itinerary and mark this one as selected
-          itinerary.trip_part.unselect
-          itinerary.selected = true
-          itinerary.save
-
           #Set Companions
           trip_part = itinerary.trip_part
           trip_part.assistant = itinerary_hash[:assistant].to_bool
@@ -177,6 +172,11 @@ module Api
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
             status  = bi.status
+
+            bi.trip_part.unselect
+            bi.selected = true
+            bi.save
+            puts 'Itinerary ' + bi.id.to_s " has been booked and marked as selected. "
 
             negotiated_pu_time = status[1][:pu_time]
             if negotiated_pu_time.nil?
