@@ -470,7 +470,7 @@ class EcolaneHelpers
 
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
-    default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id)
+    default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id, itinerary.service.booking_token)
     funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
     purpose = itinerary.trip_part.trip.trip_purpose_raw
@@ -535,7 +535,7 @@ class EcolaneHelpers
 
   #Find the default funding source for a customer id
   # (customer_id is the internal id and not the client id)
-  def get_default_funding_source(customer_id, system_id)
+  def get_default_funding_source(customer_id, system_id, token)
 
     customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
     resp_xml = Nokogiri::XML(customer_information)
