@@ -176,7 +176,7 @@ module Api
             bi.trip_part.unselect
             bi.selected = true
             bi.save
-            puts 'Itinerary ' + bi.id.to_s " has been booked and marked as selected. "
+            puts 'Itinerary ' + bi.id.to_s + " has been booked and marked as selected. "
 
             negotiated_pu_time = status[1][:pu_time]
             if negotiated_pu_time.nil?
