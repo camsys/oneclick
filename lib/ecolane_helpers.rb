@@ -245,8 +245,11 @@ class EcolaneHelpers
     funding_sources = service.funding_sources
     guest_id = service.fare_user
     discount_array = []
+    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
 
     funding_sources.each do |funding_source|
+      Rails.logger.info(funding_source.code)
+
       order = build_discount_order(itinerary, funding_source.code, guest_id)
       order = Nokogiri::XML(order)
       order.children.first.set_attribute('version', '2')
