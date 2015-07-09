@@ -613,8 +613,8 @@ class EcolaneHelpers
       Rails.logger.info("REQ")
       Rails.logger.info(req.inspect)
       Rails.logger.info("RESPONSE")
-      Rails.logger.info(resp.inspect)
-      Rails.logger.info("Sending End")
+      Rails.logger.info(resp.body)
+      Rails.logger.info("End")
       return resp
     rescue Exception=>e
       Honeybadger.notify(
