@@ -340,6 +340,14 @@ namespace :oneclick do
 
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
+
+    #Define which funding_sources are ADA, used for determining the questions
+    oc = OneclickConfiguration.where(code: "ada_funding_sources").first_or_create
+    oc.value = ["ADAYORK1", "ADAYORK2", "ADA"]
+    puts 'The following funding sources are considered to be ADA'
+    puts oc.value
+    oc.save
+
     services = Service.where(booking_service_code: "ecolane")
 
     services.each do |service|
@@ -355,6 +363,7 @@ namespace :oneclick do
       if service
         county = service.external_id
         puts 'Setting up ' + service.name || service.id.to_s
+
         case county
         when 'york'
 
@@ -375,6 +384,11 @@ namespace :oneclick do
 
           #Booking System Id
           service.booking_system_id = 'rabbit'
+
+          #Confirm API Token is set
+          if service.booking_token.nil?
+            puts 'Be sure to setup a booking token for ' + service.name
+          end
 
           service.save
 
@@ -397,7 +411,40 @@ namespace :oneclick do
 
           #Booking System Id
           service.booking_system_id = 'ococtest'
+
+          #Confirm API Token is set
+          if service.booking_token.nil?
+            puts 'Be sure to setup a booking token for ' + service.name
+          end
+
           service.save
+
+        when 'cambria'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+            new_funding_source.index = fs[1]
+            new_funding_source.general_public = fs[2]
+            new_funding_source.comment = fs[3]
+            new_funding_source.save
+          end
+
+          #Dummy User
+          service.fare_user = "7832"
+
+          #Booking System Id
+          service.booking_system_id = 'cambria'
+
+          #Confirm API Token is set
+          if service.booking_token.nil?
+            puts 'Be sure to setup a booking token for ' + service.name
+          end
+
+          service.save
+
         else
           puts 'Cannot find service with external_id: ' + county
         end
