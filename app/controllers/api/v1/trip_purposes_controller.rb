@@ -44,7 +44,7 @@ module Api
           if service
             unless service.booking_system_id.nil?
               begin
-                trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id)
+                trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id, service.booking_token)
               rescue Exception=>e
                 Honeybadger.notify(
                     :error_class   => "Trip Purposes Failure #2",

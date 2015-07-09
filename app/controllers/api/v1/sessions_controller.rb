@@ -53,7 +53,7 @@ module Api
         #If the formatting is correct, check to see if this is a valid user
         service = eh.county_to_service county
 
-        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id)
+        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
         unless result
           render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
           return
