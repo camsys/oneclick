@@ -445,6 +445,32 @@ namespace :oneclick do
 
           service.save
 
+        when 'franklin'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+            new_funding_source.index = fs[1]
+            new_funding_source.general_public = fs[2]
+            new_funding_source.comment = fs[3]
+            new_funding_source.save
+          end
+
+          #Dummy User
+          service.fare_user = "2581"
+
+          #Booking System Id
+          service.booking_system_id = 'franklin'
+
+          #Confirm API Token is set
+          if service.booking_token.nil?
+            puts 'Be sure to setup a booking token for ' + service.name
+          end
+
+          service.save
+
         else
           puts 'Cannot find service with external_id: ' + county
         end
