@@ -338,6 +338,18 @@ namespace :oneclick do
     end
   end
 
+  desc 'add returned_mode_code'
+  task add_returned_mode_codes: :environment do
+    itins = Itinerary.where(returned_mode_code: nil)
+    itins.each do |itin|
+      if itin.mode
+        itin.returned_mode_code = itin.mode.code
+        itin.save
+
+      end
+    end
+  end
+
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
 
