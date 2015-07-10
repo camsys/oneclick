@@ -406,11 +406,11 @@ namespace :oneclick do
 
           service.save
 
-        when 'lebanon' #This is currently setup for OCOCTEST
+        when 'lebanon'
 
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADA", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
           service.funding_sources.destroy_all
           funding_source_array.each do |fs|
             new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
@@ -421,10 +421,10 @@ namespace :oneclick do
           end
 
           #Dummy User
-          service.fare_user = "79109"
+          service.fare_user = "79110"
 
           #Booking System Id
-          service.booking_system_id = 'ococtest'
+          service.booking_system_id = 'lebanon'
 
           #Confirm API Token is set
           if service.booking_token.nil?
