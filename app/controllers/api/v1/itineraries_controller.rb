@@ -189,7 +189,7 @@ module Api
             end
 
             negotiated_do_time = status[1][:do_time].nil? ? nil : status[1][:do_time].to_time.iso8601
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
           end
 
         #Build Failure Response
