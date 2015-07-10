@@ -228,7 +228,13 @@ module Api
           itineraries = email_itinerary[:itineraries]
           trip_to_email = itineraries.first
           trip = Trip.find(trip_to_email[:trip_id].to_i)
-          UserMailer.user_trip_email([email_address], trip, 'FindMyRidePA', '', @traveler).deliver
+
+          if trip.scheduled_time > Time.now
+            subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y')
+          else
+            subject = "Your Ride on " + trip..scheduled_time.strftime('%_m/%e/%Y')
+          end
+          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
 
         render json: {result: 200}
