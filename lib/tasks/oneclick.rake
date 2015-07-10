@@ -353,6 +353,9 @@ namespace :oneclick do
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
 
+    #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
+    #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page
+
     #Define which funding_sources are ADA, used for determining the questions
     oc = OneclickConfiguration.where(code: "ada_funding_sources").first_or_create
     oc.value = ["ADAYORK1", "ADAYORK2", "ADA"]
@@ -370,7 +373,6 @@ namespace :oneclick do
       # 1: index (lower gives higher priority when trying to match funding sources to trip purposes)
       # 2: general_public (is the the general public funding source?)
       # 3: comment
-
 
       if service
         county = service.external_id
@@ -475,6 +477,32 @@ namespace :oneclick do
 
           #Booking System Id
           service.booking_system_id = 'franklin'
+
+          #Confirm API Token is set
+          if service.booking_token.nil?
+            puts 'Be sure to setup a booking token for ' + service.name
+          end
+
+          service.save
+
+        when 'dauphin'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          service.funding_sources.destroy_all
+          funding_source_array.each do |fs|
+            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+            new_funding_source.index = fs[1]
+            new_funding_source.general_public = fs[2]
+            new_funding_source.comment = fs[3]
+            new_funding_source.save
+          end
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = 'dauphin'
 
           #Confirm API Token is set
           if service.booking_token.nil?
