@@ -152,6 +152,7 @@ module Api
           trip_part.children = itinerary_hash[:children].to_i
           trip_part.companions = itinerary_hash[:companions].to_i
           trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
+          trip_part.note_to_driver = itinerary_hash[:note]
           trip_part.save
 
           result, message = itinerary.book

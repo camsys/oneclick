@@ -265,6 +265,11 @@ class Itinerary < ActiveRecord::Base
     self.trip_part ? self.trip_part.other_passengers : nil
   end
 
+  def note_to_driver
+    self.trip_part ? self.trip_part.note_to_driver : ""
+  end
+
+
   def prebooking_questions
 
     funding_source = self.funding_source

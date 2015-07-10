@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150709172334) do
+ActiveRecord::Schema.define(version: 20150710172259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -648,6 +648,7 @@ ActiveRecord::Schema.define(version: 20150709172334) do
     t.integer  "companions"
     t.integer  "children"
     t.integer  "other_passengers"
+    t.text     "note_to_driver"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"

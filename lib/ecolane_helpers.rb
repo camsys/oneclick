@@ -553,9 +553,9 @@ class EcolaneHelpers
   #Build the hash for the pickup request
   def build_pu_hash(itinerary)
     if itinerary.trip_part.is_depart
-      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
     else
-      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
     end
     pu_hash
   end
