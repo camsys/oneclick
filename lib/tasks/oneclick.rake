@@ -376,7 +376,7 @@ namespace :oneclick do
 
       if service
         county = service.external_id
-        puts 'Setting up ' + service.name || service.id.to_s
+        puts 'Setting up ' + ( service.name || service.id.to_s ) + ' for ' + county
 
         case county
         when 'york'
