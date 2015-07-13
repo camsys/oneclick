@@ -52,8 +52,10 @@ class FareHelper
 
     #Check for multipliers
     if Oneclick::Application.config.discount_fare_active and trip_part.trip.user.age and trip_part.trip.user.age > Oneclick::Application.config.discount_fare_age
-      itinerary.cost *= Oneclick::Application.config.discount_fare_multiplier
-      itinerary.save
+      if itinerary.cost
+        itinerary.cost *= Oneclick::Application.config.discount_fare_multiplier
+        itinerary.save
+      end
     end
 
     #Check for comments.
