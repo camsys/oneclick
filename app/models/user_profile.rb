@@ -41,7 +41,7 @@ class UserProfile < ActiveRecord::Base
     now = Time.now
 
     age_characteristic = Characteristic.where(code: "age").first
-    age = self.user_characteristics.where(characteristic: age_characteristic).first_or_create
+    age = self.user_characteristics.where(characteristic: age_characteristic).first_or_initialize
     age.value = (now.year - dob.year - (dob.to_date.change(:year => now.year) > now ? 1 : 0)).to_s
     age.save
   end
