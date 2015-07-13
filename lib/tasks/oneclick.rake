@@ -401,7 +401,7 @@ namespace :oneclick do
 
           #Confirm API Token is set
           if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name
+            puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
           end
 
           service.save
@@ -428,7 +428,7 @@ namespace :oneclick do
 
           #Confirm API Token is set
           if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name
+            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
           end
 
           service.save
@@ -454,7 +454,7 @@ namespace :oneclick do
 
           #Confirm API Token is set
           if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name
+            puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
           end
 
           service.save
@@ -480,7 +480,7 @@ namespace :oneclick do
 
           #Confirm API Token is set
           if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name
+            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
           end
 
           service.save
@@ -506,7 +506,7 @@ namespace :oneclick do
 
           #Confirm API Token is set
           if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name
+            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
           end
 
           service.save
