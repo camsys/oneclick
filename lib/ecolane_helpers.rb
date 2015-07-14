@@ -100,6 +100,9 @@ class EcolaneHelpers
   end
 
   def get_trip_info(itinerary)
+    unless itinerary.service
+      return false, '500'
+    end
     resp = fetch_single_order(itinerary.booking_confirmation, itinerary.service.booking_system_id, itinerary.service.booking_token)
     return unpack_fetch_single(resp, itinerary.booking_confirmation)
 

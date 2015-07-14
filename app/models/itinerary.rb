@@ -229,8 +229,22 @@ class Itinerary < ActiveRecord::Base
   end
 
   def status
+    unless self.booking_confirmation
+      return false, "404"
+    end
+
     eh = EcolaneHelpers.new
-    eh.get_trip_info self
+    status = eh.get_trip_info self
+
+    unless status[0]
+      return status
+    end
+
+    self.negotiated_pu_time = status[1][:pu_time]
+    self.negotiated_do_time = status[1][:do_time]
+    self.save
+
+    return status
   end
 
   def cancel

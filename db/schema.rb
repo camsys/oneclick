@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710172259) do
+ActiveRecord::Schema.define(version: 20150714165431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,6 +216,8 @@ ActiveRecord::Schema.define(version: 20150710172259) do
     t.integer  "children"
     t.integer  "other_passengers"
     t.text     "discounts"
+    t.datetime "negotiated_pu_time"
+    t.datetime "negotiated_do_time"
   end
 
   create_table "kiosk_locations", force: true do |t|

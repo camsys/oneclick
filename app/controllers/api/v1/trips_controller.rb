@@ -67,7 +67,46 @@ module Api
             itinerary_hash = itinerary.attributes
             mode = itinerary.mode
             itinerary_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
+
+            itinerary_hash[:segment_index] = itinerary.trip_part.sequence
+            itinerary_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
+            itinerary_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
+            itinerary_hash[:prebooking_questions] = itinerary.prebooking_questions
+            itinerary_hash[:bookable] = itinerary.is_bookable?
+            itinerary_hash[:confirmation_id] = itinerary.booking_confirmation
+
+            if itinerary.service
+              itinerary_hash[:service_name] = itinerary.service.name
+            else
+              itinerary_hash[:service_name] = ""
+            end
+
+            if itinerary.discounts
+              itinerary_hash[:discounts] = JSON.parse(itinerary.discounts)
+            end
+
+            if itinerary.legs
+              itinerary_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
+            else
+              itinerary_hash[:json_legs] = nil
+            end
+
+            if itinerary.negotiated_pu_time.nil?
+              wait_start = nil
+              wait_end = nil
+            else
+              #Create +/- fifteen minute window around pickup time
+              wait_start = (negotiated_pu_time - 15*60).iso8601
+              wait_end = (negotiated_pu_time + 15*60).iso8601
+            end
+
+            itinerary_hash[:wait_start] =  wait_start
+            itinerary_hash[:wait_end] = wait_end
+            itinerary_hash[:arrival] = itinerary.negotiated_do_time.nil? ? nil : itinerary.negotiated_do_time.iso8601
+
+
             itineraries_array.append(itinerary_hash)
+
           end
           trip_hash[:itineraries] = itineraries_array
           trips_array.append(trip_hash)
