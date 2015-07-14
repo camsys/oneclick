@@ -96,8 +96,8 @@ module Api
               wait_end = nil
             else
               #Create +/- fifteen minute window around pickup time
-              wait_start = (negotiated_pu_time - 15*60).iso8601
-              wait_end = (negotiated_pu_time + 15*60).iso8601
+              wait_start = (itinerary.negotiated_pu_time - 15*60).iso8601
+              wait_end = (itinerary.negotiated_pu_time + 15*60).iso8601
             end
 
             itinerary_hash[:wait_start] =  wait_start
