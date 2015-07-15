@@ -374,6 +374,13 @@ namespace :oneclick do
       # 2: general_public (is the the general public funding source?)
       # 3: comment
 
+      #Sponsor array cheat sheet
+      # 0: code
+      # 1: index
+
+      funding_source_array = []
+      sponsor_array = []
+
       if service
         county = service.external_id
         puts 'Setting up ' + ( service.name || service.id.to_s ) + ' for ' + county
@@ -381,17 +388,11 @@ namespace :oneclick do
         case county
         when 'york'
 
-
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
-          service.funding_sources.destroy_all
-          funding_source_array.each do |fs|
-            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
-            new_funding_source.index = fs[1]
-            new_funding_source.general_public = fs[2]
-            new_funding_source.comment = fs[3]
-            new_funding_source.save
-          end
+
+          #Sponsors
+          sponsor_array = [['YCAAA', 1]]
 
           #Dummy User
           service.fare_user = "79109"
@@ -399,26 +400,15 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'rabbit'
 
-          #Confirm API Token is set
-          if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
-          end
-
-          service.save
 
         when 'lebanon'
 
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADA", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
-          service.funding_sources.destroy_all
-          funding_source_array.each do |fs|
-            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
-            new_funding_source.index = fs[1]
-            new_funding_source.general_public = fs[2]
-            new_funding_source.comment = fs[3]
-            new_funding_source.save
-          end
+
+          #Sponsors
+          sponsor_array = [['AAA', 1]]
 
           #Dummy User
           service.fare_user = "79110"
@@ -426,25 +416,14 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'lebanon'
 
-          #Confirm API Token is set
-          if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
-          end
-
-          service.save
 
         when 'cambria'
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
-          service.funding_sources.destroy_all
-          funding_source_array.each do |fs|
-            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
-            new_funding_source.index = fs[1]
-            new_funding_source.general_public = fs[2]
-            new_funding_source.comment = fs[3]
-            new_funding_source.save
-          end
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['AAA', 1]]
 
           #Dummy User
           service.fare_user = "7832"
@@ -452,25 +431,14 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'cambria'
 
-          #Confirm API Token is set
-          if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
-          end
-
-          service.save
 
         when 'franklin'
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
-          service.funding_sources.destroy_all
-          funding_source_array.each do |fs|
-            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
-            new_funding_source.index = fs[1]
-            new_funding_source.general_public = fs[2]
-            new_funding_source.comment = fs[3]
-            new_funding_source.save
-          end
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['AAA', 1]]
 
           #Dummy User
           service.fare_user = "2581"
@@ -478,25 +446,14 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'franklin'
 
-          #Confirm API Token is set
-          if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
-          end
-
-          service.save
 
         when 'dauphin'
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
-          service.funding_sources.destroy_all
-          funding_source_array.each do |fs|
-            new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
-            new_funding_source.index = fs[1]
-            new_funding_source.general_public = fs[2]
-            new_funding_source.comment = fs[3]
-            new_funding_source.save
-          end
+
+          #Sponsors
+          sponsor_array = [['AAA', 1]]
 
           #Dummy User
           service.fare_user = "79109"
@@ -504,16 +461,37 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'dauphin'
 
-          #Confirm API Token is set
-          if service.booking_token.nil?
-            puts 'Be sure to setup a booking token for ' + service.name + ' ' + county
-          end
-
-          service.save
 
         else
           puts 'Cannot find service with external_id: ' + county
+          next
         end
+
+        #Clear and set Funding Sources
+        service.funding_sources.destroy_all
+        funding_source_array.each do |fs|
+          new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+          new_funding_source.index = fs[1]
+          new_funding_source.general_public = fs[2]
+          new_funding_source.comment = fs[3]
+          new_funding_source.save
+        end
+
+        #Clear and set Sponsors
+        service.sponsors.destroy_all
+        sponsor_array.each do |s|
+          new_sponsor = Sponsor.where(service: service, code: s[0]).first_or_create
+          new_sponsor.index = s[1]
+          new_sponsor.save
+        end
+
+        #Confirm API Token is set
+        if service.booking_token.nil?
+          puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
+        end
+
+        service.save
+
       else
 
       end

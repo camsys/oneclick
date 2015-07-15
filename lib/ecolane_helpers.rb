@@ -517,6 +517,49 @@ class EcolaneHelpers
 
   end
 
+  def build_funding_hash_from_funding_source(itinerary, funding_source, funding_xml)
+
+    purpose = itinerary.trip_part.trip.trip_purpose_raw
+    sponsors = itinerary.service.sponsors
+    if sponsors.count == 0
+      return {funding_source: funding_source, purpose: purpose, sponsor: nil}
+    end
+
+    sponsors = sponsors.order(:index).pluck(:code)
+
+    min_index = 10000
+    best_sponsor = nil
+
+    #Cycle through all the funding sources for this trip.  For the one's that match our funding source, find the best sponsor
+    funding_xml.xpath("funding_options").xpath("option").each do |options|
+      ecolane_funding_source = options.xpath("funding_source").text
+
+      unless ecolane_funding_source == funding_source
+        next
+      end
+
+      ecolane_purpose = options.xpath("purpose").text
+
+      if ecolane_purpose == purpose
+
+        sponsor = options.xpath("sponsor").text
+        index_of_sponsor = sponsors.index(sponsor)
+        if index_of_sponsor and index_of_sponsor < min_index
+          best_sponsor = sponsor
+          min_index = index_of_sponsor
+        end
+
+        #If we match the default funding source with the min sponsor, go ahead and return.
+        if min_index == 0
+          return {funding_source: funding_source, purpose: purpose, sponsor: best_sponsor}
+        end
+      end
+    end
+
+    return {funding_source: funding_source, purpose: purpose, sponsor: best_sponsor}
+
+  end
+
   ############################################################
   #Find Fares for users that do not have accounts with ecolane
   ############################################################
@@ -528,7 +571,7 @@ class EcolaneHelpers
 
   def build_discount_order_hash(itinerary, funding_source, guest_id)
     order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
-    order[:funding] = build_discount_funding_hash(itinerary, funding_source)
+    order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(itinerary).body))
     order
   end
 
@@ -643,11 +686,16 @@ class EcolaneHelpers
 
   def get_customer_id(itinerary)
     user_service = itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first
-    if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
-      user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id, itinerary.service.booking_token)
-      user_service.save
+
+    if user_service
+      if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
+        user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id, itinerary.service.booking_token)
+        user_service.save
+      end
+      return user_service.customer_id
+    else
+      return get_ecolane_customer_id(itinerary.service.fare_user, itinerary.service.booking_system_id, itinerary.service.booking_token)
     end
-    return user_service.customer_id
   end
 
   def cancel_itinerary(itinerary)
