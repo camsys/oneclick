@@ -363,6 +363,12 @@ namespace :oneclick do
     puts oc.value
     oc.save
 
+
+    #If multiple counties use the same service.  Handle it here
+    oc = OneclickConfiguration.where(code: 'ecolane_county_mapping').first_or_create
+    oc.value = {"adams" => 'york', "cumberland" => "york"}
+    oc.save
+
     services = Service.where(booking_service_code: "ecolane")
 
     services.each do |service|

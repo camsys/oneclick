@@ -388,7 +388,7 @@ class EcolaneHelpers
 
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
 
-    service = Service.find_by(external_id: county.downcase.strip)
+    service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
@@ -752,12 +752,13 @@ class EcolaneHelpers
     Date.iso8601(dob.delete('/'))
   end
 
-  def county_to_system(county)
-    Oneclick::Application.config.ecolane_county_mapping[county.downcase.to_sym]
+  def county_to_service(county)
+    Service.find_by(external_id: county_to_external_id(county).downcase.strip)
   end
 
-  def county_to_service(county)
-    Service.find_by(external_id: county.downcase.strip)
+  def county_to_external_id(county)
+    mapping = Oneclick::Application.config.ecolane_county_mapping[county.downcase.strip.to_s]
+    return mapping.nil? ? county : mapping
   end
 
   ### Testing functions:
