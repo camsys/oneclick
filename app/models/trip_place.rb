@@ -143,6 +143,9 @@ class TripPlace < GeocodedAddress
     components = details[:address_components]
     components.each do |component|
       types = component[:types]
+      if types.nil?
+        next
+      end
       if 'street_address'.in? types
         self.address1 = component[:long_name]
       elsif 'administrative_area_level_1'.in? types
