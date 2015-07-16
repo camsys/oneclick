@@ -358,7 +358,7 @@ namespace :oneclick do
 
     #Define which funding_sources are ADA, used for determining the questions
     oc = OneclickConfiguration.where(code: "ada_funding_sources").first_or_create
-    oc.value = ["ADAYORK1", "ADAYORK2", "ADA"]
+    oc.value = ["ADAYORK1", "ADA"]
     puts 'The following funding sources are considered to be ADA'
     puts oc.value
     oc.save
@@ -395,7 +395,7 @@ namespace :oneclick do
         when 'york'
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["ADAYORK2", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
 
           #Sponsors
           sponsor_array = [['YCAAA', 1]]
