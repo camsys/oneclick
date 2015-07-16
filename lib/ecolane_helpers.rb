@@ -537,7 +537,11 @@ class EcolaneHelpers
 
         sponsor = options.xpath("sponsor").text
         index_of_sponsor = sponsors.index(sponsor)
-        if index_of_sponsor and index_of_sponsor < min_index
+
+        if best_sponsor.nil?
+          best_sponsor = sponsor
+          min_index = index_of_sponsor || min_index
+        elsif index_of_sponsor and index_of_sponsor < min_index
           best_sponsor = sponsor
           min_index = index_of_sponsor
         end
