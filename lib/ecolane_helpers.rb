@@ -482,30 +482,23 @@ class EcolaneHelpers
     purpose = itinerary.trip_part.trip.trip_purpose_raw
     min_index = 10000
     best_funding_source = nil
-    best_sponsor = nil
-    best_purpose = nil
 
     #Cycle through all the funding sources for this trip.  Return the one with the lowest index.
     funding_xml.xpath("funding_options").xpath("option").each do |options|
 
       ecolane_purpose = options.xpath("purpose").text
-      simplified_ecolane_purpose = ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
 
-      Rails.logger.info("Comparing Trip Purposes - Ecolane: " + simplified_ecolane_purpose + ', 1-Click: ' + purpose.downcase.gsub(%r{[ /]}, '_'))
-
-      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose.downcase.gsub(%r{[ /]}, '_')
+      if ecolane_purpose == purpose
         funding_source = options.xpath("funding_source").text
         index = funding_array.index(funding_source)
 
-        if index and (index < min_index or (index == min_index and best_sponsor.nil?))
+        if index and (index < min_index)
           min_index = index
           best_funding_source = funding_source
-          best_sponsor = options.xpath("sponsor").text
-          best_purpose = ecolane_purpose
 
-          #If we match the default funding source with a sponsor, go ahead and return.
-          if min_index == 0 and not best_sponsor.nil?
-            return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
+          #If we match the default funding source, go ahead and find the purpose
+          if min_index == 0
+            return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml )
           end
 
         end
@@ -513,7 +506,7 @@ class EcolaneHelpers
       end
     end
 
-    return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
+    return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml)
 
   end
 
