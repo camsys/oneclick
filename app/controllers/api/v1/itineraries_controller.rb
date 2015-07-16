@@ -179,7 +179,7 @@ module Api
             bi.save
             puts 'Itinerary ' + bi.id.to_s + " has been booked and marked as selected. "
 
-            negotiated_pu_time = status[1][:pu_time]
+            negotiated_pu_time = bi.negotiated_pu_time
             if negotiated_pu_time.nil?
               wait_start = nil
               wait_end = nil
@@ -189,7 +189,7 @@ module Api
               wait_end = (negotiated_pu_time.to_time + 15*60).iso8601
             end
 
-            negotiated_do_time = status[1][:do_time].nil? ? nil : status[1][:do_time].to_time.iso8601
+            negotiated_do_time = bi.negotiated_do_time.nil? ? nil : bi.negotiated_do_time.iso8601
             results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
           end
 
