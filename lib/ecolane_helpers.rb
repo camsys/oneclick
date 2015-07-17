@@ -286,26 +286,26 @@ class EcolaneHelpers
 
   ## GET Operations
   def get_trip_purposes_from_itinerary(itinerary)
-    get_trip_purposes(get_ecolane_customer_id_from_itinerary(itinerary), itinerary.service.booking_system_id, itinerary.service.booking_token)
+    get_trip_purposes(get_ecolane_customer_id_from_itinerary(itinerary), itinerary.service.booking_system_id, itinerary.service.booking_token, itinerary.service.disallowed_purposes_array)
   end
 
   def get_trip_purposes_from_traveler(traveler)
     user_service = UserService.where(user_profile: traveler.user_profile).order('created_at').last
-    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token)
+    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
   end
 
   def get_trip_purposes_from_customer_number(customer_number, system_id, token)
-    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id, token), system_id, token)
+    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id, token), system_id, token, Service.find_by(booking_system_id: system_id).disallowed_purposes_array)
   end
 
-  def get_trip_purposes(customer_id, system_id, token)
+  def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
     purposes = []
     customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
     resp_xml = Nokogiri::XML(customer_information)
     resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
       funding_source.xpath("allowed").each do |allowed|
         purpose = allowed.xpath("purpose").text
-        unless purpose.in? purposes
+        unless purpose.in? purposes or purpose.in? disallowed_purposes
           purposes.append(purpose)
         end
       end

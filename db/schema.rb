@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715170433) do
+ActiveRecord::Schema.define(version: 20150717141712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -588,6 +588,7 @@ ActiveRecord::Schema.define(version: 20150715170433) do
     t.string   "fare_user"
     t.string   "booking_system_id"
     t.string   "booking_token"
+    t.text     "disallowed_purposes"
   end
 
   create_table "services_users", id: false, force: true do |t|

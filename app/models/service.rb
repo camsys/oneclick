@@ -496,6 +496,10 @@ class Service < ActiveRecord::Base
     return true
   end
 
+  def disallowed_purposes_array
+    return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)

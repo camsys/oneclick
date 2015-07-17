@@ -406,6 +406,10 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'rabbit'
 
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas
+          service.disallowed_purposes = 'medical,pharmacy'
+
 
         when 'lebanon'
 
