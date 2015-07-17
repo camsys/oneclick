@@ -232,7 +232,7 @@ module Api
           if trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           else
-            subject = "Your Ride on " + trip..scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+            subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
           UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
