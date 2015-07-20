@@ -395,7 +395,7 @@ namespace :oneclick do
         when 'york'
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
 
           #Sponsors
           sponsor_array = [['YCAAA', 1]]
