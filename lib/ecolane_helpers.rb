@@ -416,7 +416,7 @@ class EcolaneHelpers
     end
 
     if new_user #Create User Service
-      user_service = UserService.where(user_profile: u.user_profile, service: service).first_or_initialize
+      user_service = UserService.where(user_profile_id: u.user_profile.id, service_id: service.id).first_or_initialize
       user_service.external_user_id = external_user_id
       user_service.save
     end
