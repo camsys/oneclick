@@ -399,7 +399,7 @@ class EcolaneHelpers
 
       puts 'new'
       new_user = true
-      u = User.where(email: external_user_id + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
+      u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob
