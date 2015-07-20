@@ -3,7 +3,7 @@ class TripPartSerializer < ActiveModel::Serializer
   include TripsHelper
 
   attributes :id, :description, :description_without_direction, :start_time, :end_time
-  attributes :is_depart, key: :is_depart_at
+  attribute :is_depart, key: :is_depart_at
   has_many :itineraries
   attr_accessor :debug, :asynch
 
