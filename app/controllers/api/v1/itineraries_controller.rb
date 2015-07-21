@@ -209,7 +209,8 @@ module Api
             end
 
             negotiated_do_time = bi.negotiated_do_time.nil? ? bi.end_time.iso8601 : bi.negotiated_do_time.iso8601
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
+            negotiated_duration = negotiated_do_time - negotiated_pu_time
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration  })
           end
 
         #Build Failure Response
