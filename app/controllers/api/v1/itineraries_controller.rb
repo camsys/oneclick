@@ -123,20 +123,22 @@ module Api
             end
 
             #Add Service Names to Legs
-            yaml_legs = YAML.load(itinerary.legs)
-            yaml_legs.each do |leg|
-              unless leg['agencyId'].nil?
-                service = Service.where(external_id: leg['agencyId']).first
-                unless service.nil?
-                  leg['serviceName'] = service.name
-                else
-                  leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+
+            unless itinerary.legs.nil?
+              yaml_legs = YAML.load(itinerary.legs)
+              yaml_legs.each do |leg|
+                unless leg['agencyId'].nil?
+                  service = Service.where(external_id: leg['agencyId']).first
+                  unless service.nil?
+                    leg['serviceName'] = service.name
+                  else
+                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+                  end
                 end
               end
+              itinerary.legs = yaml_legs.to_yaml
+              itinerary.save
             end
-
-            itinerary.legs = yaml_legs.to_yaml
-            itinerary.save
 
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
