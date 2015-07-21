@@ -34,9 +34,9 @@ module TripsSupport
   KIOSK_LOCATION_TYPE      = '6'
 
   # Set the default travel time/date to x mins from now
-  # def default_trip_time
-  #   Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
-  # end
+  def kiosk_default_trip_time
+    Time.now.in_time_zone.next_interval(DEFAULT_TRIP_TIME_AHEAD_MINS.minutes)
+  end
 
   def get_trip_place(place_id)
     if can? :manage, :all

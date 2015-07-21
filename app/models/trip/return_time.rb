@@ -30,7 +30,7 @@ module Trip::ReturnTime
     travel_date = if respond_to?(:trip_time) && trip_time.present?
       trip_time
     else
-      TripsSupport.default_trip_time
+      TripsSupport.kiosk_default_trip_time
     end
 
     # default to a round trip. The default return trip time is set the the default trip time plus

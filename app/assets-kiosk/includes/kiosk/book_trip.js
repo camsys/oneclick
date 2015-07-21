@@ -6,7 +6,7 @@ jQuery(function ($) {
 
     $(this).addClass('stop');
 
-    var text = "<br>" + "#{translate_helper(:please_wait)}" + "..."
+    var text = "<br>" + "#{t(:please_wait)}" + "..."
     $('#bookButton').html(text);
 
     $.ajax({
