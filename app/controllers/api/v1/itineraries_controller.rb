@@ -127,7 +127,7 @@ module Api
             yaml_legs.each do |leg|
               unless leg['agencyId'].nil?
                 service = Service.where(external_id: leg['agencyId']).first
-                unless service.nil
+                unless service.nil?
                   leg['serviceName'] = service.name
                 else
                   leg['serviceName'] = leg['agencyName'] || leg['agencyId']
