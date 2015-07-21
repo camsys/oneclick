@@ -1,5 +1,5 @@
-= simple_form_for :poi, url: admin_load_pois_path, method: 'patch', html: { class: 'form-horizontal', multipart: true }, authenticity_token: true, wrapper: :horizontal_form do |f|
-  .row
+= simple_form_for :poi, url: admin_load_pois_path, html: {class: 'form-horizontal', multipart: true, method: 'patch' }, authenticity_token: true, wrapper: :horizontal_form do |f|
+  .row#poi_upload_div
     .col-sm-12
       .panel.panel-default
         .panel-heading
@@ -7,10 +7,32 @@
             .col-sm-12
               %h3.panel-title
                 .btns.pull-right
-                  = f.submit t(:ok), class: 'btn action-button', role: 'button'
-                = t(:load_pois)
+                  = f.submit translate_helper(:ok), class: 'btn action-button', role: 'button'
+                = translate_helper(:load_pois)
                 = add_tooltip("load_pois_help")
         .panel-body
           = f.error_notification message: print_messages(f)
-          %label=t(:load_pois_notes)
-          = f.input "file", required:true, :label => t(:select_pois_file_to_upload),:as => :file
+          %label=translate_helper(:load_pois_notes)
+          = f.input "file", required:true, :label => translate_helper(:select_pois_file_to_upload),:as => :file
+  :javascript
+    if(#{Rails.application.config.poi_is_loading}) {
+      $('#poi_upload_div').overlayMask();
+      timer = setInterval(function(){
+        if ($("#poi_upload_div .overlay-mask").length === 0) {
+          clearInterval(timer)
+        } else {
+          $.ajax({
+            type: 'GET',
+            url: "#{admin_check_loading_status_path}",
+            async: false,
+            success: function(status) { 
+              if(!status.is_loading) {
+                $('#poi_upload_div').overlayMask('remove');
+                show_alert(status.loading_summary);
+              }
+            }
+          });
+        }
+      }, 1000);
+    }
+    

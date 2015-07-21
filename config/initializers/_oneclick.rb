@@ -17,14 +17,17 @@ Oneclick::Application.configure do
   config.default_max_transfers = 2
   config.default_min_fare = 0
   config.default_max_fare = 50
-  config.paratransit_duration_factor = 2.0
-  config.minimum_paratransit_duration = 2.hours
+  config.default_max_wait_time = 60 #minutes
+  config.paratransit_duration_factor = 4.0
+  config.minimum_paratransit_duration = 0
+  config.default_paratransit_duration = 2.hours
   config.rideshare_duration_factor = 1.5
   config.minimum_rideshare_duration = (1.5).hours
   config.show_update_services = false
   config.min_drive_seconds = 180
   config.max_walk_seconds = 1200
   config.allows_booking = false
+  config.replace_long_walks = false
 
   config.street_view_url = '/streetview.html'
   config.enable_sidewalk_obstruction = true
@@ -36,7 +39,7 @@ Oneclick::Application.configure do
   config.min_ui_duration = 1.hours
 
   config.google_places_api_key = 'AIzaSyCvKyNoBzQNrBRuSRkipWye0pdj__HjrmU'
-  config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
+  config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
 
   config.time_zone = 'Eastern Time (US & Canada)'
 
@@ -57,15 +60,37 @@ Oneclick::Application.configure do
   config.application_logo_format_list = %w(jpg jpeg gif png)
   config.application_logo_dimensions = [440, 50]
 
+  # poi loading
+  config.poi_is_loading = false
+
+  # favicon upload
+  config.favicon_format_list = %w(ico png) 
+
+  # maximum how many services to be displayed
+  config.max_number_of_specialized_services_to_show = nil # nil means no limitation
+
+  #Default SSL Setting
+  config.force_ssl = false
+
+  #API Activation:  API is still in beta.  Need ability to turn it off on a per-instance basis
+  config.api_activated = true
+
+  # the ability to see the legend on the review page
+  config.show_legend = true
+
+
   case ENV['BRAND'] || 'arc'
   when 'arc'
     config.host = 'oneclick-arc.camsys-apps.com'
     config.ui_logo = 'arc/logo.png'
     config.logo_text = "A R C logo - Simply Get There"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     config.map_bounds = [[33.457797,-84.754028], [34.090199,-83.921814]]
     config.geocoder_bounds = [[33.737147,-84.406634], [33.764125,-84.370361]]
-    config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8080/otp/routers/atl/plan?"
+    config.open_trip_planner = "http://otp-arc.camsys-apps.com:8080/otp/routers/arc/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Atlanta"
@@ -89,16 +114,26 @@ Oneclick::Application.configure do
     config.show_update_services = true
     config.default_county = ''
     config.state = 'GA'
-    config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
+    config.max_number_of_specialized_services_to_show = 3
+    config.replace_long_walks = true
+    config.enable_satisfaction_surveys = false
 
-  when 'broward'
+    #SSL
+    #unless Rails.env == 'development'
+    #  config.force_ssl = true
+    #end
+
+    when 'broward'
     config.host = 'oneclick-broward.camsys-apps.com'
     config.ui_logo = 'broward/logo.png'
     config.logo_text = "Broward logo - One Click"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     config.map_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-    config.geocoder_bounds = [[26.427309, -80.347081], [25.602294, -80.061728]]
-    config.open_trip_planner = "http://otp-broward.camsys-apps.com:8080/otp/routers/broward/plan?"
+    config.geocoder_bounds = [[25.602294, -80.347081], [26.427309, -80.061728]]
+    config.open_trip_planner = "http://otp-fl.camsys-apps.com:8080/otp/routers/fl/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Miami"
@@ -121,18 +156,21 @@ Oneclick::Application.configure do
     config.default_county = 'Broward'
     config.state = 'FL'
     I18n.available_locales = [:en, :es, :ht]
-    config.google_radius_meters = 75000 #Used in the Autocomplete Geocoder to bias results
+    config.enable_satisfaction_surveys = false
 
   when 'pa'
     config.host = 'oneclick-pa.camsys-apps.com'
     config.ui_logo = 'pa/logo.jpg'
     config.logo_text = "Pennsylvania logo - Find My Ride"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
-    config.geocoder_bounds = [[40.0262999543423,  -76.56372070312499], [39.87970800405549, -76.90189361572266]]
+    config.geocoder_bounds = [[39.87970800405549,  -76.90189361572266], [40.0262999543423, -76.56372070312499]]
     config.default_zoom = 12
-    config.open_trip_planner = "http://otpv1-arc.camsys-apps.com:8082/otp/routers/pa/plan?"
+    config.open_trip_planner = "http://otp-pa.camsys-apps.com:8080/otp/routers/pa/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Harrisburg-PA"
@@ -154,7 +192,8 @@ Oneclick::Application.configure do
     config.poi_file = 'db/pa/pa-poi-from-arcgis.csv'
     config.default_county = 'York'
     config.state = 'PA'
-    config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
+    config.enable_satisfaction_surveys = false
+
     config.max_walk_seconds = 3600
 
     ##Ecolane Variables
@@ -167,17 +206,23 @@ Oneclick::Application.configure do
     config.initial_signup_question = true
     config.allows_booking = true
     config.kiosk_available = true
+    config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
+    config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
+    config.ecolane_county_mapping = {york:'york', lebanon: "ococtest"}
 
   when 'jta'
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
     config.logo_text = "J T A logo - TransPortal"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
     config.geocoder_bounds = [[30.0668986565,-82.0920740215],[30.5909384888,-81.319458582]]
     config.default_zoom = 12
-    config.open_trip_planner = "http://otpv1-jta.camsys-apps.com:8080/otp/routers/jta/plan?"
+    config.open_trip_planner = "http://otp-fl.camsys-apps.com:8080/otp/routers/fl/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Jacksonville-FL"
@@ -200,16 +245,19 @@ Oneclick::Application.configure do
     config.default_county = 'Duval'
     config.state = 'FL'
     config.max_walk_seconds = 3600
-    config.google_radius_meters = 50000 #Used in the Autocomplete Geocoder to bias results
+    config.enable_satisfaction_surveys = false
 
   when 'ieuw'
     config.host = 'oneclick-ieuw.camsys-apps.com'
     config.ui_logo = 'ieuw/logo.png'
     config.logo_text = "Inland Empire logo - Vet Link"
+    config.favicon = 'ieuw/desktop.ico'
+    config.mobile_favicon = 'ieuw/mobile.png'
+    config.tablet_favicon = 'ieuw/tablet.png'
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[33.163,-117.874],[36.053,-114.033]]
-    config.geocoder_bounds = [[33.163,-117.874],[36.063,-114.033]]
+    config.geocoder_bounds = [[36.063,-117.874],[33.163,-114.033]]
     config.default_zoom = 12
     config.open_trip_planner = "http://otp-ieuw.camsys-apps.com:8080/otp/routers/ieuw/plan?"
     config.transit_respects_ada = false
@@ -235,20 +283,23 @@ Oneclick::Application.configure do
     config.state = 'CA'
 
     config.max_walk_seconds = 3600
-    config.google_radius_meters = 150000 #Used in the Autocomplete Geocoder to bias results
 
     config.time_zone = 'Pacific Time (US & Canada)'
+    config.enable_satisfaction_surveys = false
 
   when 'ma'
     config.host = 'oneclick.camsys-apps.com'
     config.ui_logo = 'ma/logo.png'
     config.logo_text = "1-Click"
+    config.favicon = ''
+    config.mobile_favicon = ''
+    config.tablet_favicon = ''
     config.geocoder_components = 'country:US'
     # TODO Do we maybe need different bounds for kiosk vs. default?
     config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
     config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
     config.default_zoom = 12
-    config.open_trip_planner = "http://otp-extra.camsys-apps.com:8080/otp/routers/default/plan?"
+    config.open_trip_planner = "http://otp-ma.camsys-apps.com:8080/otp/routers/ma/plan?"
     config.transit_respects_ada = false
     config.taxi_fare_finder_api_key = "SIefr5akieS5"
     config.taxi_fare_finder_api_city = "Boston"
@@ -270,41 +321,49 @@ Oneclick::Application.configure do
     #config.poi_file = 'db/jta/locations.csv'
     config.default_county = 'Suffolk'
     config.state = 'MA'
-    config.google_radius_meters = 50000 #Used in the Autocomplete Geocoder to bias results
-    config.max_walk_seconds = 3600
 
-  when 'uta'
-    config.host = 'oneclick-uta.camsys-apps.com'
-    config.logo_text = "UTA"
-    config.geocoder_components = "country:us"
-    # TODO Do we maybe need different bounds for kiosk vs. default?
-    config.map_bounds      = [[37,-114.1],[42,-109]]
-    config.geocoder_bounds = [[37,-114.1],[42,-109]]
-    config.default_zoom = 12
-    config.open_trip_planner = "http://otp-uta.camsys-apps.com:8080/otp/routers/uta/plan?"
-    config.transit_respects_ada = false
-    config.taxi_fare_finder_api_key = "SIefr5akieS5"
-    config.taxi_fare_finder_api_city = "SLC"
-    config.name = '1-Click/UTA'
-    ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
-    ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
-    ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@camsys.com"
-    ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
-    ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
-    ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
-    ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
-    ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
-    config.enable_feedback = true
-    config.traveler_read_all_organization_feedback = true
-    config.agent_read_feedback = true
-    config.provider_read_all_feedback = true
-    config.tripless_feedback = false
-    honeybadger_api_key = '0447225c'
-    config.default_county = 'Salt Lake'
-    config.state = 'UT'
     config.max_walk_seconds = 3600
-    config.google_radius_meters = 400000 #Used in the Autocomplete Geocoder to bias results
+    config.enable_satisfaction_surveys = false
 
+    when 'uta'
+      config.host = 'oneclick-uta.camsys-apps.com'
+      config.logo_text = "UTA"
+      config.favicon = ''
+      config.mobile_favicon = ''
+      config.tablet_favicon = ''
+      config.geocoder_components = "country:us"
+      # TODO Do we maybe need different bounds for kiosk vs. default?
+      config.map_bounds      = [[37,-114.1],[42,-109]]
+      config.geocoder_bounds = [[37,-114.1],[42,-109]]
+      config.default_zoom = 12
+      config.open_trip_planner = "http://otp-uta.camsys-apps.com:8080/otp/routers/uta/plan?"
+      config.transit_respects_ada = false
+      config.taxi_fare_finder_api_key = "SIefr5akieS5"
+      config.taxi_fare_finder_api_city = "SLC"
+      config.name = '1-Click/UTA'
+      ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
+      ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
+      ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@camsys.com"
+      ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
+      ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=   "gme-cambridgesystematics"
+      ENV['GOOGLE_GEOCODER_KEY'] ||=      "dXP8tsyrLYECMWGxgs5LA9Li0MU="
+      ENV['GOOGLE_GEOCODER_CHANNEL'] ||=  "ARC_ONECLICK"
+      ENV['GOOGLE_GEOCODER_TIMEOUT'] ||=  "5"
+      config.enable_feedback = true
+      config.traveler_read_all_organization_feedback = true
+      config.agent_read_feedback = true
+      config.provider_read_all_feedback = true
+      config.tripless_feedback = false
+      honeybadger_api_key = '0447225c'
+      config.default_county = 'Salt Lake'
+      config.state = 'UT'
+      config.max_walk_seconds = 3600
+      config.enable_satisfaction_surveys = false
+
+      #SSL
+      #unless Rails.env == 'development'
+      #  config.force_ssl = true
+      #end
 
     else
     raise "Brand '#{config.brand}' not supported"
@@ -368,7 +427,7 @@ Oneclick::Application.configure do
   config.address_cache_expire_seconds = 3600 # seconds to keep addresses returned from the geocoder in the cache
   config.return_trip_delay_mins = 120   # minutes needed at last trip place before scheduling the return trip
   config.OTP_retry_count = 3            #How many times do we retry getting a response from OTP before giving up.
-  config.user_guide_url = "https://s3.amazonaws.com/oneclick-bin/documentation/1-Click+v1+Guide.pdf"
+  config.user_guide_url = "https://s3.amazonaws.com/oneclick-bin/documentation/1-Click+Guide.pdf"
 
   #Special Fixed-Route Fare
   config.discount_fare_multiplier = 0

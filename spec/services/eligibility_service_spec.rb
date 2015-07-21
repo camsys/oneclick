@@ -20,8 +20,8 @@ describe EligibilityService do
 
   it "generates the missing information structure" do
     options_for_bool = [
-       { text: I18n.t(:yes_str), value: true },
-       { text: I18n.t(:no_str), value: false }
+       { text: TranslationEngine.translate_text(:yes_str), value: true },
+       { text: TranslationEngine.translate_text(:no_str), value: false }
     ]
 
     trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
@@ -33,8 +33,8 @@ describe EligibilityService do
       [],
       [
         {"question"=>"Are you age 65 or older?", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"== true", "group_id"=>0, "code"=>"age", "year"=>"65"},
-        {"question"=>"translation missing: en.The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
-        {"question"=>"translation missing: en.The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
+        {"question"=>"Translation not found: key = The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
+        {"question"=>"Translation not found: key = The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
       ]
     ]
   end

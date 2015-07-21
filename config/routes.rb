@@ -1,4 +1,5 @@
 Oneclick::Application.routes.draw do
+  
   get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: oneclick_available_locales do
@@ -17,9 +18,13 @@ Oneclick::Application.routes.draw do
 
     resources :content
 
+    resources :messages, :only => [:create]
+    post "mark_message_as_read" => "user_messages#mark_as_read", as: :read_message
+    post "open_message" => "user_messages#open"
+
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
-    resources :users do
+    resources :users, except: [:index] do
       member do
         get   'find_by_email'
         get   'profile'
@@ -289,17 +294,32 @@ Oneclick::Application.routes.draw do
     get '/place_search_poi' => 'trips#search_poi'
     get '/place_search_geo' => 'trips#search_geo'
 
+    # reporting engine
+    namespace :reporting do
+      get '/'  => 'reports#index'
+      resources :reports, only: [:index, :show] do
+        resources :results, only: [:index]
+      end
+    end
+
     namespace :admin do
+
       get '/reports/trips_datatable' => 'reports#trips_datatable'
-      resources :reports, :only => [:index, :show]
-      post '/reports/:id' => 'reports#show'
+
+      resources :reports, :only => [:index, :show] do
+        get 'results'
+      end
+
       resources :trips, :only => [:index]
+      resources :trip_parts, :only => [:index]
       get '/geocode' => 'util#geocode'
       get '/raise' => 'util#raise'
       get '/services' => 'util#services'
       get '/settings' => 'util#settings'
       patch '/load_pois' => 'pois#load_pois'
+      get '/check_loading_status' => 'pois#check_loading_status'
       patch '/upload_application_logo' => 'util#upload_application_logo'
+      patch '/upload_favicon' => 'util#upload_favicon'
       get '/' => 'admin_home#index'
       resource :feedback
       resources :sidewalk_obstructions, :only => [:index] do
@@ -319,12 +339,14 @@ Oneclick::Application.routes.draw do
           get   'agency_revoke'
         end
         get 'select_user'
-        member do 
+        member do
           patch 'undelete'
         end
         resources :trips
       end
       resources :users do
+        get 'merge', on: :member, to: "users#merge_edit"
+        patch 'merge', on: :member, to: "users#merge_submit"
         put 'update_roles', on: :member
         get 'find_by_email'
         member do
@@ -339,6 +361,7 @@ Oneclick::Application.routes.draw do
         member do
           patch 'undelete'
         end
+        resources :trip_parts
       end
       resources :translations
       resources :oneclick_configurations
@@ -350,8 +373,12 @@ Oneclick::Application.routes.draw do
     end
 
     resources :services do
+      resources :fare_zones, only: [:create]
+
       member do
+        get 'fare_type_form'
         patch 'undelete'
+        get 'view'
       end
     end
     resources :ratings, only: [:index, :create] do
@@ -361,6 +388,8 @@ Oneclick::Application.routes.draw do
       end
     end
 
+    resources :satisfaction_surveys
+
     resources :trips do
       member do
         get 'itinerary_map'
@@ -368,12 +397,6 @@ Oneclick::Application.routes.draw do
     end
     get "plan_a_trip" => 'trips#plan_a_trip'
     post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
-
-    resources :services do
-      member do
-        get 'view'
-      end
-    end
 
     resources :esp_reader do
       collection do
@@ -397,5 +420,77 @@ Oneclick::Application.routes.draw do
     # get '*not_found' => 'errors#handle404'
   end
 
+  #API
+  namespace :api, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :trip_purposes do
+        collection do
+          post 'list' => 'trip_purposes#list'
+          post 'index' => 'trip_purposes#index'
+        end
+      end
+
+      resources :itineraries do
+        collection do
+          post 'select'
+          post 'plan'
+          post 'book'
+          post 'cancel'
+          post 'email'
+        end
+      end
+
+      resources :trips do
+        collection do
+          get 'status_from_token'
+          get 'details_from_token'
+          get 'list'
+          get 'index'
+        end
+
+        member do
+          get 'status'
+          get 'details'
+        end
+      end
+
+      resources :places do
+        collection do
+          get 'search'
+          post 'within_area'
+        end
+      end
+
+      resources :characteristics do
+        collection do
+          get 'list'
+          get 'index'
+        end
+      end
+
+      resources :accommodations do
+        collection do
+          get 'list'
+          get 'index'
+        end
+      end
+
+      resources :users do
+        collection do
+          post 'update'
+          get  'profile'
+        end
+      end
+
+      devise_scope :user do
+        post 'sign_in' => 'sessions#create'
+        post 'sign_out' => 'sessions#destroy'
+      end
+
+    end
+  end
+
   get 'heartbeat' => Proc.new { [200, {'Content-Type' => 'text/plain'}, ['ok']] }
+
+  get '/robots.txt' => RobotsTxt
 end

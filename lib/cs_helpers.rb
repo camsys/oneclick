@@ -19,6 +19,7 @@ module CsHelpers
     :providers => 'fa fa-umbrella',
     :reports => 'fa fa-bar-chart-o',
     :trips => 'fa fa-tags',
+    :trip_parts => 'fa fa-list-ol',
     :services => 'fa fa-bus',
     :users => 'fa fa-group',
     :feedback => 'fa fa-thumbs-o-up',
@@ -32,56 +33,60 @@ module CsHelpers
 
   def admin_actions
     a = [
-      {label: t(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
-      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
+      {label: TranslationEngine.translate_text(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
+      {label: TranslationEngine.translate_text(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: TranslationEngine.translate_text(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
     if Rating.feedback_on?
-      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
+      a.push({label: TranslationEngine.translate_text(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
     end
     if SidewalkObstruction.sidewalk_obstruction_on?
-      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
+      a.push({label: TranslationEngine.translate_text(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
     end
     a
   end
 
   def staff_actions
     [
-      {label: t(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
-      {label: t(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
-      {label: t(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
-      {label: t(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
-      {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
-      {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: admin_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
-      {label: t(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
+      {label: TranslationEngine.translate_text(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
+      {label: TranslationEngine.translate_text(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
+      {label: TranslationEngine.translate_text(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
+      {label: TranslationEngine.translate_text(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: TranslationEngine.translate_text(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
+      {label: TranslationEngine.translate_text(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
+      {label: TranslationEngine.translate_text(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: TranslationEngine.translate_text(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
+      {label: TranslationEngine.translate_text(:reports), target: reporting_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: TranslationEngine.translate_text(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
+      {label: TranslationEngine.translate_text(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
   end
 
   def traveler_actions options = {}
     a = if user_signed_in?
       [
-        {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
-        {label: t(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
-        {label: t(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
-        {label: t(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
+        {label: TranslationEngine.translate_text(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: TranslationEngine.translate_text(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
+        {label: TranslationEngine.translate_text(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
+        {label: TranslationEngine.translate_text(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+        {label: TranslationEngine.translate_text(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
       ]
     else
       [
-        {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
-        {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
+        {label: TranslationEngine.translate_text(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: TranslationEngine.translate_text(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
+        {label: TranslationEngine.translate_text(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
       ]
     end
     if options[:with_logout]
-      a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true, method: :delete}
+      a << {label: TranslationEngine.translate_text(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true, method: :delete}
     end
     a
   end
 
+  def is_admin
+    current_user.has_role?(:admin) or current_user.has_role?(:system_administrator)
+  end
 
   def has_agency_specific_role?
     [:agency_administrator, :agent].any? do |r|
@@ -106,12 +111,18 @@ module CsHelpers
   end
 
   def create_trips_path
-    if User.with_role(:provider_staff, :any).include?(current_user)
-      admin_provider_trips_path(current_user.provider)
-    elsif has_agency_specific_role?
+    if current_user && current_user.agency
       admin_agency_trips_path(current_user.agency)
     else
       admin_trips_path
+    end
+  end
+
+  def create_trip_parts_path
+    if current_user && current_user.provider
+      admin_provider_trip_parts_path(current_user.provider)
+    else
+      admin_trip_parts_path
     end
   end
 
@@ -212,9 +223,9 @@ module CsHelpers
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
     if date.year == Date.today.year
-      formatted_date = I18n.l date.to_date, :format => :oneclick_short
+      formatted_date = TranslationEngine.localize_date_short_format date.to_date
     else
-      formatted_date = I18n.l date.to_date, :format => :oneclick_long
+      formatted_date = TranslationEngine.localize_date_long_format date.to_date
     end
     I18n.locale = :tags if is_in_tags
 
@@ -224,14 +235,14 @@ module CsHelpers
   def format_time(time)
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
-    formatted_time = I18n.l time, :format => :oneclick_short unless time.nil?
+    formatted_time = TranslationEngine.localize_time(time) unless time.nil?
     I18n.locale = :tags if is_in_tags
 
     formatted_time || ""
   end
 
 
-  # Retuens a pseudo-mode for an itinerary. The pseudo-mode is used to determine
+  # Returns a pseudo-mode for an itinerary. The pseudo-mode is used to determine
   # the correct icon, title, and partial for an itinerary
   def get_pseudomode_for_itinerary(itinerary)
     if itinerary.is_walk
@@ -257,35 +268,39 @@ module CsHelpers
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
-      I18n.t(:rail)
+      TranslationEngine.translate_text(:rail)
     elsif mode_code == 'railbus'
-      I18n.t(:rail_and_bus)
+      TranslationEngine.translate_text(:rail_and_bus)
     elsif mode_code == 'bus'
-      I18n.t(:bus)
+      TranslationEngine.translate_text(:bus)
     elsif mode_code == 'drivetransit'
-      I18n.t(:drive_and_transit)
+      TranslationEngine.translate_text(:drive_and_transit)
     elsif mode_code == 'transit'
-      I18n.t(:transit)
+      TranslationEngine.translate_text(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:mode_paratransit_name)
+      TranslationEngine.translate_text(:mode_paratransit_name)
     elsif mode_code == 'volunteer'
-      I18n.t(:volunteer)
+      TranslationEngine.translate_text(:volunteer)
     elsif mode_code == 'non-emergency medical service'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
     elsif mode_code == 'nemt'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
+    elsif mode_code == 'dial_a_ride'
+      TranslationEngine.translate_text(:dial_a_ride)
+    elsif mode_code == 'tap'
+      TranslationEngine.translate_text(:tap)
     elsif mode_code == 'livery'
-      I18n.t(:car_service)
+      TranslationEngine.translate_text(:car_service)
     elsif mode_code == 'taxi'
-      I18n.t(:taxi)
+      TranslationEngine.translate_text(:taxi)
     elsif mode_code == 'rideshare'
-      I18n.t(:rideshare)
+      TranslationEngine.translate_text(:rideshare)
     elsif mode_code == 'walk'
-      I18n.t(:walk)
+      TranslationEngine.translate_text(:walk)
     elsif mode_code == 'car'
-      I18n.t(:drive)
+      TranslationEngine.translate_text(:drive)
     elsif mode_code == 'bicycle'
-      I18n.t(:bicycle)
+      TranslationEngine.translate_text(:bicycle)
     end
     return title
   end
@@ -303,7 +318,7 @@ module CsHelpers
     legs = itinerary.get_legs
     arrow = "\u2023"
     legs.each do |leg|
-      if leg.mode.downcase.in? ['rail', 'subway', 'tram', 'bus']
+      if leg.mode.in? Leg::TransitLeg::TRANSIT_LEGS
         name_string += leg.agency_id.to_s + " " + leg.mode.to_s.humanize + ' ' + arrow + ' '
       end
     end
@@ -382,7 +397,9 @@ module CsHelpers
   def logo_url_helper itinerary
     s = itinerary.service
     if s
-      if s.logo_url
+      if s.taxi_fare_finder_city.present?
+        return 'https://s3.amazonaws.com/oneclick-arc-int/images/tff_logo_50.jpg'
+      elsif s.logo_url
         return get_service_provider_icon_url(s.logo_url)
       elsif s.provider and s.provider.logo_url
         return get_service_provider_icon_url(s.provider.logo_url)
@@ -411,94 +428,6 @@ module CsHelpers
     else
       return root_url({locale:''}) + Base.helpers.asset_path(raw_logo_url)
     end
-  end
-
-  def get_itinerary_cost itinerary
-    estimated = false
-    fare =  itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
-    price_formatted = nil
-    cost_in_words = ''
-    comments = ''
-
-    if fare.respond_to? :fare_type
-      case fare.fare_type
-      when FareStructure::FLAT
-        if fare.base and fare.rate
-          estimated = true
-          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-          fare = fare.base.to_f
-          price_formatted = number_to_currency(fare.ceil) + '*'
-          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-        elsif fare.base
-          fare = fare.base.to_f
-          price_formatted = number_to_currency(fare)
-          cost_in_words = price_formatted
-        else
-          fare = nil
-        end
-      when FareStructure::MILEAGE
-        if fare.base
-          estimated = true
-          comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-          fare = fare.base.to_f
-          price_formatted = number_to_currency(fare.ceil) + '*'
-          cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-        else
-          fare = nil
-        end
-      when FareStructure::COMPLEX
-        fare = nil
-        estimated = true
-        price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-        cost_in_words = I18n.t(:see_below)
-      end
-    else
-      if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
-        Rails.logger.info 'is walk or bicycle, so no charge'
-        fare = 0
-        price_formatted = I18n.t(:no_charge)
-        cost_in_words = price_formatted
-      else
-        case itinerary.mode
-        when Mode.taxi
-          if fare
-            fare = fare.ceil
-            estimated = true
-            price_formatted = number_to_currency(fare) + '*'
-            comments = I18n.t(:cost_estimated)
-            cost_in_words = number_to_currency(fare) + I18n.t(:est)
-          end
-        when Mode.rideshare
-          fare = nil
-          estimated = true
-          price_formatted = '*'
-          comments = I18n.t(:see_details_for_cost)
-          cost_in_words = I18n.t(:see_below)
-        end
-      end
-    end
-
-    if price_formatted.nil?
-      unless fare.nil?
-        fare = fare.to_f
-        if fare == 0
-          Rails.logger.info 'no charge as fare is 0'
-          price_formatted = I18n.t(:no_charge)
-          cost_in_words = price_formatted
-        else
-          price_formatted = number_to_currency(fare)
-          cost_in_words = number_to_currency(fare)
-        end
-      else
-        estimated = true
-        price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-        cost_in_words = I18n.t(:unknown)
-      end
-    end
-
-    return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
   end
 
   def get_itinerary_start_time itinerary
@@ -531,5 +460,9 @@ module CsHelpers
 
   def is_arc?
     Oneclick::Application.config.brand == 'arc'
+  end
+
+  def is_ieuw?
+    Oneclick::Application.config.brand == 'ieuw'
   end
 end

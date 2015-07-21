@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource except: [:edit, :assist]
 
   def index
-    authorize! :index, User, :message => t(:not_authorized_as_an_administrator)
+    authorize! :index, User, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     @users = User.all
   end
 
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, @user, :message => t(:not_authorized_as_an_administrator)
+    authorize! :destroy, @user, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     user = User.find(params[:id])
     unless user == current_user
       user.destroy
@@ -137,11 +137,12 @@ class UsersController < ApplicationController
       @errors = true
     end
 
+    eh = EcolaneHelpers.new
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
-      eh = EcolaneHelpers.new
       result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
       unless result
+
         @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
         @errors = true
       end
@@ -151,7 +152,8 @@ class UsersController < ApplicationController
     unless @errors
       #Todo: This will need to be updated when more services are able to book.
       if @traveler.is_visitor?
-        @traveler = get_ecolane_traveler(external_user_id, dob, first_name, last_name)
+        @traveler = eh.get_ecolane_traveler(external_user_id, dob, 'york', first_name, last_name)
+        sign_in @traveler, :bypass => true
       end
       Service.where(booking_service_code: 'ecolane').each do |booking_service|
         user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
@@ -170,29 +172,6 @@ class UsersController < ApplicationController
     end
 
   end
-
-  def get_ecolane_traveler(external_user_id, dob, first_name, last_name)
-
-    user_service = UserService.where(external_user_id: external_user_id).order('created_at').last
-    if user_service
-      u = user_service.user_profile.user
-    else
-      u = User.where(email: external_user_id + '@example.com').first_or_create
-      u.first_name = first_name
-      u.last_name = last_name
-      u.password = dob
-      u.password_confirmation = dob
-      u.roles << Role.where(name: "registered_traveler").first
-      up = UserProfile.new
-      up.user = u
-      up.save!
-      result = u.save
-    end
-
-    sign_in u, :bypass => true
-    u
-  end
-
 
   def add_booking_service
     get_traveler
@@ -223,13 +202,6 @@ class UsersController < ApplicationController
     unless errors
       itinerary.is_bookable = true
       itinerary.save
-      #Todo: This will need to be updated when more services are able to book.
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
-        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
-        user_service.customer_id = nil
-        user_service.external_user_id = external_user_id
-        user_service.save
-      end
     end
 
     respond_to do |format|
@@ -245,21 +217,21 @@ class UsersController < ApplicationController
 
     if user.nil?
       success = false
-      msg = I18n.t(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
+      msg = TranslationEngine.translate_text(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
-      msg = t(:you_can_t_be_your_own_buddy)
+      msg = TranslationEngine.translate_text(:you_can_t_be_your_own_buddy)
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
-      msg = t(:you_ve_already_asked_them_to_be_a_buddy)
+      msg = TranslationEngine.translate_text(:you_ve_already_asked_them_to_be_a_buddy)
     else
       success = true
-      msg = t(:please_save_buddies, name: user.first_name)
+      msg = TranslationEngine.translate_text(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,
               user.email,
-              I18n.t('relationship_status.relationship_status_pending'),
+              TranslationEngine.translate_text('relationship_status.relationship_status_pending'),
               UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end
@@ -275,7 +247,7 @@ class UsersController < ApplicationController
 
     if UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
       set_traveler_id params[:buddy_id]
-      flash[:notice] = t(:assisting_turned_on)
+      flash[:notice] = TranslationEngine.translate_text(:assisting_turned_on)
       redirect_to new_user_trip_path(params[:buddy_id])
     end
   end
@@ -283,7 +255,9 @@ class UsersController < ApplicationController
 private
 
   def user_params_with_password
-    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :title, :phone, :preferred_mode_ids => [])
+    params.require(:user).permit(:first_name, :last_name, :email, :preferred_locale, 
+      :password, :password_confirmation, :walking_speed_id, :walking_maximum_distance_id, :maximum_wait_time,
+      :title, :phone, :preferred_mode_ids => [])
   end
 
   def set_approved_agencies(ids)

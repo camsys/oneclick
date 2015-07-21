@@ -48,6 +48,13 @@ body, .btn, .form-control, .dropdown-menu{
   display: inline-block;
 }
 
+.navbar-nav {
+  @media(max-width:$screen-sm-max){
+    margin: 0;
+    float: left;
+  }
+}
+
 .panel-title > a {
   color: $link-color;
 }
@@ -96,6 +103,13 @@ body, .btn, .form-control, .dropdown-menu{
   @media(min-width:$screen-md-min){
     line-height: 60px;
   }
+}
+
+#userMenuNavbar .action-button {
+  @media(max-width:$screen-sm-max){
+    margin: 0;
+    padding: 3px 5px;
+  } 
 }
 
 // These are the bootstrap original sizes
@@ -220,6 +234,7 @@ a:hover#help {
   text-align: center;
   line-height: normal;
   font-size: 2.25em;
+  padding-right: 5px;
 }
 
 .itin_text_container {
@@ -557,7 +572,12 @@ td.left, th.left {
   margin-bottom: 1em;
 }
 
-#itinerary_modal .well.comments, .trips.plan  .well.comments {
+#itinerary_modal .well.comments {
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+}
+
+#itinerary_modal .well.comments:first, .trips.plan  .well.comments {
   margin-top: 15px;
   margin-bottom: 5px;
 }
@@ -584,12 +604,24 @@ td.left, th.left {
 }
 
 .print_map {
-  background: white;
   border-radius: 5px;
   padding: 5px;
   img {
     display: block;
     margin: auto;
+    width: 100%;
+    height: 500px;
+  }
+}
+
+.trip_itinerary_mappable {
+  background: white;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  padding: 5px;
+
+  &:not(.printer_friendly) {
+    overflow-y:scroll;
   }
 }
 
@@ -607,16 +639,11 @@ td.left, th.left {
 .action-button {
   @extend .btn-primary;
   text-shadow: none;
-
-  &:not(:last-of-type) {
-    margin-right: 5px;
-  }
-
-  @media (max-width: $screen-xs-max) {
-    min-width: 6em;
-  }
-  @media (min-width: $screen-sm-min) {
-    min-width: 9em;
+  margin-right: 5px;
+  padding: 3px 6px;
+  min-width: 5em;
+  @media(min-width:$screen-md-min){
+    min-height:34px; //this is the height for breadcrumb;
   }
   font-weight: bold;
 }
@@ -720,4 +747,8 @@ button[data-target='#deleteUserConfirmDialog'] {
 .scrolling-checkbox-list {
  height: 12em;
  overflow: auto;
+}
+
+.panel-heading {
+  padding: 3px 6px;
 }

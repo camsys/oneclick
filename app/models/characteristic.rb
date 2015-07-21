@@ -24,12 +24,12 @@ class Characteristic < ActiveRecord::Base
   # return name value pairs suitable for passing to simple_form collection
   def self.form_collection include_all=true
     if include_all
-      list = [[I18n.t(:all), -1]]
+      list = [[TranslationEngine.translate_text(:all), -1]]
     else
       list = []
     end
     enabled.where(datatype: 'bool').order(name: :asc).each do |c|
-      list << [I18n.t(c.name), c.id]
+      list << [TranslationEngine.translate_text(c.name), c.id]
     end
     list
   end
@@ -60,12 +60,15 @@ class Characteristic < ActiveRecord::Base
       age = sc.value.to_s
       a['note'] = :ask_age
       success_condition = '== true'
+      question_text = TranslationEngine.translate_text(a['note'], age: age)
+    else
+      question_text = TranslationEngine.translate_text(a['note'])
     end
 
-    options = a['datatype']=='bool' ? [{text: I18n.t(:yes_str), value: true}, {text: I18n.t(:no_str), value: false}] : nil
+    options = a['datatype']=='bool' ? [{text: TranslationEngine.translate_text(:yes_str), value: true}, {text: TranslationEngine.translate_text(:no_str), value: false}] : nil
     {
-      'question' => I18n.t(a['note'], age: age),
-      #'description' => I18n.t(a['desc']),
+      'question' => question_text,
+      #'description' => TranslationEngine.translate_text(a['desc']),
       'data_type' => a['datatype'],
       # 'control_type' => '',
       'options' => options,

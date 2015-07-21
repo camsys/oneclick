@@ -466,7 +466,7 @@ class EspReader
         end
         if fare.base.nil? or amount >= fare.base.to_f
           fare.base = amount
-          fare.fare_type = 0
+          fare.fare_type = FareStructure::FLAT
           fare.save
         end
       end
@@ -491,7 +491,8 @@ class EspReader
     service_comments_hash.each do |key, item|
       service = Service.find(key)
       fare_structure = service.fare_structures.first #should only be one
-      fare_structure.desc = item + "</table><br>" + (fare_structure.desc || "")
+      comment_en = item + "</table><br>" + (fare_structure.desc || "")
+      fare_structure.public_comments.new(locale: 'en', comment: comment_en, visibility: 'public')
       fare_structure.save
       puts item
     end

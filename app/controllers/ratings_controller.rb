@@ -5,7 +5,19 @@ class RatingsController < ApplicationController
   def index
     authorize! :read, Rating
     authorize! :approve, Rating
-    @ratings = Rating.all
+
+    q_param = params[:q]
+    page = params[:page]
+    @per_page = params[:per_page] || Kaminari.config.default_per_page
+
+    @q = Rating.ransack q_param
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @params = {q: q_param}
+
+    total_ratings = @q.result(:district => true).includes(:user).pending
+        
+    # only render current page
+    @ratings = total_ratings.page(page).per(@per_page)
   end
 
   def new
@@ -37,7 +49,7 @@ class RatingsController < ApplicationController
         r.valid? ? successful_ratings << rateable_class.name.downcase : ''
       end
     end
-    flash[:notice] = t(:rating_submitted_for_approval, rateable: successful_ratings.to_sentence, count: successful_ratings.count) # only flash on creation
+    flash[:notice] = TranslationEngine.translate_text(:rating_submitted_for_approval, count: successful_ratings.count) # only flash on creation
     if user_signed_in?
       if rating_params.count == 1 #only one rateable object, can assume it's either Service or Agency
         case first_rateable
@@ -62,12 +74,12 @@ class RatingsController < ApplicationController
   def trip_only
     @trip = Trip.find(params[:trip_id])
     unless (@trip.md5_hash.eql? params[:trip][:hash]) || (authorize! :create, @trip.ratings.build(rateable: @trip))
-      flash[:notice] = t(:http_404_not_found)
+      flash[:notice] = TranslationEngine.translate_text(:http_404_not_found)
       redirect_to root_path
     end
     @trip.rate(@trip.user, params[:rating][:value], params[:rating][:comments])
 
-    flash[:notice]= t(:thanks_for_the_feedback)
+    flash[:notice]= TranslationEngine.translate_text(:thanks_for_the_feedback)
     redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
   end
 
@@ -85,7 +97,7 @@ class RatingsController < ApplicationController
       Rating.find(k).update_attributes(status: v)
     end
 
-    flash[:notice] = t(:rating_update, count: parsed_ratings.count) if parsed_ratings.count != 0
+    flash[:notice] = TranslationEngine.translate_text(:rating_update) if parsed_ratings.count != 0
     respond_to do |format|
       format.js {render nothing: true}
       format.html {redirect_to action: :index}

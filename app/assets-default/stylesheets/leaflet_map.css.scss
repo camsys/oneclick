@@ -69,6 +69,22 @@
   stroke: $trip-leg-paratransit;
 }
 
+.map-tripleg-ferry {
+   stroke: $trip-leg-ferry;
+ }
+
+.map-tripleg-funicular {
+  stroke: $trip-leg-funicular;
+}
+
+.map-tripleg-gondola {
+  stroke: $trip-leg-gondola;
+}
+
+.map-tripleg-cable_car {
+  stroke: $trip-leg-cable_car;
+}
+
 .map-tripleg-unknown {
   stroke: $trip-leg-unknown;
 }

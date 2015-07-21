@@ -34,7 +34,7 @@ class ProgramsController < TravelerAwareController
     # the request was an ajax request or not. The trip-planning form does not
     # use ajax.
     if request.xhr?
-      flash[:notice] = t(:profile_updated)
+      flash[:notice] = TranslationEngine.translate_text(:profile_updated)
     end
 
     respond_to do |format|

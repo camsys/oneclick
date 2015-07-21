@@ -3,12 +3,16 @@ class Service < ActiveRecord::Base
   require 'rgeo/shapefile'
   include Rateable # mixin to handle all rating methods
   include Commentable
+  include DisableCommented
+
+  validates :display_color, :hexadecimal_color => true
 
   resourcify
 
   #associations
   belongs_to :provider
   belongs_to :service_type
+  belongs_to :mode
   has_many :fare_structures
   has_many :schedules
   has_many :booking_cut_off_times
@@ -19,6 +23,9 @@ class Service < ActiveRecord::Base
   has_many :itineraries
   has_many :user_services
   has_and_belongs_to_many :users # primarily for internal contact
+  has_many :fare_zones
+  has_many :funding_sources
+  has_many :sponsors
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
@@ -54,7 +61,7 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
-  scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?)", "paratransit", "volunteer", "nemt")}
+  scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?,?,?)", "paratransit", "volunteer", "nemt", "tap", "dial_a_ride")}
   scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
 
   include Validations
@@ -67,6 +74,22 @@ class Service < ActiveRecord::Base
   validate :ensure_valid_advanced_book_day_range
 
   mount_uploader :logo, ServiceLogoUploader
+
+  def is_paratransit?
+    is_service_type('paratransit')
+  end
+
+  def is_transit?
+    is_service_type('transit')
+  end
+
+  def is_taxi?
+    is_service_type('taxi')
+  end
+
+  def is_service_type(type)
+    service_type && service_type.code == type
+  end
 
   def human_readable_advanced_notice
     human_readable_time_notice(self.advanced_notice_minutes)
@@ -292,7 +315,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
     else
       unless temp_endpoints_shapefile_path.nil?
-        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(endpoint_rule).to_s
+        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(endpoint_rule).to_s
       end
       if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
         self.endpoint_area_geom = nil
@@ -308,7 +331,7 @@ class Service < ActiveRecord::Base
       save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
     else
       unless temp_coverages_shapefile_path.nil?
-        alert_msg = I18n.t(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', I18n.t(coverage_rule).to_s
+        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(coverage_rule).to_s
       end
       if self.service_coverage_maps.where(rule: coverage_rule).count > 0
         self.coverage_area_geom = nil
@@ -344,6 +367,16 @@ class Service < ActiveRecord::Base
     nil
   end
 
+  def destroy_endpoint_geom
+    endpoint_area_geom.destroy if endpoint_area_geom
+    endpoint_area_geom = nil
+  end
+
+  def destroy_coverage_geom
+    coverage_area_geom.destroy if coverage_area_geom
+    coverage_area_geom = nil
+  end
+
   def wkt_to_array(rule = 'endpoint_area')
     myArray = []
     case rule
@@ -374,6 +407,99 @@ class Service < ActiveRecord::Base
     myArray
   end
 
+  # csv
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+
+  def self.csv_headers
+    [
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:provider),
+      TranslationEngine.translate_text(:phone),
+      TranslationEngine.translate_text(:email),
+      TranslationEngine.translate_text(:service_id),
+      TranslationEngine.translate_text(:status)
+    ]
+  end
+
+  def to_csv
+    [
+      id,
+      name,
+      provider.name,
+      phone,
+      email,
+      external_id,
+      active ? '' : TranslationEngine.translate_text(:inactive)
+    ].to_csv
+  end
+
+  def self.get_exported(rel, params = {})
+    if params[:bIncludeInactive] != 'true'
+      rel = rel.where(active: true)
+    end
+
+    if !params[:search].blank?
+      rel = rel.ransack({
+        :id_or_name_or_provider_name_or_phone_or_email_or_external_id_cont => params[:search]
+        }).result(:district => true)
+    end
+
+    rel
+  end
+
+  def is_valid_for_trip_area(from, to)
+
+   #taken from def eligible_by_location(trip_part, itineraries)
+   #some day we may want to pass the whole object around and not just from/to
+
+   mercator_factory = RGeo::Geographic.simple_mercator_factory
+
+   service = self
+
+   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
+
+   origin_point = mercator_factory.point(from[1], from[0])
+   destination_point = mercator_factory.point(to[1], to[0])
+
+   unless service.endpoint_area_geom.nil?
+      return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
+   end
+
+   unless service.coverage_area_geom.nil?
+     return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
+   end
+
+   return true
+
+  end
+
+  def can_provide_user_accommodations(user, service)
+
+    user_accommodations_unmet_by_selected_service = UserAccommodation.where("user_profile_id = ? AND value = 'true' AND accommodation_id NOT IN (SELECT accommodation_id from service_accommodations where service_id = ?)", user.user_profile.id, service.id)
+
+    return user_accommodations_unmet_by_selected_service.count == 0
+
+  end
+
+  def endpoint_contains?(lat,lng)
+    mercator_factory = RGeo::Geographic.simple_mercator_factory
+     test_point = mercator_factory.point(lng, lat)
+    unless self.endpoint_area_geom.nil?
+      return false unless self.endpoint_area_geom.geom.contains? test_point
+    end
+    return true
+  end
+
+  def disallowed_purposes_array
+    return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
@@ -395,10 +521,10 @@ class Service < ActiveRecord::Base
   end
 
   def ensure_valid_advanced_book_day_range
-    min_mins = self.advanced_notice_minutes 
+    min_mins = self.advanced_notice_minutes
     max_mins = self.max_advanced_book_minutes
     if !min_mins.nil? && !max_mins.nil? && min_mins > max_mins
-      errors.add(:max_advanced_book_days_part, I18n.t(:advanced_book_day_range_msg))
+      errors.add(:max_advanced_book_days_part, TranslationEngine.translate_text(:advanced_book_day_range_msg))
     end
   end
 

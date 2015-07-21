@@ -1,47 +1,78 @@
-- content_for :title, "Feedback - #{t(:site_title)}"
-= form_tag approve_ratings_path, method: :patch do
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:feedback)}"
+.col-sm-12
   .row.info-header
     .col-sm-12
       .btns.pull-right
-        = submit_tag t(:apply), class: "btn action-button"
-        = link_to t(:cancel), ratings_path, class: "btn action-button"
-      %h1= t(:feedback)
+        = submit_tag translate_helper(:apply), class: "btn action-button"
+        = link_to translate_helper(:cancel), ratings_path, class: "btn action-button"
+      %h1= translate_helper(:feedback)
   .panel.panel-default{style: 'padding: 0px;'}
     .panel-heading
       %h2.panel-title
-        = t(:feedback)
+        = translate_helper(:feedback)
         = add_tooltip("feedback_help")
     .panel-body
-      %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
-        %thead
-          %tr
-            %th= t(:username)
-            %th.center= t(:rating_targets)
-            %th.rating.hidden= t(:rating)
-            %th.rating_in_stars.nowrap= t(:rating)
-            %th= t(:comments)
-            %th= t(:approve)
-            %th= t(:reject)
-            %th= t(:created)
-        %tbody
-          - @ratings.pending.decorate.each do |rating|
+      = search_form_for @q, id: 'ratings_search_form', :url => "#{url_for(locale: params[:locale])}", html: {class: 'filter-form', style: 'padding-top: 10px;'} do |f|
+        .form-group
+          = f.search_field "user_name_or_value_or_comments_or_status_cont", {class: "form-control", style: 'width: auto; display: inline-block;' }
+          = f.submit translate_helper(:search), class: 'btn action-button'
+      %p
+        %select.input-sm#per_page_select
+          - [10, 25, 50, 100].each do |per_page|
+            - if per_page == @per_page.to_i
+              %option{value: "#{per_page}", selected: true}
+                = per_page
+            - else
+              %option{value: "#{per_page}"}
+                = per_page
+        :javascript
+          $('#per_page_select').on('change', function(){
+            var params = #{@params.to_json};
+            params.per_page = $(this).val();
+            window.location.href = "#{url_for(locale: params[:locale])}?" + $.param(params);
+          });
+        %span
+          = "records per page"
+      = form_tag approve_ratings_path, id: 'ratings_form', method: :patch do
+        %table.table.table-condensed.table-striped.table-bordered.table-hover#ratings_table
+          %thead
             %tr
-              -#TODO Change this from creator.  Use person who took a trip?
-              %td= rating.user.name
-              %td.center
-                %button.btn.action-button.inspect_rateable{data: {id: rating.id, toggle:"modal", target: '#rateable_modal'}}= rating.rateable_desc
-              %td.hidden= rating.value
-              %td.rating_in_stars.nowrap= rating.rating_in_stars
-              %td= rating.comments
-              %td
-                = label_tag "#{rating.id}_#{Rating::APPROVED}", t(:approve), class: "sr-only"
-                -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
-                = radio_button_tag "#{rating.id}", Rating::APPROVED
-              %td
-                = label_tag "#{rating.id}_#{Rating::REJECTED}", t(:reject), class: "sr-only"
-                -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
-                = radio_button_tag "#{rating.id}", Rating::REJECTED
-              %td.nowrap= format_date_time(rating.created_at)
+              %th= sort_link @q, :id, translate_helper(:id)
+              %th= sort_link @q, :user_name, translate_helper(:username)
+              %th.center= translate_helper(:rating_targets)
+              %th.rating.hidden= translate_helper(:rating)
+              %th.rating_in_stars.nowrap= sort_link @q, :value, translate_helper(:rating)
+              %th= sort_link @q, :comments, translate_helper(:comments)
+              %th= sort_link @q, :is_approved, translate_helper(:approve)
+              %th= sort_link @q, :is_rejected, translate_helper(:reject)
+              %th= sort_link @q, :created_at, translate_helper(:created)
+          %tbody
+            - @ratings.decorate.each do |rating|
+              %tr
+                -#TODO Change this from creator.  Use person who took a trip?
+                %td= rating.id
+                %td= rating.user.name
+                %td.center
+                  %button.btn.action-button.inspect_rateable{data: {id: rating.id, toggle:"modal", target: '#rateable_modal'}}= rating.rateable_desc
+                %td.hidden= rating.value
+                %td.rating_in_stars.nowrap= rating.rating_in_stars
+                %td= rating.comments
+                %td
+                  = label_tag "#{rating.id}_#{Rating::APPROVED}", translate_helper(:approve), class: "sr-only"
+                  -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
+                  = radio_button_tag "#{rating.id}", Rating::APPROVED
+                %td
+                  = label_tag "#{rating.id}_#{Rating::REJECTED}", translate_helper(:reject), class: "sr-only"
+                  -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
+                  = radio_button_tag "#{rating.id}", Rating::REJECTED
+                %td.nowrap= format_date_time(rating.created_at)
+        .row
+          .col-sm-6
+            .pull-left
+              = page_entries_info @ratings
+          .col-sm-6
+            .pull-right
+              = paginate @ratings, :params => {per_page: @per_page}, :theme => 'twitter-bootstrap-3' rescue nil
 #rateable_modal.modal.fade{:role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
   .modal-dialog.modal-lg
     .modal-content
@@ -64,7 +95,7 @@ $(document).ready( function() {
 
     e.preventDefault ? e.preventDefault() : e.returnValue = false;
   });
-  $("form").submit(function( event ) {
+  $("#ratings_form").submit(function( event ) {
     $.ajax({
       type: "POST",
       url: "/ratings/approve",
@@ -72,33 +103,11 @@ $(document).ready( function() {
         "utf8":"✓",
         "_method":"patch",
         "authenticity_token": $("input[name=authenticity_token]").val(),
-        "approve": $("input:checked", table.fnGetNodes()).serialize()
+        "approve": $('table input:checked').serialize()
       },
       // This can't just be a reload or we hit issues with the reload
       success: function() { window.location = window.location }
     })
     event.preventDefault();
   });
-  var table = $('#ratings_table').dataTable( {
-    "aaSorting": [[ 7, "desc" ]],
-    "aoColumnDefs": [
-      { "iDataSort": 2, "aTargets": [ 3 ] },
-      { "bSortable": false, "aTargets": [ 5,6 ] },
-      { "bSearchable": false, "aTargets": [ 5,6 ] }
-    ],
-    "oLanguage": {
-              "sLengthMenu": "Display _MENU_ ratings per page",
-              "sZeroRecords": "Nothing found - sorry",
-              "sInfo": "Showing _START_ to _END_ of _TOTAL_ ratings",
-              "sInfoEmpty": "Showing 0 to 0 of 0 ratings",
-              "sInfoFiltered": "(filtered from _MAX_ total ratings)",
-    },
-    "bAutoWidth": false,
-    "aoColumnDefs": [
-      { "sWidth": "10%", "aTargets": [ 1 ] },
-      { "sWidth": "40%", "aTargets": [ 4 ] },
-      { "sWidth": "5%", "aTargets": [ 5,6 ] }
-    ],
-    "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
-  } );
 });

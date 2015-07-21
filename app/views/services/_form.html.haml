@@ -1,11 +1,15 @@
-= simple_form_for @service,
-        url: @service.id.nil? ? services_path(provider_id: @provider) : service_path,
-        method: @service.id.nil? ? 'post' : 'put', html: { class: 'form-horizontal', multipart: true },
-        wrapper: :horizontal_form do |f|
-  - if @service.new_record?
-    = f.hidden_field :provider, value: @provider.id
+- is_transit = @service.is_transit?
+- transit_id = ServiceType.where(code: 'transit').first.id if ServiceType.where(code: 'transit').first
+- is_taxi = @service.is_taxi?
+- taxi_id = ServiceType.where(code: 'taxi').first.id if ServiceType.where(code: 'taxi').first
+- is_paratransit = @service.is_paratransit?
+- paratransit_id = ServiceType.where(code: 'paratransit').first.id if ServiceType.where(code: 'paratransit').first
 
+= simple_form_for @service, html: { class: 'form-horizontal service-edit-form', multipart: true},
+        wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
+  - if @service.new_record?
+    = f.hidden_field :provider_id, value: @provider.id
 
   .row.info-header
     .col-sm-6
@@ -16,35 +20,38 @@
         .pull-right
           = button_tag type: 'submit', class: "btn action-button", style: "margin-right:5px;" do
             = icon_label(:apply)
-          = link_to t(:cancel), :back, class: "btn action-button"
+          = link_to translate_helper(:cancel), @service.id.nil? ? admin_provider_path(@provider) : service_path(@service), class: "btn action-button"
 
   .row
     .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h3.panel-title
-            = t(:provided_by)
-            =  @service.provider.name
-            = add_tooltip("provided_by_help")
+            = translate_helper(:service)
+            = translate_helper(:information)
+            = add_tooltip("service_help")
         .panel-body
           - unless @service.active
             %h3.warning
-              = t(:service_is_inactive)
+              = translate_helper(:service_is_inactive)
           -unless @service.logo_url.nil?
             %img{src: @service.logo_url, style: "display: block; margin-right: auto; margin-left: auto;"}
-            = f.input :remove_logo, label: t(:remove_logo), :as => :boolean, input_html: {checked: false}
-          = f.input :logo, label: t(:upload_logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
+            = f.input :remove_logo, label: translate_helper(:remove_logo), :as => :boolean, input_html: {checked: false}
+          = f.input :logo, label: translate_helper(:upload_logo) + ' (' + Oneclick::Application.config.service_logo_format_list.join(',') + ')',  :as => :file
+          = f.input :display_color, label: translate_helper(:display_color), placeholder: "#000000"
           = f.input :phone
           = f.input :email
           = f.input :url
           = f.association :service_type,
-                  collection: ServiceType.all.map{|t| [ t(t.name), t.id ] }
+                  collection: ServiceType.all.map{|t| [ translate_helper(t.name), t.id ] }
+          = f.input :external_id, label: translate_helper(:service_id)
+          = f.input :use_gtfs_colors, label: translate_helper(:use_gtfs_colors)
 
     .col-sm-6
       .panel.panel-default.well0
         .panel-heading
           %h4.panel-title
-            = t(:internal_contact)
+            = translate_helper(:internal_contact)
             = add_tooltip("internal_contact_help")
         .panel-body
           = f.input :internal_contact_name
@@ -52,27 +59,27 @@
           = f.input :internal_contact_phone
           = f.input :internal_contact_email
           = f.input :internal_contact, collection: @service.users, class: "form-control",
-                selected: (@contact.id if @contact) , include_blank: "None", label: t(:user)
+                selected: (@contact.id if @contact) , include_blank: "None", label: translate_helper(:user)
 
   .row
-    .col-sm-4
+    .col-sm-4#schedule-panel
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:schedule)
+            = translate_helper(:schedule)
             = add_tooltip("schedule_help")
         .panel-body
           %table.ALTtable
             %thead
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper('datetime.prompts.day')
                 %th.text-center
-                  = t(:start_time)
+                  = translate_helper(:start_time)
                 %th.text-center
-                  = t(:end_time)
+                  = translate_helper(:end_time)
                 %th.text-center
-                  = t(:clear_?)
+                  = translate_helper(:clear_?)
             %tbody
               - # display each day of week
               - count = 0
@@ -83,7 +90,7 @@
                 %tr
                   %td.text-center{class: "#{(start_error || end_error) ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names').split(",")[day_of_week]
                   %td{class: "#{start_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{schedule.start_time if schedule}",
@@ -107,12 +114,12 @@
                   - else
                     %input{type: "hidden", value: "#{day_of_week}",
                            name: "service[schedules_attributes][][day_of_week]"}
-
-    .col-sm-4
+  
+    .col-sm-4#advanced-notice-panel
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:advance_notice_required)
+            = translate_helper(:advance_notice_required)
             = add_tooltip("advance_notice_required_help")
         .panel-body
           - adv_notice_days_total = @service.advanced_notice_minutes/60/24.round
@@ -121,12 +128,12 @@
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: adv_notice_days_total,
               name: "service[notice_days_part]"}
-          = t(:to).downcase
+          = translate_helper(:to).downcase
           %input.text-right{type: "number", min: 0, max: max_allow_adv_book_days,
               value: max_adv_book_days_total,
               name: "service[max_advanced_book_days_part]"}
-          %b 
-            = t(:days).downcase
+          %strong
+            = translate_helper(:days).downcase
           - # currently only use advanced_notice_days, may change back to days/hours/minutes
           /%input.text-right{type: "number", min: 0, max: 23,
           /    value: (minutes_total / 60) % 24,
@@ -136,17 +143,17 @@
           /    value: minutes_total % 60,
           /    name: "service[notice_minutes_part]"}
           /%b minutes
-          = " " + t(:advance_notice_required) + "."
+          = " " + translate_helper(:advance_notice_required) + "."
           - # booking cut off time editing
           %table.ALTtable
             %thead
               %tr
                 %th.text-center
-                  = t('datetime.prompts.day')
+                  = translate_helper('datetime.prompts.day')
                 %th.text-center
-                  = t(:cut_off_time)
+                  = translate_helper(:cut_off_time)
                 %th.text-center
-                  = t(:clear_?)
+                  = translate_helper(:clear_?)
             %tbody
               - # display each day of week
               - count = 0
@@ -156,7 +163,7 @@
                 %tr
                   %td.text-center{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %label.control-label
-                      = I18n.t('date.day_names')[day_of_week]
+                      = translate_helper('date.day_names').split(",")[day_of_week]
                   %td{class: "#{cut_off_time_error ? 'has-error' : ''}" }
                     %input.form-control.text-right{type: "text",
                           value: "#{cut_off_time.cut_off_time if cut_off_time}",
@@ -174,26 +181,27 @@
                     %input{type: "hidden", value: "#{day_of_week}",
                            name: "service[booking_cut_off_times_attributes][][day_of_week]"}
 
-    .col-sm-4
+    .col-sm-4#accommodations-panel
       .panel.panel-default.well2
         .panel-heading
           %h4.panel-title
-            = t(:accommodations)
+            = translate_helper(:accommodations)
             = add_tooltip("accommodations_help")
         .panel-body
           = f.association :accommodations,
-                collection: Accommodation.all.map{|a| [ t(a.name), a.id ] }, label: false,
+                collection: Accommodation.all.map{|a| [ translate_helper(a.name), a.id ] }, label: false,
                 as: :check_boxes,
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
   .row
-    .col-sm-4
+  
+    .col-sm-4#eligibility-panel
       .panel.panel-default.well1
         .panel-heading
           %h4.panel-title
-            = t(:eligibility)
+            = translate_helper(:eligibility)
             = add_tooltip("eligibility_help")
-          = t(:eligibility_rules_descr)
+          = translate_helper(:eligibility_rules_descr)
         .panel-body
 
           %h4 Modify existing rules
@@ -228,7 +236,7 @@
                   %td
                     = join_string
                     - join_string = ' AND '
-                    = t(map.characteristic.name)
+                    = translate_helper(map.characteristic.name)
                     - case map.characteristic.datatype
                     -   when 'bool'
                       = " is "
@@ -264,7 +272,7 @@
                     = select_tag(input_name(f, :service_characteristics, :group),
                       options_for_select((0..Characteristic.enabled.count).map{|id| ["#{id}", id]}))
                   %td.text-center
-                    = t(c.name)
+                    = translate_helper(c.name)
                     - case c.datatype
                     -   when 'bool'
                       = " is "
@@ -276,40 +284,74 @@
                       %input.text-right{type: "number", min: 1, max: 120,
                         name: input_name(f, :service_characteristics, :value)}
 
-    .col-sm-4
+    .col-sm-4#trip-purposes-panel
       .panel.panel-default.well1
         .panel-heading
           %h4.panel-title
-            = t(:trip_purposes)
+            = translate_helper(:trip_purposes)
             = add_tooltip("trip_purposes_help")
         .panel-body
           = f.association :trip_purposes,
-                collection: TripPurpose.all.map{|p| [ t(p.name), p.id ] }, label: false,
+                collection: TripPurpose.all.map{|p| [ translate_helper(p.name), p.id ] }, label: false,
                 as: :check_boxes,
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
-    .col-sm-4
-      .panel.panel-default.well1
+
+    .col-sm-4#fare-panel
+      .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
         .panel-heading
           %h4.panel-title
-            = t(:fare)
+            = translate_helper(:fare)
             = add_tooltip("fare_help")
-        = f.simple_fields_for :fare_structures do |fare|
-          .panel-body
-            .row_fluid
-              = fare.input :base, label: t(:base_rate), as: :currency
-              = fare.input :rate, label: t(:mileage_rate), as: :currency
-              = fare.input :desc, label: t(:comments), as: :text
+        .panel-body
+          .row_fluid.paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? '' : 'display:none;'}"}
+            = f.simple_fields_for :fare_structures do |fare|
+              = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare.object}
+              - setup_comments(fare.object, %w{public})
+              - fare.object.public_comments.sort!{|a, b| a.locale <=> b.locale}
+              = fare.simple_fields_for :public_comments do |comment|
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :locale, as: :hidden
+                = comment.input :visibility, as: :hidden
+        
+          .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
+            = f.simple_fields_for :fare_structures do |fare|
+              = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}
+              = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
+              = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
+              = fare.simple_fields_for :public_comments do |comment|
+                = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
+                = comment.input :locale, as: :hidden
+                = comment.input :visibility, as: :hidden
 
+  .row#time-and-booking-panels
+    .col-sm-6
+      .panel.panel-default.well3
+        .panel-heading
+          %h4.panel-title
+            = translate_helper(:time_window)
+            = add_tooltip("time_window_help")
+        .panel-body
+          = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
+          = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
+
+    .col-sm-6
+      .panel.panel-default.well3
+        .panel-heading
+          %h4.panel-title
+            = translate_helper(:booking_information)
+            = add_tooltip("booking_information_help")
+        .panel-body        
+          = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @service}
 
-  .row
+  .row#coverage-areas-panel
     .col-sm-12
       .panel.panel-default
         .panel-heading
           .row.text-center
             .col-sm-12
               %h3.panel-title
-                = t(:coverage_areas)
+                = translate_helper(:coverage_areas)
                 = add_tooltip("coverage_areas_help")
         .panel-body
           .row
@@ -319,14 +361,18 @@
                 .panel.panel-default
                   .panel-heading
                     %h4.panel-title
-                      = t(rule)
+                      = translate_helper(rule)
                       = add_tooltip("#{rule}_help")
                   .panel-body
-                    %label=t(:coverage_area_edit_instruction)
-                    = f.input rule+'_shapefile', :label => t(:upload_shapefile),:as => :file
+                    %label=translate_helper(:coverage_area_edit_instruction)
+                    = f.input "#{rule}_shapefile", :label => translate_helper(:upload_shapefile),:as => :file
+                    .col-sm-9.pull-right.checkbox
+                      %label
+                        %input{type: "checkbox", name: "service[delete_#{rule}_shapefile]"}
+                          = translate_helper(:remove_file)
                     - types.each do |type|
                       %b
-                        = type.humanize.split[0].pluralize + ' ' + t(:served_areas)
+                        = type.humanize.split[0].pluralize + ' ' + translate_helper(:served_areas)
                       .well.white-well.text-left
                         - checked = @service.send(rule).pluck(:geo_coverage_id)
                         - GeoCoverage.where(coverage_type: type).order(:value).map{|c| [ c.value, c.id ] }.each do |pair|
@@ -346,20 +392,6 @@
                                     name: input_name(f, :service_coverage_maps, :keep_record)}
                               = pair[0]
                               &nbsp;
-  .row
-    .col-sm-12
-      .panel.panel-default
-        .panel-heading
-          %h4.panel-title
-            = t(:service)
-            = t(:information)
-            = add_tooltip("service_help")
-        .panel-body
-          = f.input :external_id, label: t(:service_id), wrapper_html: {class: "col-sm-6"}
-          = f.input :booking_service_code, wrapper_html: {class: "col-sm-6"}
-          = f.input :service_window, as: :integer, wrapper_html: {class: "col-sm-6"}
-          = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
-
 
 :javascript
   boxes = $('.well0');
@@ -382,3 +414,40 @@
       return $(this).height();
   }).get());
   boxes.height(maxHeight);
+
+  boxes = $('.well3');
+  maxHeight = Math.max.apply(
+    Math, boxes.map(function() {
+      return $(this).height();
+  }).get());
+  boxes.height(maxHeight);
+
+  if ("#{is_taxi}" == 'true') {
+    el = $('#fare-panel').detach();
+    $('#schedule-panel').closest('.row').append(el);
+  }
+
+  $(document).ready(function() {
+    toggleServiceProfilePanels($('#service_service_type_id').val(), #{transit_id}, #{taxi_id});
+    
+    // show fare fields per service type
+    $('#service_service_type_id').on('change', function(e) {
+      if($(this).val() != #{paratransit_id}) {
+        $('.paratransit-fare').hide();
+        $('.non-paratransit-fare').show();
+      } else {
+        $('.paratransit-fare').show();
+        $('.non-paratransit-fare').hide();
+      }
+      toggleServiceProfilePanels($(this).val(), #{transit_id}, #{taxi_id});
+    });
+
+    // remove non-related fare fields for selected service typ when form is submitted
+    $('.service-edit-form').submit(function() {
+      if($("#service_service_type_id").val() != #{paratransit_id}) {
+        $('.paratransit-fare').remove();
+      } else {
+        $('.non-paratransit-fare').remove();
+      }
+    });
+  });

@@ -2,13 +2,13 @@
 - title_key = title_key || :splash_title
 - title_key_help = title_key.to_s + "_help" || :splash_title_help
 - splash_div_class = splash_div_class || ''
-- if whether_show_tranlatation_item?(splash_key)
+- if TranslationEngine.show_translation_item?(splash_key)
   %div{:class => splash_div_class, :role => "complementary", aria: {label: "Splash text"}}
     .panel.panel-default#splash{style: 'padding:0px;'}
       .panel-heading
-        %h2.panel-title
-          =t(title_key)
+        %h3.panel-title
+          =translate_helper(title_key)
           = add_tooltip(title_key_help)
       .panel-body
-        = t(splash_key).html_safe rescue ''
+        = translate_helper(splash_key).html_safe rescue ''
 / end of CMS column

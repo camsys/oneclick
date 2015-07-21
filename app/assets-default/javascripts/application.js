@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.remotipart
 //= require bootstrap
 //= require handlebars
 //= require twitter/typeahead
@@ -25,7 +26,24 @@
 
 $(document).ready(function(){
   createPopover(".label-help");
+  alertScreenReader();
 });
+
+function alertScreenReader() {
+  errored_fields = $.map($('.required.has-error label'), function(val, i){ return $(val).text() });
+  error_messages = $.map($('.help-block'), function(val, i){ return $(val).text() });
+  toDisplay = [];
+
+  $.each(errored_fields, function(i, val) {
+    toDisplay.push("'" + errored_fields[i] + "' " + error_messages[i]);
+  });
+
+  if (toDisplay.length > 0) {
+    setTimeout(function(){
+      $("#screen-reader-errors").html( $('.alert.alert-danger strong, #flash_alert').text() + " " + toDisplay.join(". ") );
+    }, 1000);
+  }
+}
 
 moment.fn.next15 = function() {
     var intervals = Math.floor(this.minutes() / 15);
@@ -85,11 +103,14 @@ function createPopover(node_id) {
       'template': '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
       'trigger': 'manual focus',
       'animation': false,
-      'placement': 'top',
+      'placement': 'auto',
       content: function() {
           html = $(this).attr('data-original-title');
           return $.parseHTML(html);
       }
+  })
+  .on("show.bs.popover", function () {
+    $(node_id).not(this).popover('hide');
   })
   .on("mouseenter", function () {
     var _this = this;
@@ -130,4 +151,83 @@ function isMobile() {
   }
 }
 
+String.prototype.titleize = function() {
+  var words = this.split(' ')
+  var array = []
+  for (var i=0; i<words.length; ++i) {
+    array.push(words[i].charAt(0).toUpperCase() + words[i].toLowerCase().slice(1))
+  }
+  return array.join(' ')
+}
 
+// initialize a place picker to query 1-click place datatable and google places
+function init_place_picker(dom_selector, query_bounds, query_restrictions) {
+  var saved_places = new Bloodhound({
+    datumTokenizer: function(d) {
+     return  Bloodhound.tokenizers.whitespace(d.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+      url: '/place_search.json?no_map_partial=true',
+      rateLimitWait: 600,
+      replace: function(url, query) {
+        url = url + '&query=' + query;
+        return url;
+      }
+    },
+    limit: 10
+  });
+
+  saved_places.initialize()
+
+  var autocomplete_service_config = {};
+  if (query_bounds) 
+    autocomplete_service_config.bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(query_bounds.xmin,query_bounds.ymin), 
+      new google.maps.LatLng(query_bounds.xmax,query_bounds.ymax));
+  if (query_restrictions)
+    autocomplete_service_config.componentRestrictions = query_restrictions;
+  var google_place_picker = new AddressPicker({
+    autocompleteService: autocomplete_service_config
+  });
+
+  $(dom_selector).typeahead(null,
+    {
+      displayKey: "name",
+      source: saved_places.ttAdapter(),
+      templates: {
+        suggestion: Handlebars.compile([
+          '<a>{{name}}</a>'
+        ].join(''))
+      }
+    },
+    {
+      displayKey: "description",
+      source: google_place_picker.ttAdapter(),
+      templates: {
+        suggestion: Handlebars.compile([
+          '<a>{{description}}</a>'
+        ].join(''))
+      }
+    });
+}
+
+function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
+  hideFromTransit = $("#schedule-panel, #advanced-notice-panel, #accommodations-panel, #eligibility-panel, #trip-purposes-panel, #fare-panel, #coverage-areas-panel, #time-and-booking-panels");
+  hideFromTaxi = $("#advanced-notice-panel, #eligibility-panel, #trip-purposes-panel, #time-and-booking-panels");
+
+  if ( obj == transit_id ) {
+    hideFromTransit.hide();
+  } else {
+    hideFromTransit.show();
+    if ( obj == taxi_id ) {
+      hideFromTaxi.hide();
+      $('#fare-panel').insertAfter('#accommodations-panel');
+      $('#fare-panel .panel-default').css('height', $('#accommodations-panel .panel-default').css('height'));
+    } else {
+      $('#fare-panel').insertAfter('#trip-purposes-panel');
+      hideFromTaxi.show();
+      $('#fare-panel .panel-default').css('height', $('#eligibility-panel .panel-default').css('height'));
+    } 
+  }
+}

@@ -1,4 +1,4 @@
-- content_for :title, "Trip Summary - #{t(:site_title)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:plan)}"
 - if !@is_plan_valid
   - unless @is_review
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -15,22 +15,33 @@
   - if @assisting_agency
     .col-xs-12.well{style: "padding: 5px;"}
       .col-sm-12{style: "padding: 0px;"}
-        =t(:trip_planned_assistance)
-        %b=@assisting_agency.name
+        =translate_helper(:trip_planned_assistance)
+        %strong=@assisting_agency.name
       -if @assisting_agency.public_comments.for_locale and  !@assisting_agency.public_comments.for_locale.comment.blank?
         .col-sm-12{style: "background: white; border-radius: 5px;"}
-          =@assisting_agency.public_comments.for_locale.comment.html_safe
-  .col-sm-12
+          =@assisting_agency.public_comments.for_locale.comment.try(:html_safe)
+  .col-sm-12#action_header
     = render partial: 'shared/page_comments', locals: {key: :plan_header_comment}
   .col-xs-12{style: "padding: 0px;", role: 'main'}
     = render partial: "selected_itineraries_details", locals: { trip: @trip, for_db: false }
 
   .col-xs-12{style: "margin-bottom: 5px; padding: 0px;"}
-    .pull-right
+    .pull-right#action_footer
       = render partial: 'plan_page_buttons'
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :plan_footer_comment}
   = render partial: 'send_trip_by_email', locals: {trip: @trip}
+
+  - if SatisfactionSurvey.enabled?
+    - unless SatisfactionSurvey.find_by(trip_id: @trip.id)
+      %button#open_survey.btn.btn-primary.btn-lg{"data-toggle" => "modal", "data-target" => "#satisfaction_survey", "style" => "display:none;"}
+      #satisfaction_survey.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              = translate_helper(:feedback)
+            .modal-body
+              = render "satisfaction_surveys/form"
 
 - content_for :head do
   %meta{name: 'user_id', content: @trip.user.id}
@@ -46,6 +57,48 @@
       parentDiv.attr('data-target', parentDivTarget + index);
       dataTarget = parentDiv.siblings('#drivingDirections').attr('id');
       parentDiv.siblings('#drivingDirections').attr('id', dataTarget + index);
+    });
+
+    if ($('#open_survey').length != 0) {
+      function showPopup() {
+        $("#breadcrumbs a").trigger("click");
+        setTimeout(function(){
+          setTimeout(function(){
+            $('#open_survey').click();
+          },3000);
+        }, 1);
+        window.onbeforeunload = dontShowPopup;
+        return "#{translate_helper(:did_not_take_feedback_prompt)} #{translate_helper(:stay_on_page)}";
+      }
+      function dontShowPopup() { }
+
+      window.onbeforeunload = showPopup;
+
+      $("#breadcrumbs a, #action_header a, #action_footer a").click(function(){
+        window.onbeforeunload = dontShowPopup;
+      });
+    }
+
+    $("#save_survey").click(function(){
+      $.ajax({
+        type: "POST",
+        url: '/satisfaction_surveys',
+        data: {satisfaction_survey: 
+                { 'trip_id': $('#satisfaction_survey_trip_id').val(),
+                  'satisfied': $('#satisfaction_survey input:checked').val(),
+                  'comment': $('#satisfaction_survey_comment').val()
+                }
+        },
+        success: function() {
+          $('#satisfaction_survey .modal-header').remove();
+          $('#satisfaction_survey .modal-dialog').addClass('modal-sm');
+          $('#satisfaction_survey .modal-body').empty().addClass('text-center').append("<strong>#{translate_helper(:success)}</strong>");
+          setTimeout(function(){
+            $('#satisfaction_survey').modal('hide');
+          }, 1000);
+        },
+        dataType: 'json'
+      });
     });
   });
 

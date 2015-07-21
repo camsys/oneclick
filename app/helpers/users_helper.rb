@@ -9,7 +9,7 @@ module UsersHelper
   	return user.first_name + ' ' + user.last_name if user.first_name and user.last_name
   	return user.first_name if user.first_name
   	return user.last_name if user.last_name
-  	return I18n.t(:unknown)
+  	return TranslationEngine.translate_text(:unknown)
   end
 
   def get_selected_walking_speed_id(user)

@@ -22,7 +22,7 @@ class Itinerary < ActiveRecord::Base
   scope :hidden, -> {where('hidden=true')}
   scope :good_score, -> {where('match_score < 3')}
   scope :booked, -> {where.not(booking_confirmation: nil)}
-  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at > ? AND itineraries.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at >= ? AND itineraries.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   # NOTE that: mode scopes are based on :returned_mode_code as it represents the real mode code
   #    when itinerary.mode.code == :mode_transit, itinerary.returned_mode_code could be
   #        mode_transit
@@ -32,6 +32,8 @@ class Itinerary < ActiveRecord::Base
   scope :with_mode, ->(mode) {where(returned_mode_code: mode)}
   scope :without_mode, ->(mode) {where.not(returned_mode_code: mode)}
 
+
+  attr_accessor :segment_index
   # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
   # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
@@ -46,14 +48,10 @@ class Itinerary < ActiveRecord::Base
     trip_part.is_return_trip?
   end
 
-  def is_return_trip
-    trip_part.is_return_trip?
-  end
-
   # returns true if this itinerary can be mapped
   def is_mappable
 
-    return mode.code.in? ['mode_transit', 'mode_bicycle', 'mode_car', 'mode_walk']
+    return mode.code.in? ['mode_transit', 'mode_bicycle', 'mode_car', 'mode_walk', 'mode_paratransit', 'mode_taxi', 'mode_rideshare']
   end
 
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit
@@ -103,7 +101,7 @@ class Itinerary < ActiveRecord::Base
     elsif modes.count > 2
       return false
     else
-      return Leg::TripLeg::WALK.in? legs
+      return Leg::TripLeg::WALK.in? modes
     end
   end
 
@@ -122,13 +120,7 @@ class Itinerary < ActiveRecord::Base
         when 'bus'
           bus = true
           next
-        when 'subway'
-          rail = true
-          next
-        when 'tram'
-          rail = true
-          next
-        when 'rail'
+        when *Leg::TransitLeg::RAIL_LEGS
           rail = true
           next
         when 'car'
@@ -157,6 +149,11 @@ class Itinerary < ActiveRecord::Base
       @legs = legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs), include_geometry)
     end
     @legs
+  end
+
+  # this is used to update @legs
+  def update_legs(include_geometry = true)
+      @legs = legs.nil? ? [] : ItineraryParser.parse(YAML.load(legs), include_geometry)
   end
 
   def mode_and_routes
@@ -195,28 +192,135 @@ class Itinerary < ActiveRecord::Base
     service.name rescue nil
   end
 
-  def estimate_duration base_duration, minimum_duration, duration_factor, trip_time, is_depart
+  def estimate_duration base_duration, minimum_duration, duration_factor, service_window, trip_time, is_depart
     self.duration_estimated = true
     if base_duration.nil?
-      duration = minimum_duration
+      duration = Oneclick::Application.config.default_paratransit_duration = 2.hours
     else
       duration =
         [base_duration * duration_factor,
          minimum_duration].max
+      serive_window_duration = (service_window * 60 rescue 0)
     end
     Rails.logger.info "Factored duration: #{duration} minutes"
     if is_depart
       self.start_time = trip_time
       self.end_time = start_time + duration
+      self.end_time += serive_window_duration if serive_window_duration
     else
       self.end_time = trip_time
       self.start_time = end_time - duration
+      self.start_time -= serive_window_duration if serive_window_duration
     end
+    self.duration = duration
+
     Rails.logger.info "AFTER"
     Rails.logger.info duration.ai
     Rails.logger.info start_time.ai
     Rails.logger.info end_time.ai
   end
+
+  #################################
+  # ECOLANE-SPECIFIC METHODS
+  #################################
+  def book
+    eh = EcolaneHelpers.new
+    eh.book_itinerary self
+  end
+
+  def status
+    unless self.booking_confirmation
+      return false, "404"
+    end
+
+    eh = EcolaneHelpers.new
+    status = eh.get_trip_info self
+
+    unless status[0]
+      return status
+    end
+
+    self.negotiated_pu_time = status[1][:pu_time]
+    self.negotiated_do_time = status[1][:do_time]
+    self.save
+
+    return status
+  end
+
+  def cancel
+    if self.booking_confirmation.nil?
+      self.selected = false
+      self.save
+      return true
+    end
+
+    eh = EcolaneHelpers.new
+    result = eh.cancel_itinerary self
+    if result
+      self.selected = false
+      self.save
+    end
+  end
+
+  #Booking Information
+  def assistant
+    self.trip_part ? self.trip_part.assistant : nil
+  end
+
+  def companions
+    self.trip_part ? self.trip_part.companions : nil
+  end
+
+  def children
+    self.trip_part ? self.trip_part.children : nil
+  end
+
+  def other_passengers
+    self.trip_part ? self.trip_part.other_passengers : nil
+  end
+
+  def note_to_driver
+    self.trip_part ? self.trip_part.note_to_driver : ""
+  end
+
+
+  def prebooking_questions
+
+    funding_source = self.funding_source
+
+    if funding_source.in? Oneclick::Application.config.ada_funding_sources
+
+      questions =
+        [
+          {question: "Will you be traveling with an ADA-approved escort?", choices: [true, false], code: "assistant"},
+          {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
+        ]
+
+    else
+      questions =
+        [
+          {question: "Will you be traveling with an approved escort?", choices: [true, false], code: "assistant"},
+          {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
+        ]
+
+    end
+
+    questions
+
+  end
+
+  def funding_source
+
+    if self.order_xml
+      xml = Nokogiri::XML(self.order_xml)
+      return xml.xpath('order').xpath('funding').xpath('funding_source').text
+    else
+      return nil
+    end
+
+  end
+
+  ##################################
 
   protected
 
@@ -246,6 +350,5 @@ class Itinerary < ActiveRecord::Base
     self.hidden ||= false
     @legs = []
   end
-
 
 end

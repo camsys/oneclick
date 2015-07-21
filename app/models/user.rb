@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
+  include DisableCommented
   include ActiveModel::Validations
-  extend LocaleHelpers
 
   # enable roles for this model
   rolify
@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :user_accommodations
   has_many :accommodations, through: :user_accommodations
 
+  has_many :received_messages, class_name: 'UserMessage', foreign_key: 'recipient_id'
+  has_many :messages, through: :received_messages
+  has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
+
   belongs_to :agency
   belongs_to :provider
   belongs_to :walking_speed
@@ -75,23 +79,32 @@ class User < ActiveRecord::Base
   # find all users which do not have the role passed in.  Need uniq because user could have multiple roles, i.e. multiple rows in user_roles table
   scope :without_role, ->(role_name) { joins(:user_roles).joins(:roles).where.not(roles: {name: role_name}).uniq }
 
-  scope :created_after, lambda {|from_day| where("users.created_at > ?", from_day.at_beginning_of_day) }
-  scope :created_before, lambda {|to_day| where("users.created_at < ?", to_day.tomorrow.at_beginning_of_day) }
+  scope :created_after, lambda {|from_day| where("users.created_at >= ?", from_day.at_beginning_of_day) }
+  scope :created_before, lambda {|to_day| where("users.created_at <= ?", to_day.at_end_of_day) }
   scope :created_between, lambda {|from_day, to_day| created_after(from_day).created_before(to_day) }
-  scope :active_between, lambda {|from_day, to_day| where("users.current_sign_in_at > ? AND users.current_sign_in_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
-  
+  scope :active_between, lambda {|from_day, to_day| where("users.current_sign_in_at >= ? AND users.current_sign_in_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
+
   # Validations
   validates :email, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
+  validates :maximum_wait_time, :numericality => { :greater_than_or_equal_to => 0}, if: :maximum_wait_time?
 
   before_create :make_user_profile
 
   def self.agent_form_collection include_all=true, agency=:any
-    form_collection_from_relation(include_all,
-                                  # any_role.where(roles: {name: 'agent'}).order(:first_name),
-                                  with_role(:agent, agency).order(:first_name),
-                                  false)
+    relation = with_role(:agent, agency).order(:first_name)
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      list << [name, r.id]
+    end
+    list
   end
 
   def make_user_profile
@@ -125,18 +138,14 @@ class User < ActiveRecord::Base
   end
 
   def requires_wheelchair_access?
-    folding_accommodation = Accommodation.where(code: 'folding_wheelchair_accessible').first
-    motorized_accommodation = Accommodation.where(code: 'motorized_wheelchair_accessible').first
+    wheelchair_accoms = user_profile.user_accommodations
+        .includes(:accommodation).references(:accommodation)
+        .where(
+          accommodations: 
+            { code: ['folding_wheelchair_accessible', 'motorized_wheelchair_accessible'] }, 
+          value: 'true')
 
-    needs_folding = user_profile.user_accommodations.where(accommodation: folding_accommodation, value: "true").first
-    needs_motorized = user_profile.user_accommodations.where(accommodation: motorized_accommodation, value: "true").first
-
-    if needs_folding or needs_motorized
-      return true
-    else
-      return false
-    end
-
+    !wheelchair_accoms.empty?
   end
 
   def has_vehicle?
@@ -190,6 +199,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def max_wait_time
+    if !maximum_wait_time
+      default_max_wait_time = Oneclick::Application.config.default_max_wait_time
+      return default_max_wait_time if default_max_wait_time
+    end
+
+    maximum_wait_time
+  end
+
   # Union to get unique users with any relationship to current user
   def related_users
     delegates | travelers
@@ -237,5 +255,11 @@ class User < ActiveRecord::Base
 
   def undelete
     update_attribute(:deleted_at, nil)
+  end
+
+  def unread_received_messages
+    received_messages.where(read: false)
+      .joins(:message).where('messages.from_date is ? or messages.from_date <= ?',nil,DateTime.now)
+      .where('messages.to_date is ? or messages.to_date >= ?',nil,DateTime.now)
   end
 end

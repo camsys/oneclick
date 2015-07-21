@@ -1,8 +1,11 @@
 .form-horizontal
   - collection.each do |c|
     - next if c.code=='age' # TODO kludge
-    - next unless c.ask_early
+    - (next unless c.ask_early) if c.class == Characteristic
     .form-group
-      %label.col-sm-7.control-label= t(c.note)
+      %label.col-sm-7.control-label= translate_helper(c.note)
       .col-sm-5
-        %p.form-control-static= human_readable(user_characteristics.get_answer_description(c.code))
+        - if c.code == "date_of_birth"
+          %p.form-control-static= user_characteristics.get_answer_description(c.code)
+        - else
+          %p.form-control-static= translate_helper(user_characteristics.get_answer_description(c.code))

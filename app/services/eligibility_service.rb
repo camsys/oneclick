@@ -2,7 +2,21 @@ class EligibilityService
   include EligibilityOperators
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil, return_with=:itinerary)
-    all_services = Service.paratransit.active
+
+    #Check to see if this user is registered to book with anyone.
+    #If this user is registered to book, we only care about the services that he/she can book with
+    user_services = user_profile.user_services
+    if user_services.count > 0
+      all_services = []
+      user_services.each do |us|
+        if us.service.active?
+          all_services << us.service
+        end
+      end
+    else
+      all_services = Service.paratransit.active
+    end
+
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)
@@ -167,8 +181,7 @@ class EligibilityService
     end
 
     #service accommodations
-    accommodating_services = []
-    #all_services = Service.all
+    accommodating_itineraries = []
     itineraries.each do |itinerary|
       service = itinerary['service']
       accommodations_maps = service.service_accommodations
@@ -177,19 +190,16 @@ class EligibilityService
         service_accommodations << map.accommodation
       end
 
-      match_score = 0.5 * (user_accommodations.count - (service_accommodations & user_accommodations).count)
-      if match_score > 0
-        itinerary['accommodation_mismatch'] = true
-      end
-      itinerary['match_score'] += match_score.to_f
-      missing_accommodations = user_accommodations - service_accommodations
-      missing_accommodations.each do |accommodation|
-        itinerary['missing_accommodations'] += (accommodation.name + ',')
+      missing_service_count = (user_accommodations.count - (service_accommodations & user_accommodations).count)
+
+      if missing_service_count == 0
+        accommodating_itineraries << itinerary
       end
 
     end
 
-    itineraries
+    accommodating_itineraries
+
   end
 
   def get_accommodating_and_eligible_services_for_traveler(trip_part=nil)
@@ -202,28 +212,20 @@ class EligibilityService
 
     Rails.logger.debug "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip_part)
-    Rails.logger.debug "Done get eligible services, get accommodating"
-    #Creating set of itineraries
-
-    itineraries = get_accommodating_services_for_traveler(eligible, user_profile)
-    Rails.logger.debug "Done get accommodating"
-    Rails.logger.debug eligible.ai
-    itineraries
-
   end
 
-  def get_eligible_services_for_trip(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, starting count: #{itineraries.count}"
+  def remove_ineligible_itineraries(trip_part, itineraries)
+    Rails.logger.info "remove_ineligible_itineraries, starting count: #{itineraries.count}"
     itineraries = eligible_by_location(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after location: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after location: #{itineraries.count}"
     itineraries = eligible_by_service_time(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after service time: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after service time: #{itineraries.count}"
     itineraries = eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after advance notice: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after advance notice: #{itineraries.count}"
     itineraries = eligible_by_trip_purpose(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after trip purpose: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after trip purpose: #{itineraries.count}"
     itineraries = find_bookable_itineraries(trip_part, itineraries)
-    Rails.logger.info "get_eligible_services_for_trip, after bookable: #{itineraries.count}"
+    Rails.logger.info "remove_ineligible_itineraries, after bookable: #{itineraries.count}"
     itineraries
   end
 
@@ -393,13 +395,13 @@ class EligibilityService
   def translate_service_characteristic_map(map)
     case map.characteristic.datatype
     when 'bool'
-      ((map.value == 'true') ? '' : 'Not ') + I18n.t(map.characteristic.name)
+      ((map.value == 'true') ? '' : 'Not ') + TranslationEngine.translate_text(map.characteristic.name)
     when 'integer'
-      I18n.t(map.characteristic.name) +
+      TranslationEngine.translate_text(map.characteristic.name) +
         ' ' + relationship_to_words(map.rel_code) +
         ' ' + map.value.to_s
     else
-      I18n.t(map.characteristic.name)
+      TranslationEngine.translate_text(map.characteristic.name)
     end
   end
 

@@ -65,15 +65,15 @@ namespace :oneclick do
       end
 
       providers = [
-          {name: 'LIFESPAN Resources, Inc.', contact: 'Lauri Stokes', external_id: "esp#1"},
-          {name: 'Fayette County', contact: '', external_id: "esp#6"},
-          {name: 'Fulton County Office of Aging', contact: 'Ken Van Hoose', external_id: "esp#7"},
-          {name: 'Jewish Family & Career Services', contact: 'Gary Miller', external_id: "esp#3"},
-          {name: 'Cobb Senior Services', contact: 'Pam Breeden', external_id: "esp#20"},
-          {name: 'Rockdale County Senior Services', contact: 'Jackie Lunsford', external_id: "esp#8"},
-          {name: 'Cobb Community Transit (CCT)', contact: 'Gary Blackledge', external_id: "esp#15"},
-          {name: 'Transportation Services', contact: 'Nell Childers', external_id: "esp#22"},
-          {name: 'Volunteer Transportation Service', contact: 'T.J. McGiffert', external_id: "esp#34"}
+          {name: 'LIFESPAN Resources, Inc.', internal_contact_name: 'Lauri Stokes', external_id: "esp#1"},
+          {name: 'Fayette County', internal_contact_name: '', external_id: "esp#6"},
+          {name: 'Fulton County Office of Aging', internal_contact_name: 'Ken Van Hoose', external_id: "esp#7"},
+          {name: 'Jewish Family & Career Services', internal_contact_name: 'Gary Miller', external_id: "esp#3"},
+          {name: 'Cobb Senior Services', internal_contact_name: 'Pam Breeden', external_id: "esp#20"},
+          {name: 'Rockdale County Senior Services', internal_contact_name: 'Jackie Lunsford', external_id: "esp#8"},
+          {name: 'Cobb Community Transit (CCT)', internal_contact_name: 'Gary Blackledge', external_id: "esp#15"},
+          {name: 'Transportation Services', internal_contact_name: 'Nell Childers', external_id: "esp#22"},
+          {name: 'Volunteer Transportation Service', internal_contact_name: 'T.J. McGiffert', external_id: "esp#34"}
 
       ]
 
@@ -132,10 +132,6 @@ namespace :oneclick do
             (2..3).each do |n|
               Schedule.create(service: service, start_seconds:9*3600, end_seconds: 16.5*3600, day_of_week: n)
             end
-            #Trip purpose requirements
-            [medical, dialysis, cancer].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
 
             #Add geographic restrictions
             ['30327', '30342', '30319', '30326', '30305', '30324', '30309', '30306', '30363'].each do |z|
@@ -149,9 +145,9 @@ namespace :oneclick do
 
 
             #Traveler Accommodations Requirements
-            [door_to_door, curb_to_curb, folding_wheelchair_accessible].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # [door_to_door, curb_to_curb, folding_wheelchair_accessible].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
 
           when "esp#6" #Fayette Senior Services
@@ -189,9 +185,9 @@ namespace :oneclick do
               Schedule.create(service: service, start_seconds:8.5*3600, end_seconds: 17*3600, day_of_week: n)
             end
             #Trip Purpose Requirements
-            [medical, dialysis, cancer].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [medical, dialysis, cancer].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['Fulton'].each do |z|
@@ -228,10 +224,10 @@ namespace :oneclick do
             #Traveler Characteristics Requirements
             ServiceCharacteristic.create(service: service, characteristic: age, value: '55', rel_code: 4)
 
-            #Traveler Accommodations Provided
-            [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # #Traveler Accommodations Provided
+            # [folding_wheelchair_accessible, driver_assistance_available, door_to_door, curb_to_curb, lift_equipped].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
           when "esp#3" #Jewish Family & Career Center
                        #Create service #3
@@ -242,9 +238,9 @@ namespace :oneclick do
             end
 
             #Trip Purpose Requirements
-            [medical, dialysis, cancer].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [medical, dialysis, cancer].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['30305', '30306', '30308', '30309', '30319', '30324', '30326', '30327', '30328' ,'30329', '30338', '30339', '30340', '30341' ,'30342', '30345', '30063', '30067', '30068', '30084', '30356', '30350', '30060', '30030', '30033', '30084', '30075', '30076', '30022', '30092', '30080'].each do |z|
@@ -271,9 +267,9 @@ namespace :oneclick do
             end
 
             #Trip Purpose Requirements
-            [work, training, medical, dialysis, cancer, personal, general].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [work, training, medical, dialysis, cancer, personal, general].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['Cobb'].each do |z|
@@ -299,9 +295,9 @@ namespace :oneclick do
             Schedule.create(service: service, start_seconds:12*3600, end_seconds: 16*3600, day_of_week: 0)
 
             #Trip Purpose Requirements
-            [work, training, medical, dialysis, cancer, personal, general].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [work, training, medical, dialysis, cancer, personal, general].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['Cobb'].each do |z|
@@ -318,9 +314,9 @@ namespace :oneclick do
             ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true')
 
             #Traveler Accommodations Requirements
-            [curb_to_curb, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # [curb_to_curb, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
           when "esp#22" #Mountain Area Transportation Services
                         #Create service #41
@@ -331,9 +327,9 @@ namespace :oneclick do
             end
 
             #Trip Purpose Requirements
-            [work, training, medical, dialysis, cancer, personal, general].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [work, training, medical, dialysis, cancer, personal, general].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['Cherokee'].each do |z|
@@ -344,10 +340,10 @@ namespace :oneclick do
             #Traveler Characteristics Requirements
             ServiceCharacteristic.create(service: service, characteristic: ada_eligible, value: 'true')
 
-            #Traveler Accommodations Requirements
-            [curb_to_curb, door_to_door, folding_wheelchair_accessible, lift_equipped].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # #Traveler Accommodations Requirements
+            # [curb_to_curb, door_to_door, folding_wheelchair_accessible, lift_equipped].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
           when "esp#34" #I care transportation service.
                         #Create Service 55
@@ -358,9 +354,9 @@ namespace :oneclick do
             end
 
             #Trip Purpose Requirements
-            [medical, dialysis, cancer].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [medical, dialysis, cancer].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['DeKalb'].each do |z|
@@ -378,9 +374,9 @@ namespace :oneclick do
             ServiceCharacteristic.create(service: service, characteristic: age, value: '55', rel_code: 4)
 
             #Traveler Accommodations Requirements
-            [curb_to_curb].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # [curb_to_curb].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
           when "esp#8" #Rockdale County Senior Services
                         #Create Service 15
@@ -391,9 +387,9 @@ namespace :oneclick do
             end
 
             #Trip Purpose Requirements
-            [work, training, medical, dialysis, cancer, personal, general].each do |n|
-              ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
-            end
+            # [work, training, medical, dialysis, cancer, personal, general].each do |n|
+            #   ServiceTripPurposeMap.create(service: service, trip_purpose: n, value: 'true')
+            # end
 
             #Add geographic restrictions
             ['Rockdale'].each do |z|
@@ -410,9 +406,9 @@ namespace :oneclick do
             ServiceCharacteristic.create(service: service, characteristic: age, value: '60', rel_code: 4)
 
             #Traveler Accommodations Requirements
-            [curb_to_curb, door_to_door, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
-              ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
-            end
+            # [curb_to_curb, door_to_door, driver_assistance_available, folding_wheelchair_accessible, motorized_wheelchair_accessible, lift_equipped].each do |n|
+            #   ServiceAccommodation.create(service: service, accommodation: n, value: 'true')
+            # end
 
         end
 

@@ -21,12 +21,28 @@ class TripPlace < GeocodedAddress
   # set the default scope
   default_scope {order('sequence ASC')}
 
-  def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = ''
+  def from_trip_proxy_place json_string, sequence, manual_entry = '', map_center = '', traveler = nil
     self.sequence = sequence
     j = JSON.parse(json_string) rescue {'type_name' => 'MANUAL_ENTRY'}
-    j['type_name'] = j['type_name'] || 'MANUAL_ENTRY'
+    place_type = j['type_name'] || 'MANUAL_ENTRY'
+
+    # pre-process MANUAL_ENTRY to see if any match from Places and POIs
+    if place_type == 'MANUAL_ENTRY'
+      match_place = traveler.places.active.where(Place.arel_table[:name].matches(manual_entry)).first if traveler
+      if match_place
+        j = match_place
+        place_type = 'PLACES_TYPE'
+      else
+        match_poi = Poi.where(Poi.arel_table[:name].matches(manual_entry)).first
+        if match_poi
+          j = match_poi
+          place_type = 'POI_TYPE'
+        end
+      end
+    end
+
     j['county'] = Oneclick::Application.config.default_county if j['county'].blank?
-    case j['type_name']
+    case place_type
     when 'PLACES_TYPE'
       self.update_attributes(
         place_id:    j['id'],
@@ -66,8 +82,12 @@ class TripPlace < GeocodedAddress
         lon:         j['lon'],
         raw_address: j['full_address'])
     when 'PLACES_AUTOCOMPLETE_TYPE'
-      update_address_attributes_from_google(j['id'], j['address'])
-    when 'MANUAL_ENTRY'
+      google_result = update_address_attributes_from_google(j['id'], j['reference'], j['address'], j['google_details'])
+      if !google_result
+        self.errors.add(:base, "No results for search string")
+        return self
+      end
+    when 'MANUAL_ENTRY' # only google_search
       result = google_place_search(manual_entry, map_center)
       if result.body['status'] == 'ZERO_RESULTS'
         self.errors.add(:base, "No results for search string")
@@ -75,32 +95,113 @@ class TripPlace < GeocodedAddress
       end
       first_result = result.body['predictions'].first
 
-      update_address_attributes_from_google(first_result['reference'], first_result['description'])
+      google_result = update_address_attributes_from_google(first_result['place_id'], first_result['reference'], first_result['description'])
+      if !google_result
+        self.errors.add(:base, "No results for search string")
+        return self
+      end
     else
       raise "TripPlace.new_from_trip_proxy_place doesn't know how to handle type '#{j['type_name']}'"
     end
     self
   end
 
-  def update_address_attributes_from_google(reference, raw_address)
-    details = get_places_autocomplete_details(reference)
-    d = cleanup_google_details(details.body['result'])
-    d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
-    d['state'] = Oneclick::Application.config.state if d['state'].blank?
-    d['address1'] = d['neighborhood'] if d['address1'].blank?
-    if d['address1'].blank? && details.body['result']['name'] != d['city']
-      d['address1'] = details.body['result']['name']
+  def update_address_attributes_from_google(place_id, reference, raw_address, google_details=nil)
+    if !google_details
+      details = get_places_autocomplete_details(place_id, reference) 
+      google_details = details.body['result']
     end
 
-    self.update_attributes(address1: d['address1'],
-                           city: d['city'],
-                           state: d['state'],
-                           zip: d['zip'],
-                           county: d['county'],
-                           lat: d['lat'],
-                           lon: d['lon'],
-                           raw_address: raw_address,
-                           result_types: d['result_types'])
+    if google_details
+      d = cleanup_google_details(google_details)
+
+      d['county'] = Oneclick::Application.config.default_county if d['county'].blank?
+      d['state'] = Oneclick::Application.config.state if d['state'].blank?
+      d['address1'] = d['neighborhood'] if d['address1'].blank?
+      if d['address1'].blank? && google_details['name'] != d['city']
+        d['address1'] = google_details['name']
+      end
+
+      self.update_attributes(address1: d['address1'],
+                             city: d['city'],
+                             state: d['state'],
+                             zip: d['zip'],
+                             county: d['county'],
+                             lat: d['lat'],
+                             lon: d['lon'],
+                             raw_address: raw_address,
+                             result_types: d['result_types'],
+                             name: raw_address)
+    else
+      nil
+    end
+  end
+
+  #Build a new trip place from PlacesDetails element
+  def from_place_details details
+
+    components = details[:address_components]
+    components.each do |component|
+      types = component[:types]
+      if types.nil?
+        next
+      end
+      if 'street_address'.in? types
+        self.address1 = component[:long_name]
+      elsif 'administrative_area_level_1'.in? types
+        self.state = component[:long_name]
+      elsif 'locality'.in? types
+        self.city = component[:long_name]
+      elsif 'postal_code'.in? types
+        self.zip = component[:long_name]
+      end
+    end
+
+    self.raw_address = details[:formatted_address]
+    self.lat = details[:geometry][:location][:lat]
+    self.lon = details[:geometry][:location][:lng]
+    self.name = details[:name]
+
+  end
+
+  def build_place_details_hash
+    #Based on Google Place Details
+
+    {
+        address_components: [
+        {
+            long_name: self.address1,
+        short_name: self.address1,
+        types: ["street_address"]
+    },
+        {
+            long_name: self.city,
+        short_name: self.city,
+        types: ["locality", "political"]
+    },
+        {
+            long_name: self.state,
+        short_name: self.state,
+        types: ["administrative_area_level_1","political"]
+    },
+        {
+            long_name: self.zip,
+        short_name: self.zip,
+        types: ["postal_code"]
+    }
+    ],
+
+        formatted_address: self.address,
+        geometry: {
+        location: {
+        lat: self.lat,
+        lng: self.lon,
+    }
+    },
+        id: self.id,
+        name: self.name,
+        scope: "user"
+    }
   end
 
 

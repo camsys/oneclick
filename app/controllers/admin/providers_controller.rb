@@ -1,5 +1,6 @@
 class Admin::ProvidersController < ApplicationController
   include Admin::CommentsHelper
+  include CsvStreaming
   before_filter :load_provider, only: [:create]
   load_and_authorize_resource
 
@@ -10,6 +11,13 @@ class Admin::ProvidersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
+      format.csv do
+        filter_params = params.permit(:bIncludeInactive, :search)
+
+        @providers = Provider.get_exported(@providers, filter_params)
+
+        render_csv("providers.csv", @providers, Provider.csv_headers)
+      end
     end
   end
 
@@ -20,7 +28,7 @@ class Admin::ProvidersController < ApplicationController
 
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
-    @staff = @provider.users.with_role(:provider_staff, @provider)
+    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
     @services = @provider.services
 
     respond_to do |format|
@@ -61,7 +69,7 @@ class Admin::ProvidersController < ApplicationController
   def edit
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
-    @staff = @provider.users.with_role(:provider_staff, @provider)
+    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
     setup_comments(@provider)
   end
 
@@ -90,7 +98,7 @@ class Admin::ProvidersController < ApplicationController
 
         set_staff(staff_ids)
 
-        format.html { redirect_to [:admin, @provider], notice: t(:provider) + ' ' + t(:was_successfully_updated) }
+        format.html { redirect_to [:admin, @provider], notice: TranslationEngine.translate_text(:provider) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -102,8 +110,10 @@ class Admin::ProvidersController < ApplicationController
   # DELETE /admin/providers/1
   # DELETE /admin/providers/1.json
   def destroy
+    @provider.disabled_comment = params[:provider][:disabled_comment]
     @provider.update_attributes(active: false)
     @provider.services.update_all(active: false)
+
     respond_to do |format|
       format.html { redirect_to admin_providers_url }
       format.json { head :no_content }
@@ -125,13 +135,13 @@ class Admin::ProvidersController < ApplicationController
 
     if user.nil?
       success = false
-      msg = I18n.t(:no_staff_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+      msg = TranslationEngine.translate_text(:no_staff_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
     elsif !user.provider.nil?
       success = false
-      msg = I18n.t(:already_a_provider_staff)
+      msg = TranslationEngine.translate_text(:already_a_provider_staff)
     else
       success = true
-      msg = t(:please_save_staffs, name: user.name)
+      msg = TranslationEngine.translate_text(:please_save_staffs, name: user.name)
       output = user.id
       row = [
               user.id,
@@ -176,7 +186,7 @@ class Admin::ProvidersController < ApplicationController
   def admin_provider_params
     params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone,
       :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
-      :public_comments_old, :private_comments_old,
+      :public_comments_old, :private_comments_old, :disabled_comment,
       comments_attributes: COMMENT_ATTRIBUTES,
       public_comments_attributes: COMMENT_ATTRIBUTES,
       private_comments_attributes: COMMENT_ATTRIBUTES,

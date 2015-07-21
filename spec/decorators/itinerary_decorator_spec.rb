@@ -11,6 +11,7 @@ describe ItineraryDecorator do
       it "creates correct string for exactly 1 hour" do
         object.duration = 60*60
         I18n.locale = :en # TODO this should be in a before(), no?
+        puts "decorator.duration_in_wordsdecorator.duration_in_wordsdecorator.duration_in_words" + decorator.duration_in_words
         expect(decorator.duration_in_words).to eq '1 h 0 mins (est.)'
       end
       it "creates correct string for less than 1 minute" do

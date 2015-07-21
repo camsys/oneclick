@@ -1,18 +1,18 @@
 .btn-arrow-right,
 .btn-arrow-left {
     min-width: 40px !important;
-    height: 34px;
+    height: 34px !important;
     position: relative;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: 6px 16px !important;
+    margin: 0px !important;
 }
 
 .btn-arrow-right {
-    padding-left: 24px;
+    padding-left: 24px !important;
 }
 
 .btn-arrow-left {
-    padding-right: 24px;
+    padding-right: 24px !important;
 }
 
 .btn-arrow-right:before,

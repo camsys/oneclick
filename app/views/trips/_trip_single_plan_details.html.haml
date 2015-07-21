@@ -1,7 +1,7 @@
 - map_type ||= 'dynamic'
 .col-xs-12.well{style: "padding: 5px;"}
   .col-sm-12
-    %h4
+    %h2{style: "font-size:1.25em;margin-top:0;"}
       = itinerary.trip_part.description.html_safe
       = add_tooltip("trip_review_help")
       :javascript
@@ -11,18 +11,18 @@
     .col-sm-12{style: "background: white; border-radius: 5px;"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
   - else
-    .col-sm-6{style: "background: white; margin-bottom: 5px; border-radius: 5px; padding: 5px;"}
+    .col-sm-5.trip_itinerary_mappable{class: "#{local_assigns[:printer_friendly] ? 'printer_friendly' : ''}"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     - if map_type=='delayed_static'
-      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+      .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
     - elsif map_type=='static'
       - # this option is actually not used as there is a separate template for email
-      .col-sm-6{id: "print_map_#{itinerary.id}", class: 'print_map'}
+      .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
         %img{src: itinerary.map_image.url}
     - else
       .sr-only{aria: {label: 'Map.'}} Map.
-      .col-sm-6{style: "height: 300px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
-        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:300px;" })
+      .col-sm-7{style: "height: 550px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
+        = LeafletMap({:mapid => ('plan_map_' + itinerary.id.to_s), :markers => create_itinerary_markers(itinerary).to_json, :polylines => create_itinerary_polylines(legs).to_json, :sidewalk_feedback_markers => create_itinerary_sidewalk_feedback_markers(legs).to_json, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "well well-small", :style => "height:550px;" })
         :javascript
           $(function(){
             if(typeof(CsMaps) === 'object' && CsMaps != null && CsMaps.#{'plan_map_' + itinerary.id.to_s} != null) {
@@ -37,7 +37,7 @@
               }
 
               if(mapBounds) {
-                mapObj.LMmap.fitBounds(mapBounds);
+                mapObj.LMmap.fitBounds(mapBounds, {padding: [15,15]});
               }
             }
           });

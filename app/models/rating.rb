@@ -14,6 +14,29 @@ class Rating < ActiveRecord::Base
   belongs_to :rateable, :polymorphic => true
   validates :value, :presence => true # What if we allow users to just enter commments/feedback.  Don't require value.  Needs schema change
 
+  # custom ransackers
+  ransacker :value do
+    Arel.sql(
+      "case when value = #{DID_NOT_TAKE} then '#{TranslationEngine.translate_text(:untaken_trip)}' else to_char(\"#{table_name}\".\"value\", '9') end"
+    )
+  end
+  
+  ransacker :user_name, formatter: proc { |v| v.mb_chars.downcase.to_s } do |parent|
+    Arel::Nodes::NamedFunction.new('LOWER',
+      [Arel::Nodes::NamedFunction.new('concat_ws',
+        [' ', User.arel_table[:first_name], User.arel_table[:last_name]])])
+  end
+
+  ransacker :is_approved do
+    Arel.sql("status = '#{APPROVED}'")
+  end
+  ransacker :is_rejected do
+    Arel.sql("status = '#{REJECTED}'")
+  end
+  ransacker :is_pending do
+    Arel.sql("status = '#{PENDING}'")
+  end
+
   def self.feedback_on?
     Oneclick::Application.config.enable_feedback
   end

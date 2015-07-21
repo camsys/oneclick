@@ -1,6 +1,6 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < Devise::RegistrationsController
-  include LocaleHelpers
+
   before_filter :configure_permitted_parameters
   before_filter :set_locale
   # set the @traveler variable before any actions are invoked
@@ -25,7 +25,6 @@ class RegistrationsController < Devise::RegistrationsController
   # Overrides the Devise create method for new registrations
   def create
     #puts ">>>>> IN CREATE"
-    session[:location] = new_user_registration_path
     if Oneclick::Application.config.initial_signup_question
       session[:first_login] = true
     end
@@ -74,7 +73,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def update
-    session[:location] = edit_user_registration_path
     @agency_user_relationship = AgencyUserRelationship.new
     @user_relationship = UserRelationship.new
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)

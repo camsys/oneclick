@@ -1,7 +1,10 @@
-- content_for :title, "Settings - #{t(:site_title)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:settings)}"
 .row.info-header
   .col-sm-12
-    %h1= t(:settings)
+    %h1= translate_helper(:settings)
 
 = render 'admin/pois/form'
 = render 'admin/application_logo_upload_form'
+= render 'admin/favicon_upload_form', locals: {favicon: :favicon}
+= render 'admin/favicon_upload_form', locals: {favicon: :mobile_favicon}
+= render 'admin/favicon_upload_form', locals: {favicon: :tablet_favicon}

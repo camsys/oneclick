@@ -6,13 +6,14 @@
         %tr
           - @columns.each_with_index do |col, index|
             %th
-              = t(col)
+              = translate_helper(col)
       %tbody.nowrap
 
 - filter = true if local_assigns[:filter].nil?
 :javascript
   $(document).ready(function() {
     $('#datatable').dataTable({
+      stateSave: true,
       "processing": true,
       "serverSide": true,
       "ajax": $('#datatable').data('source'),

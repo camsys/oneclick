@@ -1,2 +1,2 @@
-- content_for :title, "New Service Form - #{t(:site_title)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:new)} #{translate_helper(:service)}"
 = render 'form'

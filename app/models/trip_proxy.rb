@@ -6,6 +6,8 @@ class TripProxy < Proxy
   # Id of the trip being re-planned, edited, etc. Null if mode is NEW
   attr_accessor :id, :map_center
   attr_accessor :trip_options
+  attr_accessor :trip_token, :agency_token
+  attr_accessor :kiosk_code
 
   attr_accessor :kiosk_code
 
@@ -130,7 +132,7 @@ class TripProxy < Proxy
     trip_proxy.from_raw_address = tp.address
     trip_proxy.from_lat = tp.location.first
     trip_proxy.from_lon = tp.location.last
-
+    
     if tp.poi
       trip_proxy.from_place_selected_type = POI_TYPE
       trip_proxy.from_place_selected = tp.poi.id
@@ -199,20 +201,22 @@ class TripProxy < Proxy
   def datetime_cannot_be_before_now
     true if trip_datetime.count(nil) == 2
     if trip_datetime[0] < Date.today
-      errors.add(:outbound_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      errors.add(:outbound_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
       false
     end
     if trip_datetime[0] < Time.current
-      errors.add(:outbound_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      errors.add(:outbound_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
       false
     end
-    if trip_datetime[1] < Date.today
-      errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
-      false
-    end
-    if trip_datetime[1] < Time.current
-      errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
-      false
+    if is_round_trip == 1
+      if trip_datetime[1] < Date.today
+        errors.add(:return_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
+        false
+      end
+      if trip_datetime[1] < Time.current
+        errors.add(:return_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
+        false
+      end
     end
     true
   end

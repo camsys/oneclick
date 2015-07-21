@@ -8,8 +8,6 @@ isMobile = ->
   else
     return false
 
-
-
 remove_marker = (map, key) ->
   marker = map.findMarkerById(key)
   map.removeMarkerFromMap marker  if marker
@@ -20,17 +18,12 @@ create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   map.addMarkerToMap marker, true
   marker
 
-update_map = (map, dir, e, addr, d) ->
-  lat = addr.lat
-  lon = addr.lon
-  if lat==null
-    $.ajax
-      type: 'GET'
-      url: '/place_details/' + addr.id
-      async: false
-      success: (data) ->
-        lat = data.result.geometry.location.lat
-        lon = data.result.geometry.location.lng
+# is_dup: a temp fix to stop duplicating another place for multi_od_places
+#           also not need to select marker
+# reason:
+#       current enlarged map implementation is to have a duplicated map (expandedMap), then repeat same updates as for tripMap
+#       we only allow certain updates to happen on second map (enlargedMap), by passing is_dup as true to differentiate
+update_map = (map, dir, e, addr, d, is_dup) ->
   if dir =='from'
     key = 'start'
     icon = 'startIcon'
@@ -43,13 +36,60 @@ update_map = (map, dir, e, addr, d) ->
     place_counter = get_current_multi_od_place_counter(dir)
     key += (++place_counter)
 
-  map.removeMatchingMarkers(key);
-  marker = create_or_update_marker(map, key, lat, lon, addr.name, addr.full_address, icon);
-  map.setMapToBounds();
-  map.selectMarker(marker);
-  addr.lat = lat
-  addr.lon = lon
-  add_multi_od_places(dir, addr.name, addr)
+  map.removeMatchingMarkers(key)
+  marker = create_or_update_marker(map, key, addr.lat, addr.lon, addr.name, addr.full_address, icon)
+  map.setMapToBounds()
+  if !is_dup
+    map.selectMarker(marker)
+    add_multi_od_places(dir, addr.name, addr)
+
+format_place = (addr) ->
+  if !addr.lat && addr.lat != 0
+    addr = 
+      'type'    : '5'
+      'type_name'    : 'PLACES_AUTOCOMPLETE_TYPE'
+      'name'   : addr['description']
+      'id'     : addr['place_id']
+      'reference': addr['reference']
+      'lat'    : null
+      'lon'    : null
+      'address' : addr['description']
+      'description': '(not rendered)'
+
+  return addr
+
+# create a fake dom to initialize a new google place service
+google_place_service = new google.maps.places.PlacesService(document.createElement('div'))
+parse_place_details = (addr, cb) ->
+  if !cb
+    cb = () ->
+  lat = addr.lat
+  if !lat && lat != 0
+    google_place_service.getDetails {
+      placeId: addr.id
+    }, (place, status) ->
+      process_place = (place_obj) ->
+        addr.lat =  place_obj.geometry.location.lat()
+        addr.lon =  place_obj.geometry.location.lng()
+        place_obj.geometry.location = 
+          lat: addr.lat
+          lng: addr.lon
+        addr.google_details = place_obj
+        cb addr
+
+      if status == google.maps.places.PlacesServiceStatus.OK
+        process_place place
+      else 
+        # noticed occasionally no match based on place_id, so try again with reference 
+        google_place_service.getDetails {
+          reference: addr.reference
+        }, (new_place, status) ->
+          if status == google.maps.places.PlacesServiceStatus.OK
+            process_place new_place
+          else
+            console.log "No match found for: " + addr.name
+  else
+    cb addr
 
 show_marker = (map, dir) ->
   if dir=='from'
@@ -140,9 +180,12 @@ add_multi_od_places = (dir, addr_text, addr_data) ->
 
   return
 
-process_location_from_map = (addr, dir) -> #update map marker from selected location, and update address input field from reverse geocoded address
-  update_map(CsMaps.tripMap, dir, null, addr, null)
-  update_place(addr.name, dir, addr)
+#update map marker from selected location, and update address input field from reverse geocoded address
+process_location_from_map = (addr, dir) -> 
+  $('#' + dir + '_place_object').val(JSON.stringify(addr))
+  update_map CsMaps.tripMap, dir, null, addr, null
+  update_map CsMaps.expandedMap, dir, null, addr, null, true
+  update_place addr.name, dir, addr
 
 validateDateTimes = (isReturn) ->
   outboundDateField = $("#trip_proxy_outbound_trip_date")
@@ -219,30 +262,32 @@ get_my_location = (dir) ->
     show_alert "Geolocation is not supported by this browser."
   return
 
+google_geocoder = new google.maps.Geocoder()
 reverse_geocode = (lat, lon, dir) ->
-  $.ajax
-    type: 'GET'
-    url: '/reverse_geocode?lat=' + lat + '&lon=' + lon
-    success: (data) ->
-      search_results = data.place_searching
-      if search_results instanceof Array
-        i = 0
-        result_count = search_results.length
+  latlng = new google.maps.LatLng(lat, lon)
+  google_geocoder.geocode {'latLng': latlng}, (results, status) ->
+    if status == google.maps.GeocoderStatus.OK
+      if results[0]
+        google_details = results[0]
+        google_details.geometry.location = {
+          lat: lat,
+          lng: lon
+        }
+        addr =
+          google_details: google_details
+          lat: lat
+          lon: lon
+          name: google_details.formatted_address
+          type: '5'
+          type_name: 'PLACES_AUTOCOMPLETE_TYPE'
+          id: google_details.place_id
+          reference: google_details.reference
+          address: google_details.formatted_address
+          description: '(not rendered)'
 
-        while i < result_count
-          el = search_results[i]
-          if typeof (el) is "object" and el
-            actual_results = el.place_searching
-            if actual_results instanceof Array and actual_results.length > 0
-              addr =
-                lat: lat
-                lon: lon
-                name: actual_results[0].formatted_address
-              process_location_from_map(addr, dir)
-              break
-          i++
-    failure: (error) ->
-      console.log error
+        process_location_from_map(addr, dir)
+      else
+        console.log error
 
 generate_maps = (after) ->
   user_id = $('meta[name="user_id"]').attr('content')
@@ -276,37 +321,7 @@ generate_maps = (after) ->
         $('#prepare_print_maps .progress-bar').attr('aria-valuenow', percent)
     ), 1000
 
-$ ->
-
-  places = new Bloodhound
-    datumTokenizer: (d) ->
-      Bloodhound.tokenizers.whitespace(d.value)
-    queryTokenizer: Bloodhound.tokenizers.whitespace
-    remote:
-      url: '/place_search.json?no_map_partial=true'
-      rateLimitWait: 600
-      replace: (url, query) ->
-        url = url + '&query=' + query
-        # TODO This may need to get handled differently depending on whether map is shown
-        url = url + '&map_center=' + (CsMaps.tripMap.LMmap.getCenter().lat + ',' + CsMaps.tripMap.LMmap.getCenter().lng)
-        # url = url + '&map_center=33.7550,-84.3900'
-        return url
-    limit: 20
-    # prefetch: '../data/films/post_1960.json'
-
-  places.initialize()
-
-  $(".plan-a-trip .place_picker").typeahead null,
-    limit: 20,
-    displayKey: "name"
-    source: places.ttAdapter()
-    templates:
-      suggestion: Handlebars.compile([
-        '<a>{{name}}</a>'
-      ].join(''))
-
-  # $(".plan-a-trip .place_picker").typeahead('val', 'foobar')
-
+$ ->  
   # Show/hide map popover when in input field
   $('#trip_proxy_from_place').on 'typeahead:opened', () ->
     if $('#fromAddressMarkerButton').css('display') != 'none'
@@ -322,28 +337,40 @@ $ ->
   $('#trip_proxy_from_place').on 'focusin', () ->
     show_from_typeahead_hint = true
   $('#trip_proxy_from_place').on 'typeahead:selected', (e, addr, d) ->
-    $('#from_place_object').val(JSON.stringify(addr))
-    update_map CsMaps.tripMap, 'from', e, addr, d
-    if $('#from_places').length == 0
-      $('#trip_proxy_to_place').focus()
-      $('#trip_proxy_to_place').trigger('touchstart')
+    addr = format_place(addr)
+    parse_place_details addr, (addr_with_details) -> 
+      $('#from_place_object').val(JSON.stringify(addr_with_details))
+      update_map CsMaps.tripMap, 'from', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d, true
+      if $('#from_places').length == 0
+        $('#trip_proxy_to_place').focus()
+        $('#trip_proxy_to_place').trigger('touchstart')
   $('#trip_proxy_from_place').on 'typeahead:autocompleted', (e, addr, d) ->
-    $('#from_place_object').val(JSON.stringify(addr))
-    update_map CsMaps.tripMap, 'from', e, addr, d
+    addr = format_place(addr)
+    parse_place_details addr, (addr_with_details) ->
+      $('#from_place_object').val(JSON.stringify(addr_with_details))
+      update_map CsMaps.tripMap, 'from', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'from', e, addr_with_details, d, true
 
   $('#trip_proxy_to_place, #trip_proxy_outbound_arrive_depart').on 'touchstart', () ->
     $(this).focus()
   $('#trip_proxy_to_place').on 'focusin', () ->
     show_to_typeahead_hint = true
   $('#trip_proxy_to_place').on 'typeahead:selected', (e, addr, d) ->
-    $('#to_place_object').val(JSON.stringify(addr))
-    update_map CsMaps.tripMap, 'to', e, addr, d
-    if $('#to_places').length == 0
-      $('#trip_proxy_outbound_arrive_depart').focus()
-      $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
+    addr = format_place(addr)
+    parse_place_details addr, (addr_with_details) ->
+      $('#to_place_object').val(JSON.stringify(addr_with_details))
+      update_map CsMaps.tripMap, 'to', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d, true
+      if $('#to_places').length == 0
+        $('#trip_proxy_outbound_arrive_depart').focus()
+        $('#trip_proxy_outbound_arrive_depart').trigger('touchstart')
   $('#trip_proxy_to_place').on 'typeahead:autocompleted', (e, addr, d) ->
-    $('#to_place_object').val(JSON.stringify(addr))
-    update_map CsMaps.tripMap, 'to', e, addr, d
+    addr = format_place(addr)
+    parse_place_details addr, (addr_with_details) ->
+      $('#to_place_object').val(JSON.stringify(addr_with_details))
+      update_map CsMaps.tripMap, 'to', e, addr_with_details, d
+      update_map CsMaps.expandedMap, 'to', e, addr_with_details, d, true
 
   $('.plan-a-trip input, .plan-a-trip select').on 'focusin', () ->
     if $(this).parents('.trip_proxy_from_place, .trip_proxy_to_place').length == 0
@@ -372,6 +399,11 @@ $ ->
 
   if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.tripMap
     CsMaps.tripMap.LMmap.on 'placechange', (e) ->
+      latlng = (if e.latlng then e.latlng else {})
+      reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
+
+  if typeof(CsMaps) != 'undefined' and CsMaps and CsMaps.expandedMap
+    CsMaps.expandedMap.LMmap.on 'placechange', (e) ->
       latlng = (if e.latlng then e.latlng else {})
       reverse_geocode(latlng.lat, latlng.lng, CsMaps.tripMap.addressType)
 

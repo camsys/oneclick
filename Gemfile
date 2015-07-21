@@ -1,17 +1,23 @@
 source 'https://rubygems.org'
 ruby '2.1.3'
+
 gem 'rails', '4.0.3'
-# See http://stackoverflow.com/questions/22391116/nomethoderror-in-pageshome-undefined-method-environment-for-nilnilclass
+
 gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
-unless ENV['UI_MODE']=='kiosk'
+
+unless ENV['UI_MODE'] == 'kiosk'
   gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.2'
   gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
 else
   gem 'bootstrap-sass', '~> 2.3.2.0'
   gem 'simple_form', '3.0.1'
 end
+
+gem 'translation_engine', github: 'camsys/translation_engine'
+#gem 'translation_engine', path: '~/code/translation_engine'
+
 gem 'fog'
 gem 'coffee-rails'
 gem 'uglifier', '>= 1.0.3'
@@ -35,9 +41,6 @@ gem 'newrelic_rpm'
 gem 'polylines'
 gem 'activemdb'
 gem 'ajaxful_rating', '>= 3.0.0.beta7'
-gem 'i18n-active_record', '= 0.1.0',
-  :git => 'git://github.com/camsys/i18n-active_record.git',
-  :require => 'i18n/active_record'
 gem 'honeybadger'
 gem 'draper'
 gem 'rubyzip'
@@ -66,6 +69,11 @@ gem 'mini_magick'
 gem 'carrierwave'
 gem 'poltergeist'
 gem 'sidekiq'
+gem 'ransack', github: 'camsys/ransack'
+gem 'kaminari'
+gem 'bootstrap-kaminari-views'
+gem 'browser'
+gem 'remotipart', '~> 1.2'
 
 group :development do
   # gem 'ffi-geos'
@@ -78,8 +86,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-puma'
-  gem 'pry-stack_explorer'
-  #gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'listen'
@@ -94,9 +101,9 @@ group :development do
   gem 'yard'
   gem 'RedCloth' # Needed by yard
   gem 'foreman'
-  # gem 'debugger'
   # For sidekiq monitoring
   gem 'sinatra', :require => nil
+  gem 'seed_dump'
 end
 
 group :development, :test do
@@ -115,4 +122,3 @@ group :test do
   gem 'simplecov', require: false
   gem 'timecop'
 end
-

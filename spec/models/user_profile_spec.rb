@@ -36,7 +36,7 @@ describe UserProfile do
           expect(services.size).to eq 3
           trip = FactoryGirl.create(:trip, trip_purpose: TripPurpose.find_by_name('Medical'))
           planned_trip_part = trip.trip_parts.first
-          services = eh.get_eligible_services_for_trip(planned_trip_part, services)
+          services = eh.remove_ineligible_itineraries(planned_trip_part, services)
           expect(services.size).to eq 3
         end
 
@@ -50,7 +50,7 @@ describe UserProfile do
           trip = FactoryGirl.create(:trip2, trip_purpose: TripPurpose.find_by_name('Medical'))
           planned_trip_part = trip.trip_parts.first # = FactoryGirl.create(:trip_part2)
           # puts services.ai
-          services = eh.get_eligible_services_for_trip(planned_trip_part, services)
+          services = eh.remove_ineligible_itineraries(planned_trip_part, services)
           # expect(    services.size).to eq 0
           expect(    services.size).to eq 3
         end
@@ -72,7 +72,7 @@ describe UserProfile do
           planned_trip = FactoryGirl.create(:trip_part)
           purpose = TripPurpose.find_by_name('Medical')
           planned_trip.trip.trip_purpose = purpose
-          services2 = eh.get_eligible_services_for_trip(planned_trip, acc_and_eligible_services)
+          services2 = eh.remove_ineligible_itineraries(planned_trip, acc_and_eligible_services)
           expect(services2.size).to eq 9
         end
 
@@ -93,7 +93,7 @@ describe UserProfile do
           planned_trip = FactoryGirl.create(:trip_part)
           purpose = TripPurpose.find_by_name('Personal')
           planned_trip.trip.trip_purpose = purpose
-          services = eh.get_eligible_services_for_trip(planned_trip, services)
+          services = eh.remove_ineligible_itineraries(planned_trip, services)
           expect(    services.size).to eq 0
         end
       end

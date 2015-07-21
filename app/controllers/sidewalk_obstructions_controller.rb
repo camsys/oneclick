@@ -21,7 +21,7 @@ class SidewalkObstructionsController < ApplicationController
       respond_to do |format|
         format.json { render json: {
           success: false,
-          error_msg: I18n.t(:something_went_wrong)
+          error_msg: TranslationEngine.translate_text(:something_went_wrong)
         }}
       end
     end
@@ -73,13 +73,13 @@ class SidewalkObstructionsController < ApplicationController
       else
         return {
           success: false,
-          error_msg: I18n.t(:not_authorized_as_an_administrator)
+          error_msg: TranslationEngine.translate_text(:not_authorized_as_an_administrator)
         }
       end
     else
       return {
         success: false,
-        error_msg: I18n.t(:something_went_wrong)
+        error_msg: TranslationEngine.translate_text(:something_went_wrong)
       }
     end
   end

@@ -1,5 +1,9 @@
+##
+# Controller for customized reports
+# Generic reports, please refer to Reporting::ReportsController
 class Admin::ReportsController < Admin::BaseController
-  
+  include Reporting::ReportHelper
+
   # load the cancan authorizations
   load_and_authorize_resource  
   
@@ -15,19 +19,22 @@ class Admin::ReportsController < Admin::BaseController
   START_PARAMS_KEY = 'start'
   LENGTH_PARAMS_KEY = 'length'
   
-  def index
-    @reports = Report.all
-    @generated_report = GeneratedReport.new({})
+  def show
+    @report = Report.find(params[:id])
+    
+    @reports = all_report_infos # get all report infos (id, name) both generic and customized reports
+    @generated_report = GeneratedReport.new(params[:generated_report] || {})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
     @min_trip_date = Trip.minimum(:scheduled_time)
 
+    @custom_date_option_id = DateOption.where(code: 'date_option_custom').first.id rescue ''
     set_user_based_constraints
   end
 
   # renders a report page. Actual details depends on the id parameter passed
   # from the view
-  def show
-
+  def results
+    @report = Report.find(params[:report_id])
     # params[:generated_report] can be nil if switching locales, redirect
     if params[:generated_report].nil?
       redirect_to admin_reports_path
@@ -35,7 +42,6 @@ class Admin::ReportsController < Admin::BaseController
     end
     
     @generated_report = GeneratedReport.new(params[:generated_report])
-    @report = Report.find(@generated_report.report_name)
 
     # Store filter settings in session for ajax calls.
     @generated_report.date_range ||= session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
@@ -75,7 +81,7 @@ class Admin::ReportsController < Admin::BaseController
         format.html
         format.csv do
           send_data get_csv,
-                filename: "#{I18n.t(@report.class_name).parameterize.underscore}.csv", type: :text
+                filename: "#{TranslationEngine.translate_text(@report.class_name).parameterize.underscore}.csv", type: :text
         end
       end
     end
@@ -96,7 +102,7 @@ class Admin::ReportsController < Admin::BaseController
       xlated_columns = if is_standard_system_report
         @report_instance.get_localized_columns
       else
-        @columns.map {|col| I18n.t(col)}
+        @columns.map {|col| TranslationEngine.translate_text(col)}
       end
 
       if xlated_columns[0].start_with? "ID"

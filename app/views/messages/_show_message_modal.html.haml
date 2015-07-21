@@ -1,0 +1,84 @@
+- message_ids = []
+- if user_messages && !user_messages.empty?
+  - user_messages.each do |user_message|
+    - msg_id = user_message.id
+    - message_ids << msg_id
+    .unread-message.modal.fade.col-sm-12{id: "messageDialog-#{msg_id}", data: {id: msg_id}, "aria-describedby" => translate_helper(:you_have_unread_message), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+              = translate_helper(:close)
+            .modal-title{:style => "text-align:left;"}
+              %strong
+                = translate_helper(:unread_message)
+          .modal-body{:style => "text-align:left;"}
+            .row
+              .col-sm-12
+                = user_message.message.body
+              .col-sm-12.form-group
+                %label.mobile-checkbox{for: "readCheckbox-#{msg_id}"}
+                  %input.mobile-input-checkbox{type:'checkbox',id:"readCheckbox-#{msg_id}","aria-labelledby"=>"readCheckbox-label-#{msg_id}", "aria-describedby"=>"readCheckbox-description"}
+                  .mobile-checkbox__checkmark
+                  %span{id:"readCheckbox-label-#{msg_id}"}
+                  = translate_helper(:mark_as_read)
+  :javascript
+    $(document).ready(function(){
+      var openMessage = function(msgId) {
+        $.ajax({
+          type: "POST",
+          url: "#{open_message_path}",
+          data: {
+            id: msgId
+          },
+          dataType: 'json'
+        });
+      };
+
+      var flagMessageRead = function(msgId) {
+        $.ajax({
+          type: "POST",
+          url: "#{read_message_path}",
+          data: {
+            id: msgId
+          },
+          dataType: 'json'
+        });
+      };
+
+      // message dialog shown: then update message last_displayed_
+      $('.unread-message').on('shown.bs.modal', function( event ) {
+        var msgId = $(this).data('id');
+      
+        openMessage(msgId);
+      });
+
+      $('.unread-message').on('hidden.bs.modal', function( event ) {
+        var msgId = $(this).data('id');
+      
+        // flag message as Read if user checked on Read checkbox
+        if($(this).find('input[type=checkbox]').prop('checked')) {
+          flagMessageRead(msgId);
+        }
+      });
+
+      var messageIds = #{message_ids};
+      messageIds.forEach(function(msgId) {
+        var msgSessionKey = "unread_messages_shown_" + msgId;
+        if(sessionStorage.getItem('user_signed_out')) {
+          sessionStorage.setItem(msgSessionKey, '');
+        }
+        if (!sessionStorage.getItem(msgSessionKey)) {
+          $('#messageDialog-' + msgId).modal('show');
+          sessionStorage.setItem(msgSessionKey, true);
+        }
+      });
+    });
+:javascript
+  $(document).ready(function(){
+    if(!#{user_signed_in?}) {
+      sessionStorage.setItem('user_signed_out', true);
+    } else {
+      sessionStorage.setItem('user_signed_out', '');
+    }
+  });        

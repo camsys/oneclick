@@ -12,9 +12,10 @@ class Trip < ActiveRecord::Base
   has_many :trip_parts, -> {order("trip_parts.sequence ASC")}
   has_many :itineraries, :through => :trip_parts, :class_name => 'Itinerary'
   has_and_belongs_to_many :desired_modes, class_name: 'Mode', join_table: :trips_desired_modes, association_foreign_key: :desired_mode_id
+  has_one :satisfaction_survey
 
   # Scopes
-  scope :created_between, lambda {|from_day, to_day| where("trips.created_at > ? AND trips.created_at < ?", from_day.at_beginning_of_day, to_day.tomorrow.at_beginning_of_day) }
+  scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
   scope :with_role, lambda {|role_name| 
     includes(user: :roles)
     .where(roles: {name: role_name})
@@ -25,7 +26,7 @@ class Trip < ActiveRecord::Base
     .where.not(roles: {name: role_name})
     .references(user: :roles)
   }
-  scope :planned, -> { includes(:itineraries).where(itineraries: {selected: true}).references(:itineraries) }
+  
   scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
@@ -33,6 +34,20 @@ class Trip < ActiveRecord::Base
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
+  scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
+
+  def self.planned_between(start_time = nil, end_time = nil)
+    base_trips = Trip.where(is_planned: true)
+
+    start_time = start_time.at_beginning_of_day if start_time
+    end_time = end_time.at_end_of_day if end_time
+
+    base_trips = base_trips.where("trips.created_at >= ?", start_time) if start_time
+    base_trips = base_trips.where("trips.created_at <= ?", end_time) if end_time
+
+    base_trips
+   
+  end
 
   # Returns a set of trips that are scheduled between the start and end time
   def self.scheduled_between(start_time, end_time)
@@ -62,15 +77,26 @@ class Trip < ActiveRecord::Base
     trip.user = traveler
     trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
     trip.desired_modes = Mode.where(code: trip_proxy.modes)
+    trip.token = trip_proxy.trip_token || nil
+    trip.agency_token = trip_proxy.agency_token || nil
+
+    #Assign agency if app_token is present and belongs to an agency
+    if trip.agency.nil? and not trip.agency_token.nil?
+      trip.agency = Agency.find_by(token: trip.agency_token)
+    end
+
+
+
 
     if traveler.has_vehicle? and trip.desired_modes.include?(Mode.transit)
       trip.desired_modes << Mode.park_transit
     end
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
-      trip_proxy.from_place, trip_proxy.map_center)
+      trip_proxy.from_place, trip_proxy.map_center, traveler)
+    
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
-      trip_proxy.to_place, trip_proxy.map_center)
+      trip_proxy.to_place, trip_proxy.map_center, traveler)
     # bubble up any errors finding places
     trip.errors.add(:from_place, from_place.errors[:base].first) unless from_place.errors[:base].empty?
     trip.errors.add(:to_place, to_place.errors[:base].first) unless to_place.errors[:base].empty?
@@ -398,6 +424,22 @@ class Trip < ActiveRecord::Base
     i -= 1
     return nil if i<0
     trip_parts[i]
+  end
+
+  #Unselect all selected itineraries
+  def unselect_all
+    self.itineraries.selected.each do |i|
+      i.update_attribute :selected, false
+    end
+  end
+
+  def status
+    #Statuses
+    # Started, Planned, Booked
+    return {code: 'BOOKED', description: "Trips booked."} if self.is_booked?
+    return {code: 'PLANNED', description: "Trip planned but not booked."} if self.both_parts_selected?
+    return {code: 'STARTED', description: "Trip started but not planned."}
+
   end
 
   private

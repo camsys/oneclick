@@ -1,10 +1,10 @@
 .btn-group
-  %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false"}
+  %button.btn.action-button.dropdown-toggle#user_menu{"type" => "button", "data-toggle" => "dropdown", "aria-expanded" => "false", "tabindex" => "2"}
     %i.fa.fa-user
     - unless is_assisting
-      = "#{t(:welcome)}, #{get_traveler.welcome}"
+      = "#{translate_helper(:welcome)}, #{get_traveler.welcome}"
     - else
-      = t(:assisting_assisted_user_email, assisted_user: @traveler.name)
-    %b.caret
+      = translate_helper(:assisting_assisted_user_email, assisted_user: @traveler.name)
+    %strong.caret
   %ul.dropdown-menu{:role => "menu"}
     = render partial: 'menu_item', collection: traveler_actions(with_logout: true) 

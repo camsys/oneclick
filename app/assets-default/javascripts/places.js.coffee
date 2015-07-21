@@ -7,23 +7,69 @@ create_or_update_marker = (map, key, lat, lon, name, desc, iconStyle) ->
   map.addMarkerToMap marker, true
   marker
 
-update_map = (map, type, e, s, d) ->
-  lat = s.lat
-  lon = s.lon
-  if lat==null
-    $.ajax
-      type: 'GET'
-      url: '/place_details/' + s.id
-      async: false
-      success: (data) ->
-        lat = data.result.geometry.location.lat
-        lon = data.result.geometry.location.lng
+draw_loc = (map, dir, addr, lat, lon) ->
   key = 'start'
   icon = 'startIcon'
-  map.removeMatchingMarkers(key);
-  marker = create_or_update_marker(map, key, lat, lon, s.name, s.full_address, icon);
-  map.setMapToBounds();
-  map.selectMarker(marker);
+  map.removeMatchingMarkers(key)
+  marker = create_or_update_marker(map, key, lat, lon, addr.name, addr.full_address, icon)
+  map.setMapToBounds()
+  map.selectMarker(marker)
+
+update_map = (map, dir, e, addr, d) ->
+  key = 'start'
+  icon = 'startIcon'
+  map.removeMatchingMarkers(key)
+  marker = create_or_update_marker(map, key, addr.lat, addr.lon, addr.name, addr.full_address, icon)
+  map.setMapToBounds()
+  map.selectMarker(marker)
+
+format_place = (addr) ->
+  if !addr.lat && addr.lat != 0
+    addr = 
+      'type'    : '5'
+      'type_name'    : 'PLACES_AUTOCOMPLETE_TYPE'
+      'name'   : addr['description']
+      'id'     : addr['place_id']
+      'reference': addr['reference']
+      'lat'    : null
+      'lon'    : null
+      'address' : addr['description']
+      'description': '(not rendered)'
+
+  return addr
+
+# create a fake dom to initialize a new google place service
+google_place_service = new google.maps.places.PlacesService(document.createElement('div'))
+parse_place_details = (addr, cb) ->
+  if !cb
+    cb = () ->
+  lat = addr.lat
+  if !lat && lat != 0
+    google_place_service.getDetails {
+      placeId: addr.id
+    }, (place, status) ->
+      process_place = (place_obj) ->
+        addr.lat =  place_obj.geometry.location.lat()
+        addr.lon =  place_obj.geometry.location.lng()
+        place_obj.geometry.location = 
+          lat: addr.lat
+          lng: addr.lon
+        addr.google_details = place_obj
+        cb addr
+
+      if status == google.maps.places.PlacesServiceStatus.OK
+        process_place place
+      else 
+        # noticed occasionally no match based on place_id, so try again with reference 
+        google_place_service.getDetails {
+          reference: addr.reference
+        }, (new_place, status) ->
+          if status == google.maps.places.PlacesServiceStatus.OK
+            process_place new_place
+          else
+            console.log "No match found for: " + addr.name
+  else
+    cb addr
 
 $ ->
   select_place = (selected_tr) ->
@@ -55,35 +101,14 @@ $ ->
       $('#save').removeAttr('disabled')
     else  
       $('#save').attr('disabled', 'true')
-        
-  places = new Bloodhound
-    datumTokenizer: (d) ->
-      Bloodhound.tokenizers.whitespace(d.value)
-    queryTokenizer: Bloodhound.tokenizers.whitespace
-    remote:
-      url: '/place_search.json?no_map_partial=true'
-      rateLimitWait: 600
-      replace: (url, query) ->
-        url = url + '&query=' + query
-        url = url + '&map_center=' + (CsMaps.placesMap.LMmap.getCenter().lat + ',' + CsMaps.placesMap.LMmap.getCenter().lng)
-        return url
-    limit: 20
-    # prefetch: '../data/films/post_1960.json'
-
-  places.initialize()
-
-  $(".places .place_picker").typeahead null,
-    limit: 20,
-    displayKey: "name"
-    source: places.ttAdapter()
-    templates:
-      suggestion: Handlebars.compile([
-        '<a>{{name}}</a>'
-      ].join(''))
   
   $('#places_controller_places_proxy_from_place').on 'typeahead:selected', (e, s, d) ->
-    $('#places_controller_places_proxy_json').val(JSON.stringify(s))
-    update_map(CsMaps.placesMap, 'trip', e, s, d)
+    s = format_place(s)
+    parse_place_details s, (addr_with_details) -> 
+      $('#places_controller_places_proxy_json').val(JSON.stringify(addr_with_details))
+      update_map(CsMaps.placesMap, 'trip', e, addr_with_details, d)
   $('#places_controller_places_proxy_from_place').on 'typeahead:autocompleted', (e, s, d) ->
-    $('#places_controller_places_proxy_json').val(JSON.stringify(s))
-    update_map(CsMaps.placesMap, 'trip', e, s, d)
+    s = format_place(s)
+    parse_place_details s, (addr_with_details) -> 
+      $('#places_controller_places_proxy_json').val(JSON.stringify(addr_with_details))
+      update_map(CsMaps.placesMap, 'trip', e, addr_with_details, d)

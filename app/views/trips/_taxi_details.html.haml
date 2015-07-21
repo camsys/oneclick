@@ -1,8 +1,29 @@
-%table.center
-  -YAML.load(itinerary.server_message).each do |business|
+%table.center{summary: "#{translate_helper(:taxi_note)}"}
+  %thead
+    %tr
+      %th= translate_helper(:provider_name)
+      %th= translate_helper(:phone)
+  %tbody
     %tr
       %td
-        %b
-          =business['name'] + ":  "
+        %strong
+          = itinerary.service.name
       %td
-        =business['phone']
+        = itinerary.service.phone
+%br
+
+- if !itinerary.service.public_comments.empty?
+  .row
+    .col-sm-12
+      .well.well-sm.comments
+        - itinerary.service.public_comments.each do |comment|
+          = comment.comment.try(:html_safe)
+          %br
+
+- if !itinerary.service.fare_structures.empty?
+  - itinerary.service.fare_structures.each do |fare|
+    -if fare.comments.for_locale
+      .row
+        .col-sm-12
+          .well.well-sm.comments
+            = fare.comments.for_locale.comment.try(:html_safe)

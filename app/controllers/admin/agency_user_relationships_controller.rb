@@ -45,12 +45,12 @@ class Admin::AgencyUserRelationshipsController < Admin::BaseController
           end
 
           if @agency_user_relationship.save
-            flash[:notice] = t(:agency_added)
+            flash[:notice] = TranslationEngine.translate_text(:agency_added)
           end
         end
       end
     else
-      flash[:alert] = t(:no_agency_selected)
+      flash[:alert] = TranslationEngine.translate_text(:no_agency_selected)
     end
     #AJAX update the tables with newest information regardless of success
     respond_to do |format|
@@ -82,9 +82,9 @@ private
     if @agency_relationship
       @agency_relationship.relationship_status = new_status
       if @agency_relationship.save
-        flash[:notice] = t(:request_processed)
+        flash[:notice] = TranslationEngine.translate_text(:request_processed)
       else
-        flash[:alert] = t(:something_went_wrong)
+        flash[:alert] = TranslationEngine.translate_text(:something_went_wrong)
       end       
     end
   end   

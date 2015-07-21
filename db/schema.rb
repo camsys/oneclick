@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150127231827) do
+ActiveRecord::Schema.define(version: 20150717141712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.boolean "active",                             default: true, null: false
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "token"
+    t.string  "disabled_comment"
   end
 
   create_table "agency_user_relationships", force: true do |t|
@@ -131,6 +133,36 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.text    "desc"
   end
 
+  create_table "fare_zones", force: true do |t|
+    t.string   "zone_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
+  end
+
+  add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
+
+  create_table "flat_fares", force: true do |t|
+    t.float    "one_way_rate"
+    t.float    "round_trip_rate"
+    t.integer  "fare_structure_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
+
+  create_table "funding_sources", force: true do |t|
+    t.string   "code",                           null: false
+    t.integer  "index"
+    t.integer  "service_id",                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.text     "comment"
+    t.boolean  "general_public", default: false
+  end
+
   create_table "geo_coverages", force: true do |t|
     t.string  "value"
     t.string  "coverage_type", limit: 128
@@ -178,6 +210,14 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.string   "map_image"
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
+    t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
+    t.text     "discounts"
+    t.datetime "negotiated_pu_time"
+    t.datetime "negotiated_do_time"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -189,6 +229,54 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "legs", force: true do |t|
+    t.integer  "itinerary_id_id"
+    t.integer  "leg_sequence"
+    t.integer  "service_id_id"
+    t.integer  "mode_id_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.float    "leg_time"
+    t.float    "leg_distance"
+    t.decimal  "cost",                            precision: 10, scale: 0
+    t.string   "cost_comments"
+    t.text     "otp_leg"
+    t.string   "returned_mode_id",     limit: 50
+    t.boolean  "is_bookable"
+    t.string   "booking_confirmation"
+    t.boolean  "duration_estimated"
+    t.text     "order_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locales", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", force: true do |t|
+    t.integer  "sender_id"
+    t.text     "body"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
+
+  create_table "mileage_fares", force: true do |t|
+    t.float    "base_rate"
+    t.float    "mileage_rate"
+    t.integer  "fare_structure_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
 
   create_table "modes", force: true do |t|
     t.string  "name",               limit: 64,                 null: false
@@ -292,6 +380,7 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.text    "public_comments_old"
     t.string  "icon"
     t.string  "logo"
+    t.string  "disabled_comment"
   end
 
   create_table "ratings", force: true do |t|
@@ -309,6 +398,79 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.string "name", limit: 64
     t.string "code"
   end
+
+  create_table "reporting_filter_fields", force: true do |t|
+    t.integer  "reporting_filter_group_id",             null: false
+    t.integer  "reporting_filter_type_id",              null: false
+    t.integer  "reporting_lookup_table_id"
+    t.string   "name",                                  null: false
+    t.string   "title"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "sort_order",                default: 1, null: false
+    t.string   "value_type"
+  end
+
+  add_index "reporting_filter_fields", ["reporting_filter_group_id"], :name => "index_reporting_filter_fields_on_reporting_filter_group_id"
+  add_index "reporting_filter_fields", ["reporting_filter_type_id"], :name => "index_reporting_filter_fields_on_reporting_filter_type_id"
+  add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
+
+  create_table "reporting_filter_groups", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reporting_filter_types", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reporting_lookup_tables", force: true do |t|
+    t.string   "name",                              null: false
+    t.string   "display_field_name",                null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "id_field_name",      default: "id", null: false
+    t.string   "data_access_type"
+  end
+
+  create_table "reporting_output_fields", force: true do |t|
+    t.integer  "reporting_report_id", null: false
+    t.string   "name",                null: false
+    t.string   "title"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "formatter"
+    t.integer  "numeric_precision"
+  end
+
+  add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
+
+  create_table "reporting_reports", force: true do |t|
+    t.string   "name",                             null: false
+    t.string   "description"
+    t.string   "data_source",                      null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "is_sys_admin"
+    t.boolean  "is_provider_staff"
+    t.boolean  "is_agency_admin"
+    t.boolean  "is_agent"
+    t.string   "primary_key",       default: "id", null: false
+  end
+
+  create_table "reporting_specific_filter_groups", force: true do |t|
+    t.integer  "reporting_report_id"
+    t.integer  "reporting_filter_group_id"
+    t.integer  "sort_order",                default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reporting_specific_filter_groups", ["reporting_filter_group_id"], :name => "index_of_filter_group_on_specific_filter_group"
+  add_index "reporting_specific_filter_groups", ["reporting_report_id"], :name => "index_of_report_on_specific_filter_group"
 
   create_table "reports", force: true do |t|
     t.string   "name",        limit: 64
@@ -331,6 +493,15 @@ ActiveRecord::Schema.define(version: 20150127231827) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "satisfaction_surveys", force: true do |t|
+    t.integer  "trip_id",    null: false
+    t.boolean  "satisfied",  null: false
+    t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "reasoning"
+  end
 
   create_table "schedules", force: true do |t|
     t.integer  "service_id",                   null: false
@@ -409,6 +580,15 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.text     "private_comments_old"
     t.string   "logo"
     t.integer  "max_advanced_book_minutes",                default: 0,     null: false
+    t.string   "display_color"
+    t.integer  "mode_id"
+    t.string   "taxi_fare_finder_city",        limit: 64
+    t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
+    t.string   "fare_user"
+    t.string   "booking_system_id"
+    t.string   "booking_token"
+    t.text     "disallowed_purposes"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -429,17 +609,33 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.datetime "updated_at"
   end
 
+  create_table "sponsors", force: true do |t|
+    t.string   "code",       null: false
+    t.integer  "index"
+    t.integer  "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "translation_keys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"
-    t.boolean  "is_proc",        default: false
+    t.boolean  "is_proc",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "locale"
     t.text     "value"
-    t.boolean  "is_html",        default: false
-    t.boolean  "complete",       default: false
-    t.boolean  "is_list",        default: false
+    t.boolean  "is_html",            default: false
+    t.boolean  "complete",           default: false
+    t.boolean  "is_list",            default: false
+    t.integer  "locale_id"
+    t.integer  "translation_key_id"
   end
 
   create_table "traveler_notes", force: true do |t|
@@ -459,6 +655,11 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.datetime "updated_at",                         null: false
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
+    t.text     "note_to_driver"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
@@ -502,8 +703,8 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
@@ -517,6 +718,10 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.integer  "outbound_provider_id"
     t.integer  "return_provider_id"
     t.string   "kiosk_code"
+    t.string   "token"
+    t.boolean  "is_planned",                           default: false
+    t.string   "agency_token"
+    t.string   "trip_purpose_raw"
   end
 
   create_table "trips_desired_modes", force: true do |t|
@@ -541,6 +746,19 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.datetime "verified_at"
     t.integer  "verified_by_id"
   end
+
+  create_table "user_messages", force: true do |t|
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.boolean  "read",              default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "last_displayed_at"
+    t.datetime "read_at"
+  end
+
+  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
 
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
@@ -607,6 +825,8 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.integer  "walking_speed_id"
     t.integer  "walking_maximum_distance_id"
     t.datetime "deleted_at"
+    t.integer  "maximum_wait_time"
+    t.string   "disabled_comment"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
@@ -642,5 +862,18 @@ ActiveRecord::Schema.define(version: 20150127231827) do
     t.string  "state"
     t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
+
+  create_table "zone_fares", force: true do |t|
+    t.integer  "from_zone_id"
+    t.integer  "to_zone_id"
+    t.integer  "fare_structure_id"
+    t.float    "rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
+  add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
+  add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
 
 end

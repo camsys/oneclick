@@ -1,29 +1,30 @@
 %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#agencies_table
   %thead
     %tr
-      %th= t(:agency)
-      %th= t(:status)
-      %th.updated= t(:updated)
+      %th= translate_helper(:agency)
+      %th= translate_helper(:status)
+      %th.updated= translate_helper(:updated)
   %tbody
     - if user and !user.agency.nil?
       %tr
         %td
           = link_to(user.agency.name, admin_agency_path(user.agency))
         %td
-          = t(RelationshipStatus.confirmed)
+          = translate_helper(RelationshipStatus.confirmed)
         %td.updated
     - user.agency_user_relationships.each do |relationship|
       %tr
         %td
           = link_to(relationship.agency.name, admin_agency_path(relationship.agency))
         %td
-          = t(relationship.relationship_status)
+          = translate_helper(relationship.relationship_status)
         %td.updated
-          = distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + t(:ago)
+          = distance_of_time_in_words_to_now(relationship.updated_at).to_s + " " + translate_helper(:ago)
 
 :javascript
   $(document).ready(function() {
     $('#agencies_table').dataTable( {
+          stateSave: true,
           "oLanguage": {
               "sLengthMenu": "Display _MENU_ agencies per page",
               "sZeroRecords": "Nothing found - sorry",

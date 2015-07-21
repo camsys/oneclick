@@ -13,6 +13,7 @@
   
   $(document).ready(function() {
   	$('#{table_id}').dataTable( {
+      stateSave: true,
   		"bFilter" : #{bFilter},
   		"bSort" : #{bSort},
   		"sDom": '<f><l>rtip',
@@ -21,7 +22,7 @@
   		"oLanguage": {
                         "sLengthMenu": "#{sLengthMenu}",
                         "sInfo": "#{sInfo}",
-                        "sZeroRecords": "#{t(:nothing_found_sorry)}"
+                        "sZeroRecords": "#{translate_helper(:nothing_found_sorry)}"
   		}
   	} );
   } );

@@ -57,32 +57,6 @@ namespace :oneclick do
     oc.save
   end
 
-  desc "Oneoff for setting return_mode_code for trips"
-  task :set_return_mode_code => :environment do
-    count = 0
-    Itinerary.where(returned_mode_code: nil).each do |itin|
-
-      puts count
-      count += 1
-      if !itin.mode
-        next
-      end
-
-      returned_mode_code = itin.mode.code
-      if returned_mode_code == "mode_transit"
-        if itin.is_walk
-          returned_mode_code = Mode.walk.code
-        elsif itin.is_car
-          returned_mode_code = Mode.car.code
-        elsif itin.is_bicycle
-          returned_mode_code = Mode.bicycle.code
-        end
-      end
-
-      itin.update_attribute(:returned_mode_code, returned_mode_code)
-    end
-  end
-
   task :seed_data => :environment do
     throw Exception.new("*** Deprecated, just use db:seed task ***")
   end
@@ -236,14 +210,6 @@ namespace :oneclick do
   end
   #THIS IS THE END
 
-  desc "Load database translations from config/locales/moved-to-db/*.yml files (idempotent)"
-  task load_locales: :environment do
-    Dir.glob('config/locales/moved-to-db/*').each do |file|
-      puts "Loading locale file #{file}"
-      I18n::Utility.load_locale file
-    end
-  end
-
   def wrap s, p, c
     "[#{p}#{c}]#{s}[#{p}]"
   end
@@ -251,48 +217,6 @@ namespace :oneclick do
   def quote s
     q = (s =~ /\"/ ? '\'' : '"')
     "#{q}#{s}#{q}"
-  end
-
-  task rewrite_locale: :environment do
-    raise "INFILE= must be defined" unless ENV['INFILE']
-    y = YAML.load_file(ENV['INFILE'])
-    p = ENV['PREFIX']
-    raise "PREFIX= must be defined" unless p
-    c = 0
-    traverse( y ) do |v, parents|
-      indent = ' ' * (parents.size-1) * 2
-      case v
-      when Hash
-        if parents.size==1
-          puts "#{indent}#{p}:"
-        else
-          puts "#{indent}#{parents.last}:"
-        end
-      when Array
-        puts "#{indent}#{parents.last}:"
-        v.each do |l|
-          puts "#{indent}- #{quote(wrap(l, p, c))}"
-        end
-      when String
-        q = (v =~ /\"/ ? '\'' : '"')
-        puts "#{indent}#{parents.last}: #{quote(wrap(v, p, c))}"
-      else
-        raise "Don't know how to handle #{v.inspect}"
-      end
-      c += 1
-    end
-
-    # y.each_with_parents do |parents, v|
-    #   locale = parents.shift
-    #   if v.is_a? Array
-    #     puts "ARRAY"
-    #     puts
-    #     Translation.create(key: parents.join('.'), locale: locale, value: v.join(','), is_list: true).id.nil? ? failed += 1 : success += 1
-    #   else
-    #     Translation.create(key: parents.join('.'), locale: locale, value: v).id.nil? ? failed += 1 : success += 1
-    #   end
-    # end
-    # puts "Read #{success+failed} keys, #{success} successful, #{failed} failed, #{skipped} skipped"
   end
 
   task print_booking_report: :environment do
@@ -346,6 +270,251 @@ namespace :oneclick do
       end
     end
 
+  end
+
+  desc "Create Mode Table entries for Ferry, Cable Car, Gondola, and Funicular"
+  task add_otp_modes: :environment do
+
+    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
+    full_url = "https://s3.amazonaws.com/#{bucket}/modes/"
+
+    ['FERRY', 'CABLE_CAR', 'GONDOLA', 'FUNICULAR', 'SUBWAY', 'TRAM'].each do |m|
+
+      mode = Mode.unscoped.where(code: 'mode_' + m.downcase).first_or_initialize
+      unless mode.persisted?
+        puts 'Creating ' + m
+        mode.name = "mode_" + m.downcase + "_name"
+        mode.logo_url = full_url + m.downcase + '.png'
+        mode.active = true
+        mode.visible = false
+        mode.otp_mode = m
+        mode.save
+      else
+        puts 'Skipping ' + m
+      end
+    end
+  end
+
+  desc "Query planned trips and update is_planned column"
+  task scan_trips_is_planned: :environment do
+
+    puts 'find out trip_parts grouped by trip_id'
+    trip_part_by_trip_count = TripPart.includes(:trip).references(:trip).group("trips.id").count
+
+    puts 'find out selected itineraries grouped by trip_id'
+    selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip).references(trip_part: :trip)
+      .where(selected: true)
+      .group("trips.id").count
+    
+    puts 'find trip ids with trip_part_count == selected_itins_count'
+    planned_trip_ids = []
+    trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
+
+    Trip.where(id: planned_trip_ids).update_all(is_planned: true)
+    Trip.where.not(id: planned_trip_ids).update_all(is_planned: false)
+
+    puts 'finished scanning planned trips'
+  end
+
+  desc "Create sql view for trips page"
+  task create_trips_sql_view: :environment do
+
+    ActiveRecord::Base.connection.execute File.read(Rails.root.join('lib/tasks/sql/trips_view.sql'))
+
+    puts 'trips_view is created'
+  end
+
+  desc "Create Funding Source Objects for Ecolane/Rabbit"
+  task create_funding_sources: :environment do
+    funding_sources = Oneclick::Application.config.funding_source_order
+    services = Service.where(booking_service_code: "ecolane")
+    services.each do |s|
+      funding_sources.each_with_index do |fs,i|
+        FundingSource.where(code: fs, service: s).first_or_create do |new_fs|
+          new_fs.index = i
+          new_fs.save
+        end
+      end
+    end
+  end
+
+  desc 'add returned_mode_code'
+  task add_returned_mode_codes: :environment do
+    itins = Itinerary.where(returned_mode_code: nil)
+    itins.each do |itin|
+      if itin.mode
+        itin.returned_mode_code = itin.mode.code
+        itin.save
+
+      end
+    end
+  end
+
+  desc "Setup Ecolane Services"
+  task setup_ecolane_services: :environment do
+
+    #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
+    #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page
+
+    #Define which funding_sources are ADA, used for determining the questions
+    oc = OneclickConfiguration.where(code: "ada_funding_sources").first_or_create
+    oc.value = ["ADAYORK1", "ADA"]
+    puts 'The following funding sources are considered to be ADA'
+    puts oc.value
+    oc.save
+
+
+    #If multiple counties use the same service.  Handle it here
+    oc = OneclickConfiguration.where(code: 'ecolane_county_mapping').first_or_create
+    oc.value = {"adams" => 'york', "cumberland" => "york"}
+    oc.save
+
+    services = Service.where(booking_service_code: "ecolane")
+
+    services.each do |service|
+
+
+      #Funding source array cheat sheet
+      # 0: code
+      # 1: index (lower gives higher priority when trying to match funding sources to trip purposes)
+      # 2: general_public (is the the general public funding source?)
+      # 3: comment
+
+      #Sponsor array cheat sheet
+      # 0: code
+      # 1: index
+
+      funding_source_array = []
+      sponsor_array = []
+
+      if service
+        county = service.external_id
+        puts 'Setting up ' + ( service.name || service.id.to_s ) + ' for ' + county
+
+        case county
+        when 'york'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['YCAAA', 1]]
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = 'rabbit'
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          service.disallowed_purposes = 'ma urgent care'
+
+
+        when 'lebanon'
+
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADA", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['AAA', 1]]
+
+          #Dummy User
+          service.fare_user = "79110"
+
+          #Booking System Id
+          service.booking_system_id = 'lebanon'
+
+
+        when 'cambria'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['AAA', 1]]
+
+          #Dummy User
+          service.fare_user = "7832"
+
+          #Booking System Id
+          service.booking_system_id = 'cambria'
+
+
+        when 'franklin'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['AAA', 1]]
+
+          #Dummy User
+          service.fare_user = "2581"
+
+          #Booking System Id
+          service.booking_system_id = 'franklin'
+
+
+        when 'dauphin'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['AAA', 1]]
+
+          #Dummy User
+          service.fare_user = "79109"
+
+          #Booking System Id
+          service.booking_system_id = 'dauphin'
+
+
+        else
+          puts 'Cannot find service with external_id: ' + county
+          next
+        end
+
+        #Clear and set Funding Sources
+        service.funding_sources.destroy_all
+        funding_source_array.each do |fs|
+          new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+          new_funding_source.index = fs[1]
+          new_funding_source.general_public = fs[2]
+          new_funding_source.comment = fs[3]
+          new_funding_source.save
+        end
+
+        #Clear and set Sponsors
+        service.sponsors.destroy_all
+        sponsor_array.each do |s|
+          new_sponsor = Sponsor.where(service: service, code: s[0]).first_or_create
+          new_sponsor.index = s[1]
+          new_sponsor.save
+        end
+
+        #Confirm API Token is set
+        if service.booking_token.nil?
+          puts 'Be sure to setup a booking token for ' + service.name  + ' ' + county
+        end
+
+        service.save
+
+      else
+
+      end
+    end
+
+end
+
+  desc "Move FareStructure#desc to Comment table"
+  task transfer_fare_comments_to_comments_table: :environment do
+    FareStructure.where.not(desc: nil).each do |fare_structure|
+      comment_en = fare_structure.public_comments.first_or_create(locale: 'en')
+      comment_en.update_attributes(comment: fare_structure.desc, visibility: 'public')
+    end
   end
 
 end

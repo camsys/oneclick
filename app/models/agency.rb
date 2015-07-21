@@ -1,7 +1,7 @@
 class Agency < ActiveRecord::Base
+  include DisableCommented
   include Rateable # mixin to handle all rating methods
   include Commentable
-  extend LocaleHelpers
   resourcify
 
   belongs_to :parent, class_name: 'Agency'
@@ -24,9 +24,23 @@ class Agency < ActiveRecord::Base
   validates :name, :presence => true
 
   def self.form_collection include_all=true, agency_id=false
+
     relation = agency_id ? where(id: agency_id).order(:name) : order(:name)
 
-    form_collection_from_relation include_all, relation, false, true
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    inactive_label = " (#{TranslationEngine.translate_text(:inactive)})"
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      name = name + inactive_label if !r.active
+      list << [name, r.id]
+    end
+    list
+    
   end
 
   def unselected_users
@@ -60,6 +74,48 @@ class Agency < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  # csv export
+  ransacker :id do
+    Arel.sql(
+      "regexp_replace(
+        to_char(\"#{table_name}\".\"id\", '9999999'), ' ', '', 'g')"
+    )
+  end
+
+  def self.csv_headers
+    [
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:parent_agency),
+      TranslationEngine.translate_text(:subagencies),
+      TranslationEngine.translate_text(:status)
+    ]
+  end
+
+  def to_csv
+    [
+      id,
+      name,
+      parent ? parent.name : '',
+      sub_agencies.pluck(:name).join(';'),
+      active ? '' : TranslationEngine.translate_text(:inactive)
+    ].to_csv
+  end
+
+  def self.get_exported(rel, params = {})
+    if params[:bIncludeInactive] != 'true'
+      rel = rel.where(active: true)
+    end
+
+    if !params[:search].blank?
+      rel = rel.ransack({
+        :id_or_name_or_parent_name_or_sub_agencies_name_cont => params[:search]
+        }).result(:district => true)
+    end
+
+    rel
   end
 
 end

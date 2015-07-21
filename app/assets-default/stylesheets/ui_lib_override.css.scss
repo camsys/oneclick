@@ -43,3 +43,15 @@
     font: $font-size-base $font-family-base !important;
   }
 }
+
+/* overwrite .form-control that has 100% width */
+.form-control-inline {
+  min-width: 0;
+  width: auto;
+  display: inline;
+}
+
+#new_satisfaction_survey {
+  & span.radio.radio-inline { margin: 0; }
+  & span.checkbox { margin-left: 1.25em; }
+}

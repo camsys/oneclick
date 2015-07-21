@@ -1,0 +1,6 @@
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:edit)} #{@user.name}"
+%p= translate_helper(:merge_message_1) + "#{ @sub.email }" + translate_helper(:merge_message_2) + "{ @user.email }" + translate_helper(:merge_message_3) + "#{ @user.email }" + translate_helper(:merge_message_4)
+%alert= translate_helper(:merge_warning)
+=simple_form_for [:admin, @user], url: { action: 'merge_submit' }, :html => { :class => "form-horizontal"}, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean }, :include_blank => false  do |f|
+  =f.hidden_field :sub, value: @sub.email
+  =render partial: 'users/user_form_fields'
