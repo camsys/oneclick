@@ -21,7 +21,7 @@
                 -Characteristic.programs.where(:datatype => 'bool').each do |characteristic|
                   %tr
                     %td
-                      = f.label translate_helper(characteristic.note)
+                      = f.label t(characteristic.note)
                     %td
                       = f.radio_button characteristic.code.to_sym, true
                       = f.label characteristic.code.to_sym, nil, :text => nil, :class => 'yes', :value => true
@@ -55,14 +55,14 @@
         /     - else
         /       %i.fa.fa-arrow-right
         /       Save and plan my trip
-        /     / = translate_helper(:save)
+        /     / = t(:save)
         / - else
         /   = button_tag type: :submit, class: 'btn btn-primary controls' do
         /     %i.fa.fa-check
-        /     = translate_helper(:update)
+        /     = t(:update)
         / = link_to :back, :class => "cancel_link hidden" do
         /   %i.fa.fa-reply
-        /   = translate_helper(:cancel)
+        /   = t(:cancel)
 
 :javascript
   $(document).ready(function(){

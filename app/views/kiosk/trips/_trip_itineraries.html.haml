@@ -11,7 +11,7 @@
                   %i.fa.fa-2x.fa-thumbs-down.pull-right
               %h3
                 = get_trip_summary_title(itinerary)
-                  
+
         .dialog-content{class: dialog_content_class(trip_part)}
           = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary}
 
@@ -32,15 +32,15 @@
           .row-fluid
             .span12{:style => 'margin-bottom:0;'}
               = link_to select_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "select", :alt => get_alt_button_text(itinerary, 'select'), :title => get_alt_button_text(itinerary, 'select')} do
-                = translate_helper(:select)
+                = t(:select)
               =link_to itinerary_kiosk_user_trip_path(@traveler, @trip, :itin => itinerary.id), {:class => "details", :remote => true, :alt => get_alt_button_text(itinerary, 'view'), :title => get_alt_button_text(itinerary, 'view') } do
-                =translate_helper(:details)
+                =t(:details)
               / =link_to hide_user_trip_path(@traveler, @trip, :itinerary => itinerary), {:class => "hide", :alt => get_alt_button_text(itinerary, 'remove'), :title => get_alt_button_text(itinerary, 'remove') } do
-              /   =translate_helper(:hide)
+              /   =t(:hide)
 
         = render partial: 'send_itinerary_by_email', locals: {trip: @trip, itinerary: itinerary}
-      
- 
+
+
 :javascript
   $(document).ready(function() {
     // Enable the quick links
@@ -49,4 +49,4 @@
       ajax_render_action(url, 'GET');
     });
   });
-  
+

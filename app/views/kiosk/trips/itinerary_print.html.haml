@@ -1,19 +1,19 @@
 = image_tag get_logo, :style => "margin-top:50px;"
-.title-desc= translate_helper(:one_click_trip_planner)
+.title-desc= t(:one_click_trip_planner)
 
 %hr
 
 %table#printer-friendly
   %tr
-    %h4= translate_helper(:from) + ':  '
+    %h4= t(:from) + ':  '
   %tr
     %p= @itinerary.trip_part.trip.from_place.name
   %tr
-    %h4= translate_helper(:to) + ':  '
+    %h4= t(:to) + ':  '
   %tr
     %p= @itinerary.trip_part.trip.to_place.name
   %tr
-    %h4= translate_helper(:at_time) + ':  '
+    %h4= t(:at_time) + ':  '
   %tr
     %p= format_date(@itinerary.trip_part.trip.trip_datetime.in_time_zone)
 
@@ -48,7 +48,7 @@
   %tbody
     - if Oneclick::Application.config.brand == 'pa'
       %tr
-        %td Thank you for using FindMyRidePA. 
+        %td Thank you for using FindMyRidePA.
       %tr
         %td For more information, call 1-844-PA4-RIDE or visit FindMyRidePA.com
     - else

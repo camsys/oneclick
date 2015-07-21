@@ -20,7 +20,7 @@
       %a.close-btn-container{"data-dismiss" => "modal"}
         .close-btn
         %p
-          =translate_helper(:close)
+          =t(:close)
     .detail-section.span8plus
       .detail-header
         -# %i.fa.fa-2x{:class => get_trip_summary_icon(@itinerary)}
@@ -45,12 +45,12 @@
 
         .detail-footer
           %a.print-me{href: kiosk_print_itinerary_url(@itinerary, protocol: 'print')}
-            %span= translate_helper(:print)
+            %span= t(:print)
         / %li
-        /   =translate_helper(:chat)
+        /   =t(:chat)
         / %li{:id => "email_itinerary"}
         /   =link_to '#', {href: '#send_itinerary_by_email_' + @itinerary.id.to_s, class: "btn-info", data: {toggle: 'modal'}} do
-        /     =translate_helper(:e_mail)
+        /     =t(:e_mail)
 
 
 :javascript
