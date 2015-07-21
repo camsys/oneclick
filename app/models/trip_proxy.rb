@@ -13,16 +13,6 @@ class TripProxy < Proxy
 
   attr_accessor :user_agent, :ui_mode
 
-  attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
-  attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
-
-  validate :return_trip_date, :presence => true
-  validate :return_trip_time, :presence => true
-  validates :outbound_trip_date, :presence => true
-  validates :outbound_trip_time, :presence => true
-
-  validate :datetime_cannot_be_before_now
-
   include TripsSupport
   include Trip::From
   include Trip::PickupTime
@@ -132,7 +122,7 @@ class TripProxy < Proxy
     trip_proxy.from_raw_address = tp.address
     trip_proxy.from_lat = tp.location.first
     trip_proxy.from_lon = tp.location.last
-    
+
     if tp.poi
       trip_proxy.from_place_selected_type = POI_TYPE
       trip_proxy.from_place_selected = tp.poi.id

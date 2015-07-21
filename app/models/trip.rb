@@ -16,17 +16,17 @@ class Trip < ActiveRecord::Base
 
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
-  scope :with_role, lambda {|role_name| 
+  scope :with_role, lambda {|role_name|
     includes(user: :roles)
     .where(roles: {name: role_name})
     .references(user: :roles)
   }
-  scope :without_role, lambda {|role_name| 
+  scope :without_role, lambda {|role_name|
     includes(user: :roles)
     .where.not(roles: {name: role_name})
     .references(user: :roles)
   }
-  
+
   scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
@@ -46,7 +46,7 @@ class Trip < ActiveRecord::Base
     base_trips = base_trips.where("trips.created_at <= ?", end_time) if end_time
 
     base_trips
-   
+
   end
 
   # Returns a set of trips that are scheduled between the start and end time
@@ -94,7 +94,7 @@ class Trip < ActiveRecord::Base
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center, traveler)
-    
+
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
       trip_proxy.to_place, trip_proxy.map_center, traveler)
     # bubble up any errors finding places
@@ -111,15 +111,7 @@ class Trip < ActiveRecord::Base
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
 
-    unless trip_proxy.user_agent.nil?
-      if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
-        trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%Y-%m-%d')
-      else
-        trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
-      end
-    else
-      trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
-    end
+    trip_date = Date.strptime(trip_proxy.outbound_trip_date, '%m/%d/%Y')
 
     # Create the outbound trip part
     trip_part = TripPart.new
@@ -146,15 +138,8 @@ class Trip < ActiveRecord::Base
       trip_part.sequence = sequence
       trip_part.is_depart = trip_proxy.return_arrive_depart
       trip_part.is_return_trip = true
-      unless trip_proxy.user_agent.nil?
-        if trip_proxy.user_agent.downcase =~ /mobile|android|touch|webos|hpwos/
-          return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%Y-%m-%d')
-        else
-          return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
-        end
-      else
-        return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
-      end
+      return_trip_date = Date.strptime(trip_proxy.return_trip_date, '%m/%d/%Y')
+
       trip_part.scheduled_date = return_trip_date
       trip_part.scheduled_time = Time.zone.parse(return_trip_date.year.to_s + '-' + return_trip_date.month.to_s + '-' + return_trip_date.day.to_s + ' ' + trip_proxy.return_trip_time).in_time_zone("UTC")
       trip_part.from_trip_place = to_place
