@@ -121,6 +121,23 @@ module Api
             if itinerary.discounts
               i_hash[:discounts] = JSON.parse(itinerary.discounts)
             end
+
+            #Add Service Names to Legs
+            yaml_legs = YAML.load(itinerary.legs)
+            yaml_legs.each do |leg|
+              unless leg['agencyId'].nil?
+                service = Service.where(external_id: leg['agencyId']).first
+                unless service.nil
+                  leg['serviceName'] = service.name
+                else
+                  leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+                end
+              end
+            end
+
+            itinerary.legs = yaml_legs.to_yaml
+            itinerary.save
+
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
