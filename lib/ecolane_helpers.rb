@@ -395,9 +395,6 @@ class EcolaneHelpers
       puts 'old'
 
     else
-
-
-      puts 'new'
       new_user = true
       u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
@@ -409,7 +406,6 @@ class EcolaneHelpers
       up.user = u
       up.save!
       result = u.save
-
     end
 
     #Update Birth Year
