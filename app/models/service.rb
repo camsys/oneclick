@@ -496,6 +496,16 @@ class Service < ActiveRecord::Base
     return true
   end
 
+  def coverage_area_contains?(lat, lng)
+    mercator_factory = RGeo::Geographic.simple_mercator_factory
+    test_point = mercator_factory.point(lng, lat)
+    unless self.coverage_area_geom.nil?
+      return false unless self.coverage_area_geom.geom.contains? test_point
+    end
+    return true
+  end
+
+
   def disallowed_purposes_array
     return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
   end

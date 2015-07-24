@@ -125,7 +125,11 @@
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{translate_helper(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => :id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - unless @trip_purposes_raw.nil?
+              = f.input :trip_purpose_raw, :label => "Trip Purpose", :selected => @trip_purposes_raw.first, :collection => @trip_purposes_raw, input_html: { class: 'form-control' }
+              = f.hidden_field :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => TripPurpose.first.id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - else
+              = f.input :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => :id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
             - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
                 addHelperTooltip('#trip_purpose_id_label', "#{translate_helper(:trip_purposes_help)}");

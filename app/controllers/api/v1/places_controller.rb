@@ -45,7 +45,7 @@ module Api
         lng = origin[:location][:lng]
 
         Service.active.paratransit.each do |service |
-          if service.endpoint_contains?(lat,lng)
+          if service.coverage_area_contains?(lat,lng)
             render json: {result: true}
             return
           end

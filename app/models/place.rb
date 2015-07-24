@@ -110,12 +110,25 @@ class Place < GeocodedAddress
   end
 
   def build_place_details_hash
+    require 'indirizzo'
     #Based on Google Place Details
+
+    parsable_address = Indirizzo::Address.new(self.address1)
 
     {
         address_components: [
         {
-            long_name: self.address1,
+        long_name: parsable_address.number,
+        short_name: parsable_address.number,
+        types: ["street_number"]
+    },
+        {
+        long_name: parsable_address.street.first,
+        short_name: parsable_address.street.first,
+        types: ["route"]
+    },
+        {
+        long_name: self.address1,
         short_name: self.address1,
         types: ["street_address"]
     },

@@ -387,14 +387,16 @@ class EcolaneHelpers
   end
 
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
-
+    puts external_user_id
     service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
+      puts 'old'
+
     else
       new_user = true
-      u = User.where(email: external_user_id + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
+      u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob
@@ -404,7 +406,6 @@ class EcolaneHelpers
       up.user = u
       up.save!
       result = u.save
-
     end
 
     #Update Birth Year
@@ -416,7 +417,7 @@ class EcolaneHelpers
     end
 
     if new_user #Create User Service
-      user_service = UserService.where(user_profile: u.user_profile, service: service).first_or_initialize
+      user_service = UserService.where(user_profile_id: u.user_profile.id, service_id: service.id).first_or_initialize
       user_service.external_user_id = external_user_id
       user_service.save
     end

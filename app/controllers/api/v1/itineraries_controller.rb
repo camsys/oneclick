@@ -121,6 +121,24 @@ module Api
             if itinerary.discounts
               i_hash[:discounts] = JSON.parse(itinerary.discounts)
             end
+
+            #Add Service Names to Legs
+            unless itinerary.legs.nil?
+              yaml_legs = YAML.load(itinerary.legs)
+              yaml_legs.each do |leg|
+                unless leg['agencyId'].nil?
+                  service = Service.where(external_id: leg['agencyId']).first
+                  unless service.nil?
+                    leg['serviceName'] = service.name
+                  else
+                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+                  end
+                end
+              end
+              itinerary.legs = yaml_legs.to_yaml
+              itinerary.save
+            end
+
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
@@ -173,7 +191,6 @@ module Api
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
             status  = bi.status
-
             bi.trip_part.unselect
             bi.selected = true
             bi.save
@@ -189,8 +206,10 @@ module Api
               wait_end = (negotiated_pu_time.to_time + 15*60).iso8601
             end
 
-            negotiated_do_time = bi.negotiated_do_time.nil? ? nil : bi.negotiated_do_time.iso8601
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
+            negotiated_do_time = bi.negotiated_do_time.nil? ? bi.end_time : bi.negotiated_do_time
+            negotiated_duration = negotiated_do_time - negotiated_pu_time
+            negotiated_do_time = negotiated_do_time.iso8601
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
           end
 
         #Build Failure Response

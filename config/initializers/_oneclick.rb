@@ -206,9 +206,8 @@ Oneclick::Application.configure do
     config.initial_signup_question = true
     config.allows_booking = true
     config.kiosk_available = true
-    config.funding_source_order = ["Lottery", "PWD", "MATP", "ADAYORK1", "ADAYORK2"]
     config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
-    config.ecolane_county_mapping = {york:'york', lebanon: "ococtest"}
+    config.kiosk_counties = ["Adams", "Cambria", "Cumberland", "Dauphin", "Franklin", "Lebanon", "York"]
 
   when 'jta'
     config.host = 'transportal.net'

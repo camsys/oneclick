@@ -122,8 +122,11 @@ class UsersController < ApplicationController
   def initial_booking
     #TODO: This is not DRY, It reuses a lot of what is in add_booking_service
     get_traveler
+
+    eh = EcolaneHelpers.new
     external_user_id = params['user_service_proxy']['external_user_id']
-    service = Service.find(params['user_service_proxy']['service_id'])
+    county = params['user_service_proxy']['county']
+    service = eh.county_to_service county
     @errors = false
 
     @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
@@ -140,7 +143,7 @@ class UsersController < ApplicationController
     eh = EcolaneHelpers.new
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
-      result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+      result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
       unless result
 
         @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
@@ -152,15 +155,11 @@ class UsersController < ApplicationController
     unless @errors
       #Todo: This will need to be updated when more services are able to book.
       if @traveler.is_visitor?
-        @traveler = eh.get_ecolane_traveler(external_user_id, dob, 'york', first_name, last_name)
+        @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
         sign_in @traveler, :bypass => true
       end
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
-        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
-        user_service.external_user_id = external_user_id
-        user_service.save
-      end
     end
+
 
     #redirect_to new_user_trip_path(@traveler)
     #return

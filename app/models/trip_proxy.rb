@@ -13,6 +13,18 @@ class TripProxy < Proxy
 
   attr_accessor :user_agent, :ui_mode
 
+  attr_accessor :trip_purpose_raw
+
+  attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
+  attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
+
+  validate :return_trip_date, :presence => true
+  validate :return_trip_time, :presence => true
+  validates :outbound_trip_date, :presence => true
+  validates :outbound_trip_time, :presence => true
+
+  attr_accessor :user_agent, :ui_mode
+
   include TripsSupport
   include Trip::From
   include Trip::PickupTime
@@ -87,6 +99,7 @@ class TripProxy < Proxy
     trip_proxy = TripProxy.new(attr)
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
+    trip_proxy.trip_purpose_raw = trip.trip_purpose_raw
 
     trip_proxy.outbound_arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
