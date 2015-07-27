@@ -10,7 +10,6 @@ class UserProfile < ActiveRecord::Base
   has_many :characteristics, through: :user_characteristics, source: :characteristic
   has_many :services, through: :user_services, source: :service
 
-
   def has_characteristics?
     if self.characteristics.count > 0
       true

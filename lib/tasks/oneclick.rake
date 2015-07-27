@@ -305,7 +305,7 @@ namespace :oneclick do
     selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip).references(trip_part: :trip)
       .where(selected: true)
       .group("trips.id").count
-    
+
     puts 'find trip ids with trip_part_count == selected_itins_count'
     planned_trip_ids = []
     trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
@@ -352,6 +352,7 @@ namespace :oneclick do
 
   desc "Setup Ecolane Services"
   task setup_ecolane_services: :environment do
+    ActiveRecord::Base.logger.level = Logger::WARN
 
     #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
     #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page

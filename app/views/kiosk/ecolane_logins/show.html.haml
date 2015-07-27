@@ -14,13 +14,28 @@
           If you do not have an account, tap "Skip This Step".
 
     %div.span8login
-      = simple_form_for(@booking_proxy, url: kiosk_user_ecolane_login_path(@traveler), html: {class: 'form-horizontal' }) do |f|
+      = simple_form_for(@booking_proxy, url: kiosk_user_ecolane_login_path(@traveler), html: {class: 'form-horizontal js-ecolane-login-form'}) do |f|
         .row-fluid
           .span12login
             .input-container
               = f.input :service_id, as: :hidden, input_html: {value: Service.where(booking_service_code: 'ecolane').first.id}
               = f.input :external_user_id, required: true, placeholder: 'Tap here to enter your shared ride client ID', label: 'Shared Ride Client ID'
               = f.input :dob, required: true, placeholder: 'MM/DD/YYYY', label: 'Date of Birth'
+
+              #countypicker
+                = f.hidden_field :county
+
+                %div
+                  .title-container
+                    .bar
+                    %h3 Pick a county
+
+                %ul.purpose
+                  %li
+                    %span York
+                  %li
+                    %span Another County
+
 
         .row-fluid
           .span12

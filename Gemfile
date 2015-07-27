@@ -74,6 +74,8 @@ gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'browser'
 gem 'remotipart', '~> 1.2'
+gem 'pry-rails'
+gem 'pry-byebug'
 
 group :development do
   # gem 'ffi-geos'
@@ -86,7 +88,6 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-puma'
-  gem 'pry-byebug'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'listen'

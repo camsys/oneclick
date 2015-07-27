@@ -4,7 +4,7 @@ class Kiosk::EcolaneLoginsController < Kiosk::TripsController
 
   def show
     redirect_to '/' if params[:back]
-    @booking_proxy = UserServiceProxy.new    
+    @booking_proxy = UserServiceProxy.new
   end
 
   # copied and pasted from UsersController#initial_booking
@@ -26,12 +26,20 @@ class Kiosk::EcolaneLoginsController < Kiosk::TripsController
       @errors = true
     end
 
+    eh = EcolaneHelpers.new
+
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
-      eh = EcolaneHelpers.new
-      result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
+      service = eh.county_to_service(params['user_service_proxy']['county'])
 
-      unless result
+      if service
+        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
+      else
+        @errors = true
+        flash[:error] = 'Invalid county.'
+      end
+
+      if !@errors && !result
         flash[:error] = "Unknown Client Id or incorrect date of birth."
         @errors = true
       end
@@ -46,10 +54,16 @@ class Kiosk::EcolaneLoginsController < Kiosk::TripsController
         @traveler = get_ecolane_traveler(external_user_id, dob, first_name, last_name)
       end
 
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
+      booking_services = eh.county_to_service_scope(params['user_service_proxy']['county']).where(booking_service_code: 'ecolane')
+
+      booking_services.each do |booking_service|
         user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
         user_service.external_user_id = external_user_id
         user_service.save
+      end
+
+      @traveler.user_profile.user_services.each do |user_service|
+        user_service.destroy unless booking_services.include?(user_service.service)
       end
 
       redirect_to kiosk_user_new_trip_start_path(@traveler)
