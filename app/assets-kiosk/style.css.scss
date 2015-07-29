@@ -388,7 +388,7 @@ a{
     width: $width + 12px;
     padding-top: 23px;
     margin-left: $zoom * -1;
-    margin-top: $zoom / -2;
+    margin-top: 17px; //$zoom / -2;
     -webkit-transform: translate($zoom / 2, 0);
   }
 }

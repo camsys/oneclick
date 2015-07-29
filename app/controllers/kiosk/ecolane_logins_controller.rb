@@ -17,16 +17,37 @@ class Kiosk::EcolaneLoginsController < Kiosk::TripsController
 
     @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
 
-    #Check that the formatting is correct
-    begin
-      Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
-      dob = params['user_service_proxy']['dob']
-    rescue ArgumentError
-      flash[:error] = "Date needs to be in mm/dd/yyyy format."
+    if params['user_service_proxy']['dob'].blank?
       @errors = true
+      flash[:error] = 'You must enter a date.'
+    end
+
+    unless @errors
+      unless params['user_service_proxy']['dob'] =~ /^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/
+        flash[:error] = "Date needs to be in mm/dd/yyyy format."
+        @errors = true
+      end
+    end
+
+    #Check that the formatting is correct
+    unless @errors
+      begin
+        Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
+        dob = params['user_service_proxy']['dob']
+      rescue ArgumentError
+        flash[:error] = "Date needs to be in mm/dd/yyyy format."
+        @errors = true
+      end
     end
 
     eh = EcolaneHelpers.new
+
+    unless @errors
+      if params['user_service_proxy']['county'].blank?
+        @errors = true
+        flash[:error] = 'You must pick a county.'
+      end
+    end
 
     #If the formatting is correct, check to see if this is a valid user
     unless @errors
