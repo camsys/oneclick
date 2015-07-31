@@ -270,7 +270,7 @@ module Api
         itins.each do |itin|
           print_url = create_map_user_trip_itinerary_url(trip.user.id.to_s, trip.id.to_s, itin.id.to_s)
           Rails.logger.info "print_url is #{print_url}"
-          PrintMapWorker.perform_async(print_url, id)
+          PrintMapWorker.perform_async(print_url, itin.id)
         end
         return
       end
