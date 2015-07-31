@@ -168,18 +168,25 @@ class TripPlace < GeocodedAddress
     require 'indirizzo'
     #Based on Google Place Details
 
-    parsable_address = Indirizzo::Address.new(self.address1)
+
+    address = self.address1 || self.raw_address
+    unless address.blank?
+      parsable_address = Indirizzo::Address.new(address)
+    else
+      parsable_address = nil
+    end
+
 
     {
         address_components: [
         {
-            long_name: parsable_address.number,
-        short_name: parsable_address.number,
+            long_name: parsable_address.blank? ? "" : parsable_address.number,
+        short_name: parsable_address.blank? ? "" : parsable_address.number,
         types: ["street_number"]
     },
         {
-            long_name: parsable_address.street.first,
-        short_name: parsable_address.street.first,
+            long_name: parsable_address.blank? ? "" : parsable_address.street.first,
+        short_name: parsable_address.blank? ? "" : parsable_address.street.first,
         types: ["route"]
     },
         {
