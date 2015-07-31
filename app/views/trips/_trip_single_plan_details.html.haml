@@ -15,7 +15,7 @@
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
     - if map_type=='delayed_static'
       .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
-    - elsif map_type=='static'
+    - elsif map_type=='static' and itinerary.map_image.url
       - # this option is actually not used as there is a separate template for email
       .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
         %img{src: itinerary.map_image.url}
