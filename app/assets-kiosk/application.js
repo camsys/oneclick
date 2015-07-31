@@ -15,4 +15,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require typeahead-addresspicker.js
 //= require_tree ./includes

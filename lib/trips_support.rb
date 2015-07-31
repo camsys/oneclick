@@ -162,7 +162,21 @@ module TripsSupport
         lon:               place[:lon]
       }
     else
-      raise "unhandled place type: #{place_type}"
+      # binding.pry
+      result = get_places_autocomplete_details(place_id)
+      place = result.body['result']
+
+      # puts "====== PLACES_AUTOCOMPLETE_TYPE ======"
+      # puts place
+      {
+        place_id:          false,
+        name:              place['formatted_address'],
+        formatted_address: place['formatted_address'],
+        lat:               place['geometry']['location']['lat'],
+        lon:               place['geometry']['location']['lng'],
+      }
+
+      # raise "unhandled place type: #{place_type}"
     end
   end
 

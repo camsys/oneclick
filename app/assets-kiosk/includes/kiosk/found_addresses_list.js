@@ -34,6 +34,7 @@ jQuery(function($) {
         var that = this;
 
         items = $.grep(items, function(item) {
+            if (!item.name) item.name = item.description;
             return that.matcher(item);
         });
 
@@ -41,6 +42,7 @@ jQuery(function($) {
 
         if (!items.length)
             return this.shown ? this.hide() : this;
+
 
         return this.render(items.slice(0, this.options.items)).show();
     };
@@ -101,41 +103,100 @@ jQuery(function($) {
                 if (typeaheadTimeouts[locationName]) clearTimeout(typeaheadTimeouts[locationName]);
 
                 typeaheadTimeouts[locationName] = setTimeout(function() {
-                    return $.ajax({
-                        url: $('#trip_proxy_' + locationName + '_place').data('link'),
-                        type: 'get',
-                        data: {
-                            query: query,
-                            map_center: CsMaps.lmap.LMmap.getCenter().lat + ',' + CsMaps.lmap.LMmap.getCenter().lng
-                        },
-                        dataType: 'json',
-                        success: function(result) {
-                            var resultList = result.map(function(item) {
-                                var aItem = {
-                                    index: item.index,
-                                    type: item.type,
-                                    id: item.id,
-                                    name: item.name,
-                                    desc: item.description,
-                                    lat: item.lat,
-                                    lon: item.lon,
-                                    addr: item.address
-                                };
 
-                                return JSON.stringify(aItem);
-                            });
-
-                            return process(resultList);
+                    var saved_places = new Bloodhound({
+                        datumTokenizer: function(d) {
+                         return  Bloodhound.tokenizers.whitespace(d.value);
                         },
-                        error: function(data) {
-                            show_alert('We are sorry but something went wrong. Please try again.');
-                        }
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        remote: {
+                            url: '/place_search.json?no_map_partial=true',
+                            rateLimitWait: 600,
+                            replace: function(url, query) {
+                                url = url + '&query=' + query;
+                                return url;
+                            }
+                        },
+                        limit: 10
                     });
+
+
+                    var autocomplete_service_config = {};
+
+                    var bounds = CsMaps.lmap.LMmap.getBounds();
+
+                    autocomplete_service_config.bounds = new google.maps.LatLngBounds(
+                        new google.maps.LatLng(bounds.getSouthWest().lat,bounds.getSouthWest().lng),
+                        new google.maps.LatLng(bounds.getNorthEast().lat,bounds.getNorthEast().lng)
+                    );
+
+                    var google_place_picker = new AddressPicker({
+                        autocompleteService: autocomplete_service_config
+                    });
+
+                    saved_places.initialize();
+
+                    var remainingCalls = 2
+                      , data = [];
+
+                    // poor man's async
+                    function processQueue(list) {
+                        remainingCalls--;
+                        data = data.concat(list);
+                        console.log('list:', list);
+                        console.log('data:', data);
+
+
+                        if (remainingCalls < 1) {
+                            process(data);
+                        }
+                    };
+
+                    saved_places.ttAdapter()        (query, processQueue);
+                    google_place_picker.ttAdapter() (query, processQueue);
                 }, typeaheadDelay);
+
+                //     return $.ajax({
+                //         url: $('#trip_proxy_' + locationName + '_place').data('link'),
+                //         type: 'get',
+                //         data: {
+                //             query: query,
+                //             map_center: CsMaps.lmap.LMmap.getCenter().lat + ',' + CsMaps.lmap.LMmap.getCenter().lng
+                //         },
+                //         dataType: 'json',
+                //         success: function(result) {
+                //             var resultList = result.map(function(item) {
+                //                 var aItem = {
+                //                     index: item.index,
+                //                     type: item.type,
+                //                     id: item.id,
+                //                     name: item.name,
+                //                     desc: item.description,
+                //                     lat: item.lat,
+                //                     lon: item.lon,
+                //                     addr: item.address
+                //                 };
+
+                //                 return JSON.stringify(aItem);
+                //             });
+
+                //             return process(resultList);
+                //         },
+                //         error: function(data) {
+                //             show_alert('We are sorry but something went wrong. Please try again.');
+                //         }
+                //     });
             },
 
             matcher: function(obj) {
-                var item = JSON.parse(obj);
+                var item;
+
+                if (typeof obj == 'string') {
+                    item = JSON.parse(obj);
+                } else {
+                    item = obj;
+                }
+
                 return~ item.name.toLowerCase().indexOf(this.query.toLowerCase())
             },
 
@@ -143,10 +204,16 @@ jQuery(function($) {
                 var beginswith = [],
                     caseSensitive = [],
                     caseInsensitive = [],
-                    item;
+                    item,
+                    obj;
 
-                while (aItem = items.shift()) {
-                    var item = JSON.parse(aItem);
+                while (obj = items.shift()) {
+                    if (typeof obj == 'string') {
+                        item = JSON.parse(obj);
+                    } else {
+                        item = obj;
+                    }
+
 
                     if (!item.name.toLowerCase().indexOf(this.query.toLowerCase()))
                         beginswith.push(JSON.stringify(item));
@@ -160,7 +227,14 @@ jQuery(function($) {
             },
 
             highlighter: function(obj) {
-                var item = JSON.parse(obj);
+                var item;
+
+                if (typeof obj == 'string') {
+                    item = JSON.parse(obj);
+                } else {
+                    item = obj;
+                }
+
                 var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
                 return item.name.replace(new RegExp('(' + query + ')', 'ig'), function($1, match) {
                     return '<strong>' + match + '</strong>'
@@ -168,7 +242,14 @@ jQuery(function($) {
             },
 
             updater: function(obj) {
-                var item = JSON.parse(obj);
+                var item;
+
+                if (typeof obj == 'string') {
+                    item = JSON.parse(obj);
+                } else {
+                    item = obj;
+                }
+
 
                 function showMarker() {
                     // create marker on the map
@@ -177,10 +258,11 @@ jQuery(function($) {
                     zoom_to_marker(marker);
                 }
 
-                if (item.type == '5') {
-                    $.get('/place_details/' + item.id + '.json', function(data) {
+                if (item.place_id) {
+                    $.get('/place_details/' + item.place_id + '.json', function(data) {
                         item.lat = data.result.geometry.location.lat;
                         item.lon = data.result.geometry.location.lng;
+                        item.id = item.place_id;
                         showMarker();
                     });
                 } else {
@@ -191,7 +273,8 @@ jQuery(function($) {
                     window.setAddressObject(locationName, item);
                     // Update the UI
                     $selectedTypeField.val(item.type).change();
-                    $selectedField.val(item.id).change();
+                    debugger;
+                    $selectedField.val(item.place_id || item.id).change();
                 }, 0);
 
                 return item.name;
