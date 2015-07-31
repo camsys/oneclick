@@ -248,7 +248,7 @@ module Api
           trip_to_email = itineraries.first
           trip = Trip.find(trip_to_email[:trip_id].to_i)
 
-          request_create_maps(trips)
+          request_create_maps(trip)
 
           sleep 30
 
