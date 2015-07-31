@@ -248,6 +248,10 @@ module Api
           trip_to_email = itineraries.first
           trip = Trip.find(trip_to_email[:trip_id].to_i)
 
+          request_create_maps(trips)
+
+          sleep 30
+
           if trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           else
@@ -258,6 +262,17 @@ module Api
 
         render json: {result: 200}
 
+      end
+
+
+      def request_create_maps (trip)
+        itins = trip.selected_itineraries
+        itins.each do |itin|
+          print_url = create_map_user_trip_itinerary_url(trip.user.id.to_s, trip.id.to_s, itin.id.to_s)
+          Rails.logger.info "print_url is #{print_url}"
+          PrintMapWorker.perform_async(print_url, id)
+        end
+        return
       end
 
     end #Itineraries Controller
