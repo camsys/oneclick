@@ -34,10 +34,10 @@ jQuery(function($) {
     leftResults.find('.return').html(trip.return_trip_time);
 
     if (trip.is_round_trip == '0') $('.return-date-items').hide();
-    
+
     if (trip.return_trip_date) leftResults.find('.return-date').html(trip.return_trip_date);
 
-    if (trip.trip_purpose) leftResults.find('.reason').html(trip.trip_purpose_name);
+    if (trip.trip_purpose || trip.trip_purpose_raw) leftResults.find('.reason').html(trip.trip_purpose_name || trip.trip_purpose_raw);
     if (trip.arrive_depart === 'Arriving By') $('.time').prev('h5').text('Arrival Time');
 
     //rename the Next Step button to say Plan my Trip

@@ -13,8 +13,6 @@ class TripProxy < Proxy
 
   attr_accessor :user_agent, :ui_mode
 
-  attr_accessor :trip_purpose_raw
-
   attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
   attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
 
