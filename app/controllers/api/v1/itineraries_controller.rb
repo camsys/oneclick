@@ -249,8 +249,8 @@ module Api
           trip = Trip.find(trip_to_email[:trip_id].to_i)
 
           request_create_maps(trip)
-
-          sleep 30
+          render json: {result: 200}
+          sleep 60
 
           if trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
@@ -260,7 +260,7 @@ module Api
           UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
 
-        render json: {result: 200}
+
 
       end
 
