@@ -408,10 +408,10 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          service.disallowed_purposes = 'ma urgent care'
+          service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
 
-        when 'lebanon'
+          when 'lebanon'
 
 
           #Funding Sources
@@ -440,6 +440,9 @@ namespace :oneclick do
 
           #Booking System Id
           service.booking_system_id = 'cambria'
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          service.disallowed_purposes = 'special approved trips'
 
 
         when 'franklin'
@@ -471,8 +474,12 @@ namespace :oneclick do
           #Booking System Id
           service.booking_system_id = 'dauphin'
 
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          service.disallowed_purposes = 'adult day care,human services,mental health,self determination,sheltered workshop'
 
-        else
+
+          else
           puts 'Cannot find service with external_id: ' + county
           next
         end
