@@ -1183,6 +1183,11 @@ private
     trip_proxy = TripProxy.new(trip_proxy_params)
     trip_proxy.traveler = @traveler
 
+    if trip_proxy.modes.nil?
+      modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
+      trip_proxy.desired_modes = Mode.where(code: modes)
+    end
+
     Rails.logger.debug trip_proxy.inspect
     return trip_proxy
   end
