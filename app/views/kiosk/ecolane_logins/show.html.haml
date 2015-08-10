@@ -31,10 +31,9 @@
                     %h3 Pick a county
 
                 %ul.purpose
-                  %li
-                    %span York
-                  %li
-                    %span Another County
+                  - Oneclick::Application.config.kiosk_counties.each do |county|
+                    %li
+                      %span= county
 
 
         .row-fluid
