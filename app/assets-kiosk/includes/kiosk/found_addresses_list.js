@@ -5,8 +5,6 @@ jQuery(function($) {
         typeaheadListLength = +$('meta[name="ui_typeahead_list_length"]').attr('content'),
         typeaheadTimeouts = {};
 
-    debugger;
-
     // Enable typeahead for the places forms
     Typeahead.prototype.listen = function() {
         this.$element
