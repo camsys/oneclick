@@ -76,8 +76,7 @@ module CsHelpers
       [
         {label: TranslationEngine.translate_text(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
         {label: TranslationEngine.translate_text(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
-        {label: TranslationEngine.translate_text(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true},
-        {label: TranslationEngine.translate_text(:providers), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: false}
+        {label: TranslationEngine.translate_text(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
       ]
     end
     if options[:with_logout]
