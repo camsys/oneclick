@@ -58,7 +58,7 @@
               = translate_helper(:url)+ ":  "
             %td.text-left{colspan: 4}
               - if @provider.url
-                %strong= link_to @provider.url, @provider.url
+                %strong= link_to @provider.url, @provider.url, :target => "_blank"
 
   .col-sm-6
     .panel.panel-default
