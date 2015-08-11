@@ -1,0 +1,22 @@
+-# shared by index page of providers, agencies, and services
+-# simple front-end datatables for non-large dataset 
+-# (if rendering lasts > 30s, should consider using datatables server-side processing)
+:javascript
+  $(document).ready(function() {
+    var key = "#{key}";
+    var entityName = "#{entity}";
+    var oTable = $('#' + key + '_table').dataTable( {
+          stateSave: true,
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ " + entityName + " per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ " + entityName,
+              "sInfoEmpty": "Showing 0 to 0 of 0 " + entityName,
+              "sInfoFiltered": "(filtered from _MAX_ total " + entityName + ")"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+
+    var index = $("thead th").index($('#status'));
+
+  } );

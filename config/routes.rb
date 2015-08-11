@@ -158,6 +158,13 @@ Oneclick::Application.routes.draw do
         end
       end
     end
+
+    resources :providers do
+      collection do
+        get 'index'
+      end
+    end
+
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -414,6 +421,8 @@ Oneclick::Application.routes.draw do
   unless Oneclick::Application.config.ui_mode == 'kiosk'
     # get '*not_found' => 'errors#handle404'
   end
+
+
 
   #API
   namespace :api, defaults: {format: 'json'} do
