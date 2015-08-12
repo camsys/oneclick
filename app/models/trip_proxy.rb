@@ -41,7 +41,7 @@ class TripProxy < Proxy
       end
     end
     @return_trip_date ||= @outbound_trip_date
-    @modes ||= Mode.all.collect{|m| m.code}
+    @modes ||= Mode.visible.collect{|m| m.code}
     @modes_desired = @modes
     # Modify modes to reflect transit
     # Using array select with side effects
