@@ -114,6 +114,9 @@ GEM
     ajax-datatables-rails (0.2.0)
       railties (>= 3.1)
     ajaxful_rating (3.0.0.beta8)
+    akami (1.3.1)
+      gyoku (>= 0.4.0)
+      nokogiri
     arel (4.0.2)
     awesome_print (1.2.0)
     backports (3.6.0)
@@ -286,6 +289,8 @@ GEM
     guard-rspec (3.1.0)
       guard (>= 1.8)
       rspec (~> 2.13)
+    gyoku (1.3.1)
+      builder (>= 2.1.2)
     haml (4.1.0.beta.1)
       tilt
     haml-rails (0.5.3)
@@ -311,6 +316,8 @@ GEM
       ruby_parser (~> 3.1.1)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    httpi (2.4.1)
+      rack
     i18n (0.7.0)
     i18n-active_record (0.0.2)
       i18n (>= 0.5.0)
@@ -371,6 +378,7 @@ GEM
     newrelic_rpm (3.9.0.229)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
+    nori (2.6.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
     pg (0.18.2)
@@ -470,6 +478,14 @@ GEM
       sexp_processor (~> 4.1)
     rubyzip (1.1.6)
     sass (3.2.19)
+    savon (2.11.1)
+      akami (~> 1.2)
+      builder (>= 2.1.2)
+      gyoku (~> 1.2)
+      httpi (~> 2.3)
+      nokogiri (>= 1.4.0)
+      nori (~> 2.4)
+      wasabi (~> 3.4)
     seed_dump (3.2.2)
       activerecord (~> 4)
       activesupport (~> 4)
@@ -547,6 +563,9 @@ GEM
     unf_ext (0.0.6)
     warden (1.2.3)
       rack (>= 1.0)
+    wasabi (3.5.0)
+      httpi (~> 2.0)
+      nokogiri (>= 1.4.2)
     webrobots (0.1.1)
     websocket (1.1.4)
     websocket-driver (0.3.4)
@@ -639,6 +658,7 @@ DEPENDENCIES
   rspec-rails
   rubyzip
   sass-rails!
+  savon
   seed_dump
   sextant
   sidekiq

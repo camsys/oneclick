@@ -75,6 +75,14 @@ class Service < ActiveRecord::Base
 
   mount_uploader :logo, ServiceLogoUploader
 
+
+  ##### Constants ####
+  BOOKING_PROFILES = {
+    :ecolane => 0,
+    :trapeze => 1
+  }
+
+
   def is_paratransit?
     is_service_type('paratransit')
   end

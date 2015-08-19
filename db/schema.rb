@@ -263,6 +263,10 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
@@ -637,6 +641,7 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.string   "booking_system_id"
     t.string   "booking_token"
     t.text     "disallowed_purposes"
+    t.integer  "booking_profile"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -684,6 +689,15 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.boolean  "is_list",            default: false
     t.integer  "locale_id"
     t.integer  "translation_key_id"
+  end
+
+  create_table "trapeze_profiles", force: true do |t|
+    t.string   "endpoint"
+    t.string   "username"
+    t.string   "password"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "traveler_notes", force: true do |t|

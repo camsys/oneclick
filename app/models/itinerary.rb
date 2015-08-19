@@ -221,11 +221,20 @@ class Itinerary < ActiveRecord::Base
   end
 
   #################################
-  # ECOLANE-SPECIFIC METHODS
+  # BOOKING-SPECIFIC METHODS
   #################################
   def book
-    eh = EcolaneHelpers.new
-    eh.book_itinerary self
+    case self.service.booking_profile
+      when Service::BOOKING_PROFILES[:ecolane]
+        eh = EcolaneHelpers.new
+        return eh.book_itinerary self
+      when Service::BOOKING_PROFILES[:trapeze]
+        return
+      else
+        return false
+
+    end
+
   end
 
   def status
