@@ -130,12 +130,9 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     @sub = User.find_by(email: params[:search])
 
-    if @user.buddies.include?(@sub) || @sub.buddies.include?(@main)
-      redirect_to admin_user_path(@user), :alert => TranslationEngine.translate_text(:cannot_merge_buddies)
-    end
-
     if @sub.nil?
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:search] }."
+      return
     end
 
     @agency_user_relationship = AgencyUserRelationship.new
@@ -151,6 +148,8 @@ class Admin::UsersController < Admin::BaseController
     main = @user
     sub = User.find_by(email: params[:user][:sub])
 
+    User::MergeTwoAccounts.call(main, sub)
+
     if params[:user][:relationship]
       existing_relationships = params[:user][:relationship].select { |id, value| UserRelationship.exists?(id.to_i) }
     else
@@ -161,8 +160,6 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_user_path(@user), :alert => "Could not find a user with email address #{ params[:user][:sub] }."
     end
 
-
-    User::MergeTwoAccounts.call(main, sub)
 
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user) #we inflate a new proxy every time, but it's transient, just holds a bunch of characteristics
 
