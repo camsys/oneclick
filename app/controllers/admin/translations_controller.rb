@@ -71,13 +71,12 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        translation_key_id = params[:id].to_s
-        translations = Translation.where(translation_key_id: translation_key_id)
-        translations.each do |translation|
-            translation.destroy
-        end
-        flash[:success] = "Translation Removed"
-        redirect_to admin_translations_path
+      translation_key_ids = params[:id].to_s.split(',')
+      Translation.where(translation_key_id: translation_key_ids).delete_all
+      TranslationKey.where(id: translation_key_ids).delete_all
+
+      flash[:success] = "Translation Removed"
+      redirect_to admin_translations_path
     end
 
     private
