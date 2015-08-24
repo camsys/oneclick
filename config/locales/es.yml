@@ -1,6 +1,21 @@
 # Spanish
 
 es:
+  select_all: "Seleccionar Todo"
+  select_none: "Seleccione Ninguno"
+  message: "Mensaje"
+  send_message: "[es]Send Message[/es]"
+  message_body: "[es]Message Body[/es]"
+  message_from_date: "[es]From Date[/es]"
+  message_to_date: "[es]To Date[/es]"
+  unread_message: "[es]Unread Message[/es]"
+  mark_as_read: "[es]Mark as Read[/es]"
+  merge: "Fundirse"
+  merge_message_1: "[es]Clicking on 'Apply' will merge[/es]"
+  merge_message_2: "[es]'s account into[/es]"
+  merge_message_3: "[es]'s account. You may also edit[/es]"
+  merge_message_4: "[es]'s account using the fields below.[/es]"
+  merge_warning: "[es]WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this.[/es]"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"

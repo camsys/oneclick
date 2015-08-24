@@ -4,6 +4,23 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+
+  select_all: "Select All"
+  select_none: "Select None"
+  message: "Message"
+  send_message: "Send Message"
+  message_body: "Message Body"
+  message_from_date: "From Date"
+  message_to_date: "To Date"
+  unread_message: "Unread Message"
+  mark_as_read: "Mark as Read"
+  merge: "Merge"
+  merge_message_1: "Clicking on 'Apply' will merge"
+  merge_message_2: "'s account into"
+  merge_message_3: "'s account. You may also edit"
+  merge_message_4: "'s account using the fields below."
+  merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
+  merge_warning: "This account was merged into the account for"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
