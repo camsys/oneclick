@@ -20,7 +20,6 @@ en:
   merge_message_3: "'s account. You may also edit"
   merge_message_4: "'s account using the fields below."
   merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
-  merge_warning: "This account was merged into the account for"
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
