@@ -33,8 +33,8 @@ describe EligibilityService do
       [],
       [
         {"question"=>"Are you age 65 or older?", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"== true", "group_id"=>0, "code"=>"age", "year"=>"65"},
-        {"question"=>"Translation key not found: key = The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
-        {"question"=>"Translation key not found: key = The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
+        {"question"=>"Translation key not found = The traveler is temporarily or permanently disabled", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"disabled", "year"=>"t"},
+        {"question"=>"Translation key not found = The traveler is a veteran", "data_type"=>"bool", "options"=>[{:text=>"Yes", :value=>true}, {:text=>"No", :value=>false}], "success_condition"=>"==t", "group_id"=>1, "code"=>"veteran", "year"=>"t"}
       ]
     ]
   end
