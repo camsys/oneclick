@@ -112,7 +112,7 @@ module MapHelper
       markers << get_addr_marker(place, 'stop', 'stopIcon')
     else
       multi_origin_places = []
-      multi_origin_places = trip_proxy.multi_origin_places.split(';') unless trip_proxy.multi_origin_places.nil?
+      multi_origin_places = trip_proxy.multi_origin_places.split(';##$##;') unless trip_proxy.multi_origin_places.nil?
 
       multi_origin_places.each_with_index do |raw_place, index|
         place = JSON.parse(raw_place).symbolize_keys
@@ -120,7 +120,7 @@ module MapHelper
       end
 
       multi_dest_places = []
-      multi_dest_places = trip_proxy.multi_dest_places.split(';') unless trip_proxy.multi_dest_places.nil?
+      multi_dest_places = trip_proxy.multi_dest_places.split(';##$##;') unless trip_proxy.multi_dest_places.nil?
 
       multi_dest_places.each_with_index do |raw_place, index|
         place = JSON.parse(raw_place).symbolize_keys

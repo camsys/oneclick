@@ -105,8 +105,8 @@ class TripsController < PlaceSearchingController
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
 
     unless @multi_od_trip.nil?
-      origin_places = @multi_od_trip.origin_places.split(';')
-      dest_places = @multi_od_trip.dest_places.split(';')
+      origin_places = @multi_od_trip.origin_places.split(';##$##;')
+      dest_places = @multi_od_trip.dest_places.split(';##$##;')
 
       if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
         @multi_od_trip.trips = []
