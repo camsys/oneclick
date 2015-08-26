@@ -143,7 +143,7 @@ module Reporting
           y << headers.to_csv
 
           # find_each would reduce memory usage, but it relies on valid primary_key
-          data.each do |row|
+          data.find_each do |row|
             y << fields.map { |field|
               format_output row.send(field[:name]), 
                 @report.data_model.columns_hash[field[:name].to_s].type,  
