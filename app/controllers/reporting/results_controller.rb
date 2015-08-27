@@ -128,34 +128,21 @@ module Reporting
 
     def csv_lines(data, fields)
 
-      Rails.logger.debug 1
       headers = []
 
       fields.each do |field|
-        Rails.logger.debug 2
         headers << "\"" + (field[:title].blank? ? field[:name] : field[:title]) + "\""
       end
 
       # refresh primary_key in case it's changed
       @report.data_model.primary_key = @report.primary_key
-      Rails.logger.debug 3
       Enumerator.new do |y|
-        Rails.logger.debug 4
         CSV.generate do |csv|
           y << headers.to_csv
-
-          # find_each would reduce memory usage, but it relies on valid primary_key
-          #data.find_each do |row|
-            #y << fields.map { |field|
-            #  format_output row.send(field[:name]),
-            #    @report.data_model.columns_hash[field[:name].to_s].type,
-            #   field[:formatter]
-            #}.to_csv
-          data.each do |result|
+          data.find_each do |result|
             row = []
             fields.each do |field|
               field_type = @report.data_model.columns_hash[field[:name].to_s].type rescue nil
-              #row << 1
               row << format_output(result[field[:name].to_sym], field_type, field[:formatter])
             end
             y << row.to_csv
