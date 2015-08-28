@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  is_return_trip: "Return trip?"
   select_all: "Seleccionar Todo"
   select_none: "Seleccione Ninguno"
   message: "Mensaje"
