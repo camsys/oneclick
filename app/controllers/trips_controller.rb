@@ -866,8 +866,10 @@ class TripsController < PlaceSearchingController
   end
 
   def book
+
     @itinerary = Itinerary.find(params[:itin].to_i)
-    eh = EcolaneHelpers.new
+    @itinerary.book
+    return true
 
     outbound_part = @itinerary.trip_part
     contact_number = ""
@@ -1224,6 +1226,9 @@ private
   end
 
   def get_ecolane_trip_purposes
+    # GENERIC_BOOKING
+    @trip_purpose_raw = nil
+    return @trip_purposes_raw
     if @traveler.user_profile.user_services.count > 0
       eh = EcolaneHelpers.new
       @trip_purposes_raw = eh.get_trip_purposes_from_traveler(@traveler)

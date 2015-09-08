@@ -26,7 +26,7 @@ class Service < ActiveRecord::Base
   has_many :fare_zones
   has_many :funding_sources
   has_many :sponsors
-
+  has_one :trapeze_profile
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
 
@@ -76,11 +76,6 @@ class Service < ActiveRecord::Base
   mount_uploader :logo, ServiceLogoUploader
 
 
-  ##### Constants ####
-  BOOKING_PROFILES = {
-    :ecolane => 0,
-    :trapeze => 1
-  }
 
 
   def is_paratransit?

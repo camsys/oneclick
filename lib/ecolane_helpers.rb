@@ -321,7 +321,7 @@ class EcolaneHelpers
   end
 
   def fetch_customer_information(customer_id, system_id, token, funding=false, locations=false)
-    url_options = "/api/customer/" + system_id + '/'
+    url_options = "/api/customer/" + system_id.to_s + '/'
     url_options += customer_id.to_s
     url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
 
@@ -345,7 +345,7 @@ class EcolaneHelpers
   def search_for_customers(terms = {}, system_id, token)
 
 
-    url_options = "/api/customer/" + system_id + '/search?'
+    url_options = "/api/customer/" + system_id.to_s + '/search?'
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end

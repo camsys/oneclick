@@ -224,16 +224,8 @@ class Itinerary < ActiveRecord::Base
   # BOOKING-SPECIFIC METHODS
   #################################
   def book
-    case self.service.booking_profile
-      when Service::BOOKING_PROFILES[:ecolane]
-        eh = EcolaneHelpers.new
-        return eh.book_itinerary self
-      when Service::BOOKING_PROFILES[:trapeze]
-        return
-      else
-        return false
-
-    end
+    bs = BookingServices.new
+    bs.book self
 
   end
 

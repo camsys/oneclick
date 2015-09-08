@@ -698,6 +698,7 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.integer  "service_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "namespace"
   end
 
   create_table "traveler_notes", force: true do |t|
@@ -851,13 +852,14 @@ ActiveRecord::Schema.define(version: 20150909142700) do
   end
 
   create_table "user_services", force: true do |t|
-    t.integer  "user_profile_id",                                  null: false
-    t.integer  "service_id",                                       null: false
-    t.string   "external_user_id",                                 null: false
-    t.boolean  "disabled",         default: false,                 null: false
+    t.integer  "user_profile_id",                                        null: false
+    t.integer  "service_id",                                             null: false
+    t.string   "external_user_id",                                       null: false
+    t.boolean  "disabled",               default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-08-26 14:30:52', null: false
-    t.datetime "created_at",       default: '2014-08-26 14:30:52', null: false
+    t.datetime "updated_at",             default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",             default: '2014-08-26 14:30:52', null: false
+    t.string   "external_user_password"
   end
 
   create_table "users", force: true do |t|
