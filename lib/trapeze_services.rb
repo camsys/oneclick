@@ -33,7 +33,6 @@ class TrapezeServices
     return client, auth_cookies
 
   end
-
   ########## END Setup client and authorize ###############
 
   def pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
@@ -76,7 +75,7 @@ class TrapezeServices
     #do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206"}
     do_leg_hash = {request_address: do_address_hash}
 
-    trip_hash = {client_id: 104584, client_code: '104584', date: '20150904', booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
+    trip_hash = {client_id: 104584, client_code: '104584', date: '20150915', booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
 
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
 

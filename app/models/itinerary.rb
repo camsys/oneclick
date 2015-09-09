@@ -226,7 +226,6 @@ class Itinerary < ActiveRecord::Base
   def book
     bs = BookingServices.new
     bs.book self
-
   end
 
   def status
@@ -255,12 +254,9 @@ class Itinerary < ActiveRecord::Base
       return true
     end
 
-    eh = EcolaneHelpers.new
-    result = eh.cancel_itinerary self
-    if result
-      self.selected = false
-      self.save
-    end
+    bs = BookingServices.new
+    bs.cancel self
+
   end
 
   #Booking Information

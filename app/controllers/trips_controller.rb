@@ -18,7 +18,6 @@ class TripsController < PlaceSearchingController
     @q.sorts = "id asc" if @q.sorts.empty?
 
     @params = {q: q_param}
-
     total_trips = @q.result(:district => true)
 
     # filter data based on accessibility
@@ -867,45 +866,10 @@ class TripsController < PlaceSearchingController
 
   def book
 
-    @itinerary = Itinerary.find(params[:itin].to_i)
-    @itinerary.book
-    return true
-
-    outbound_part = @itinerary.trip_part
-    contact_number = ""
-    if outbound_part.is_bookable?
-
-      outbound_itinerary = @itinerary
-      outbound_result, outbound_message = eh.book_itinerary(@itinerary)
-      contact_number = outbound_itinerary.service.phone || ""
-      unless outbound_result
-        @trip.debug_info = @trip.debug_info.to_s + "[Outbound Booking Error: " + outbound_message.to_s + "]"
-        @trip.save
-      end
-    else
-      outbound_result = 'none'
-      outbound_message = 'none'
-    end
-
-    return_part = @itinerary.trip_part.get_return_part
-    if return_part and return_part.is_bookable?
-      if contact_number.empty?
-        return_itinerary = return_part.selected_itinerary
-        contact_number = return_itinerary.service.phone || ""
-      end
-      return_result, return_message = eh.book_itinerary(return_part.selected_itinerary)
-      unless return_result
-        @trip.debug_info = @trip.debug_info.to_s + "[Return Booking Error: " + return_message.to_s + "]"
-        @trip.save
-      end
-    else
-      return_result = 'none'
-      return_message = 'none'
-    end
-
     respond_to do |format|
-      format.json { render json: [outbound_result.to_s, outbound_message, return_result.to_s, return_message, contact_number] }
+      format.json { render json: @trip.book }
     end
+
   end
 
   def new_rating_from_email
@@ -930,35 +894,7 @@ class TripsController < PlaceSearchingController
   def cancel
     trip = Trip.find(params[:id].to_i)
 
-    eh = EcolaneHelpers.new
-    service_number = ""
-    service_name = ""
-    failure_service_number = ""
-    failure_service_name = ""
-
-    failure = false
-    trip.trip_parts.each do |tp|
-      booked_itineraries = tp.itineraries.where.not(booking_confirmation: nil)
-      booked_itineraries.each do |booked_itinerary|
-        res = eh.cancel_itinerary(booked_itinerary)
-        service_number = booked_itinerary.service.phone || ""
-        service_name = booked_itinerary.service.name || ""
-        if res
-          booked_itinerary.booking_confirmation = nil
-          booked_itinerary.save
-        else
-          failure = true
-          failure_service_number = booked_itinerary.service.phone || ""
-          failure_service_name = booked_itinerary.service.name || ""
-        end
-      end
-    end
-
-    if failure
-      message = TranslationEngine.translate_text(:cancel_booking_failure, name: failure_service_name, number: failure_service_number)
-    else
-      message = TranslationEngine.translate_text(:cancel_booking_success, name: service_name, number: service_number)
-    end
+    trip.cancel
 
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }

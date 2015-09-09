@@ -406,6 +406,30 @@ class Trip < ActiveRecord::Base
     desired_modes.where(elig_dependent: true).count > 0
   end
 
+
+  #################################
+  # BOOKING-SPECIFIC METHODS
+  #################################
+
+  def book
+
+    booked_itineraries = []
+    itineraries = self.selected_itineraries
+    itineraries.each do |itinerary|
+      result_hash = itinerary.book
+      booked_itineraries.append(result_hash)
+    end
+
+    booked_itineraries
+
+  end
+
+  def cancel
+    self.selected_itineraries.each do |itinerary|
+      itinerary.cancel #if the trip is not booked, then canceling will mark it as unselected
+    end
+  end
+
   def is_booked?
     trip_parts.each do |trip_part|
       if trip_part.is_booked?
@@ -414,6 +438,17 @@ class Trip < ActiveRecord::Base
     end
     false
   end
+
+  def is_bookable?
+    self.selected_itineraries.each do |itinerary|
+      if itinerary.is_bookable?
+        return true
+      end
+    end
+    return false
+  end
+
+  ##### End Booking Methods
 
   def next_part trip_part
     return nil if trip_parts.count==1
