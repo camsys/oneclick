@@ -27,6 +27,8 @@ class BookingServices
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
 
+        puts result.ai
+
         message = result[:envelope][:body][:pass_create_trip_response][:validation][:item].first[:message]
 
         if booking_id.to_i == -1 #Failed to book

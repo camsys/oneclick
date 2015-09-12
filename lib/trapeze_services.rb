@@ -16,6 +16,17 @@ class TrapezeServices
 
   end
 
+  def pass_validate_client_password(endpoint, namespace, username, password, client_id, client_password)
+
+    client = create_client(endpoint, namespace, username, password)
+    response = client.call(:pass_validate_client_password, message: {client_id: client_id, password: client_password})
+    if response.to_hash[:pass_validate_client_password_response][:validation][:item][:code] == "RESULTOK"
+      return true
+    else
+      return false
+    end
+  end
+
   def login(client_id, password, client)
 
     result = client.call(:pass_validate_client_password, message: {client_id: client_id, password: password})
@@ -33,6 +44,7 @@ class TrapezeServices
     return client, auth_cookies
 
   end
+
   ########## END Setup client and authorize ###############
 
   def pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
@@ -52,13 +64,13 @@ class TrapezeServices
   end
 
   def pass_get_schedules (endpoint, namespace, username, password, client_id, client_password)
-    client, auth_cookies = create_client_and_login(client_id, client_password)
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
     result = client.call(:pass_get_schedules, cookies: auth_cookies)
     result.hash
   end
 
   def pass_get_booking_purposes(endpoint, namespace, username, password, client_id, client_password)
-    client, auth_cookies = create_client_and_login(client_id, client_password)
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
 
     result = client.call(:pass_get_booking_purposes, cookies: auth_cookies)
     result.hash
@@ -67,15 +79,15 @@ class TrapezeServices
   def pass_create_trip_test(endpoint, namespace, username, password, client_id, client_password)
 
     #hardcoded for now
-    pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status: 1 }
+    pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status:  -2147483648 }
     #pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204"}
     pu_leg_hash = {req_time: 36300, request_address: pu_address_hash}
 
-    do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status: 1}
+    do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status:  -2147483648}
     #do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206"}
     do_leg_hash = {request_address: do_address_hash}
 
-    trip_hash = {client_id: 104584, client_code: '104584', date: '20150915', booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
+    trip_hash = {client_id: 104584, client_code: '104584', date: '20150920', booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
 
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
 
