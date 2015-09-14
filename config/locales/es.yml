@@ -1,6 +1,8 @@
 # Spanish
 
 es:
+  user_id: "User Id"
+  client_id: "Client Id"
   is_return_trip: "Return trip?"
   select_all: "Seleccionar Todo"
   select_none: "Seleccione Ninguno"

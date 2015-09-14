@@ -135,6 +135,7 @@ Oneclick::Application.routes.draw do
             get 'map_status'
             get 'request_create_map'
             get 'create_map'
+            post 'book'
           end
         end
         resources :trip_parts do

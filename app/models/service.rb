@@ -62,7 +62,8 @@ class Service < ActiveRecord::Base
 
   scope :active, -> {where(active: true)}
   scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?,?,?)", "paratransit", "volunteer", "nemt", "tap", "dial_a_ride")}
-  scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
+  #scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
+  scope :bookable, -> {where.not(booking_profile: nil)}
 
   include Validations
 
@@ -512,6 +513,25 @@ class Service < ActiveRecord::Base
   def disallowed_purposes_array
     return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
   end
+
+  #################################
+  # BOOKING-SPECIFIC METHODS
+  #################################
+
+  def associate_user(user, external_user_id, external_user_password)
+    bs = BookingServices.new
+    result = bs.associate_user(self, user, external_user_id, external_user_password)
+  end
+
+  def is_bookable?
+    unless self.booking_profile.nil?
+      return true
+    else
+      return false
+    end
+  end
+
+  #### End Booking Methods
 
   private
 

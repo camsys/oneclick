@@ -74,7 +74,7 @@ class UsersController < ApplicationController
       @user.add_buddies(params[:new_buddies])
 
       if booking_alert
-        redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
+        redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid booking credentials."
       else
         if params[:user][:password] and params[:user][:password].eql? params[:user][:password_confirmation] # They have updated their password, so log them back in, otherwise they will fail authentication
           sign_in @user, :bypass => true
@@ -282,36 +282,24 @@ private
 
   def set_booking_services(user, services)
 
+    service_ids = services.select { |key, value| key.to_s.match(/^service_\d+/) }
+
     alert = false
-    dob = services['dob']
-    services.each do |id, user_id|
+    service_ids.each do |service_id, user_id|
+      id = service_id.split('_').last
+      user_password = services["password_" + id]
 
-      unless id == 'dob'
-        service = Service.find(id)
+      unless user_password.blank?
+        service = Service.find(id.to_i)
+        result = service.associate_user(user, user_id, user_password)
 
-        user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
-        #only validate on a change
-        if user_service.external_user_id == user_id
+        unless result
+          alert = true
           next
-        end
-
-        eh = EcolaneHelpers.new
-        unless user_id == ""
-          unless eh.validate_passenger(user_id, dob)[0]
-            alert = true
-            next
-          end
-          #user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
-          user_service.external_user_id = user_id
-          user_service.save
-        else
-          user_services = UserService.where(user_profile: user.user_profile, service: service)
-          user_services.each do |user_service|
-            user_service.destroy
-          end
         end
       end
     end
     alert
   end
+
 end

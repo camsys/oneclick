@@ -4,6 +4,10 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  book_outbound_trip: "Book outbound trip"
+  book_return_trip: "Book return trip"
+  user_id: "User Id"
+  client_id: "Client Id"
   is_return_trip: "Return trip?"
   select_all: "Select All"
   select_none: "Select None"

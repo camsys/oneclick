@@ -79,11 +79,11 @@ class TrapezeServices
   def pass_create_trip_test(endpoint, namespace, username, password, client_id, client_password)
 
     #hardcoded for now
-    pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status:  -2147483648 }
+    pu_address_hash = {address_mode: 'ZZ', street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status:  -2147483648 }
     #pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204"}
     pu_leg_hash = {req_time: 36300, request_address: pu_address_hash}
 
-    do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status:  -2147483648}
+    do_address_hash = {address_mode: 'ZZ', street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status:  -2147483648}
     #do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206"}
     do_leg_hash = {request_address: do_address_hash}
 
@@ -96,11 +96,37 @@ class TrapezeServices
     result.hash
   end
 
+  def pass_create_trip(endpoint, namespace, username, password, client_id, client_password, origin, destination, request_seconds_past_midnight, request_date)
+
+    #hardcoded for now
+    pu_address_hash = {address_mode: 'ZZ', street_num: origin[:street_num], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    pu_leg_hash = {req_time: request_seconds_past_midnight, request_address: pu_address_hash}
+
+    do_address_hash = {address_mode: 'ZZ', street_num: destination[:street_num], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    do_leg_hash = {request_address: do_address_hash}
+
+    trip_hash = {client_id: client_id.to_i, client_code: client_id, date: request_date, booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
+
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
+
+    Rails.logger.info trip_hash.ai
+    result = client.call(:pass_create_trip, message: trip_hash, cookies: auth_cookies)
+    result.hash
+  end
+
   def pass_cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
-    message = {booking_id: booking_id}
+    message = {booking_id: booking_id, sched_status: 'CA'}
     result = client.call(:pass_cancel_trip, message: message, cookies: auth_cookies)
     result.hash
   end
+
+  def pass_get_client_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
+    message = {booking_id: booking_id}
+    result = client.call(:pass_get_client_trips, message: message, cookies: auth_cookies)
+    result.hash
+  end
+
 
 end

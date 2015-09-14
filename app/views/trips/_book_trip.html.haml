@@ -2,9 +2,12 @@
   .modal-content
     .modal-header
       .pull-right
-        -if @trip.is_bookable? and not @trip.is_booked?
-          %button.btn.action-button#book_button_btn
-            =translate_helper(:book)
+        -if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_booked?
+          %button.btn.action-button#outbound_book_button_btn
+            =translate_helper(:book_outbound_trip)
+        -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable? and not @trip.return_part.is_booked?
+          %button.btn.action-button#return_book_button_btn
+            =translate_helper(:book_return_trip)
         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
           = translate_helper(:close)
       .modal-title{:style => "text-align:left;"}
@@ -16,78 +19,140 @@
     .modal-body#bookingContent
       .panel.panel-default
         .panel-body
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:from) + ":"
-            .col-sm-8.text-left
-              =@trip.outbound_part.from_trip_place.name
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:to) + ":"
-            .col-sm-8.text-left
-              =@trip.outbound_part.to_trip_place.name
-          .row
-            %label.col-sm-4.text-right
-              = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
-            .col-sm-8.text-left
-              =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
-          -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable?
+          %div{id: 'outbound_part'}
             .row
               %label.col-sm-4.text-right
-                = @trip.return_part.is_depart ? translate_helper(:cap_returning_at) + ":" : translate_helper(:returning_by) + ":"
+                =translate_helper(:from) + ":"
               .col-sm-8.text-left
-                =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
-          .row
-            .div{id: 'booking_results'}
-              -if @trip.is_booked?
-                "Confirmation numbers go here."
-              -else
-                =""
+                =@trip.outbound_part.from_trip_place.name
+            .row
+              %label.col-sm-4.text-right
+                =translate_helper(:to) + ":"
+              .col-sm-8.text-left
+                =@trip.outbound_part.to_trip_place.name
+            .row
+              %label.col-sm-4.text-right
+                = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+              .col-sm-8.text-left
+                =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+            .row
+              .div{id: 'outbound_booking_results'}
+                -if @trip.is_booked?
+                  "Confirmation numbers go here."
+                -else
+                  =""
+
+          %div{id: 'return_part'}
+            .row
+              %label.col-sm-4.text-right
+                =translate_helper(:from) + ":"
+              .col-sm-8.text-left
+                =@trip.return_part.from_trip_place.name
+            .row
+              %label.col-sm-4.text-right
+                =translate_helper(:to) + ":"
+              .col-sm-8.text-left
+                =@trip.return_part.to_trip_place.name
+            .row
+              %label.col-sm-4.text-right
+                = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+              .col-sm-8.text-left
+                =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+            .row
+              .div{id: 'return_booking_results'}
+                -if @trip.is_booked?
+                  "Confirmation numbers go here."
+                -else
+                  =""
 
 :javascript
-  $('#book_button_btn').unbind('click');
-  $('#book_button_btn').on('click', function(event) {
+  $('#outbound_book_button_btn').unbind('click');
+  $('#return_book_button_btn').unbind('click');
+  $('#return_book_button_btn').hide();
 
-    console.log("Pushed the button");
+  $('#outbound_book_button_btn').on('click', function(event) {
+
+    console.log("Pushed the outbound button");
 
     event.stopPropagation();
     var text = "#{translate_helper(:please_wait)}" + "..."
-    $('#book_button_btn').text(text);
-    $('#book_button_btn').addClass('disabled');
+    $('#outbound_book_button_btn').text(text);
+    $('#outbound_book_button_btn').addClass('disabled');
 
     $.ajax({
-      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/book",
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.outbound_part.selected_itinerary.id}" + "/book",
       data: {itin: "#{@trip.outbound_part.selected_itinerary.id}"},
+      method: 'POST',
       success: function(result) {
-
-        $('#book_button_btn').hide();
-
-        if (result['trips'][0]['booked']) {
-          if(result['trips'].length > 1){
-            var confirmation_numbers = "Confirmation #'s: ";
-            confirmation_numbers +=  result['trips'][0]['confirmation'] + ', ' +  result['trips'][1]['confirmation'];
-          }
-          else{
+        console.log(result);
+        $('#outbound_book_button_btn').hide();
+        if (result['booked']) {
             var confirmation_numbers = "Confirmation #: ";
-            confirmation_numbers += result['trips'][0]['confirmation'];
-          }
+            confirmation_numbers +=  result['confirmation'];
+            $('#return_book_button_btn').show();
+
+
         }
         else {
-          var confirmation_numbers = result['trips'][0]['message'];
-          var confirmation_message = "Your trip could not be booked at this time."
+          var confirmation_numbers = result['message'];
+          var confirmation_message = "Your trip could not be booked at this time.";
         }
 
-        $('#booking_results').html(confirmation_numbers);
+        $('#outbound_booking_results').html(confirmation_numbers);
 
       },
       error: function(){
 
-        $('#book_button_btn').hide();
+        $('#outbound_book_button_btn').hide();
         var confirmation_message = "Your trip could not be booked at this time."
-        $('#booking_results').html(confirmation_message)
+        $('#outbound_booking_results').html(confirmation_message)
       }
 
     })
 
   })
+
+
+  $('#return_book_button_btn').on('click', function(event) {
+
+    console.log("Pushed the return button");
+
+    event.stopPropagation();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#return_book_button_btn').text(text);
+    $('#return_book_button_btn').addClass('disabled');
+
+    $.ajax({
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.return_part.selected_itinerary.id}" + "/book",
+      data: {itin: "#{@trip.return_part.selected_itinerary.id}"},
+      method: 'POST',
+      success: function(result) {
+        console.log(result);
+        $('#return_book_button_btn').hide();
+        if (result['booked']) {
+            var confirmation_numbers = "Confirmation #: ";
+            confirmation_numbers +=  result['confirmation'];
+
+        }
+        else {
+          var confirmation_numbers = result['message'];
+          var confirmation_message = "Your trip could not be booked at this time.";
+        }
+
+        $('#return_booking_results').html(confirmation_numbers);
+
+      },
+      error: function(){
+
+        $('#return_book_button_btn').hide();
+        var confirmation_message = "Your trip could not be booked at this time."
+        $('#return_booking_results').html(confirmation_message)
+      }
+
+    })
+
+  })
+
+
+
 

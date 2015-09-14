@@ -208,23 +208,30 @@
 
       .row
         .col-sm-6
-          .panel.panel-default#booking
-            .panel-heading
-              %h2.panel-title
-                =translate_helper(:booking_information)
-                = add_tooltip("booking_information_help")
-            .panel-body
-              =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
-                -Service.active.bookable.each do |service|
-                  - user_service = UserService.where(service: service, user_profile: @user.user_profile).first
-                  - if user_service
-                    = booking_form.input service.id.to_s, label: service.name, input_html: { value: user_service.external_user_id}
-                  - else
-                    = booking_form.input service.id.to_s, label: service.name, input_html: { value: "" }
-                =booking_form.input :dob, label: translate_helper(:dob), placeholder: "mm/dd/yyyy", hint: translate_helper(:dob_notice)
-                - if TranslationEngine.translation_exists?("dob_help")
-                  :javascript
-                    addHelperTooltip('#dob_label', "#{translate_helper(:dob_help)}");
+          -if Service.active.bookable.count > 0
+            .panel.panel-default#booking
+              .panel-heading
+                %h2.panel-title
+                  =translate_helper(:booking_information)
+                  = add_tooltip("booking_information_help")
+              .panel-body
+                =simple_fields_for :user_service, html: {class: 'form-horizontal'}, wrapper: :h_opts_form do |booking_form|
+                  -Service.active.bookable.order('booking_profile').each do |service|
+                    %div.row
+                      - user_service = UserService.where(service: service, user_profile: @user.user_profile).first
+                      %div.col-sm-4
+                        =service.name
+                      %div.col-sm-4
+                        - if user_service
+                          = booking_form.input "service_" + service.id.to_s, label: translate_helper(:client_id), input_html: { value: user_service.external_user_id}
+                        - else
+                          = booking_form.input "service_" + service.id.to_s, label: translate_helper(:client_id), input_html: { value: "" }
+                      %div.col-sm-4
+                        -if service.booking_profile == BookingServices::AGENCY[:ecolane]
+                          =booking_form.input "password_" + service.id.to_s, label: translate_helper(:dob), placeholder: "mm/dd/yyyy"
+                        -if service.booking_profile ==  BookingServices::AGENCY[:trapeze]
+                          =booking_form.input "password_" + service.id.to_s, label: translate_helper(:password)
+
         .col-sm-6
           .panel.panel-default#preferred_modes
             .panel-heading

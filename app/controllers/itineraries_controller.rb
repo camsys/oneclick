@@ -42,4 +42,15 @@ class ItinerariesController < ApplicationController
     @itinerary = @trip.itineraries.valid.find(params[:id])
   end
 
+
+  def book
+
+    @itinerary = Itinerary.find(params[:id].to_i)
+
+    respond_to do |format|
+      format.json { render json: @itinerary.book }
+    end
+
+  end
+
 end
