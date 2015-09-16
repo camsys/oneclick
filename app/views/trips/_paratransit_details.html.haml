@@ -1,5 +1,11 @@
 .row
   .col-sm-12
+    -if itinerary.is_booked?
+      .panel.panel-default
+        .panel-heading
+          ="Booking Confirmation"
+        .panel-body
+          = render partial: 'booked_itinerary_confirmation', locals: {itinerary: itinerary}
     = render partial: 'provider_and_cost_comments', locals: {itinerary: itinerary}
 
     -if itinerary.missing_information and itinerary.missing_information_text.split(':').count > 0
@@ -42,8 +48,6 @@
         %i.fa.fa-calendar
         = translate_helper(:trip_outside_service_hours)
 
-    .row.hidden
-      ="SCORE: " + itinerary.match_score.to_s
 %table{:style=>'width: 100%;'}
   - itinerary.service.get_contact_info_array.each do |a,b|
     %tr
