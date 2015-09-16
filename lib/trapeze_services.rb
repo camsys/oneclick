@@ -124,6 +124,8 @@ class TrapezeServices
   def cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
     result = pass_cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
 
+    Rails.logger.info result.ai
+
     begin
       cancellation_number = result[:envelope][:body][:pass_cancel_trip_response][:pass_cancel_trip_result][:cancellation_number]
       unless cancellation_number.nil?
