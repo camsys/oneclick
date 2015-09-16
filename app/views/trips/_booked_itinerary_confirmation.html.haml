@@ -1,0 +1,20 @@
+.row
+  %label.col-sm-3.text-right
+    =translate_helper(:from) + ":"
+  .col-sm-9.text-left
+    =itinerary.trip_part.from_trip_place.name
+.row
+  %label.col-sm-3.text-right
+    =translate_helper(:to) + ":"
+  .col-sm-9.text-left
+    =itinerary.trip_part.to_trip_place.name
+.row
+  %label.col-sm-3.text-right
+    =itinerary.trip_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+  .col-sm-9.text-left
+    =itinerary.trip_part.trip_time.strftime("%b %e, %l:%M %p")
+.row
+  %label.col-sm-3.text-right
+    =translate_helper(:confirmation_capped) + ":"
+  .col-sm-9.text-left{id: 'itinerary_confirmation_' + itinerary.id.to_s}
+    =itinerary.booking_confirmation
