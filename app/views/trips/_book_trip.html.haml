@@ -19,6 +19,8 @@
     .modal-body#bookingContent
       %div{id: 'outbound_part'}
         .panel.panel-default
+          .panel-heading{:style => "text-align:center; font-weight:bold;"}
+            ="Book your outbound trip"
           .panel-body
             .row
               %label.col-sm-3.text-right
@@ -40,9 +42,14 @@
                 =translate_helper(:confirmation_capped) + ":"
               .col-sm-9.text-left{id: 'outbound_booking_results'}
                 =""
+            .row
+              .col-sm-12.text-center{id: 'outbound_booking_message', :style => 'font-weight:bold;'}
+                =""
 
       %div{id: 'return_part', hidden: true}
         .panel.panel-default
+          .panel-heading{:style => "text-align:center; font-weight:bold;"}
+            ="Book your return trip"
           .panel-body
             .row
               %label.col-sm-3.text-right
@@ -64,7 +71,9 @@
                 =translate_helper(:confirmation_capped) + ":"
               .col-sm-9.text-left{id: 'return_booking_results'}
                 =""
-
+            .row
+              .col-sm-12.text-center{id: 'return_booking_message', :style => 'font-weight:bold;'}
+                =""
 
 :javascript
   $('#outbound_book_button_btn').unbind('click');
@@ -90,23 +99,26 @@
         if (result['booked']) {
 
             var confirmation_numbers =  result['confirmation'];
+            var confirmation_message = "Your outhound trip has been booked.";
             $('#return_book_button_btn').show();
             $('#outbound_results_row').show();
             $('#return_part').show();
         }
         else {
-          var confirmation_numbers = result['message'];
+          var confirmation_numbers = "";
           var confirmation_message = "Your trip could not be booked at this time.";
         }
 
         $('#outbound_booking_results').html(confirmation_numbers);
+        $('#outbound_booking_message').html(confirmation_message);
+
 
       },
       error: function(){
 
         $('#outbound_book_button_btn').hide();
-        var confirmation_message = "Your trip could not be booked at this time."
-        $('#outbound_booking_results').html(confirmation_message)
+        var confirmation_message = "Your trip could not be booked at this time.";
+        $('#outbound_booking_message').html(confirmation_message);
       }
 
     })
@@ -132,14 +144,16 @@
         $('#return_book_button_btn').hide();
         if (result['booked']) {
             var confirmation_numbers =  result['confirmation'];
+            var confirmation_message = "Your return trip has been booked.";
             $('#return_results_row').show();
         }
         else {
-          var confirmation_numbers = result['message'];
+          var confirmation_numbers = "";
           var confirmation_message = "Your trip could not be booked at this time.";
         }
 
         $('#return_booking_results').html(confirmation_numbers);
+        $('#return_booking_message').html(confirmation_message);
 
       },
       error: function(){

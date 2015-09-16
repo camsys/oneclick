@@ -28,39 +28,29 @@ class TrapezeServices
   end
 
   def login(client_id, password, client)
-
     result = client.call(:pass_validate_client_password, message: {client_id: client_id, password: password})
     auth_cookies = result.http.cookies
-
     return auth_cookies
-
   end
 
   def create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
-
     client = create_client(endpoint, namespace, username, password)
     auth_cookies = login(client_id, client_password, client)
-
     return client, auth_cookies
-
   end
 
   ########## END Setup client and authorize ###############
 
   def pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
-
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
     result = client.call(:pass_get_client_info, message: {client_id: client_id}, cookies: auth_cookies)
     result.hash
-
   end
 
   def pass_get_client_trips(endpoint, namespace, username, password, client_id, client_password)
-
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
     result = client.call(:pass_get_client_trips, message: {client_id: client_id}, cookies: auth_cookies)
     result.hash
-
   end
 
   def pass_get_schedules (endpoint, namespace, username, password, client_id, client_password)

@@ -5,8 +5,8 @@
 
 en:
   confirmation_capped: "Confirmation"
-  book_outbound_trip: "Book outbound trip"
-  book_return_trip: "Book return trip"
+  book_outbound_trip: "Book Outbound Trip"
+  book_return_trip: "Book Return Trip"
   user_id: "User Id"
   client_id: "Client Id"
   is_return_trip: "Return trip?"
@@ -721,7 +721,7 @@ en:
   trip_is_eligible: "Your trip is eligible for automated booking."
   trip_booked_2: "Your trip has been booked."
   book_your_trip: "Book your trip"
-  trip_booked: "Trip Booked!"
+  trip_booked: "Your trip has been booked"
   dob: "Date of Birth"
   dob_notice: 'Date of Birth may be used to confirm the Client Id with a service.  It will not be saved.'
   booking_information: "Booking Information"
