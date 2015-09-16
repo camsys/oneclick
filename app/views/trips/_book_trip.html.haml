@@ -17,53 +17,54 @@
           -else
             = translate_helper(:book_your_trip)
     .modal-body#bookingContent
-      .panel.panel-default
-        .panel-body
-          %div{id: 'outbound_part'}
+      %div{id: 'outbound_part'}
+        .panel.panel-default
+          .panel-body
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 =translate_helper(:from) + ":"
-              .col-sm-8.text-left
+              .col-sm-9.text-left
                 =@trip.outbound_part.from_trip_place.name
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 =translate_helper(:to) + ":"
-              .col-sm-8.text-left
+              .col-sm-9.text-left
                 =@trip.outbound_part.to_trip_place.name
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
-              .col-sm-8.text-left
+              .col-sm-9.text-left
                 =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
             .row
-              .div{id: 'outbound_booking_results'}
-                -if @trip.is_booked?
-                  "Confirmation numbers go here."
-                -else
-                  =""
+              %label.col-sm-3.text-right{id: 'outbound_results_row', hidden: true}
+                =translate_helper(:confirmation_capped) + ":"
+              .col-sm-9.text-left{id: 'outbound_booking_results'}
+                =""
 
-          %div{id: 'return_part'}
+      %div{id: 'return_part', hidden: true}
+        .panel.panel-default
+          .panel-body
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 =translate_helper(:from) + ":"
-              .col-sm-8.text-left
+              .col-sm-9.text-left
                 =@trip.return_part.from_trip_place.name
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 =translate_helper(:to) + ":"
-              .col-sm-8.text-left
+              .col-sm-9.text-left
                 =@trip.return_part.to_trip_place.name
             .row
-              %label.col-sm-4.text-right
+              %label.col-sm-3.text-right
                 = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
-              .col-sm-8.text-left
-                =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+              .col-sm-9.text-left
+                =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
             .row
-              .div{id: 'return_booking_results'}
-                -if @trip.is_booked?
-                  "Confirmation numbers go here."
-                -else
-                  =""
+              %label.col-sm-3.text-right{id: 'return_results_row', hidden: true}
+                =translate_helper(:confirmation_capped) + ":"
+              .col-sm-9.text-left{id: 'return_booking_results'}
+                =""
+
 
 :javascript
   $('#outbound_book_button_btn').unbind('click');
@@ -87,11 +88,11 @@
         console.log(result);
         $('#outbound_book_button_btn').hide();
         if (result['booked']) {
-            var confirmation_numbers = "Confirmation #: ";
-            confirmation_numbers +=  result['confirmation'];
+
+            var confirmation_numbers =  result['confirmation'];
             $('#return_book_button_btn').show();
-
-
+            $('#outbound_results_row').show();
+            $('#return_part').show();
         }
         else {
           var confirmation_numbers = result['message'];
@@ -130,9 +131,8 @@
         console.log(result);
         $('#return_book_button_btn').hide();
         if (result['booked']) {
-            var confirmation_numbers = "Confirmation #: ";
-            confirmation_numbers +=  result['confirmation'];
-
+            var confirmation_numbers =  result['confirmation'];
+            $('#return_results_row').show();
         }
         else {
           var confirmation_numbers = result['message'];

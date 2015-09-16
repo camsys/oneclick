@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  confirmation_capped: "Confirmation"
   book_outbound_trip: "Book outbound trip"
   book_return_trip: "Book return trip"
   user_id: "User Id"

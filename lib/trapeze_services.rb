@@ -121,6 +121,22 @@ class TrapezeServices
     result.hash
   end
 
+  def cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
+    result = pass_cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
+
+    begin
+      cancellation_number = result[:envelope][:body][:pass_cancel_trip_response][:pass_cancel_trip_result][:cancellation_number]
+      unless cancellation_number.nil?
+        return true
+      else
+        return false
+      end
+    rescue
+      return false
+    end
+
+  end
+
   def pass_get_client_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
     message = {booking_id: booking_id}

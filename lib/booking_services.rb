@@ -54,6 +54,7 @@ class BookingServices
   end
 
   def cancel itinerary
+    #return true is successful, false if not successful
     case itinerary.service.booking_profile
       when AGENCY[:ecolane]
         eh = EcolaneHelpers.new
@@ -70,7 +71,8 @@ class BookingServices
         trapeze_profile = itinerary.service.trapeze_profile
 
         ts = TrapezeServices.new
-        ts.pass_cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, itinerary.booking_confirmation)
+        ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, itinerary.booking_confirmation)
+
     end
   end
 

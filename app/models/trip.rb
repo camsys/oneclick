@@ -291,10 +291,12 @@ class Trip < ActiveRecord::Base
   end
 
   # returns true is this trip can be edited or deleted. Note that this
-  # bascially comes down to wether the planned trip is in the future or not.
+  # bascially comes down to wether the planned trip is in the future or if it has been booked
   def can_modify
     if trip_parts.empty?
       return true
+    elsif is_booked?
+      return false
     else
       return in_the_future
     end
@@ -302,6 +304,11 @@ class Trip < ActiveRecord::Base
 
   def cant_modify_reason
     in_the_future ? "(can modify)" : "Can't modify this trip: either the depart or arrive time is in the past."
+
+    #DEREK
+    if is_booked?
+      return "Can't modify this trip because it has been scheduled for pick-up."
+    end
   end
 
   # Overrides the default to string method.
@@ -426,7 +433,10 @@ class Trip < ActiveRecord::Base
 
   def cancel
     self.selected_itineraries.each do |itinerary|
-      itinerary.cancel #if the trip is not booked, then canceling will mark it as unselected
+      result = itinerary.cancel #if the trip is not booked, then canceling will mark it as unselected
+      unless result
+        return false
+      end
     end
   end
 

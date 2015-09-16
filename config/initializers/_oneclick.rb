@@ -9,6 +9,8 @@ Oneclick::Application.configure do
   ENV['SESSION_TIMEOUT'] ||= '10'
   ENV['SESSION_ALERT_TIMEOUT'] ||= '30'
 
+  config.log_level = :info
+
   config.default_zoom = nil
   config.max_offset_from_desired = nil
   config.default_min_duration = 0 #minutes
@@ -210,6 +212,7 @@ Oneclick::Application.configure do
     config.kiosk_counties = ["Adams", "Cambria", "Cumberland", "Dauphin", "Franklin", "Lebanon", "York"]
 
   when 'jta'
+    config.allows_booking = true
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
     config.logo_text = "J T A logo - TransPortal"

@@ -255,8 +255,13 @@ class Itinerary < ActiveRecord::Base
     end
 
     bs = BookingServices.new
-    bs.cancel self
+    result = bs.cancel self
+    if result
+      self.booking_confirmation = nil
+      self.save
+    end
 
+    result
   end
 
   #Booking Information
@@ -315,6 +320,14 @@ class Itinerary < ActiveRecord::Base
       return nil
     end
 
+  end
+
+  def is_booked?
+    unless self.booking_confirmation.nil?
+      return true
+    else
+      return false
+    end
   end
 
   ##################################

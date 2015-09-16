@@ -47,10 +47,19 @@ class CharacteristicsController < TravelerAwareController
   end
 
   def new
+
+
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
     @trip_id = session[:current_trip_id] || params[:trip_id]
     @trip = Trip.find(@trip_id)
+
+    unless @trip.can_modify
+      please_create = "Please <a href='%s'>start</a> a new trip." % new_user_trip_path(@traveler) # TODO I18N
+      redirect_to(:back, :flash => { :alert => [@trip.cant_modify_reason, please_create].join(' ').html_safe })
+      return
+    end
+
     @total_steps = (@traveler.has_disability? ? 3 : 2)
 
     respond_to do |format|

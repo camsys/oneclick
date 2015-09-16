@@ -230,6 +230,7 @@ class EligibilityService
   end
 
   def find_bookable_itineraries(trip_part, itineraries)
+
     #see if the traveler is registered with any of these services
     traveler = trip_part.trip.user
     itineraries.each do |itinerary|

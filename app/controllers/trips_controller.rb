@@ -893,9 +893,14 @@ class TripsController < PlaceSearchingController
 
   def cancel
     trip = Trip.find(params[:id].to_i)
-    trip.cancel
+    result = trip.cancel
 
-    message = "Trip Succesfully Canceled"
+    #DEREK
+    if result
+      message = "Trip Succesfully Canceled"
+    else
+      message = "Unable to cancel trip"
+    end
 
     respond_to do |format|
       format.html { redirect_to(user_trips_path(@traveler), :flash => { :notice => message}) }
