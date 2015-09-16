@@ -1,5 +1,6 @@
 class BookingServices
 
+  require 'indirizzo'
 
   ##### Constants ####
   AGENCY = {
