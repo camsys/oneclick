@@ -1,0 +1,44 @@
+.modal-body
+  = simple_form_for Feedback.new, url: feedbacks_path, method: :post, remote: true, input_html: {multipart: true} do |f|
+    = f.hidden_field :user_id, value: current_user.id if current_user
+    = f.hidden_field :trip_id, value: nil
+    = f.input :feedback_type_id, collection: FeedbackType.all.map{|ft| [translate_helper(ft.name.to_sym), ft.id]}, label: translate_helper(:type_of_feedback), include_blank: true
+    #ratings
+    #issues
+    = f.input :comment, label: translate_helper(:comment)
+    = f.input :user_email, label: translate_helper(:email), input_html: {value: user_signed_in? ? current_user.email : ''}
+    .row.text-right{style: "margin-right:0;"}
+      = button_tag type: :submit, class: 'btn action-button controls', id: 'save_feedback' do
+        = translate_helper(:save)
+      %button.btn.action-button{data: {dismiss: 'modal'}}
+        = translate_helper(:cancel)
+
+:javascript
+  $(document).ready(function(){
+    $('.feedbackModal').on('loaded.bs.modal', function(){
+      
+      $(this).find('#feedback_feedback_type_id').on('change', function(){
+        tripId = $(this).parents('.modal').prop('id').match(/\d+/)[0];
+        $(this).parents('.modal').find('#feedback_trip_id').val(tripId);
+
+        if ( $(this).val().length > 0 ) {
+          $.ajax({
+            url: '/feedbacks/get_ratings_and_issues?tripId=' + tripId,
+            type: 'GET',
+            dataType: 'script',
+            data: { feedback_type: $(this).val() },
+            success: function() { $('.feedbackModal label[for*=value_0]').hide(); }
+          });
+        } else {
+          $('.feedbackModal #ratings, .feedbackModal #issues').empty();
+        }
+      });
+    });
+  }).ajaxError(function(e, xhr, settings, err){
+    feedbackErrors = JSON.parse(xhr.responseText);
+    $.each(feedbackErrors, function(k,v){ 
+      $("div[class*=" + k + "]").addClass('has-error');
+      $(".feedbackModal [id$=" + k + "]").siblings('p').remove();
+      $(".feedbackModal [id$=" + k + "]").parent().append("<p>#{translate_helper(:presence_msg)}</p>");
+    });
+  });

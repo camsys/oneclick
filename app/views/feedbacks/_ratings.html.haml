@@ -1,0 +1,19 @@
+%label#ratings_label.string.optional= "#{translate_helper(:ratings)}: "
+.col-xs-12
+  - @ratings.each do |fb_type_rating|
+    = simple_fields_for :feedback_ratings_feedbacks, index: fb_type_rating.feedback_rating.name do |ratings_form|
+      .stars
+        = ratings_form.label translate_helper(fb_type_rating.feedback_rating.name.to_sym)
+        .align-left.clearfix
+          %span.pull-left
+            = ratings_form.collection_radio_buttons(:value, FeedbackRating.options, :first, :last, boolean_style: :inline, item_wrapper_tag: nil, checked: 0)
+          %a.clear= translate_helper(:clear)
+
+:javascript
+  $(document).ready(function(){
+    
+    $("a.clear").on("click", function() {
+      $(this).closest(".stars").find("input[id*=value_0]").prop("checked", true);
+    }); 
+  });
+

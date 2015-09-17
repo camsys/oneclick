@@ -26,6 +26,7 @@
         #messages
           = render 'shared/messages'
         = render partial: 'messages/show_message_modal', locals: {user_messages: @unread_messages}
+        = render partial: 'feedbacks/form'
         - unless browser.modern? # Webkit, Firefox 17+, IE 9+ and Opera 12+
           #browser_warning.modal.fade{"role" => "dialog", "data-back" => "static", "tabindex" => "-1", "aria-hidden" => "true"}
             .modal-dialog

@@ -56,13 +56,19 @@
         %td= translate_helper(trip.trip_purpose.name)
         - if Rating.feedback_on?
           %td.nowrap{id: "#{tripID}Rating"}
-            = trip.rating_in_stars
+            - trip_feedback = Feedback.where(trip_id: trip.id)
+            - if !trip_feedback.empty?
+              - ratings = trip_feedback.map { |f| f.average_rating }.reject { |f| [-1,nil,''].include?(f) }
+              - trip_rating = ratings.empty? ? 0 : (ratings.reduce(:+) / ratings.count)
+              = trip_feedback.last.to_stars(trip_rating, 1)
+            - else
+              = translate_helper(:n_a).upcase
           %td.center.nowrap
             - if can? :create, trip.ratings.build
               - if (not trip.in_the_future and can? :create, trip.ratings.build) or Rails.env.development?
                 - rateable_trip_ids << trip.id
                 - modal_name = "##{tripID}RatingModal"
-                %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_trip_rating_path(trip)}}
+                %button.btn.btn-default.action-button{data: {toggle: 'modal', target: modal_name, remote: new_feedback_path}}
                   = translate_helper(:feedback)
         -if Oneclick::Application.config.allows_booking
           %td.center
@@ -120,7 +126,7 @@
           = link_to plan_user_trip_path(traveler, trip) do
             =translate_helper(:details)
 - rateable_trip_ids.each do |rateable_trip_id|
-  = render partial: 'trips/trip_rating', locals: {id: rateable_trip_id}
+  = render partial: 'feedbacks/stripped_modal', locals: {id: rateable_trip_id}
 
 .row
   .col-sm-6

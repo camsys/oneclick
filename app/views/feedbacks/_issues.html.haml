@@ -1,0 +1,5 @@
+%label#issues_label.string.optional= "#{translate_helper(:issues)}: "
+.col-xs-12
+  - @issues.each do |fb_type_issue|
+    = simple_fields_for :feedback_issues_feedbacks, index: fb_type_issue.feedback_issue.name do |issues_form|  
+      = issues_form.input :value, as: :boolean, label: false, inline_label: translate_helper(fb_type_issue.feedback_issue.name.to_sym)
