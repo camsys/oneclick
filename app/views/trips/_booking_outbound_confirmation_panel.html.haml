@@ -64,8 +64,16 @@
         console.log(result);
         if (result['booked']) {
             var confirmation_number =  result['confirmation'];
-            if('#{@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?}'){
-              booking_state = 'associating_return';
+            console.log('#{@trip.selected_itineraries.count}');
+            console.log('#{@trip.return_part.service_is_bookable?}');
+
+            if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
+              if('#{@trip.return_part.is_associated?}'){
+                booking_state = 'confirming_return';
+              }
+              else{
+                booking_state = 'associating_return';
+              }
             }
             else{
               booking_state = 'showing_results';

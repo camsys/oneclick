@@ -2,7 +2,7 @@
 // Set the initial state of the dialog
 -if @trip.outbound_part.service_is_bookable? and not @trip.outbound_part.is_associated?
   -initial_state = 'associating_outbound'
--elsif @trip.outbound_part.is_bookable?
+-elsif @trip.outbound_part.service_is_bookable?
   -initial_state = 'confirming_outbound'
 -elsif @trip.return_part.service_is_bookable? and not @trip.return_part.is_associated?
   -initial_state = 'associating_return'
@@ -58,5 +58,6 @@
 
   $(document).ready(function(){
     booking_state = "#{initial_state}";
+    console.log(booking_state);
     update_dialog();
   });

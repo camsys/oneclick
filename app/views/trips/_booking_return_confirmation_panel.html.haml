@@ -45,8 +45,12 @@
 
 :javascript
 
+  $('#return_book_button_btn').unbind('click');
   $('#return_book_button_btn').on('click', function(event) {
+
     event.stopPropagation();
+    event.stopImmediatePropagation();
+    event.preventDefault();
     var text = "#{translate_helper(:please_wait)}" + "..."
     $('#return_book_button_btn').text(text);
     $('#return_book_button_btn').addClass('disabled');

@@ -17,9 +17,9 @@
         =""
 
     //confirmation post-booking
-    %div{id: 'confirmation_dialog'}
+    %div
       -@trip.selected_itineraries.each do |itinerary|
-        -if itinerary.is_bookable?
+        -if itinerary.service_is_bookable?
           .panel.panel-default
             .panel-heading
               -if itinerary.trip_part.is_return_trip?
