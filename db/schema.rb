@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150717141712) do
+ActiveRecord::Schema.define(version: 20150909142700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,58 @@ ActiveRecord::Schema.define(version: 20150717141712) do
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
 
+  create_table "feedback_issues", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_issues_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",  null: false
+    t.integer "feedback_issue_id", null: false
+  end
+
+  create_table "feedback_issues_feedbacks", force: true do |t|
+    t.integer "feedback_id",       null: false
+    t.integer "feedback_issue_id", null: false
+    t.boolean "value"
+  end
+
+  create_table "feedback_ratings", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_ratings_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",   null: false
+    t.integer "feedback_rating_id", null: false
+  end
+
+  create_table "feedback_ratings_feedbacks", force: true do |t|
+    t.integer "feedback_id",        null: false
+    t.integer "feedback_rating_id", null: false
+    t.integer "value"
+  end
+
+  create_table "feedback_statuses", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_types", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedbacks", force: true do |t|
+    t.string   "user_email"
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.integer  "feedback_type_id"
+    t.integer  "feedback_rating_id"
+    t.integer  "feedback_issue_id"
+    t.integer  "feedback_status_id"
+    t.text     "comment"
+    t.float    "average_rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "flat_fares", force: true do |t|
     t.float    "one_way_rate"
     t.float    "round_trip_rate"
@@ -211,10 +263,6 @@ ActiveRecord::Schema.define(version: 20150717141712) do
     t.boolean  "too_early",                                         default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
-    t.boolean  "assistant"
-    t.integer  "companions"
-    t.integer  "children"
-    t.integer  "other_passengers"
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
@@ -583,8 +631,8 @@ ActiveRecord::Schema.define(version: 20150717141712) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.boolean  "use_gtfs_colors"
     t.string   "disabled_comment"
+    t.boolean  "use_gtfs_colors"
     t.string   "fare_user"
     t.string   "booking_system_id"
     t.string   "booking_token"

@@ -524,4 +524,91 @@ end
     end
   end
 
+  desc "Add feedback types/ratings/issues"
+  task :add_feedback_types => :environment do
+    feedback_types = [
+      "application",
+      "unmet_need",
+      "trip"
+    ]
+    feedback_types.each { |name| FeedbackType.where(name: name).first_or_create }
+
+    feedback_ratings = [
+      "color_scheme",
+      "ease_of_use",
+      "quality_of_services",
+      "number_of_services",
+      "cleanliness",
+      "courtesy",
+      "safety",
+      "timeliness"
+    ]
+    feedback_ratings.each { |name| FeedbackRating.where(name: name).first_or_create }
+
+    feedback_issues = [
+      "invalid_data",
+      "confusing_info",
+      "base_fare",
+      "number_of_transfers",
+      "travel_time",
+      "walking_distance",
+      "incorrect_info",
+      "not_enough_options"
+    ]
+    feedback_issues.each { |name| FeedbackIssue.where(name: name).first_or_create }
+
+    type1 = FeedbackType.find_by(name: "application")
+    type2 = FeedbackType.find_by(name: "unmet_need")
+    type3 = FeedbackType.find_by(name: "trip")
+
+    FeedbackRatingsFeedbackType.where(feedback_type: type1, feedback_rating: FeedbackRating.find(1)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type1, feedback_rating: FeedbackRating.find(2)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type2, feedback_rating: FeedbackRating.find(3)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type2, feedback_rating: FeedbackRating.find(4)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(5)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(6)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(7)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(8)).first_or_create
+
+    FeedbackIssuesFeedbackType.where(feedback_type: type1, feedback_issue: FeedbackIssue.find(1)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type1, feedback_issue: FeedbackIssue.find(2)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(3)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(4)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(5)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(6)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type3, feedback_issue: FeedbackIssue.find(7)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type3, feedback_issue: FeedbackIssue.find(8)).first_or_create
+  end
+
+  desc "Transfer old Ratings into new Feedback"
+  task change_ratings_to_feedback: :environment do
+    Rating.all.each do |rating|
+      unless ["Agency", "Service", "Provider"].include?(rating.rateable_type)
+
+        type = rating.rateable_type == "Trip" ? FeedbackType.find_by(name: "trip") : FeedbackType.find_by(name: "application")
+        status = FeedbackStatus.where(name: rating.status).first_or_create
+
+        feedback_params = {
+          user_id: rating.user_id,
+          user_email: rating.user.email,
+          feedback_type_id: type.id,
+          feedback_status_id: status.id,
+          trip_id: (rating.rateable_id if type.name == "trip"),
+          comment: rating.comments,
+          average_rating: rating.value,
+          created_at: rating.created_at,
+          updated_at: rating.updated_at
+        }
+        feedback = Feedback.where(feedback_params).first_or_create
+
+        FeedbackRatingsFeedbackType.where(feedback_type: type).each do |rating_type|
+          feedback.feedback_ratings_feedbacks << FeedbackRatingsFeedback.where(feedback_id: feedback.id, feedback_rating_id: rating_type.feedback_rating_id, value: rating.value).first_or_create
+        end
+        FeedbackIssuesFeedbackType.where(feedback_type: type).each do |issue_type|
+          feedback.feedback_issues_feedbacks << FeedbackIssuesFeedback.where(feedback_id: feedback.id, feedback_issue_id: issue_type.feedback_issue_id, value: false).first_or_create
+        end
+      end
+    end
+  end
+
 end

@@ -10,9 +10,7 @@
             %i.fa.fa-thumbs-up
             %i.fa.fa-thumbs-down.fa-flip-horizontal
             = translate_helper(:feedback)
-      - else
-        = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;", tabindex: "7" do
-          = translate_helper(:feedback)
+
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
         =translate_helper(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
@@ -50,9 +48,7 @@
             %i.fa.fa-thumbs-up
             %i.fa.fa-thumbs-down.fa-flip-horizontal
             = translate_helper(:feedback)
-      - else
-        = link_to new_rating_from_email_user_trip_path(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false), class: "btn action-button", style: "margin-right:5px;" do
-          = translate_helper(:feedback)
+
       = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
         =translate_helper(:next)
   .col-sm-12

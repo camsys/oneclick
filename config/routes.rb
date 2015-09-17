@@ -392,6 +392,12 @@ Oneclick::Application.routes.draw do
 
     resources :satisfaction_surveys
 
+    resources :feedbacks do
+      collection do
+        get 'get_ratings_and_issues'
+      end
+    end
+
     resources :trips do
       member do
         get 'itinerary_map'
