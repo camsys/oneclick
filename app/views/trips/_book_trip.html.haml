@@ -1,10 +1,10 @@
 
 // Set the initial state of the dialog
--if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_associated?
+-if @trip.outbound_part.service_is_bookable? and not @trip.outbound_part.is_associated?
   -initial_state = 'associating_outbound'
 -elsif @trip.outbound_part.is_bookable?
   -initial_state = 'confirming_outbound'
--elsif not @trip.return_part.associated?
+-elsif @trip.return_part.service_is_bookable? and not @trip.return_part.is_associated?
   -initial_state = 'associating_return'
 -else
   -initial_state = 'confirming_return'
@@ -25,8 +25,15 @@
 :javascript
   var booking_state;
 
-  function update_dialog(){
+  function update_dialog(booking_message){
     $('.booking-dialog').hide();
+
+    if(booking_message == null){
+      $('.booking_message').text('');
+     }
+     else{
+      $('.booking_message').text(booking_message);
+     }
 
     switch(booking_state){
       case 'associating_outbound':
@@ -45,6 +52,8 @@
         $('#booking_results_dialog').show();
         break;
     }
+
+
   }
 
   $(document).ready(function(){

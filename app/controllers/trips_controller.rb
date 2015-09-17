@@ -177,16 +177,18 @@ class TripsController < PlaceSearchingController
       @is_review = false
       @itineraries = Itinerary.where('id in (' + params[:itinids] + ')')
       @trip.itineraries.selected.each do |itin|
-        if itin.is_bookable?
-          user_service = UserService.where(service: itin.service, user_profile: @traveler.user_profile).first_or_initialize
-          @user_services[itin.id] = user_service
-        end
         itin.selected = false
         itin.save
       end
 
       #Mark these itineraries as selected
       @itineraries.each do |itinerary|
+
+        if itinerary.service_is_bookable?
+          user_service = UserService.where(service: itinerary.service, user_profile: @traveler.user_profile).first_or_initialize
+          @user_services[itinerary.id] = user_service
+        end
+
         itinerary.selected = true
         itinerary.save
       end

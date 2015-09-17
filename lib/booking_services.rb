@@ -10,6 +10,10 @@ class BookingServices
 
   def book itinerary
 
+    if itinerary.is_booked?
+      return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: "This itinerary is already booked."}
+    end
+
     case itinerary.service.booking_profile
 
       when AGENCY[:ecolane]

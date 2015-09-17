@@ -16,7 +16,7 @@
 
   .modal-body
     .row
-      .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+      .col-sm-12.text-center.booking_message{:style => 'font-weight:bold;'}
         =""
 
     // Outbound Booking Details
@@ -45,12 +45,16 @@
 
 :javascript
 
+  $('#outbound_book_button_btn').unbind('click');
   $('#outbound_book_button_btn').on('click', function(event) {
 
     event.stopPropagation();
+    event.stopImmediatePropagation();
+    event.preventDefault();
     var text = "#{translate_helper(:please_wait)}" + "..."
     $('#outbound_book_button_btn').text(text);
     $('#outbound_book_button_btn').addClass('disabled');
+
 
     $.ajax({
       url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.outbound_part.selected_itinerary.id}" + "/book",
@@ -60,22 +64,26 @@
         console.log(result);
         if (result['booked']) {
             var confirmation_number =  result['confirmation'];
-            booking_state = 'confirming_return';
+            if('#{@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?}'){
+              booking_state = 'associating_return';
+            }
+            else{
+              booking_state = 'showing_results';
+            }
+
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(confirmation_number);
         }
         else {
           var confirmation_numbers = "";
           var confirmation_message = "#{translate_helper(:booking_failure_message)}"
-          $('#booking_message').html(confirmation_message);
+          $('.booking_message').html(confirmation_message);
         }
-
-
       },
       error: function(){
 
         var confirmation_message = "#{translate_helper(:booking_failure_message)}"
-        $('#booking_message').html(confirmation_message);
+        $('.booking_message').html(confirmation_message);
       }
 
     })

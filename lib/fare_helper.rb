@@ -7,10 +7,10 @@ class FareHelper
     service = Service.find(itinerary['service_id'])
     up = UserService.where(user_profile: itinerary.trip_part.trip.user.user_profile, service: itinerary.service)
 
-    if up.count > 0
+    if up.count > 0 and Oneclick::Application.config.get_fares_from_ecolane
         Rails.logger.info("Getting fare from Ecolane")
       return query_fare(itinerary)
-    elsif not service.fare_user.nil?
+    elsif not service.fare_user.nil? and Oneclick::Application.config.get_fares_from_ecolane
       Rails.logger.info("Getting fare from Ecolane for guest user.")
       return query_guest_fare(itinerary)
     else

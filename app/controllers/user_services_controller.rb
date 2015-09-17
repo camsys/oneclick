@@ -7,9 +7,10 @@ class UserServicesController < ApplicationController
     @traveler = User.find(params['user_service']['user_id'].to_i)
 
     result = service.associate_user(@traveler, external_client_id, external_client_password)
+    message = (result ? "" : "Incorrect username or password")
 
     respond_to do |format|
-      format.json { render json: {associated: result} }
+      format.json { render json: {associated: result, message: message} }
     end
   end
 end

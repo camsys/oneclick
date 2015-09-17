@@ -42,8 +42,19 @@ class TripPart < ActiveRecord::Base
     unless selected?
       return false
     end
-
     return selected_itinerary.is_bookable?
+  end
+
+  def service_is_bookable?
+    unless selected?
+      return false
+    end
+
+    if self.selected_itinerary.service.nil?
+      return false
+    end
+
+    return self.selected_itinerary.service.is_bookable?
 
   end
 

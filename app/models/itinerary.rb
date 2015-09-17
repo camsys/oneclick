@@ -330,6 +330,13 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  def service_is_bookable?
+    if self.service.nil?
+      return false
+    end
+    self.service.is_bookable?
+  end
+
   ##################################
 
   protected

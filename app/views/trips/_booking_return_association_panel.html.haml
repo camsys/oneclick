@@ -3,8 +3,9 @@
 
     // The Buttons
     .pull-right
-      %button.btn.action-button{id: 'return_associate_button_btn'}
-        Associate
+      %button.btn.action-button{id: 'return_associate_button_btn', type: 'button'}
+        -return_associate_button_text = "Associate"
+        =return_associate_button_text
 
       = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
         = translate_helper(:close)
@@ -17,10 +18,48 @@
 
     .modal-body
       .row
-        .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+        .col-sm-12.booking_message.text-center{:style => 'font-weight:bold;'}
           =""
 
-      //associate with outbound service
+      //associate with return service
       .row
         %div{id: 'return_association_part'}
-          //= render partial: 'booking_association', locals: {itinerary: @trip.outbound_part.selected_itinerary}
+          -itinerary = @trip.return_part.selected_itinerary
+          =simple_form_for @user_services[itinerary.id], :remote => true, :html => {id: 'return_association_form'}, :url => user_user_services_path(@traveler), :method => :post  do |f|
+            .row
+              %div.col-sm-12
+                = f.input :external_client_id, label: translate_helper(:client_id), input_html: { value: "" }
+                = f.input :service_id, :as => :hidden, input_html: {value: @user_services[itinerary.id].service.id}
+                = f.input :user_id, :as => :hidden, input_html: {value: @traveler.id}
+            .row
+              %div.col-sm-12
+                -if itinerary.service.booking_profile == BookingServices::AGENCY[:ecolane]
+                  =f.input :external_client_dob, label: translate_helper(:dob), placeholder: "mm/dd/yyyy"
+                -if itinerary.service.booking_profile ==  BookingServices::AGENCY[:trapeze]
+                  =f.input :external_client_password, label: translate_helper(:password)
+
+
+:javascript
+  $('#return_associate_button_btn').on('click', function(event) {
+   event.stopPropagation();
+   event.stopImmediatePropagation();
+   var text = "#{translate_helper(:please_wait)}" + "..."
+   $('#return_associate_button_btn').text(text);
+   $('#return_associate_button_btn').addClass('disabled');
+   $('#return_association_form').submit();
+   event.stopPropagation();
+  })
+
+  $('#return_association_form').on('ajax:success', function(event, data, status, xhr) {
+    console.log(data);
+    if(data['associated'] == true){
+      booking_state = 'confirming_return';
+      update_dialog();
+    }
+    else{
+      var message = data['message'];
+      $('.booking_message').text(message);
+      $('#return_associate_button_btn').text('#{return_associate_button_text}');
+      $('#return_associate_button_btn').removeClass('disabled');
+    }
+  });

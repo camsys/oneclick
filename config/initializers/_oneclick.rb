@@ -79,6 +79,7 @@ Oneclick::Application.configure do
 
   # the ability to see the legend on the review page
   config.show_legend = true
+  config.get_fares_from_ecolane = false
 
 
   case ENV['BRAND'] || 'arc'
@@ -195,6 +196,7 @@ Oneclick::Application.configure do
     config.default_county = 'York'
     config.state = 'PA'
     config.enable_satisfaction_surveys = false
+    config.get_fares_from_ecolane = true
 
     config.max_walk_seconds = 3600
 
