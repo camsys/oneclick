@@ -102,3 +102,14 @@
     });
   });
 
+- if params[:from_email]
+  :javascript
+    $(document).ready(function(){
+      $('#feedbackModal').on('show.bs.modal', function(){
+        feedbackType = "#{FeedbackType.find_by(name: 'trip').id}";
+        $(this).find('#feedback_trip_id').val("#{params[:id]}");
+        $(this).find('#feedback_feedback_type_id').val(feedbackType).trigger('change');
+      });
+      $('#feedbackModal').modal('show');
+    });
+

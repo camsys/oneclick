@@ -82,9 +82,9 @@ class ApplicationController < ActionController::Base
     trip = FeedbackType.find_by(name: 'trip')
     unmet_need = FeedbackType.find_by(name: 'unmet_need')
 
-    app_feedback = [TranslationEngine.translate_text(app.name.to_sym), app.id]
-    trip_feedback = [TranslationEngine.translate_text(trip.name.to_sym), trip.id]
-    unmet_need_feedback = [TranslationEngine.translate_text(unmet_need.name.to_sym), unmet_need.id]
+    app_feedback = [TranslationEngine.translate_text(app.name.to_sym), app.id] if app
+    trip_feedback = [TranslationEngine.translate_text(trip.name.to_sym), trip.id] if trip
+    unmet_need_feedback = [TranslationEngine.translate_text(unmet_need.name.to_sym), unmet_need.id] if unmet_need
 
     @feedback_types << app_feedback
 

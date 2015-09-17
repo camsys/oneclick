@@ -1,6 +1,20 @@
 class FeedbacksController < ApplicationController
-  before_filter :set_feedback, only: [:edit, :update]
-  
+  before_filter :set_feedback, only: [:edit, :update, :context]
+
+  def index
+    q_param = params[:q]
+    page = params[:page]
+    @per_page = params[:per_page] || Kaminari.config.default_per_page
+
+    @q = Feedback.ransack q_param
+    @q.sorts = "created_at desc" if @q.sorts.empty?
+    @params = {q: q_param}
+
+    total_ratings = @q.result(:district => true).includes(:user).where(feedback_status_id: FeedbackStatus.find_by(name: 'pending').id)
+    # only render current page
+    @feedbacks = total_ratings.page(page).per(@per_page)
+  end
+
   def new
     @feedback = Feedback.new
     respond_to do |format|
@@ -26,9 +40,10 @@ class FeedbacksController < ApplicationController
               issue_to_update = FeedbackIssuesFeedback.where(feedback: @feedback, feedback_issue: FeedbackIssue.find_by(name: k)).first_or_create
               issue_to_update.update_attribute('value', v[:value].to_i)
             end            
-            ratings = @feedback.ratings.map { |f| f.value }.reject { |f| [-1,nil,''].include?(f) }
+            ratings = @feedback.ratings.map { |f| f.value }.reject { |f| [0,nil,''].include?(f) }
             avg = ratings.empty? ? 0 : (ratings.reduce(:+) / ratings.count)
             @feedback.update_attribute('average_rating', avg)
+            @feedback.update_attribute('feedback_status_id', FeedbackStatus.find_by(name: 'pending').id)
 
             format.json { render json: @feedback }
           else
@@ -49,9 +64,10 @@ class FeedbacksController < ApplicationController
           params[:feedback_issues_feedbacks].each do |k,v|
             @feedback.feedback_issues_feedbacks << FeedbackIssuesFeedback.create(feedback: @feedback, feedback_issue: FeedbackIssue.find_by(name: k), value: v[:value].to_i)
           end
-          ratings = @feedback.ratings.map { |f| f.value }.reject { |f| [-1,nil,''].include?(f) }
+          ratings = @feedback.ratings.map { |f| f.value }.reject { |f| [0,nil,''].include?(f) }
           avg = ratings.empty? ? 0 : (ratings.reduce(:+) / ratings.count)
           @feedback.update_attribute('average_rating', avg)
+          @feedback.update_attribute('feedback_status_id', FeedbackStatus.find_by(name: 'pending').id)
 
           format.json { render json: @feedback }
         else
@@ -60,6 +76,12 @@ class FeedbacksController < ApplicationController
       end
     end
 
+  end
+
+  def context
+    respond_to do |format|
+      format.js {render partial: "context", :formats => [:html], locals: {feedback: @feedback} }
+    end
   end
 
   def edit
@@ -72,6 +94,19 @@ class FeedbacksController < ApplicationController
     @feedback_type = FeedbackType.find(params[:feedback_type])
     @ratings = FeedbackRatingsFeedbackType.where(feedback_type: @feedback_type)
     @issues = FeedbackIssuesFeedbackType.where(feedback_type: @feedback_type)
+  end
+
+  def approve
+    parsed_feedback = Rack::Utils.parse_query(params[:approve]) # data serialized for AJAX call.  Must parse from query-string
+    parsed_feedback.each do |k,v|
+      Feedback.find(k).update_attributes(feedback_status: FeedbackStatus.find_by(name: v))
+    end
+
+    flash[:notice] = TranslationEngine.translate_text(:rating_update) if parsed_feedback.count != 0
+    respond_to do |format|
+      format.js {render nothing: true}
+      format.html {redirect_to action: :index}
+    end
   end
 
   private

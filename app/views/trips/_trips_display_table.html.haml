@@ -58,7 +58,7 @@
           %td.nowrap{id: "#{tripID}Rating"}
             - trip_feedback = Feedback.where(trip_id: trip.id)
             - if !trip_feedback.empty?
-              - ratings = trip_feedback.map { |f| f.average_rating }.reject { |f| [-1,nil,''].include?(f) }
+              - ratings = trip_feedback.map { |f| f.average_rating }.reject { |f| [0,nil,''].include?(f) }
               - trip_rating = ratings.empty? ? 0 : (ratings.reduce(:+) / ratings.count)
               = trip_feedback.last.to_stars(trip_rating, 1)
             - else

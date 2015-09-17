@@ -14,7 +14,7 @@
         .panel-body
           = f.hidden_field :redirect_to, value: params[:redirect_to]
           - unless Rails.env.development? and ENV['DROPDOWN_USERS']
-            = f.input :email, :required => true, :label => translate_helper(:email)
+            = f.input :email, :required => true, :label => translate_helper(:email), input_html: {id: 'sign_in_email'}
             = f.input :password, :required => true, :label => translate_helper(:password)
           - else
             = f.input :email, :required => true, :label => translate_helper(:email), collection: User.any_role.order(:email).pluck(:email)

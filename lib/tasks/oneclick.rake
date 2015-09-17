@@ -533,6 +533,13 @@ end
     ]
     feedback_types.each { |name| FeedbackType.where(name: name).first_or_create }
 
+    feedback_statuses = [
+      "pending",
+      "approved",
+      "rejected"
+    ]
+    feedback_statuses.each { |name| FeedbackStatus.where(name: name).first_or_create }    
+
     feedback_ratings = [
       "color_scheme",
       "ease_of_use",
@@ -602,7 +609,7 @@ end
         feedback = Feedback.where(feedback_params).first_or_create
 
         FeedbackRatingsFeedbackType.where(feedback_type: type).each do |rating_type|
-          feedback.feedback_ratings_feedbacks << FeedbackRatingsFeedback.where(feedback_id: feedback.id, feedback_rating_id: rating_type.feedback_rating_id, value: rating.value).first_or_create
+          feedback.feedback_ratings_feedbacks << FeedbackRatingsFeedback.where(feedback_id: feedback.id, feedback_rating_id: rating_type.feedback_rating_id, value: (rating.value == -1 ? 0 : rating.value)).first_or_create
         end
         FeedbackIssuesFeedbackType.where(feedback_type: type).each do |issue_type|
           feedback.feedback_issues_feedbacks << FeedbackIssuesFeedback.where(feedback_id: feedback.id, feedback_issue_id: issue_type.feedback_issue_id, value: false).first_or_create

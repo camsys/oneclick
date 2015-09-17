@@ -6,16 +6,10 @@
 =translate_helper(:follow_up_email_template).sub('%{trip_created_date}', format_date(@trip.created_at.in_time_zone)).sub('%{product_name}', product_name).sub('%{trip_date}', format_date(@trip.trip_parts.first.trip_time.in_time_zone)).sub('%{trip_from_address}', @trip.from_place.name).sub('%{trip_to_address}', @trip.to_place.name)
 %br
 %br
-=translate_helper(:please_click)
-=link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: true) do
-  =translate_helper(:here)
-=translate_helper(:success_feedback_link)
-%br
-=translate_helper(:no_trip_taken_feedback_link)
-=translate_helper(:please_click)
-=link_to new_rating_from_email_user_trip_url(user_id: @trip.user_id, id: @trip.id, :hash => @trip.md5_hash, taken: false) do
-  =translate_helper(:here)
-
+= translate_helper(:please_click)
+= link_to plan_user_trip_url(I18n.locale, @trip.user_id, @trip.id, from_email: true) do
+  = translate_helper(:here)
+= translate_helper(:success_feedback_link)
 %br
 %br
 = translate_helper(:thanks_for_feedback)

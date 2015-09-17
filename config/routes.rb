@@ -395,6 +395,8 @@ Oneclick::Application.routes.draw do
     resources :feedbacks do
       collection do
         get 'get_ratings_and_issues'
+        patch 'approve'
+        get "context"
       end
     end
 

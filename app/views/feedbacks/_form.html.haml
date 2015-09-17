@@ -5,7 +5,8 @@
       .modal-body
         = simple_form_for Feedback.new, url: feedbacks_path, method: :post, remote: true, input_html: {multipart: true} do |f|
           = f.hidden_field :user_id, value: current_user.id if current_user
-          = f.input :feedback_type, collection: @feedback_types, label: translate_helper(:type_of_feedback), include_blank: true
+          = f.hidden_field :trip_id, value: nil
+          = f.input :feedback_type_id, collection: @feedback_types, label: translate_helper(:type_of_feedback), include_blank: true
           #ratings
           #issues
           = f.input :comment, label: translate_helper(:comment)
@@ -18,13 +19,13 @@
 
 :javascript
   $(document).ready(function(){
-    $('#feedback_feedback_type').on('change', function(){
+    $('#feedback_feedback_type_id').on('change', function(){
       if ( $(this).val().length > 0 ) {
         $.ajax({
           url: '/feedbacks/get_ratings_and_issues',
           type: 'GET',
           dataType: 'script',
-          data: { feedback_type: $('#feedback_feedback_type option:selected').val() },
+          data: { feedback_type: $('#feedback_feedback_type_id option:selected').val() },
           success: function() { $('label[for*=value_0]').hide(); }
         });
       } else {
@@ -40,9 +41,7 @@
       }, 2000);
     }
   }).ajaxError(function(e, xhr, settings, err){
-    
     console.log([e, xhr, settings, err]);
-
     feedbackErrors = JSON.parse(xhr.responseText);
     $.each(feedbackErrors, function(k,v){
       $("div[class*=" + k + "]").addClass('has-error');
