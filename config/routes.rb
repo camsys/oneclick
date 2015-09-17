@@ -30,6 +30,7 @@ Oneclick::Application.routes.draw do
         get   'profile'
         post  'initial_booking'
         post  'add_booking_service'
+        post  'associate_service'
         # post  'update'
         get   '/assist/:buddy_id', to: 'users#assist', as: :assist
       end
@@ -156,6 +157,7 @@ Oneclick::Application.routes.draw do
       resources :user_services do
         member do
           post 'update'
+          post 'create'
         end
       end
     end

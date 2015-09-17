@@ -191,6 +191,10 @@ class User < ActiveRecord::Base
     false
   end
 
+  def associate_service(service, external_user_id, external_user_password)
+    return service.associate_user(self, external_user_id, external_user_password)
+  end
+
   def is_staff? #If this user has any role beyond traveler, then return true
     if self.roles.where.not(name: ["registered_traveler", "anonymous_traveler"]).count > 0
       return true

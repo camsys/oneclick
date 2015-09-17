@@ -55,6 +55,23 @@ class TripPart < ActiveRecord::Base
     end
   end
 
+  # return true if this trip_part's selected service is associated with it's user
+  def is_associated?
+    itinerary = self.selected_itinerary
+    if itinerary.nil?
+      return false
+    end
+
+    service = itinerary.service
+    if service.nil?
+      return false
+    end
+
+    return service.is_associated_with_user? self.trip.user
+
+  end
+
+
   def has_selected?
     selected?
   end

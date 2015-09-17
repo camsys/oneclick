@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => :initial_booking
-  load_and_authorize_resource except: [:edit, :assist]
+  before_filter :authenticate_user!, :except => :associate_service
+  load_and_authorize_resource except: [:edit, :assist, :associate_service]
 
   def index
     authorize! :index, User, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
@@ -118,60 +118,6 @@ class UsersController < ApplicationController
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
   end
 
-
-  def initial_booking
-    #TODO: This is not DRY, It reuses a lot of what is in add_booking_service
-    get_traveler
-
-    eh = EcolaneHelpers.new
-    external_user_id = params['user_service_proxy']['external_user_id']
-    county = params['user_service_proxy']['county']
-    service = eh.county_to_service county
-    @errors = false
-
-    @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
-
-    #Check that the formatting is correct
-    begin
-      Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
-      dob = params['user_service_proxy']['dob']
-    rescue ArgumentError
-      @booking_proxy.errors.add(:dob, "Date needs to be in mm/dd/yyyy format.")
-      @errors = true
-    end
-
-    eh = EcolaneHelpers.new
-    #If the formatting is correct, check to see if this is a valid user
-    unless @errors
-      result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
-      unless result
-
-        @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
-        @errors = true
-      end
-    end
-
-    #If everything checks out, create a link between the OneClick user and the Booking Service
-    unless @errors
-      #Todo: This will need to be updated when more services are able to book.
-      if @traveler.is_visitor?
-        @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
-        sign_in @traveler, :bypass => true
-      end
-    end
-
-
-    #redirect_to new_user_trip_path(@traveler)
-    #return
-
-    @trip = Trip.last
-    respond_to do |format|
-      format.json {}
-      format.js { render "trips/update_initial_booking" }
-    end
-
-  end
-
   def add_booking_service
     get_traveler
     external_user_id = params['user_service_proxy']['external_user_id']
@@ -248,6 +194,27 @@ class UsersController < ApplicationController
       set_traveler_id params[:buddy_id]
       flash[:notice] = TranslationEngine.translate_text(:assisting_turned_on)
       redirect_to new_user_trip_path(params[:buddy_id])
+    end
+  end
+
+  def associate_service
+
+    Rails.logger.debug 'Are we in her eor what?'
+
+    service =  Service.find(params['service'].to_i)
+    external_user_id = params['external_user_id']
+    external_user_password = params['external_user_password']
+
+    result = service.associate_user(@traveler, external_user_id, '1234')
+
+
+    Rails.logger.info 'The result is'
+    Rails.logger.info result
+
+
+
+    respond_to do |format|
+      format.json { render json: {associated: result} }
     end
   end
 

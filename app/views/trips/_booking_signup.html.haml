@@ -1,9 +1,0 @@
-#bookingSignupModal.modal.fade.active.col-sm-12{"aria-describedby" => "Book your trip", :role => "dialog", :tabindex => "-1"}
-  = render 'booking_signup_body'
-
-:javascript
-  $(window).load(function(){
-      if("#{(not @traveler.can_book?) and @first_time}" == "true"){
-        $('#bookingSignupModal').modal('show');
-      }
-  });

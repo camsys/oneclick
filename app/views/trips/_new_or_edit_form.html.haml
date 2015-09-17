@@ -250,8 +250,7 @@
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
   - if is_splash_available
     = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
-  -if @show_booking
-    = render partial: 'booking_signup'
+
 :javascript
   $(function() {
     // initialize place picker

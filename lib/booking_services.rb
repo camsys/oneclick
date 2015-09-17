@@ -91,6 +91,23 @@ class BookingServices
           us.external_user_password = external_user_password
           us.save
         end
+        return result
+    end
+  end
+
+  def check_association(service, user)
+    user_service = UserService.find_by(service: service, user_profile: user.user_profile)
+    if user_service.nil?
+      return false
+    end
+
+    case service.booking_profile
+      when AGENCY[:ecolane]
+        return false
+      when AGENCY[:trapeze]
+        trapeze_profile = service.trapeze_profile
+        ts = TrapezeServices.new
+        return ts.pass_validate_client_password(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
     end
   end
 

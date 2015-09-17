@@ -523,6 +523,12 @@ class Service < ActiveRecord::Base
     result = bs.associate_user(self, user, external_user_id, external_user_password)
   end
 
+  def is_associated_with_user? user
+    #return false if the UserService is missing or is no longer valid
+    bs = BookingServices.new
+    bs.check_association(self, user)
+  end
+
   def is_bookable?
     unless self.booking_profile.nil?
       return true
