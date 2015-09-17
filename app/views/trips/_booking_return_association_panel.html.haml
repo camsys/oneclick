@@ -1,0 +1,26 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      %button.btn.action-button{id: 'return_associate_button_btn'}
+        Associate
+
+      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        =@trip.return_part.selected_itinerary.service.name + " Sign In"
+
+
+    .modal-body
+      .row
+        .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+          =""
+
+      //associate with outbound service
+      .row
+        %div{id: 'return_association_part'}
+          = render partial: 'booking_association', locals: {itinerary: @trip.outbound_part.selected_itinerary}

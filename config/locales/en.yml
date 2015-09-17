@@ -6,6 +6,7 @@
 en:
   book_your_outbound_trip: "Book Your Outbound Trip"
   book_your_return_trip: "Book Your Return Trip"
+  book_your_return_trip: "Book Your Return Trip"
   booking_failure_message: "Your trip could not be booked at this time."
   confirmation_capped: "Confirmation"
   book_outbound_trip: "Book Outbound Trip"

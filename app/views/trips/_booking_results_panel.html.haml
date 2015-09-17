@@ -1,0 +1,30 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        ="Booking Confirmation"
+
+  .modal-body
+    .row
+      .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+        =""
+
+    //confirmation post-booking
+    %div{id: 'confirmation_dialog'}
+      -@trip.selected_itineraries.each do |itinerary|
+        -if itinerary.is_bookable?
+          .panel.panel-default
+            .panel-heading
+              -if itinerary.trip_part.is_return_trip?
+                ="Your Return Trip"
+              -else
+                ="Your Outbound Trip"
+            .panel-body
+              = render partial: 'booked_itinerary_confirmation', locals: {itinerary: itinerary}

@@ -1,0 +1,81 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      %button.btn.action-button#return_book_button_btn
+        =translate_helper(:book)
+
+      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        = translate_helper(:book_your_return_trip)
+
+  .modal-body
+    .row
+      .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+        =""
+
+    // Return Booking Details
+    %div{id: 'return_part'}
+      .row
+        %label.col-sm-3.text-right
+          =translate_helper(:from) + ":"
+        .col-sm-9.text-left
+          =@trip.return_part.from_trip_place.name
+      .row
+        %label.col-sm-3.text-right
+          =translate_helper(:to) + ":"
+        .col-sm-9.text-left
+          =@trip.return_part.to_trip_place.name
+      .row
+        %label.col-sm-3.text-right
+          = @trip.return_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+        .col-sm-9.text-left
+          =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+
+      .row
+        %label.col-sm-3.text-right{id: 'return_results_row', hidden: true}
+          =translate_helper(:confirmation_capped) + ":"
+        .col-sm-9.text-left{id: 'return_booking_results'}
+          =@trip.return_part.selected_itinerary.booking_confirmation
+
+:javascript
+
+  $('#return_book_button_btn').on('click', function(event) {
+    event.stopPropagation();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#return_book_button_btn').text(text);
+    $('#return_book_button_btn').addClass('disabled');
+
+    $.ajax({
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.return_part.selected_itinerary.id}" + "/book",
+      data: {itin: "#{@trip.return_part.selected_itinerary.id}"},
+      method: 'POST',
+      success: function(result) {
+        console.log(result);
+        if (result['booked']) {
+            var confirmation_number =  result['confirmation'];
+            booking_state = 'showing_results';
+            update_dialog();
+            $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
+
+        }
+        else {
+          var confirmation_numbers = "";
+          var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+          $('#return_booking_results').html(confirmation_message);
+        }
+
+      },
+      error: function(){
+        var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        $('#return_booking_results').html(confirmation_message);
+      }
+
+    })
+
+  })

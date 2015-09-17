@@ -1,0 +1,219 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+
+      // control the buttons
+      .pull-right
+        -if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_associated?
+          %button.btn.action-button{id: 'outbound_associate_button_btn'}
+            Associate
+
+        -if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_booked?
+          %button.btn.action-button#outbound_book_button_btn
+            =translate_helper(:book)
+
+        -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable? and not @trip.return_part.is_booked?
+          %button.btn.action-button#return_book_button_btn
+            =translate_helper(:book)
+
+        = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+          = translate_helper(:close)
+
+      // control the title
+      .modal-title{:style => "text-align:left;"}
+        %strong{id: 'booking_title'}
+          -if true
+            =@trip.outbound_part.selected_itinerary.service.name + " Sign In"
+          -elsif @trip.is_booked?
+            = translate_helper(:trip_booked)
+          -else
+            = translate_helper(:book_your_outbound_trip)
+    .modal-body
+      .row
+        .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+          =""
+
+      //associate with outbound service
+      -if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_associated?
+        %div{id: 'outbound_association_part'}
+          = render partial: 'booking_association', locals: {itinerary: @trip.outbound_part.selected_itinerary}
+
+      //outbound trip pre-booking
+      -if @trip.outbound_part.is_bookable? and not @trip.outbound_part.is_booked?
+        %div{id: 'outbound_part', hidden: true}
+          .row
+            %label.col-sm-3.text-right
+              =translate_helper(:from) + ":"
+            .col-sm-9.text-left
+              =@trip.outbound_part.from_trip_place.name
+          .row
+            %label.col-sm-3.text-right
+              =translate_helper(:to) + ":"
+            .col-sm-9.text-left
+              =@trip.outbound_part.to_trip_place.name
+          .row
+            %label.col-sm-3.text-right
+              = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+            .col-sm-9.text-left
+              =@trip.outbound_part.trip_time.strftime("%b %e, %l:%M %p")
+
+          .row
+            %label.col-sm-3.text-right{id: 'outbound_results_row', hidden: true}
+              =translate_helper(:confirmation_capped) + ":"
+            .col-sm-9.text-left{id: 'outbound_booking_results'}
+              =@trip.return_part.selected_itinerary.booking_confirmation
+
+
+      //return trip pre-booking
+      -if @trip.trip_parts.count > 1 and @trip.return_part.is_bookable? and not @trip.return_part.is_booked?
+
+        %div{id: 'return_part', hidden: true}
+          .row
+            %label.col-sm-3.text-right
+              =translate_helper(:from) + ":"
+            .col-sm-9.text-left
+              =@trip.return_part.from_trip_place.name
+          .row
+            %label.col-sm-3.text-right
+              =translate_helper(:to) + ":"
+            .col-sm-9.text-left
+              =@trip.return_part.to_trip_place.name
+          .row
+            %label.col-sm-3.text-right
+              = @trip.outbound_part.is_depart ? translate_helper(:departing_at) + ":" : translate_helper(:arriving_by) + ":"
+            .col-sm-9.text-left
+              =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+
+
+      //confirmation post-booking
+      %div{id: 'confirmation_dialog', hidden: true}
+        -@trip.selected_itineraries.each do |itinerary|
+          -if itinerary.is_bookable?
+            .panel.panel-default
+              .panel-heading
+                -if itinerary.trip_part.is_return_trip?
+                  ="Your Return Trip"
+                -else
+                  ="Your Outbound Trip"
+              .panel-body
+                = render partial: 'booked_itinerary_confirmation', locals: {itinerary: itinerary}
+
+:javascript
+
+  //Magic
+  $('#outbound_book_button_btn').unbind('click');
+  $('#return_book_button_btn').unbind('click');
+  $('#outbound_associate_button_btn').unbind('click');
+
+  // handle outbound service association
+  $('#outbound_associate_button_btn').on('click', function(event) {
+    event.stopPropagation();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#outbound_associate_button_btn').text(text);
+    $('#outbound_associate_button_btn').addClass('disabled');
+    $("#outbound_association_form").submit();
+  })
+
+  //handle outbound trip actions
+  $('#outbound_book_button_btn').on('click', function(event) {
+
+    event.stopPropagation();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#outbound_book_button_btn').text(text);
+    $('#outbound_book_button_btn').addClass('disabled');
+
+    $.ajax({
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.outbound_part.selected_itinerary.id}" + "/book",
+      data: {itin: "#{@trip.outbound_part.selected_itinerary.id}"},
+      method: 'POST',
+      success: function(result) {
+        console.log(result);
+        $('#outbound_book_button_btn').hide();
+        if (result['booked']) {
+
+            var confirmation_number =  result['confirmation'];
+            $('#itinerary_confirmation_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(confirmation_number);
+            $('#return_book_button_btn').show();
+            $('#outbound_part').hide();
+            $('#return_part').show();
+            $('#booking_title').text("#{translate_helper(:book_your_return_trip)}");
+
+        }
+        else {
+          var confirmation_numbers = "";
+          var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        }
+
+
+      },
+      error: function(){
+
+        $('#outbound_book_button_btn').hide();
+        var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        $('#booking_message').html(confirmation_message);
+      }
+
+    })
+
+  })
+
+
+  //handle return trip actions
+  $('#return_book_button_btn').on('click', function(event) {
+    event.stopPropagation();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#return_book_button_btn').text(text);
+    $('#return_book_button_btn').addClass('disabled');
+
+    $.ajax({
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.return_part.selected_itinerary.id}" + "/book",
+      data: {itin: "#{@trip.return_part.selected_itinerary.id}"},
+      method: 'POST',
+      success: function(result) {
+        console.log(result);
+        $('#return_book_button_btn').hide();
+        if (result['booked']) {
+            var confirmation_number =  result['confirmation'];
+            $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}" ).text(confirmation_number);
+            $('#return_part').hide();
+            $('#confirmation_dialog').show();
+            $('#booking_title').text("#{translate_helper(:confirmation_capped)}");
+        }
+        else {
+          var confirmation_numbers = "";
+          var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        }
+
+      },
+      error: function(){
+
+        $('#return_book_button_btn').hide();
+        var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        $('#return_booking_results').html(confirmation_message)
+      }
+
+    })
+
+  })
+
+
+  //If this trip has already been booked, go ahead and show all the details
+  $(document).ready(function(){
+
+     if(true){
+       $('#outbound_book_button_btn').hide();
+     }
+
+     $('#return_book_button_btn').hide();
+
+     if ("#{@trip.is_booked?}" == 'true'){
+       $('#confirmation_dialgo').show();
+     }
+
+     $("#outbound_association_form").submit(function(e) {
+        e.preventDefault();
+        console.log('awww eya all up here yo!');
+
+     });
+
+  });

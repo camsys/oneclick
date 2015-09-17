@@ -1,0 +1,46 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      %button.btn.action-button{id: 'outbound_associate_button_btn'}
+        Associate
+
+      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        =@trip.outbound_part.selected_itinerary.service.name + " Sign In"
+
+
+    .modal-body
+      .row
+        .col-sm-12.text-center{id: 'booking_message', :style => 'font-weight:bold;'}
+          =""
+
+      //associate with outbound service
+      .row
+        %div{id: 'outbound_association_part'}
+          = render partial: 'booking_association', locals: {itinerary: @trip.outbound_part.selected_itinerary}
+
+:javascript
+  $('#outbound_associate_button_btn').on('click', function(event) {
+   event.stopPropagation();
+   var text = "#{translate_helper(:please_wait)}" + "..."
+   $('#outbound_associate_button_btn').text(text);
+   $('#outbound_associate_button_btn').addClass('disabled');
+   $("#outbound_association_form").submit();
+
+   //TODO Add AJAX HERE TO WAIT FOR A RESPONSE
+   //FOR NOW JUST MOVE ON
+   booking_state = 'confirming_outbound';
+   update_dialog();
+
+  })
+
+  $("#outbound_association_form").submit(function(e) {
+     e.preventDefault();
+     console.log('Submiting Outbound Association Form!');
+  });
