@@ -98,14 +98,23 @@ class TrapezeServices
     result.hash
   end
 
-  def pass_create_trip(endpoint, namespace, username, password, client_id, client_password, origin, destination, request_seconds_past_midnight, request_date, booking_purpose_id)
+  def pass_create_trip(endpoint, namespace, username, password, client_id, client_password, origin, destination, request_seconds_past_midnight, request_date, booking_purpose_id, is_depart)
 
     #hardcoded for now
     pu_address_hash = {address_mode: 'ZZ', street_num: origin[:street_num], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
-    pu_leg_hash = {req_time: request_seconds_past_midnight, request_address: pu_address_hash}
+    if is_depart
+      pu_leg_hash = {req_time: request_seconds_past_midnight, request_address: pu_address_hash}
+    else
+      pu_leg_hash = {request_address: pu_address_hash}
+    end
+
 
     do_address_hash = {address_mode: 'ZZ', street_num: destination[:street_num], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
-    do_leg_hash = {request_address: do_address_hash}
+    if is_depart
+      do_leg_hash = {request_address: do_address_hash}
+    else
+      do_leg_hash = {req_time: request_seconds_past_midnight, request_address: do_address_hash}
+    end
 
     trip_hash = {client_id: client_id.to_i, client_code: client_id, date: request_date, booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: booking_purpose_id, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
 

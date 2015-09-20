@@ -36,7 +36,7 @@ class BookingServices
 
 
         ts = TrapezeServices.new
-        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id)
+        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart)
         result = result.to_hash
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
