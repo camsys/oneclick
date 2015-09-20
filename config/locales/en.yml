@@ -4,6 +4,9 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  time_window_start: "Earliest Pickup Time"
+  time_window_end: "Latest Pickup Time"
+  estimated_pu_time: "Estimated Pickup Time"
   book_your_outbound_trip: "Book Your Outbound Trip"
   book_your_return_trip: "Book Your Return Trip"
   book_your_return_trip: "Book Your Return Trip"

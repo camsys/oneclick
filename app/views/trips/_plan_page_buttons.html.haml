@@ -1,5 +1,4 @@
 - ItineraryDecorator.decorate_collection(@itineraries.valid).each do |itinerary|
-  // #DEREK check on this logic for trips where the second itinerary is bookable but the first isn't
   - if itinerary.service and itinerary.service.is_bookable? and not itinerary.trip_part.trip.is_booked?
     = button_tag :type => 'button', :class => "btn action-button", "data-target" => "#bookingModal", "data-toggle" => "modal" do
       =translate_helper(:book)

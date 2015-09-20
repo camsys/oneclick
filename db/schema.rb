@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909142700) do
+ActiveRecord::Schema.define(version: 20150918203410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -238,29 +238,29 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.integer  "transfers"
     t.integer  "count"
     t.text     "legs"
-    t.decimal  "cost",                     precision: 10, scale: 2
-    t.boolean  "hidden",                                                            null: false
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.decimal  "cost",                       precision: 10, scale: 2
+    t.boolean  "hidden",                                                              null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
     t.integer  "ride_count"
     t.text     "external_info"
-    t.float    "match_score",                                       default: 0.0
-    t.boolean  "missing_information",                               default: false
-    t.boolean  "accommodation_mismatch",                            default: false
+    t.float    "match_score",                                         default: 0.0
+    t.boolean  "missing_information",                                 default: false
+    t.boolean  "accommodation_mismatch",                              default: false
     t.text     "missing_information_text"
-    t.boolean  "date_mismatch",                                     default: false
-    t.boolean  "time_mismatch",                                     default: false
-    t.boolean  "too_late",                                          default: false
-    t.string   "missing_accommodations",                            default: ""
+    t.boolean  "date_mismatch",                                       default: false
+    t.boolean  "time_mismatch",                                       default: false
+    t.boolean  "too_late",                                            default: false
+    t.string   "missing_accommodations",                              default: ""
     t.text     "cost_comments"
     t.boolean  "selected"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.boolean  "is_bookable",                                       default: false, null: false
+    t.boolean  "is_bookable",                                         default: false, null: false
     t.string   "booking_confirmation"
-    t.boolean  "duration_estimated",                                default: false
+    t.boolean  "duration_estimated",                                  default: false
     t.string   "map_image"
-    t.boolean  "too_early",                                         default: false
+    t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
     t.boolean  "assistant"
@@ -270,6 +270,8 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
+    t.datetime "negotiated_pu_window_start"
+    t.datetime "negotiated_pu_window_end"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -635,8 +637,8 @@ ActiveRecord::Schema.define(version: 20150909142700) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
     t.string   "fare_user"
     t.string   "booking_system_id"
     t.string   "booking_token"

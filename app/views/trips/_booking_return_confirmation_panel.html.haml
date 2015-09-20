@@ -63,9 +63,11 @@
         console.log(result);
         if (result['booked']) {
             var confirmation_number =  result['confirmation'];
+            var negotiated_pu_time = result['negotiated_pu_time'];
             booking_state = 'showing_results';
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
+            $('#itinerary_negotiated_pu_time_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
 
         }
         else {

@@ -136,5 +136,23 @@ class TrapezeServices
     result.hash
   end
 
+  def get_estimated_times(endpoint, namespace, username, password, client_id, client_password, booking_id)
+    result = pass_get_client_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
+
+    begin
+      pu_leg = result[:envelope][:body][:pass_get_client_trips_response][:pass_get_client_trips_result][:pass_booking][:pick_up_leg]
+    rescue
+      return {neg_time: nil, neg_early: nil, neg_late: nil}
+    end
+
+    neg_time = pu_leg[:neg_time]
+    neg_early = pu_leg[:neg_late]
+    neg_late = pu_leg[:neg_early]
+
+    return {neg_time: neg_time, neg_early: neg_early, neg_late: neg_late}
+
+  end
+
+
 
 end

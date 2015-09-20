@@ -41,19 +41,26 @@ class BookingServices
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
 
-        message = result[:envelope][:body][:pass_create_trip_response][:validation][:item].first[:message]
-
         if booking_id.to_i == -1 #Failed to book
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
         else
           itinerary.booking_confirmation = booking_id
+
+          ### Get and Unpack Times
+          times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, booking_id)
+          unless times_hash[:neg_time].nil?
+            itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + seconds_since_midnight_to_string(times_hash[:neg_time]))
+          end
+
+          message = result[:envelope][:body][:pass_create_trip_response][:validation][:item].first[:message]
+
           itinerary.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, confirmation: booking_id, message: message}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.negotiated_pu_time, confirmation: booking_id, message: message}
 
         end
 
       else
-        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
+        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, confirmation: nil, message: message}
     end
 
   end
@@ -118,6 +125,15 @@ class BookingServices
   def get_number_and_street(street_address)
     parsable_address = Indirizzo::Address.new(street_address)
     return [parsable_address.number, parsable_address.street.first]
+  end
+
+  def seconds_since_midnight_to_string(seconds_since_midnight)
+    seconds_since_midnight = seconds_since_midnight.to_i
+    hour =seconds_since_midnight/3600
+    minute = (seconds_since_midnight - (hour*3600))/60
+    second = seconds_since_midnight - (hour*3600) - (minute*60)
+    hour = (hour < 10) ? "0" + hour.to_s : hour.to_s
+    return hour + ':' + minute.to_s + ":" + second.to_s
   end
 
 end
