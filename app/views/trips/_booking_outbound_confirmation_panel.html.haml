@@ -65,6 +65,7 @@
       method: 'POST',
       success: function(result) {
         console.log(result);
+        $('#outbound_book_button_btn').hide();
         if (result['booked']) {
             var confirmation_number = result['confirmation'];
             var negotiated_pu_time = result['negotiated_pu_time'];

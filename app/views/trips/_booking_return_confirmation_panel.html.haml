@@ -62,6 +62,7 @@
       data: {itin: "#{@trip.return_part.selected_itinerary.id}", form_data: return_form_data},
       method: 'POST',
       success: function(result) {
+      $('#return_book_button_btn').hide();
         console.log(result);
         if (result['booked']) {
             var confirmation_number =  result['confirmation'];
