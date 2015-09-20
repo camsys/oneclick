@@ -46,6 +46,17 @@ class ItinerariesController < ApplicationController
   def book
 
     @itinerary = Itinerary.find(params[:id].to_i)
+    @trip_part = @itinerary.trip_part
+
+    @form_data = params[:form_data]
+
+    @form_data.each do |object|
+      if object.last[:name] == "trip_part[booking_trip_purpose_id]"
+        @trip_part.booking_trip_purpose_id = object.last[:value].to_i
+        @trip_part.save
+      end
+    end
+
 
     respond_to do |format|
       format.json { render json: @itinerary.book }

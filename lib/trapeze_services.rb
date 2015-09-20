@@ -61,9 +61,21 @@ class TrapezeServices
 
   def pass_get_booking_purposes(endpoint, namespace, username, password, client_id, client_password)
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
-
     result = client.call(:pass_get_booking_purposes, cookies: auth_cookies)
     result.hash
+  end
+
+  def get_booking_purposes(endpoint, namespace, username, password, client_id, client_password)
+    #Return an array of booking purposes
+    result = pass_get_booking_purposes(endpoint, namespace, username, password, client_id, client_password)
+
+    begin
+      purpose_hash = result[:envelope][:body][:pass_get_booking_purposes_response][:pass_get_booking_purposes_result][:pass_booking_purpose]
+      return purpose_hash
+    rescue
+      return {}
+    end
+
   end
 
   def pass_create_trip_test(endpoint, namespace, username, password, client_id, client_password)
@@ -86,7 +98,7 @@ class TrapezeServices
     result.hash
   end
 
-  def pass_create_trip(endpoint, namespace, username, password, client_id, client_password, origin, destination, request_seconds_past_midnight, request_date)
+  def pass_create_trip(endpoint, namespace, username, password, client_id, client_password, origin, destination, request_seconds_past_midnight, request_date, booking_purpose_id)
 
     #hardcoded for now
     pu_address_hash = {address_mode: 'ZZ', street_num: origin[:street_num], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
@@ -95,7 +107,7 @@ class TrapezeServices
     do_address_hash = {address_mode: 'ZZ', street_num: destination[:street_num], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
     do_leg_hash = {request_address: do_address_hash}
 
-    trip_hash = {client_id: client_id.to_i, client_code: client_id, date: request_date, booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
+    trip_hash = {client_id: client_id.to_i, client_code: client_id, date: request_date, booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: booking_purpose_id, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
 
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
 

@@ -36,10 +36,11 @@ class BookingServices
 
 
         ts = TrapezeServices.new
-        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"))
+        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id)
         result = result.to_hash
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
+        message = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:message]
 
         if booking_id.to_i == -1 #Failed to book
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
@@ -136,4 +137,25 @@ class BookingServices
     return hour + ':' + minute.to_s + ":" + second.to_s
   end
 
+  def get_purposes(itinerary)
+    service = itinerary.service
+    user = itinerary.trip_part.trip.user
+    user_service = UserService.find_by(service: service, user_profile: user.user_profile)
+
+    case service.booking_profile
+      when AGENCY[:ecolane]
+        return []
+      else
+        trapeze_profile = service.trapeze_profile
+        ts = TrapezeServices.new
+        purposes = ts.get_booking_purposes(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        purpose_hash= {}
+        purposes.each do |purpose|
+          purpose_hash[purpose[:description]] = purpose[:booking_purpose_id]
+        end
+
+        return purpose_hash
+
+    end
+  end
 end

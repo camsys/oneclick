@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  confirm_trip_purpose: "Confirm your trip purpose"
   time_window_start: "Earliest Pickup Time"
   time_window_end: "Latest Pickup Time"
   estimated_pu_time: "Estimated Pickup Time"

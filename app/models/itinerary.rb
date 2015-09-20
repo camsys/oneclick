@@ -285,6 +285,15 @@ class Itinerary < ActiveRecord::Base
     self.trip_part ? self.trip_part.note_to_driver : ""
   end
 
+  def get_booking_trip_purposes
+    if self.service_is_bookable?
+      bs = BookingServices.new
+      return bs.get_purposes(self)
+    else
+      return {}
+    end
+  end
+
 
   def prebooking_questions
 

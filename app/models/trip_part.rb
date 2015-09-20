@@ -38,6 +38,11 @@ class TripPart < ActiveRecord::Base
     return self.trip.get_return_part
   end
 
+
+  ##################################
+  ### Booking Specific Methods #####
+  ##################################
+
   def is_bookable?
     unless selected?
       return false
@@ -82,6 +87,15 @@ class TripPart < ActiveRecord::Base
 
   end
 
+  def get_booking_trip_purposes
+    if selected?
+      return selected_itinerary.get_booking_trip_purposes
+    else
+      return {}
+    end
+  end
+
+  ### END Booking Specific Methods #####
 
   def has_selected?
     selected?

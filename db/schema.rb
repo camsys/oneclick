@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150918203410) do
+ActiveRecord::Schema.define(version: 20150920212447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -713,11 +713,11 @@ ActiveRecord::Schema.define(version: 20150918203410) do
     t.integer  "trip_id"
     t.integer  "from_trip_place_id"
     t.integer  "to_trip_place_id"
-    t.integer  "sequence",                           null: false
-    t.boolean  "is_depart",          default: false
-    t.boolean  "is_return_trip",     default: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "sequence",                                  null: false
+    t.boolean  "is_depart",                 default: false
+    t.boolean  "is_return_trip",            default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
     t.boolean  "assistant"
@@ -725,6 +725,8 @@ ActiveRecord::Schema.define(version: 20150918203410) do
     t.integer  "children"
     t.integer  "other_passengers"
     t.text     "note_to_driver"
+    t.integer  "booking_trip_purpose_id"
+    t.string   "booking_trip_purpose_desc"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
