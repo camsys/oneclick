@@ -174,6 +174,18 @@ class TrapezeServices
 
   end
 
+  def pass_get_passenger_types(endpoint, namespace, username, password, client_id, client_password)
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
+    message = {client_id: client_id}
+    result = client.call(:pass_get_passenger_types, message: message, cookies: auth_cookies)
+    result.hash
+  end
 
+  def pass_get_space_types(endpoint, namespace, username, password, client_id, client_password)
+    client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
+    message = {}
+    result = client.call(:pass_get_space_types, message: message, cookies: auth_cookies)
+    result.hash
+  end
 
 end
