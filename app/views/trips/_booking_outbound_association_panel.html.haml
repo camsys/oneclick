@@ -55,6 +55,15 @@
     console.log(data);
     if(data['associated'] == true){
 
+      //Populate trip purposes
+      var trip_purposes = data['trip_purposes'];
+      var trip_purpose_html = ""
+      for (var key in trip_purposes){
+        trip_purpose_html = trip_purpose_html + "<option value=" + trip_purposes[key] + ">" + key + '</option>'
+        console.log(trip_purpose_html);
+      }
+      $('#outbound_trip_purpose_collection').html(trip_purpose_html);
+
       booking_state = 'confirming_outbound';
       update_dialog();
     }
