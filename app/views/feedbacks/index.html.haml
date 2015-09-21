@@ -50,7 +50,7 @@
             - @feedbacks.each do |feedback|
               %tr
                 %td= feedback.id
-                %td= feedback.user.name
+                %td= feedback.user ? feedback.user.name : translate_helper(:n_a)
                 %td.center
                   %button.btn.action-button.inspect_feedback{data: {id: feedback.id, toggle: "modal", target: '#feedback_modal'}}= translate_helper(:feedback)
                 %td.hidden= feedback.average_rating

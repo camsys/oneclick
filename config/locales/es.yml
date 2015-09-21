@@ -894,7 +894,7 @@ es:
   travel_time: "[es]Travel time[/es]"
   walking_distance: "[es]Walking distance[/es]"
   incorrect_info: "[es]Incorrect information[/es]"
-  not_enough_option: "[es]Not enough options[/es]"
+  not_enough_options: "[es]Not enough options[/es]"
   more: "[es]More[/es]"
 
   #user deletion
