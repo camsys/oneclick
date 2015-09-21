@@ -9,8 +9,17 @@ class UserServicesController < ApplicationController
     result = service.associate_user(@traveler, external_client_id, external_client_password)
     message = (result ? "" : "Incorrect username or password")
 
+    ## Needed for booking: Return an array of trip_purposes
+    if result
+      user_service = UserService.find_by(user_profile: @traveler.user_profile, service: service)
+      trip_purposes = user_service.get_booking_trip_purposes
+    else
+      trip_purposes = {}
+    end
+
+
     respond_to do |format|
-      format.json { render json: {associated: result, message: message} }
+      format.json { render json: {associated: result, message: message, trip_purposes: trip_purposes} }
     end
   end
 end

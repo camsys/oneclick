@@ -141,10 +141,27 @@ class BookingServices
     return hour + ':' + minute.to_s + ":" + second.to_s
   end
 
-  def get_purposes(itinerary)
+  def get_purposes_from_itinerary(itinerary)
     service = itinerary.service
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(service: service, user_profile: user.user_profile)
+
+
+    if user_service.nil?
+      return {}
+    else
+      return get_purposes(user_service)
+    end
+
+  end
+
+  def get_purposes(user_service)
+
+    if user_service.nil?
+      return {}
+    end
+
+    service = user_service.service
 
     case service.booking_profile
       when AGENCY[:ecolane]
@@ -162,4 +179,5 @@ class BookingServices
 
     end
   end
+
 end

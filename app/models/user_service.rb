@@ -10,4 +10,9 @@ class UserService < ActiveRecord::Base
   #external_user_id
   #customer_id  //Temporary customer id used by Ecolane
 
+  def get_booking_trip_purposes
+    bs = BookingServices.new
+    return bs.get_purposes self
+  end
+
 end

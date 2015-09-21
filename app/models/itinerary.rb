@@ -288,7 +288,7 @@ class Itinerary < ActiveRecord::Base
   def get_booking_trip_purposes
     if self.service_is_bookable?
       bs = BookingServices.new
-      return bs.get_purposes(self)
+      return bs.get_purposes_from_itinerary(self)
     else
       return {}
     end
