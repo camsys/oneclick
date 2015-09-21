@@ -167,8 +167,8 @@ class TrapezeServices
     end
 
     neg_time = pu_leg[:neg_time]
-    neg_early = pu_leg[:neg_late]
-    neg_late = pu_leg[:neg_early]
+    neg_late = pu_leg[:neg_late]
+    neg_early = pu_leg[:neg_early]
 
     return {neg_time: neg_time, neg_early: neg_early, neg_late: neg_late}
 

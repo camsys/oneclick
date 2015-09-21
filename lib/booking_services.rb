@@ -49,19 +49,24 @@ class BookingServices
 
           ### Get and Unpack Times
           times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, booking_id)
+
           unless times_hash[:neg_time].nil?
-            itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + seconds_since_midnight_to_string(times_hash[:neg_time]))
+            puts itinerary.trip_part.scheduled_time.to_date.to_s + seconds_since_midnight_to_string(times_hash[:neg_time])
+            puts Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " "+ seconds_since_midnight_to_string(times_hash[:neg_time]))
+            itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_time]))
+            itinerary.negotiated_pu_window_start = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_early]))
+            itinerary.negotiated_pu_window_end = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_late]))
           end
 
           message = result[:envelope][:body][:pass_create_trip_response][:validation][:item].first[:message]
 
           itinerary.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.negotiated_pu_time, confirmation: booking_id, message: message}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p"), negotiated_pu_window_start: itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p"), negotiated_pu_window_end: itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p"), confirmation: booking_id, message: message}
 
         end
 
       else
-        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, confirmation: nil, message: message}
+        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, message: message}
     end
 
   end
