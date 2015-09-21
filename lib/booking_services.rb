@@ -43,6 +43,7 @@ class BookingServices
         message = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:message]
 
         if booking_id.to_i == -1 #Failed to book
+          message = result[:envelope][:body][:pass_create_trip_response][:validation][:item][:message]
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
         else
           itinerary.booking_confirmation = booking_id
@@ -57,8 +58,6 @@ class BookingServices
             itinerary.negotiated_pu_window_start = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_early]))
             itinerary.negotiated_pu_window_end = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_late]))
           end
-
-          message = result[:envelope][:body][:pass_create_trip_response][:validation][:item].first[:message]
 
           itinerary.save
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p"), negotiated_pu_window_start: itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p"), negotiated_pu_window_end: itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p"), confirmation: booking_id, message: message}

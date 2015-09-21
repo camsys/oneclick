@@ -94,7 +94,7 @@
         }
         else {
           var confirmation_numbers = "";
-          var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+          var confirmation_message = result['message']
           $('.booking_message').html(confirmation_message);
         }
       },

@@ -18,19 +18,22 @@
     =translate_helper(:confirmation_capped) + ":"
   .col-sm-9.text-left{id: 'itinerary_confirmation_' + itinerary.id.to_s}
     =itinerary.booking_confirmation
-.row
-  %label.col-sm-3.text-right
-    =translate_helper(:estimated_pu_time) + ":"
-  .col-sm-9.text-left{id: 'itinerary_negotiated_pu_time_' + itinerary.id.to_s}
-    =itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")
-.row
-  %label.col-sm-3.text-right
-    =translate_helper(:time_window_start) + ":"
-  .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
-    =itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")
-.row
-  %label.col-sm-3.text-right
-    =translate_helper(:time_window_end) + ":"
-  .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
-    =itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")
+-if itinerary.negotiated_pu_time
+  .row
+    %label.col-sm-3.text-right
+      =translate_helper(:estimated_pu_time) + ":"
+    .col-sm-9.text-left{id: 'itinerary_negotiated_pu_time_' + itinerary.id.to_s}
+      =itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")
+-if itinerary.negotiated_pu_window_start
+  .row
+    %label.col-sm-3.text-right
+      =translate_helper(:time_window_start) + ":"
+    .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
+      =itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")
+-if itinerary.negotiated_pu_window_end
+  .row
+    %label.col-sm-3.text-right
+      =translate_helper(:time_window_end) + ":"
+    .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
+      =itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")
 
