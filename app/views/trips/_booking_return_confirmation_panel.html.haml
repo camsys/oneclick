@@ -67,10 +67,14 @@
         if (result['booked']) {
             var confirmation_number =  result['confirmation'];
             var negotiated_pu_time = result['negotiated_pu_time'];
+            var negotiated_pu_window_start = result['negotiated_pu_window_start'];
+            var negotiated_pu_window_end = result['negotiated_pu_window_end'];
             booking_state = 'showing_results';
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
             $('#itinerary_negotiated_pu_time_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
+            $('#itinerary_negotiated_window_start_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
+            $('#itinerary_negotiated_pu_window_end_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
 
         }
         else {

@@ -69,6 +69,8 @@
         if (result['booked']) {
             var confirmation_number = result['confirmation'];
             var negotiated_pu_time = result['negotiated_pu_time'];
+            var negotiated_pu_window_start = result['negotiated_pu_window_start'];
+            var negotiated_pu_window_end = result['negotiated_pu_window_end'];
             console.log('#{@trip.selected_itineraries.count}');
             console.log('#{@trip.return_part.service_is_bookable?}');
 
@@ -87,6 +89,8 @@
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(confirmation_number);
             $('#itinerary_negotiated_pu_time_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
+            $('#itinerary_negotiated_window_start_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
+            $('#itinerary_negotiated_pu_window_end_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
         }
         else {
           var confirmation_numbers = "";

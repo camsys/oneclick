@@ -27,11 +27,11 @@
   %label.col-sm-3.text-right
     =translate_helper(:time_window_start) + ":"
   .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
-    =itinerary.negotiated_pu_time.to_s
+    =itinerary.negotiated_pu_window_start.to_s
 .row
   %label.col-sm-3.text-right
     =translate_helper(:time_window_end) + ":"
   .col-sm-9.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
-    =itinerary.negotiated_pu_time.to_s
+    =itinerary.negotiated_pu_window_end.to_s
 
 
