@@ -458,6 +458,13 @@ class Trip < ActiveRecord::Base
     return false
   end
 
+  def same_service?
+    if self.trip_parts.count < 2
+      return false
+    end
+    return (self.outbound_part.service_is_bookable? and self.return_part.service_is_bookable? and (self.outbound_part.selected_itinerary.service.id == self.return_part.selected_itinerary.service.id))
+  end
+
   ##### End Booking Methods
 
   def next_part trip_part
