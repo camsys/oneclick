@@ -8,15 +8,6 @@
 .row
   %div{class: non_splash_css}
     .pull-right
-      -if @show_booking
-        = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
-          =translate_helper(:ecolane_login_button)
-          :javascript
-            $(function() {
-              $('button[name=ecolaneSignin]').click(function() {
-                $('#bookingSignupModal').modal('show');
-              });
-            });
       = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
         =translate_helper(:next)
         :javascript
@@ -161,9 +152,6 @@
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
       .pull-right
-        -if @show_booking
-          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
-            =translate_helper(:ecolane_login_button)
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
           =translate_helper(:next)
 
