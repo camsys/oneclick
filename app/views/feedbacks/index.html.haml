@@ -40,6 +40,7 @@
               %th= sort_link @q, :id, translate_helper(:id)
               %th= sort_link @q, :user_name, translate_helper(:username)
               %th.center= translate_helper(:feedback)
+              %th= sort_link @q, :feedback_type, translate_helper(:feedback_type)
               %th.rating.hidden= translate_helper(:rating)
               %th.rating_in_stars.nowrap= sort_link @q, :value, translate_helper(:rating)
               %th= sort_link @q, :comments, translate_helper(:comments)
@@ -53,9 +54,10 @@
                 %td= feedback.user ? feedback.user.name : translate_helper(:n_a)
                 %td.center
                   %button.btn.action-button.inspect_feedback{data: {id: feedback.id, toggle: "modal", target: '#feedback_modal'}}= translate_helper(:feedback)
+                %td.center= feedback.feedback_type.name.titleize
                 %td.hidden= feedback.average_rating
                 %td.rating_in_stars.nowrap= feedback.to_stars(feedback.average_rating, 1)
-                %td= feedback.comment
+                %td= feedback.comment.truncate(125)
                 %td
                   = label_tag "#{feedback.id}_#{Rating::APPROVED}", translate_helper(:approve), class: "sr-only"
                   -# Do not internationalize.  That will break the label.  Leave the label text itself internationalized
