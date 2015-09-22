@@ -13,6 +13,7 @@ class Itinerary < ActiveRecord::Base
   belongs_to :trip_part
   belongs_to :mode
   belongs_to :service
+  has_one :trapeze_booking
 
   # You should usually *always* used the valid scope
   scope :valid, -> {where('mode_id is not null and server_status=200')}
@@ -33,6 +34,7 @@ class Itinerary < ActiveRecord::Base
   scope :without_mode, ->(mode) {where.not(returned_mode_code: mode)}
 
 
+  #For booking purposes
   attr_accessor :segment_index
   # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
@@ -294,6 +296,24 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  def get_passenger_types
+    if self.service_is_bookable?
+      bs = BookingServices.new
+      return bs.get_passenger_types_from_itinerary(self)
+    else
+      return {}
+    end
+  end
+
+
+  def get_space_types
+    if self.service_is_bookable?
+      bs = BookingServices.new
+      return bs.get_space_types_from_itinerary(self)
+    else
+      return {}
+    end
+  end
 
   def prebooking_questions
 

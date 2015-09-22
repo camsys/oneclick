@@ -63,6 +63,27 @@
       }
       $('#return_trip_purpose_collection').html(trip_purpose_html);
 
+      //Populate Passenger Types
+      var passenger_types = data['passenger_types'];
+      var passenger_types_html = "<option value=''></option>"
+      for (var key in passenger_types){
+        passenger_types_html = passenger_types_html + "<option value=" + passenger_types[key] + ">" + key + '</option>'
+      }
+      $('#return_passenger1_type').html(passenger_types_html);
+      $('#return_passenger2_type').html(passenger_types_html);
+      $('#return_passenger3_type').html(passenger_types_html);
+
+      //Populate Space Types
+      var space_types = data['space_types'];
+      var space_types_html =   "<option value=''></option>"
+      for (var key in space_types){
+        space_types_html = space_types_html + "<option value=" + space_types[key] + ">" + key + '</option>'
+      }
+      $('#return_passenger1_space_type').html(space_types_html);
+      $('#return_passenger2_space_type').html(space_types_html);
+      $('#return_passenger3_space_type').html(space_types_html);
+
+
       booking_state = 'confirming_return';
       update_dialog();
     }

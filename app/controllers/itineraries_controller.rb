@@ -50,13 +50,34 @@ class ItinerariesController < ApplicationController
 
     @form_data = params[:form_data]
 
+    trapeze_booking = TrapezeBooking.where(itinerary: @itinerary).first_or_create
+
     @form_data.each do |object|
-      if object.last[:name] == "trip_part[booking_trip_purpose_id]"
-        @trip_part.booking_trip_purpose_id = object.last[:value].to_i
-        @trip_part.save
+
+      puts object
+      case object.last[:name]
+        when "trip_part[booking_trip_purpose_id]"
+          @trip_part.booking_trip_purpose_id = object.last[:value].to_i
+          @trip_part.save
+        when "trip_part[passenger1_type]"
+          trapeze_booking.passenger1_type = (object.last[:value]).split('%%').first
+          trapeze_booking.fare1_type_id = (object.last[:value]).split('%%').last
+        when "trip_part[passenger2_type]"
+          trapeze_booking.passenger2_type = (object.last[:value]).split('%%').first
+          trapeze_booking.fare2_type_id = (object.last[:value]).split('%%').last
+        when "trip_part[passenger3_type]"
+          trapeze_booking.passenger3_type = (object.last[:value]).split('%%').first
+          trapeze_booking.fare3_type_id = (object.last[:value]).split('%%').last
+        when "trip_part[passenger1_space_type]"
+          trapeze_booking.passenger1_space_type = object.last[:value]
+        when "trip_part[passenger2_space_type]"
+          trapeze_booking.passenger2_space_type = object.last[:value]
+        when "trip_part[passenger3_space_type]"
+          trapeze_booking.passenger3_space_type = object.last[:value]
       end
     end
 
+    trapeze_booking.save
 
     respond_to do |format|
       format.json { render json: @itinerary.book }

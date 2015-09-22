@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150920212447) do
+ActiveRecord::Schema.define(version: 20150921231707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -691,6 +691,21 @@ ActiveRecord::Schema.define(version: 20150920212447) do
     t.boolean  "is_list",            default: false
     t.integer  "locale_id"
     t.integer  "translation_key_id"
+  end
+
+  create_table "trapeze_bookings", force: true do |t|
+    t.string   "passenger1_type"
+    t.string   "passenger1_space_type"
+    t.string   "passenger2_type"
+    t.string   "passenger2_space_type"
+    t.string   "passenger3_type"
+    t.string   "passenger3_space_type"
+    t.integer  "itinerary_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fare1_type_id"
+    t.string   "fare2_type_id"
+    t.string   "fare3_type_id"
   end
 
   create_table "trapeze_profiles", force: true do |t|

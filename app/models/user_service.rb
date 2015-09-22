@@ -15,4 +15,15 @@ class UserService < ActiveRecord::Base
     return bs.get_purposes self
   end
 
+  def get_passenger_types
+    bs = BookingServices.new
+    return bs.get_passenger_types self
+  end
+
+
+  def get_space_types
+    bs = BookingServices.new
+    return bs.get_space_types self
+  end
+
 end

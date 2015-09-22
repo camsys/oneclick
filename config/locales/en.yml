@@ -4,6 +4,12 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  passenger1_type: "Passenger #1 Type"
+  passenger2_type: "Passenger #2 Type"
+  passenger3_type: "Passenger #3 Type"
+  passenger1_space_type: "Passenger #1 Space Needs"
+  passenger2_space_type: "Passenger #2 Space Needs"
+  passenger3_space_type: "Passenger #3 Space Needs"
   time_window_start: "Earliest possible pickup time"
   time_window_end: "Earliest possible end time"
   confirm_trip_purpose: "Confirm your trip purpose"

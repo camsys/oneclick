@@ -22,6 +22,9 @@ class TripPart < ActiveRecord::Base
   validates :from_trip_place, presence: true
   validates :to_trip_place, presence: true
 
+  #For Booking
+  attr_accessor :passenger1_type, :passenger1_space_type, :passenger2_type, :passenger2_space_type, :passenger3_type, :passenger3_space_type
+
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
   #scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
@@ -90,6 +93,22 @@ class TripPart < ActiveRecord::Base
   def get_booking_trip_purposes
     if selected?
       return selected_itinerary.get_booking_trip_purposes
+    else
+      return {}
+    end
+  end
+
+  def get_passenger_types
+    if selected?
+      return selected_itinerary.get_passenger_types
+    else
+      return {}
+    end
+  end
+
+  def get_space_types
+    if selected?
+      return selected_itinerary.get_space_types
     else
       return {}
     end

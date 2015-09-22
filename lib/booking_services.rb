@@ -36,7 +36,7 @@ class BookingServices
 
 
         ts = TrapezeServices.new
-        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart)
+        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart, itinerary.trapeze_booking.passenger1_type, itinerary.trapeze_booking.passenger2_type, itinerary.trapeze_booking.passenger3_type, itinerary.trapeze_booking.fare1_type_id, itinerary.trapeze_booking.fare2_type_id, itinerary.trapeze_booking.fare3_type_id, itinerary.trapeze_booking.passenger1_space_type, itinerary.trapeze_booking.passenger2_space_type, itinerary.trapeze_booking.passenger3_space_type)
         result = result.to_hash
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
@@ -179,5 +179,69 @@ class BookingServices
 
     end
   end
+
+  def get_passenger_types_from_itinerary(itinerary)
+
+    user_service = UserService.find_by(service: itinerary.service, user_profile: itinerary.trip_part.trip.user.user_profile)
+    return get_passenger_types(user_service)
+
+  end
+
+  def get_passenger_types(user_service)
+
+    if user_service.nil?
+      return {}
+    end
+
+    service = user_service.service
+
+    case service.booking_profile
+      when AGENCY[:ecolane]
+        return {}
+      when AGENCY[:trapeze]
+        trapeze_profile = service.trapeze_profile
+        ts = TrapezeServices.new
+        passenger_types = ts.get_passenger_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        passenger_types_hash = {}
+        passenger_types.each do |passenger_type|
+          passenger_types_hash[passenger_type[:description]] = passenger_type[:abbreviation] + "%%" + passenger_type[:fare_type_id]
+        end
+        return passenger_types_hash
+    end
+
+  end
+
+  def get_space_types_from_itinerary(itinerary)
+    service = itinerary.service
+    user = itinerary.trip_part.trip.user
+    user_service = UserService.find_by(service: service, user_profile: user.user_profile)
+
+    return get_space_types(user_service)
+
+  end
+
+  def get_space_types(user_service)
+
+    if user_service.nil?
+      return {}
+    end
+
+    service = user_service.service
+
+    case service.booking_profile
+      when AGENCY[:ecolane]
+        return {}
+      when AGENCY[:trapeze]
+        trapeze_profile = service.trapeze_profile
+        ts = TrapezeServices.new
+        space_types = ts.get_space_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        space_types_hash = {}
+        space_types.each do |space_type|
+          space_types_hash[space_type[:description]] = space_type[:abbreviation]
+        end
+        return space_types_hash
+    end
+  end
+
 
 end

@@ -13,13 +13,18 @@ class UserServicesController < ApplicationController
     if result
       user_service = UserService.find_by(user_profile: @traveler.user_profile, service: service)
       trip_purposes = user_service.get_booking_trip_purposes
+      passenger_types = user_service.get_passenger_types
+      space_types = user_service.get_space_types
+
     else
       trip_purposes = {}
+      passenger_types = {}
+      space_types  = {}
     end
 
 
     respond_to do |format|
-      format.json { render json: {associated: result, message: message, trip_purposes: trip_purposes} }
+      format.json { render json: {associated: result, message: message, trip_purposes: trip_purposes, passenger_types: passenger_types, space_types: space_types} }
     end
   end
 end
