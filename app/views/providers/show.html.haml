@@ -1,5 +1,4 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{@provider.name}"
-- temp_rating = @provider.services.first.ratings.build(user: @traveler) rescue nil
 - if can? :index, Provider
   .row
     .col-sm-12
@@ -10,13 +9,6 @@
     - unless @provider.active
       %p= @provider.deleted_message
   .col-sm-7.btns
-    .pull-right
-      -if temp_rating && Rating.feedback_on?
-        - if can? :read, temp_rating
-          = RateableDecorator.new(@provider).rating_in_stars
-          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal"}}
-            = translate_helper(:feedback)
-      = render partial: "ratings/organization_feedback_modal", locals: {rateable: @provider}
 
 .row
   .col-sm-6

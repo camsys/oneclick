@@ -11,16 +11,6 @@
       %p= @agency.deleted_message
   .col-sm-7.btns
     .pull-right
-      -if Rating.feedback_on?
-        - if can? :read, temp_rating
-          = RateableDecorator.decorate(@agency).rating_in_stars
-          %button.btn.action-button{data: {toggle: 'modal', target: "#feedback_modal"}}
-            = translate_helper(:feedback)
-        - elsif Rating.tripless_feedback?
-          -# if creating feedback is allowed, but reading isn't, just load the form into the modal on click
-          %button.btn.action-button.btn-default{data: {toggle: 'modal', target: "#feedback_modal", remote: new_agency_rating_path(@agency)}}
-            = translate_helper(:feedback)
-        = render partial: "ratings/organization_feedback_modal", locals: {rateable: @agency}
       - if @agency.active && can_manage_agency and can? :destroy, @agency
         = button_tag :type => 'button', "data-target" => "#deleteConfirmDialog", "data-toggle" => "modal", :class => "btn action-button", style: "margin-right:5px;" do
           = translate_helper(:delete)
