@@ -40,10 +40,15 @@
   }).ajaxSuccess(function(e, xhr, settings){
     if (settings.url.endsWith('feedbacks')) {
       parentModal = $(e.target.activeElement).parents('.modal');
-      parentModal.find('.modal-body').empty().append("<div class='text-center'><label>#{translate_helper(:thanks_for_the_feedback)}</label></div>");
-      setTimeout(function(){
-        parentModal.modal('hide');
-      }, 2000);
+      form = parentModal.find('#new_feedback').detach();
+      modalBody = parentModal.find('.modal-body');
+
+      modalBody.append("<div class='text-center'><label>#{translate_helper(:thanks_for_the_feedback)}</label></div>");
+      setTimeout(function(){ parentModal.modal('hide') }, 2000);
+      parentModal.on('hidden.bs.modal', function(){
+        modalBody.empty().append(form);
+        $('form#new_feedback').trigger('reset');
+      });
     }
   }).ajaxError(function(e, xhr, settings, err){
     console.log([e, xhr, settings, err]);
