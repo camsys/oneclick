@@ -16,8 +16,10 @@
 :javascript
   $(document).ready(function(){
     $('.feedbackModal').on('loaded.bs.modal', function(){
-      
-      $(this).find('#feedback_feedback_type_id').on('change', function(){
+      var tripInput = $(this).find('#feedback_trip_id');
+      var feedbackTypeInput = $(this).find('#feedback_feedback_type_id');
+
+      feedbackTypeInput.on('change', function(){
         tripId = $(this).parents('.modal').prop('id').match(/\d+/)[0];
         $(this).parents('.modal').find('#feedback_trip_id').val(tripId);
 
@@ -32,6 +34,12 @@
         } else {
           $('.feedbackModal #ratings, .feedbackModal #issues').empty();
         }
+      });
+
+      $.when ( $('#feedback_feedback_type_id').is(':visible') ).then(function(x){
+        feedbackType = "#{FeedbackType.find_by(name: 'trip').id}";
+        tripInput.val("#{params[:id]}");
+        feedbackTypeInput.val(feedbackType).trigger('change');
       });
     });
   }).ajaxError(function(e, xhr, settings, err){
