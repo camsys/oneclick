@@ -7,27 +7,12 @@
     .pull-right= feedback.to_stars(feedback.average_rating, 1)
     = "#{feedback.feedback_type.name.to_s.titleize} #{translate_helper(:feedback)}"
     = add_tooltip("#{feedback.feedback_type.name.to_s}_help")
+    %p= feedback.user_email if feedback.user_email
   .row
     - case feedback.feedback_type.name
       - when 'trip'
         = trip = Trip.find(feedback.trip_id)
         = trip.planned_trip_html.html_safe unless trip.planned_trip_html.nil?
-
-        .col-xs-12
-          %label= "#{translate_helper(:ratings)}: "
-          - feedback.ratings.each do |rating|
-            %div
-              %label= translate_helper(rating.feedback_rating.name.to_sym)
-              = feedback.to_stars(feedback.average_rating, 1)
-
-          - if feedback.issues.map{|i|i.value}.uniq.include?(true)
-            %br
-            %label= "#{translate_helper(:issues)}: "
-            - feedback.issues.each do |issue|
-              %div
-                - if issue.value == true
-                  %label= translate_helper(issue.feedback_issue.name.to_sym)
-
-          %br
-          %label= "#{translate_helper(:comment)}: "
-          %p= feedback.comment
+        = render partial: 'review_feedback', locals: {feedback: feedback}
+      - else
+        = render partial: 'review_feedback', locals: {feedback: feedback}
