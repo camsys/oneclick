@@ -227,6 +227,9 @@ class ServicesController < ApplicationController
 
         @service.save
 
+        #Setup Trapeze Profile
+        update_trapeze_profile(params[:service][:trapeze_profile])
+
         # fare
         if @service.is_paratransit?
           update_fare
@@ -287,6 +290,24 @@ class ServicesController < ApplicationController
     end
   end
 
+  def update_trapeze_profile(trapeze_params)
+
+    tp = TrapezeProfile.where(service: @service).first_or_initialize
+    tp.para_service_id = trapeze_params[:para_service_id]
+    tp.endpoint = trapeze_params[:endpoint]
+    tp.namespace = trapeze_params[:namespace]
+    tp.username = trapeze_params[:username]
+    tp.password = trapeze_params[:password]
+    unless tp.para_service_id.blank?
+      @service.booking_profile = 1
+    else
+      @service.booking_profile = nil
+    end
+    @service.save
+    tp.save
+
+  end
+
 protected
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,
@@ -308,6 +329,7 @@ protected
                                       [ :id, :base, :rate, :fare_type, public_comments_attributes: COMMENT_ATTRIBUTES ] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
+                                    trapeze_profile_attributes: [:para_service_id],
                                     comments_attributes: COMMENT_ATTRIBUTES,
                                     public_comments_attributes: COMMENT_ATTRIBUTES,
                                     private_comments_attributes: COMMENT_ATTRIBUTES
