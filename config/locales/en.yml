@@ -4,6 +4,9 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  trapeze_para_service_id: "Trapeze ParaServiceId"
+  namespace: "Namespace"
+  endpoint: "Endpoint"
   passenger1_type: "Passenger #1 Type"
   passenger2_type: "Passenger #2 Type"
   passenger3_type: "Passenger #3 Type"
