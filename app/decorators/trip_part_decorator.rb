@@ -22,8 +22,8 @@ class TripPartDecorator < Draper::Decorator
     # "40 Courtland Street NE Atlanta, GA to Atlanta VA Medical Center"
     trip = object.trip
     ("%s %s %s" % [
-      object.from_trip_place.name2, TranslationEngine.translate_text(:to).downcase, 
-      object.to_trip_place.name2
+      object.from_trip_place.name2  + (((object.from_trip_place.poi or object.from_trip_place.place) and  not object.from_trip_place.address1.blank?) ? ", " + object.from_trip_place.address1 : ""), TranslationEngine.translate_text(:to).downcase,
+      object.to_trip_place.name2 + (((object.to_trip_place.poi or object.to_trip_place.place) and  not object.to_trip_place.address1.blank?) ? ", " + object.to_trip_place.address1 : "")
     ]).strip
   end
 

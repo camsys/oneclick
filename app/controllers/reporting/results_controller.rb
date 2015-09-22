@@ -128,32 +128,24 @@ module Reporting
 
     def csv_lines(data, fields)
 
-      # Excel is stupid if the first two characters of a csv file are "ID". Necessary to
-      # escape it. https://support.microsoft.com/kb/215591/EN-US
       headers = []
-      fields.each do |field|
-        headers << (field[:title].blank? ? field[:name] : field[:title])
-      end
 
-      if headers[0].start_with? "ID"
-        headers = Array.new(headers)
-        headers[0] = "'" + headers[0]
+      fields.each do |field|
+        headers << "\"" + (field[:title].blank? ? field[:name] : field[:title]) + "\""
       end
 
       # refresh primary_key in case it's changed
       @report.data_model.primary_key = @report.primary_key
-
       Enumerator.new do |y|
         CSV.generate do |csv|
           y << headers.to_csv
-
-          # find_each would reduce memory usage, but it relies on valid primary_key
-          data.find_each do |row|
-            y << fields.map { |field|
-              format_output row.send(field[:name]), 
-                @report.data_model.columns_hash[field[:name].to_s].type,  
-                field[:formatter]
-            }.to_csv
+          data.find_each do |result|
+            row = []
+            fields.each do |field|
+              field_type = @report.data_model.columns_hash[field[:name].to_s].type rescue nil
+              row << format_output(result[field[:name].to_sym], field_type, field[:formatter])
+            end
+            y << row.to_csv
           end
         end
       end

@@ -96,18 +96,49 @@ module Api
           #Build the itineraries
           tp.create_itineraries
 
+          my_itins = Itinerary.where(trip_part: tp)
+          #my_itins = tp.itineraries
+          my_itins.each do |itin|
+            Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
+          end
+
+          Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
+          Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
-          tp.itineraries.each do |itinerary|
+          my_itins.each do |itinerary|
             i_hash = itinerary.as_json
             i_hash[:segment_index] = itinerary.trip_part.sequence
             i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
             i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
+            if itinerary.service
+              i_hash[:service_name] = itinerary.service.name
+            else
+              i_hash[:service_name] = ""
+            end
 
             if itinerary.discounts
               i_hash[:discounts] = JSON.parse(itinerary.discounts)
             end
+
+            #Add Service Names to Legs
+            unless itinerary.legs.nil?
+              yaml_legs = YAML.load(itinerary.legs)
+              yaml_legs.each do |leg|
+                unless leg['agencyId'].nil?
+                  service = Service.where(external_id: leg['agencyId']).first
+                  unless service.nil?
+                    leg['serviceName'] = service.name
+                  else
+                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+                  end
+                end
+              end
+              itinerary.legs = yaml_legs.to_yaml
+              itinerary.save
+            end
+
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
@@ -115,12 +146,13 @@ module Api
             end
 
             final_itineraries.append(i_hash)
+
+
+
           end
 
-
-          #Unpack and return the itineraries
-          #MORE TO WRITE HERE
         end
+        Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
         render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
 
       end
@@ -138,6 +170,7 @@ module Api
           trip_part.children = itinerary_hash[:children].to_i
           trip_part.companions = itinerary_hash[:companions].to_i
           trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
+          trip_part.note_to_driver = itinerary_hash[:note]
           trip_part.save
 
           result, message = itinerary.book
@@ -158,8 +191,12 @@ module Api
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
             status  = bi.status
+            bi.trip_part.unselect
+            bi.selected = true
+            bi.save
+            puts 'Itinerary ' + bi.id.to_s + " has been booked and marked as selected. "
 
-            negotiated_pu_time = status[1][:pu_time]
+            negotiated_pu_time = bi.negotiated_pu_time
             if negotiated_pu_time.nil?
               wait_start = nil
               wait_end = nil
@@ -169,8 +206,10 @@ module Api
               wait_end = (negotiated_pu_time.to_time + 15*60).iso8601
             end
 
-            negotiated_do_time = status[1][:do_time].nil? ? nil : status[1][:do_time].to_time.iso8601
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, success: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil })
+            negotiated_do_time = bi.negotiated_do_time.nil? ? bi.end_time : bi.negotiated_do_time
+            negotiated_duration = negotiated_do_time - negotiated_pu_time
+            negotiated_do_time = negotiated_do_time.iso8601
+            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
           end
 
         #Build Failure Response
@@ -206,16 +245,30 @@ module Api
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
           itineraries = email_itinerary[:itineraries]
+          trip_to_email = itineraries.first
+          trip = Trip.find(trip_to_email[:trip_id].to_i)
 
-          itineraries.each do |itinerary|
-            itin = Itinerary.find(itinerary[:itinerary_id].to_i)
-            trip = itin.trip_part.trip
-            UserMailer.user_itinerary_email([email_address], trip, itin, 'SUBJECT', '')
+          if trip.scheduled_time > Time.now
+            subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+          else
+            subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
+          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
 
         render json: {result: 200}
 
+      end
+
+
+      def request_create_maps (trip)
+        itins = trip.selected_itineraries
+        itins.each do |itin|
+          print_url = create_map_user_trip_itinerary_url(trip.user.id.to_s, trip.id.to_s, itin.id.to_s)
+          Rails.logger.info "print_url is #{print_url}"
+          PrintMapWorker.perform_async(print_url, itin.id)
+        end
+        return
       end
 
     end #Itineraries Controller

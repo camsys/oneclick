@@ -8,6 +8,9 @@ class Provider < ActiveRecord::Base
 
   mount_uploader :logo, ProviderLogoUploader
 
+  #Scopes
+  scope :active, -> { where(active: true)}
+
   #associations
   has_many :users
   has_many :services

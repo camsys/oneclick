@@ -6,6 +6,7 @@
       %label.col-sm-7.control-label= translate_helper(c.note)
       .col-sm-5
         - if c.code == "date_of_birth"
-          %p.form-control-static= user_characteristics.get_answer_description(c.code)
+          -value = user_characteristics.get_answer_description(c.code)
+          %p.form-control-static= ((value.is_a? String) ? value : translate_helper(value))
         - else
           %p.form-control-static= translate_helper(user_characteristics.get_answer_description(c.code))

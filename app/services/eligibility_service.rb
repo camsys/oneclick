@@ -2,7 +2,21 @@ class EligibilityService
   include EligibilityOperators
 
   def get_eligible_services_for_traveler(user_profile, trip_part=nil, return_with=:itinerary)
-    all_services = Service.paratransit.active
+
+    #Check to see if this user is registered to book with anyone.
+    #If this user is registered to book, we only care about the services that he/she can book with
+    user_services = user_profile.user_services
+    if user_services.count > 0
+      all_services = []
+      user_services.each do |us|
+        if us.service.active?
+          all_services << us.service
+        end
+      end
+    else
+      all_services = Service.paratransit.active
+    end
+
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)

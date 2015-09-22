@@ -53,18 +53,20 @@ module Api
         #If the formatting is correct, check to see if this is a valid user
         service = eh.county_to_service county
 
-        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id)
+        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
         unless result
           render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
           return
         end
 
-        Rails.logger.info('Logged in with: ' + county.to_s)
-        Rails.logger.info(county.to_s + ' uses system_id: ' + service.booking_system_id)
-
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
         @traveler.reset_authentication_token!
+
+
+        #Update Age
+        @traveler.user_profile.update_age dob
+
         render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: first_name, last_name: last_name}
       end
 

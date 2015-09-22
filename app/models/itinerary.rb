@@ -229,13 +229,37 @@ class Itinerary < ActiveRecord::Base
   end
 
   def status
+    unless self.booking_confirmation
+      return false, "404"
+    end
+
     eh = EcolaneHelpers.new
-    eh.get_trip_info self
+    status = eh.get_trip_info self
+
+    unless status[0]
+      return status
+    end
+
+    self.negotiated_pu_time = status[1][:pu_time]
+    self.negotiated_do_time = status[1][:do_time]
+    self.save
+
+    return status
   end
 
   def cancel
+    if self.booking_confirmation.nil?
+      self.selected = false
+      self.save
+      return true
+    end
+
     eh = EcolaneHelpers.new
-    eh.cancel_itinerary self
+    result = eh.cancel_itinerary self
+    if result
+      self.selected = false
+      self.save
+    end
   end
 
   #Booking Information
@@ -255,6 +279,11 @@ class Itinerary < ActiveRecord::Base
     self.trip_part ? self.trip_part.other_passengers : nil
   end
 
+  def note_to_driver
+    self.trip_part ? self.trip_part.note_to_driver : ""
+  end
+
+
   def prebooking_questions
 
     funding_source = self.funding_source
@@ -263,15 +292,14 @@ class Itinerary < ActiveRecord::Base
 
       questions =
         [
-          {question: "Will you be traveling with an ADA-approved escort", choices: [true, false], code: "assistant"},
+          {question: "Will you be traveling with an ADA-approved escort?", choices: [true, false], code: "assistant"},
           {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
         ]
-    s
 
     else
       questions =
         [
-          {question: "Will you be traveling with an approved escort", choices: [true, false], code: "assistant"},
+          {question: "Will you be traveling with an approved escort?", choices: [true, false], code: "assistant"},
           {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
         ]
 

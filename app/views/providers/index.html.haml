@@ -1,0 +1,26 @@
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:providers)}"
+.row.info-header
+  .col-sm-12
+    %h1= translate_helper(:providers)
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title
+      = translate_helper(:providers)
+      = add_tooltip("providers_help")
+  .panel-body
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_providers_table
+      %thead
+        %tr
+          %th= translate_helper(:id)
+          %th= translate_helper(:name)
+          %th#status= translate_helper(:comments)
+      %tbody
+        - @providers.each do |provider|
+          %tr
+            %td= provider.id
+            %td= link_to provider.name, provider_path(provider)
+            %td
+              -if provider.public_comments.for_locale
+                =provider.public_comments.for_locale.comment.truncate(125)
+
+= render partial: 'shared/datatable_js', locals: {key: 'admin_providers', entity: 'providers'}

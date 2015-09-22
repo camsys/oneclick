@@ -69,6 +69,7 @@ module CsHelpers
         {label: TranslationEngine.translate_text(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
         {label: TranslationEngine.translate_text(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
         {label: TranslationEngine.translate_text(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+        {label: TranslationEngine.translate_text(:providers), target: providers_path(locale: I18n.locale), icon: ACTION_ICONS[:providers]},
         {label: TranslationEngine.translate_text(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
       ]
     else

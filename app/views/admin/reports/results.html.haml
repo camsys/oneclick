@@ -19,6 +19,7 @@
     function exportCsv(mode) {
      var a = document.createElement('a');
      a.href = "#{@url_for_csv}"
+     console.log(a.href);
      a.target = '_blank';
      document.body.appendChild(a);
      a.click();

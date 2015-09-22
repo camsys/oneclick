@@ -20,7 +20,7 @@
         =service.email
       - if service.url
         %p
-          =link_to service.url, service.url
+          =link_to service.url, service.url, :target => "_blank"
       -if service.service_type and service.service_type.name
         %p
           =translate_helper(:service_type).to_s + ": " + translate_helper(service.service_type.name.downcase.to_sym)

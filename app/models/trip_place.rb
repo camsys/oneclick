@@ -143,6 +143,9 @@ class TripPlace < GeocodedAddress
     components = details[:address_components]
     components.each do |component|
       types = component[:types]
+      if types.nil?
+        next
+      end
       if 'street_address'.in? types
         self.address1 = component[:long_name]
       elsif 'administrative_area_level_1'.in? types
@@ -162,10 +165,30 @@ class TripPlace < GeocodedAddress
   end
 
   def build_place_details_hash
+    require 'indirizzo'
     #Based on Google Place Details
+
+
+    address = self.address1 || self.raw_address
+    unless address.blank?
+      parsable_address = Indirizzo::Address.new(address)
+    else
+      parsable_address = nil
+    end
+
 
     {
         address_components: [
+        {
+            long_name: parsable_address.blank? ? "" : parsable_address.number,
+        short_name: parsable_address.blank? ? "" : parsable_address.number,
+        types: ["street_number"]
+    },
+        {
+            long_name: parsable_address.blank? ? "" : parsable_address.street.first,
+        short_name: parsable_address.blank? ? "" : parsable_address.street.first,
+        types: ["route"]
+    },
         {
             long_name: self.address1,
         short_name: self.address1,

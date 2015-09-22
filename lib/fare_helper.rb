@@ -52,8 +52,10 @@ class FareHelper
 
     #Check for multipliers
     if Oneclick::Application.config.discount_fare_active and trip_part.trip.user.age and trip_part.trip.user.age > Oneclick::Application.config.discount_fare_age
-      itinerary.cost *= Oneclick::Application.config.discount_fare_multiplier
-      itinerary.save
+      if itinerary.cost
+        itinerary.cost *= Oneclick::Application.config.discount_fare_multiplier
+        itinerary.save
+      end
     end
 
     #Check for comments.
@@ -122,7 +124,7 @@ class FareHelper
           if mileage_fare.mileage_rate
             comments = "#{TranslationEngine.translate_text(:base_rate)}: #{number_to_currency(mileage_fare.base_rate)}; #{number_to_currency(mileage_fare.mileage_rate)}/mile - " + TranslationEngine.translate_text(:cost_estimated)
           else
-            comments = TranslationEngine.translate_text(:mileage_rate_not_available)
+            comments = TranslationEngine.translate_text(:mileage_rate_unavailable)
           end
 
           price_formatted = "#{number_to_currency(fare.ceil)}*"

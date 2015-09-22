@@ -1442,7 +1442,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var logo_link = tripPlan.logo_link
         var service_icon_link = "";
         if (logo_link.length > 0 ){
-            service_icon_link = "<a href='" + logo_link + "' style='background:url(" + logoUrl + ") no-repeat center;'></a>"
+            service_icon_link = "<a href='" + logo_link + "' target='_blank' style='background:url(" + logoUrl + ") no-repeat center;'></a>"
         }
         else{
             service_icon_link = "<a style='background:url(" + logoUrl + ") no-repeat center;'></a>"

@@ -116,6 +116,9 @@ class TripPart < ActiveRecord::Base
     itins = []
     
     modes.each do |mode|
+
+      Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
+      Rails.logger.info(mode)
       case mode
         # start with the non-OTP modes
       when Mode.taxi
@@ -150,7 +153,8 @@ class TripPart < ActiveRecord::Base
         end
       end
     end
-
+    Rails.logger.info('Adding NEW ITINERARIES TO THIS TRIP PART')
+    Rails.logger.info(itins.inspect)
     self.itineraries << itins
     itins
   end
@@ -497,4 +501,11 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
     return new_time > trip.prev_part(self).scheduled_time
   end
 
+  def unselect
+    selected_itinerary = self.selected_itinerary
+    if selected_itinerary
+      selected_itinerary.selected = false
+      selected_itinerary.save
+    end
+  end
 end

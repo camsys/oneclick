@@ -158,6 +158,13 @@ Oneclick::Application.routes.draw do
         end
       end
     end
+
+    resources :providers do
+      collection do
+        get 'index'
+      end
+    end
+
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -415,6 +422,8 @@ Oneclick::Application.routes.draw do
     # get '*not_found' => 'errors#handle404'
   end
 
+
+
   #API
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
@@ -467,6 +476,13 @@ Oneclick::Application.routes.draw do
         collection do
           get 'list'
           get 'index'
+        end
+      end
+
+      resources :users do
+        collection do
+          post 'update'
+          get  'profile'
         end
       end
 

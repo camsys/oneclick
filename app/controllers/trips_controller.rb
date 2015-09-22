@@ -5,7 +5,7 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
-  before_action :detect_ui_mode, :get_kiosk_code, :get_trip_purposes
+  before_action :detect_ui_mode, :get_kiosk_code, :get_trip_purposes, :get_ecolane_trip_purposes
 
   def index
 
@@ -105,8 +105,8 @@ class TripsController < PlaceSearchingController
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
 
     unless @multi_od_trip.nil?
-      origin_places = @multi_od_trip.origin_places.split(';')
-      dest_places = @multi_od_trip.dest_places.split(';')
+      origin_places = @multi_od_trip.origin_places.split(';##$##;')
+      dest_places = @multi_od_trip.dest_places.split(';##$##;')
 
       if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
         @multi_od_trip.trips = []
@@ -602,6 +602,7 @@ class TripsController < PlaceSearchingController
 
       # update the associations
       @trip.trip_purpose = updated_trip.trip_purpose
+      @trip.trip_purpose_raw = updated_trip.trip_purpose_raw
       @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       @trip.agency = @traveler.agency
@@ -687,6 +688,7 @@ class TripsController < PlaceSearchingController
 
   # GET
   def plan_a_trip
+
     session[:is_multi_od] = false
     session[:multi_od_trip_id] = nil
     session[:multi_od_trip_edited] = false
@@ -706,8 +708,10 @@ class TripsController < PlaceSearchingController
     end
 
     purpose = TripPurpose.where(code: params["purpose"]).first || TripPurpose.first
+    trip_purpose_raw = params["trip_purpose_raw"]
 
     params['trip_purpose_id'] = purpose.id if purpose
+    params['trip_purpose_raw'] = trip_purpose_raw
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
 
@@ -1179,6 +1183,11 @@ private
     trip_proxy = TripProxy.new(trip_proxy_params)
     trip_proxy.traveler = @traveler
 
+    if trip_proxy.modes.nil?
+      modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
+      trip_proxy.desired_modes = Mode.where(code: modes)
+    end
+
     Rails.logger.debug trip_proxy.inspect
     return trip_proxy
   end
@@ -1210,6 +1219,16 @@ private
       new_trip_purpose[0] = TranslationEngine.translate_text(trip_purpose.name)
       new_trip_purpose[1] = trip_purpose.id
       @trip_purposes.push(new_trip_purpose)
+    end
+
+  end
+
+  def get_ecolane_trip_purposes
+    if @traveler.user_profile.user_services.count > 0
+      eh = EcolaneHelpers.new
+      @trip_purposes_raw = eh.get_trip_purposes_from_traveler(@traveler)
+    else
+      @trip_purposes_raw = nil
     end
 
   end

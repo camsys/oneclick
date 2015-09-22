@@ -5,20 +5,18 @@ require 'indirizzo'
 class EcolaneHelpers
 
   begin
-    X_ECOLANE_TOKEN = Oneclick::Application.config.ecolane_x_ecolane_token
     BASE_URL = Oneclick::Application.config.ecolane_base_url
   rescue NoMethodError
-    X_ECOLANE_TOKEN = nil
     BASE_URL = nil
   end
 
   def get_ecolane_customer_id_from_itinerary(itinerary)
     user_service = UserService.where(user_profile: itinerary.trip_part.trip.user.user_profile, service: itinerary.service).order('created_at').last
-    return get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id)
+    return get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id, itinerary.service.booking_token)
   end
 
-  def get_ecolane_customer_id(customer_number, system_id)
-    resp = search_for_customers(terms = {customer_number: customer_number}, system_id)
+  def get_ecolane_customer_id(customer_number, system_id, token)
+    resp = search_for_customers(terms = {customer_number: customer_number}, system_id, token)
     resp_xml = Nokogiri::XML(resp.body)
 
     status = resp_xml.xpath("status")
@@ -48,7 +46,7 @@ class EcolaneHelpers
       return false, "Booking error."
     end
 
-    resp = request_booking(itinerary, funding_xml, itinerary.service.booking_system_id)
+    resp = request_booking(itinerary, funding_xml, itinerary.service.booking_system_id, itinerary.service.booking_token)
 
     return unpack_booking_response(resp, itinerary)
   end
@@ -102,13 +100,16 @@ class EcolaneHelpers
   end
 
   def get_trip_info(itinerary)
-    resp = fetch_single_order(itinerary.booking_confirmation, itinerary.service.booking_system_id)
+    unless itinerary.service
+      return false, '500'
+    end
+    resp = fetch_single_order(itinerary.booking_confirmation, itinerary.service.booking_system_id, itinerary.service.booking_token)
     return unpack_fetch_single(resp, itinerary.booking_confirmation)
 
   end
 
-  def get_trip_status(trip_id, system_id)
-    resp = fetch_single_order(trip_id, system_id)
+  def get_trip_status(trip_id, system_id, token)
+    resp = fetch_single_order(trip_id, system_id, token)
     begin
       resp_code = resp.code
     rescue
@@ -146,14 +147,14 @@ class EcolaneHelpers
 
   end
 
-  def request_booking(itinerary, funding_xml, system_id)
+  def request_booking(itinerary, funding_xml, system_id, token)
     url_options = "/api/order/" + system_id + "?overlaps=reject"
     url = BASE_URL + url_options
     order =  build_order(itinerary, funding_xml)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    result  = send_request(url, 'POST', order)
+    result  = send_request(url, token, 'POST', order)
     Rails.logger.info('Order Request Sent to Ecolane:')
     Rails.logger.info(order)
     result
@@ -166,7 +167,7 @@ class EcolaneHelpers
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    send_request(url, 'POST', order)
+    send_request(url, itinerary.service.booking_token, 'POST', order)
   end
 
   def query_fare(itinerary)
@@ -182,7 +183,7 @@ class EcolaneHelpers
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    resp = send_request(url, 'POST', order)
+    resp = send_request(url, itinerary.service.booking_token, 'POST', order)
 
     begin
       resp_code = resp.code
@@ -216,7 +217,7 @@ class EcolaneHelpers
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    resp = send_request(url, 'POST', order)
+    resp = send_request(url, itinerary.service.booking_token, 'POST', order)
 
     begin
       resp_code = resp.code
@@ -247,13 +248,16 @@ class EcolaneHelpers
     funding_sources = service.funding_sources
     guest_id = service.fare_user
     discount_array = []
+    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
 
     funding_sources.each do |funding_source|
+      Rails.logger.info(funding_source.code)
+
       order = build_discount_order(itinerary, funding_source.code, guest_id)
       order = Nokogiri::XML(order)
       order.children.first.set_attribute('version', '2')
       order = order.to_s
-      resp = send_request(url, 'POST', order)
+      resp = send_request(url, itinerary.service.booking_token, 'POST', order)
 
       begin
         resp_code = resp.code
@@ -282,26 +286,26 @@ class EcolaneHelpers
 
   ## GET Operations
   def get_trip_purposes_from_itinerary(itinerary)
-    get_trip_purposes(get_ecolane_customer_id_from_itinerary(itinerary), itinerary.service.booking_system_id)
+    get_trip_purposes(get_ecolane_customer_id_from_itinerary(itinerary), itinerary.service.booking_system_id, itinerary.service.booking_token, itinerary.service.disallowed_purposes_array)
   end
 
   def get_trip_purposes_from_traveler(traveler)
     user_service = UserService.where(user_profile: traveler.user_profile).order('created_at').last
-    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id), user_service.service.booking_system_id)
+    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
   end
 
-  def get_trip_purposes_from_customer_number(customer_number, system_id)
-    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id), system_id)
+  def get_trip_purposes_from_customer_number(customer_number, system_id, token)
+    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id, token), system_id, token, Service.find_by(booking_system_id: system_id).disallowed_purposes_array)
   end
 
-  def get_trip_purposes(customer_id, system_id)
+  def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
     purposes = []
-    customer_information = fetch_customer_information(customer_id, system_id, funding = true)
+    customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
     resp_xml = Nokogiri::XML(customer_information)
     resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
       funding_source.xpath("allowed").each do |allowed|
         purpose = allowed.xpath("purpose").text
-        unless purpose.in? purposes
+        unless purpose.in? purposes or purpose.downcase.strip.in? disallowed_purposes
           purposes.append(purpose)
         end
       end
@@ -312,11 +316,11 @@ class EcolaneHelpers
 
   end
 
-  def verify_client_id(client_id, dob, system_id)
-    search_for_customers([['customer_number', client_id], ['date_of_birth', dob]], system_id)
+  def verify_client_id(client_id, dob, system_id, token)
+    search_for_customers([['customer_number', client_id], ['date_of_birth', dob]], system_id, token)
   end
 
-  def fetch_customer_information(customer_id, system_id, funding=false, locations=false)
+  def fetch_customer_information(customer_id, system_id, token, funding=false, locations=false)
     url_options = "/api/customer/" + system_id + '/'
     url_options += customer_id.to_s
     url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
@@ -325,7 +329,7 @@ class EcolaneHelpers
     Rails.logger.debug URI.parse(url)
     t = Time.now
 
-    resp = send_request(url )
+    resp = send_request(url, token )
 
     if resp.code != "200"
       Honeybadger.notify(
@@ -338,7 +342,7 @@ class EcolaneHelpers
     resp.body
   end
 
-  def search_for_customers(terms = {}, system_id)
+  def search_for_customers(terms = {}, system_id, token)
 
 
     url_options = "/api/customer/" + system_id + '/search?'
@@ -346,7 +350,7 @@ class EcolaneHelpers
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
     url = BASE_URL + url_options
-    resp = send_request(url)
+    resp = send_request(url, token)
   end
 
 
@@ -371,26 +375,28 @@ class EcolaneHelpers
 
   end
 
-  def validate_passenger(customer_number, dob, system_id)
+  def validate_passenger(customer_number, dob, system_id, token)
 
     iso_dob = iso8601ify(dob)
     if iso_dob.nil?
       return false, "", ""
     end
-    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id)
+    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id, token)
     resp = unpack_validation_response(resp)
     return resp[0], resp[2][0], resp[2][1]
   end
 
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
-
-    service = Service.find_by(external_id: county.downcase.strip)
+    puts external_user_id
+    service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
       u = user_service.user_profile.user
+      puts 'old'
+
     else
       new_user = true
-      u = User.where(email: external_user_id + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
+      u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob
@@ -400,7 +406,6 @@ class EcolaneHelpers
       up.user = u
       up.save!
       result = u.save
-
     end
 
     #Update Birth Year
@@ -412,26 +417,26 @@ class EcolaneHelpers
     end
 
     if new_user #Create User Service
-      user_service = UserService.where(user_profile: u.user_profile, service: service).first_or_initialize
+      user_service = UserService.where(user_profile_id: u.user_profile.id, service_id: service.id).first_or_initialize
       user_service.external_user_id = external_user_id
       user_service.save
     end
     u
   end
 
-  def fetch_customer_orders(customer_id, system_id)
+  def fetch_customer_orders(customer_id, system_id, token)
     url_options = "/api/customer/" + system_id + '/'
     url_options += customer_id.to_s
     url_options += "/orders"
     url = BASE_URL + url_options
-    send_request(url)
+    send_request(url, token)
   end
 
-  def fetch_single_order(trip_id, system_id)
+  def fetch_single_order(trip_id, system_id, token)
     url_options = "/api/order/" + system_id + '/'
     url_options += trip_id.to_s
     url = BASE_URL + url_options
-    send_request(url)
+    send_request(url, token)
   end
 
 
@@ -472,34 +477,29 @@ class EcolaneHelpers
 
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
-    default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id)
+    default_funding = get_default_funding_source(get_customer_id(itinerary), itinerary.service.booking_system_id, itinerary.service.booking_token)
     funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
 
     purpose = itinerary.trip_part.trip.trip_purpose_raw
     min_index = 10000
     best_funding_source = nil
-    best_sponsor = nil
-    best_purpose = nil
 
     #Cycle through all the funding sources for this trip.  Return the one with the lowest index.
     funding_xml.xpath("funding_options").xpath("option").each do |options|
 
       ecolane_purpose = options.xpath("purpose").text
-      simplified_ecolane_purpose = ecolane_purpose.downcase.gsub(%r{[ /]}, '_')
 
-      if simplified_ecolane_purpose == 'other' or simplified_ecolane_purpose == purpose
+      if ecolane_purpose == purpose
         funding_source = options.xpath("funding_source").text
         index = funding_array.index(funding_source)
 
-        if index and (index < min_index or (index == min_index and best_sponsor.nil?))
+        if index and (index < min_index)
           min_index = index
           best_funding_source = funding_source
-          best_sponsor = options.xpath("sponsor").text
-          best_purpose = ecolane_purpose
 
-          #If we match the default funding source with a sponsor, go ahead and return.
-          if min_index == 0 and not best_sponsor.nil?
-            return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
+          #If we match the default funding source, go ahead and find the purpose
+          if min_index == 0
+            return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml )
           end
 
         end
@@ -507,7 +507,54 @@ class EcolaneHelpers
       end
     end
 
-    return {funding_source: best_funding_source, purpose: best_purpose , sponsor: best_sponsor}
+    return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml)
+
+  end
+
+  def build_funding_hash_from_funding_source(itinerary, funding_source, funding_xml)
+
+    purpose = itinerary.trip_part.trip.trip_purpose_raw
+    sponsors = itinerary.service.sponsors
+    if sponsors.count == 0
+      return {funding_source: funding_source, purpose: purpose, sponsor: nil}
+    end
+
+    sponsors = sponsors.order(:index).pluck(:code)
+
+    min_index = 10000
+    best_sponsor = nil
+
+    #Cycle through all the funding sources for this trip.  For the one's that match our funding source, find the best sponsor
+    funding_xml.xpath("funding_options").xpath("option").each do |options|
+      ecolane_funding_source = options.xpath("funding_source").text
+
+      unless ecolane_funding_source == funding_source
+        next
+      end
+
+      ecolane_purpose = options.xpath("purpose").text
+
+      if ecolane_purpose == purpose
+
+        sponsor = options.xpath("sponsor").text
+        index_of_sponsor = sponsors.index(sponsor)
+
+        if best_sponsor.nil?
+          best_sponsor = sponsor
+          min_index = index_of_sponsor || min_index
+        elsif index_of_sponsor and index_of_sponsor < min_index
+          best_sponsor = sponsor
+          min_index = index_of_sponsor
+        end
+
+        #If we match the default funding source with the min sponsor, go ahead and return.
+        if min_index == 0
+          return {funding_source: funding_source, purpose: purpose, sponsor: best_sponsor}
+        end
+      end
+    end
+
+    return {funding_source: funding_source, purpose: purpose, sponsor: best_sponsor}
 
   end
 
@@ -521,23 +568,23 @@ class EcolaneHelpers
   end
 
   def build_discount_order_hash(itinerary, funding_source, guest_id)
-    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
-    order[:funding] = build_discount_funding_hash(itinerary, funding_source)
+    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(itinerary).body))
     order
   end
 
   def build_discount_funding_hash(itinerary, funding_source)
     #TODO: This purpose has to be updated when trip purposes are pulled in on-the-fly
-    return {funding_source: funding_source, purpose: "Other"}
+    return {funding_source: funding_source, purpose: itinerary.trip_part.trip.trip_purpose_raw}
   end
   ############################################################
 
 
   #Find the default funding source for a customer id
   # (customer_id is the internal id and not the client id)
-  def get_default_funding_source(customer_id, system_id)
+  def get_default_funding_source(customer_id, system_id, token)
 
-    customer_information = fetch_customer_information(customer_id, system_id, funding = true)
+    customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
     resp_xml = Nokogiri::XML(customer_information)
     resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
       if funding_source.attribute("default") and funding_source.attribute("default").value.downcase == "yes"
@@ -550,9 +597,9 @@ class EcolaneHelpers
   #Build the hash for the pickup request
   def build_pu_hash(itinerary)
     if itinerary.trip_part.is_depart
-      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
     else
-      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place)}
+      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
     end
     pu_hash
   end
@@ -579,7 +626,7 @@ class EcolaneHelpers
 
 
   ## Send the Requests
-  def send_request(url, type='GET', message=nil)
+  def send_request(url, token, type='GET', message=nil)
 
     Rails.logger.info("Sending Request . . .")
 
@@ -602,7 +649,7 @@ class EcolaneHelpers
           req = Net::HTTP::Get.new(uri)
       end
 
-      req.add_field 'X-ECOLANE-TOKEN', X_ECOLANE_TOKEN
+      req.add_field 'X-ECOLANE-TOKEN', token
       req.add_field 'X-Ecolane-Agent', 'ococtest'
       req.add_field 'Content-Type', 'text/xml'
 
@@ -613,8 +660,8 @@ class EcolaneHelpers
       Rails.logger.info("REQ")
       Rails.logger.info(req.inspect)
       Rails.logger.info("RESPONSE")
-      Rails.logger.info(resp.inspect)
-      Rails.logger.info("Sending End")
+      Rails.logger.info(resp.body)
+      Rails.logger.info("End")
       return resp
     rescue Exception=>e
       Honeybadger.notify(
@@ -637,15 +684,20 @@ class EcolaneHelpers
 
   def get_customer_id(itinerary)
     user_service = itinerary.trip_part.trip.user.user_profile.user_services.where(service: itinerary.service).first
-    if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
-      user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id)
-      user_service.save
+
+    if user_service
+      if (Time.now - user_service.updated_at > 300) or user_service.customer_id.nil?
+        user_service.customer_id = get_ecolane_customer_id(user_service.external_user_id, itinerary.service.booking_system_id, itinerary.service.booking_token)
+        user_service.save
+      end
+      return user_service.customer_id
+    else
+      return get_ecolane_customer_id(itinerary.service.fare_user, itinerary.service.booking_system_id, itinerary.service.booking_token)
     end
-    return user_service.customer_id
   end
 
   def cancel_itinerary(itinerary)
-    result = cancel(itinerary.booking_confirmation, itinerary.service.booking_system_id)
+    result = cancel(itinerary.booking_confirmation, itinerary.service.booking_system_id, itinerary.service.booking_token)
     if result
       itinerary.booking_confirmation = nil
       itinerary.save
@@ -653,13 +705,13 @@ class EcolaneHelpers
     result
   end
 
-  def cancel(trip_conf, system_id)
+  def cancel(trip_conf, system_id, token)
     url_options = "/api/order/" + system_id + '/'
     url_options += trip_conf.to_s
 
     url = BASE_URL + url_options
 
-    resp = send_request(url, 'DELETE')
+    resp = send_request(url, token, 'DELETE')
     begin
       resp_code = resp.code
     rescue
@@ -669,7 +721,7 @@ class EcolaneHelpers
       Rails.logger.debug "Trip " + trip_conf.to_s + " canceled."
       #The trip was successfully canceled
       return true
-    elsif get_trip_status(trip_conf, system_id) == 'canceled'
+    elsif get_trip_status(trip_conf, system_id, token) == 'canceled'
       Rails.logger.debug "Trip " + trip_conf.to_s + " already canceled."
 
       #The trip was not successfully deleted, because it was already canceled
@@ -698,12 +750,13 @@ class EcolaneHelpers
     Date.iso8601(dob.delete('/'))
   end
 
-  def county_to_system(county)
-    Oneclick::Application.config.ecolane_county_mapping[county.downcase.to_sym]
+  def county_to_service(county)
+    Service.find_by(external_id: county_to_external_id(county).downcase.strip)
   end
 
-  def county_to_service(county)
-    Service.find_by(external_id: county.downcase.strip)
+  def county_to_external_id(county)
+    mapping = Oneclick::Application.config.ecolane_county_mapping[county.downcase.strip.to_s]
+    return mapping.nil? ? county : mapping
   end
 
   ### Testing functions:

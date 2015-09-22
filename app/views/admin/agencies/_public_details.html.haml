@@ -33,7 +33,7 @@
             = translate_helper(:url)+ ":  "
           %td.text-left{colspan: 4}
             - unless agency.url.blank?
-              %strong= link_to agency.url, agency.url
+              %strong= link_to agency.url, agency.url, :target => "_blank"
         %tr
           %td.text-right
             = translate_helper(:parent_agency) + ":  "

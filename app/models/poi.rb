@@ -10,10 +10,15 @@ class Poi < GeocodedAddress
 
   # set the default scope
   default_scope {order('pois.name')}
+  scope :has_address, -> { where.not(:address1 => nil) }
 
-  def self.get_by_query_str(query_str, limit)
+  def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)
-    pois = Poi.where(rel).limit(limit)
+    if has_address
+      pois = Poi.has_address.where(rel).limit(limit)
+    else
+      pois = Poi.where(rel).limit(limit)
+    end
     pois
   end
 
@@ -141,42 +146,57 @@ class Poi < GeocodedAddress
 
   def build_place_details_hash
     #Based on Google Place Details
+    require 'indirizzo'
+    #Based on Google Place Details
+
+    parsable_address = Indirizzo::Address.new(self.address1)
 
     {
-      address_components: [
+        address_components: [
         {
-          long_name: self.address1,
-          short_name: self.address1,
-          types: ["street_address"]
-        },
+            long_name: parsable_address.number,
+        short_name: parsable_address.number,
+        types: ["street_number"]
+    },
         {
-          long_name: self.city,
-          short_name: self.city,
-          types: ["locality", "political"]
-        },
+            long_name: parsable_address.street.first,
+        short_name: parsable_address.street.first,
+        types: ["route"]
+    },
         {
-          long_name: self.state,
-          short_name: self.state,
-          types: ["administrative_area_level_1","political"]
-        },
+            long_name: self.address1,
+        short_name: self.address1,
+        types: ["street_address"]
+    },
         {
-          long_name: self.zip,
-          short_name: self.zip,
-          types: ["postal_code"]
-        }
-      ],
-
-      formatted_address: self.address,
-      geometry: {
-        location: {
-          lat: self.lat,
-          lng: self.lon,
-        }
-      },
-      id: self.id,
-      name: self.name,
-      scope: "global"
+            long_name: self.city,
+        short_name: self.city,
+        types: ["locality", "political"]
+    },
+        {
+            long_name: self.state,
+        short_name: self.state,
+        types: ["administrative_area_level_1","political"]
+    },
+        {
+            long_name: self.zip,
+        short_name: self.zip,
+        types: ["postal_code"]
     }
+    ],
+
+        formatted_address: self.address,
+        geometry: {
+        location: {
+        lat: self.lat,
+        lng: self.lon,
+    }
+    },
+        id: self.id,
+        name: self.name,
+        scope: "user"
+    }
+
   end
   
 end

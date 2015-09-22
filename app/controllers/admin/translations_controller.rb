@@ -3,28 +3,12 @@ class Admin::TranslationsController < Admin::BaseController
     authorize_resource
 
     def index
-        @locales = I18n.available_locales.sort
-
-        translations = Translation.includes(:locale, :translation_key).references(:locale, :translation_key)
-            .where.not(translation_key_id: nil)
-            .where(locales: {name: I18n.available_locales}).order("translation_keys.name asc", "locales.name asc")
-
-        empty_locale_hash = Hash.new
-        @locales.each {|l| empty_locale_hash[l] = nil}
-
-        @translations_hash = Hash.new
-        translations.find_each do |t|
-            key_name = t.translation_key.name
-            @translations_hash[key_name] ||= empty_locale_hash.clone
-            @translations_hash[key_name][t.locale.name] = {
-                id: t.id,
-                value: t.value
-            }
-        end
-
-        @translation_keys = @translations_hash.keys
-
-      render 'index' 
+      @locales = []
+      I18n.available_locales.each do |locale_sym|
+        @locales.push(Locale.find_by_name(locale_sym))
+      end
+      @translation_keys = TranslationKey.order(:name)
+      render 'index'
     end
 
     def new
@@ -87,13 +71,12 @@ class Admin::TranslationsController < Admin::BaseController
     end
 
     def destroy
-        translation_key_id = params[:id].to_s
-        translations = Translation.where(translation_key_id: translation_key_id)
-        translations.each do |translation|
-            translation.destroy
-        end
-        flash[:success] = "Translation Removed"
-        redirect_to admin_translations_path
+      translation_key_ids = params[:id].to_s.split(',')
+      Translation.where(translation_key_id: translation_key_ids).delete_all
+      TranslationKey.where(id: translation_key_ids).delete_all
+
+      flash[:success] = "Translation Removed"
+      redirect_to admin_translations_path
     end
 
     private

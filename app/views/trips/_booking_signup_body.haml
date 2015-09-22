@@ -29,5 +29,6 @@
           .form-inputs
             = f.error_notification message: print_messages(f)
             = f.input :service_id, :as => :hidden, :input_html => {value: Service.where(booking_service_code: 'ecolane').first.id}
-            = f.input :external_user_id,label: "Rabbit Transit " + translate_helper(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
+            = f.input :external_user_id,label: translate_helper(:client_id), label_method: :last, value_method: :first, :item_wrapper_class => "inline"
             = f.input :dob, label: translate_helper(:dob), label_method: :last, value_method: :first, :item_wrapper_class => "inline", placeholder: "mm/dd/yyyy", hint: translate_helper(:dob_notice)
+            = f.input :county, label: "County", :item_wrapper_class => "inline", :collection => Oneclick::Application.config.kiosk_counties, :selected => Oneclick::Application.config.kiosk_counties.first

@@ -13,6 +13,7 @@ class Mode < ActiveRecord::Base
   default_scope {where(active: true)}
 
   scope :top_level, -> { where parent_id: nil }
+  scope :visible, -> { where visible: true }
 
   begin
     Mode.unscoped.load.each do |mode|

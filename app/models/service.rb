@@ -25,6 +25,7 @@ class Service < ActiveRecord::Base
   has_and_belongs_to_many :users # primarily for internal contact
   has_many :fare_zones
   has_many :funding_sources
+  has_many :sponsors
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
@@ -493,6 +494,20 @@ class Service < ActiveRecord::Base
       return false unless self.endpoint_area_geom.geom.contains? test_point
     end
     return true
+  end
+
+  def coverage_area_contains?(lat, lng)
+    mercator_factory = RGeo::Geographic.simple_mercator_factory
+    test_point = mercator_factory.point(lng, lat)
+    unless self.coverage_area_geom.nil?
+      return false unless self.coverage_area_geom.geom.contains? test_point
+    end
+    return true
+  end
+
+
+  def disallowed_purposes_array
+    return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
   end
 
   private

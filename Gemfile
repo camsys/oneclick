@@ -15,7 +15,7 @@ else
   gem 'simple_form', '3.0.1'
 end
 
-gem 'translation_engine', github: 'camsys/translation_engine'
+gem 'translation_engine', github: 'derekedwards/translation_engine'
 #gem 'translation_engine', path: '~/code/translation_engine'
 
 gem 'fog'

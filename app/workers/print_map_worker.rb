@@ -21,6 +21,9 @@ class PrintMapWorker
 
     i = Itinerary.find(itinerary_id)
     i.map_image = File.open(tempfile)
+
+    Rails.logger.info "Map IMAGE DONE"
+    Rails.logger.info (map_image.url)
     i.save!
   ensure
     session.driver.quit

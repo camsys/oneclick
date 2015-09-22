@@ -71,14 +71,21 @@ class Trip < ActiveRecord::Base
   end
 
   def self.create_from_proxy trip_proxy, user, traveler
+
     trip = Trip.new()
     trip.creator = user
     trip.agency = user.agency
     trip.user = traveler
-    trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+    if trip_proxy.trip_purpose_id
+      trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+    else
+      trip.trip_purpose = TripPurpose.first
+    end
+
     trip.desired_modes = Mode.where(code: trip_proxy.modes)
     trip.token = trip_proxy.trip_token || nil
     trip.agency_token = trip_proxy.agency_token || nil
+    trip.trip_purpose_raw = trip_proxy.trip_purpose_raw || nil
 
     #Assign agency if app_token is present and belongs to an agency
     if trip.agency.nil? and not trip.agency_token.nil?

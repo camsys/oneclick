@@ -4,6 +4,22 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  is_return_trip: "Return trip?"
+  select_all: "Select All"
+  select_none: "Select None"
+  message: "Message"
+  send_message: "Send Message"
+  message_body: "Message Body"
+  message_from_date: "From Date"
+  message_to_date: "To Date"
+  unread_message: "Unread Message"
+  mark_as_read: "Mark as Read"
+  merge: "Merge"
+  merge_message_1: "Clicking on 'Apply' will merge"
+  merge_message_2: "'s account into"
+  merge_message_3: "'s account. You may also edit"
+  merge_message_4: "'s account using the fields below."
+  merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
 
   wheelchair_lift_equipped_note: "Do you require a vehicle equipped with a wheelchair lift? "
   wheelchair_lift_equipped_name: "Wheelchair lift equipped"
@@ -45,9 +61,14 @@ en:
   traveler_notes: "Traveler Notes"
   base_rate: "Base Fare"
   mileage_rate: "Mileage Rate"
+  mileage_rate_unavailable: "Mileage rate unavailable"
   fare_type: 'Fare Type'
   flat_fare: 'Flat Fare'
   mileage_fare: 'Mileage Fare'
+  base_fare_unavailable: 'Base fare unavailable'
+  fare_unavailable: 'Fare unavailable'
+  complex_fare: 'Complex fare'
+  use_gtfs_colors: 'Use GTFS colors'
   zone_fare: 'Zone Fare'
   zone_fare_new_service_warning: 'Please save the service first, then go to service editng page to further edit zone fares. Fare zone shapefile is needed.'
   one_way_rate: 'One Way Rate'
@@ -235,6 +256,7 @@ en:
   not_authorized: 'You are not authorized.'
   failed_to_update_application_logo: 'There was an error in updating application logo. Please try again.'
   select_logo_image_to_upload: 'Please select an image to upload'
+  select_image_to_upload: 'Please select an image to upload'
   upload_application_logo: 'Upload Application Logo'
   upload_application_logo_notes: 'Refer to 1-Click Deployment Document on file specfications.'
 
@@ -415,6 +437,7 @@ en:
   select_or_enter_address: 'Select or enter address'
   select: 'Select'
   trip_date: 'Date'
+  trip_datetime: 'Trip Datetime'
   depart_at: 'Depart at'
   arrive_by: 'Arrive by'
   arrive_at: 'Arrive at'
@@ -547,6 +570,7 @@ en:
   create: "Create"
   created: "Created"
   created_at: "Created At"
+  removed_at: "Removed At"
   trip_was_successfully_created: 'Trip was successfully created.'
   trip_was_successfully_removed: 'Trip was successfully removed.'
   trip_created_no_valid_options: "Trip created, but no valid trip options could be found."
@@ -599,6 +623,7 @@ en:
   wait_at: 'Wait at'
   fare: "Fare"
   flat_fare_unavailable: "Flat fare unavailable"
+
   rate: "Rate"
   four_digit_year: 'Year must be four digits'
   cannot_change_time_to_past: 'Cannot change trip part time to a past time'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622155329) do
+ActiveRecord::Schema.define(version: 20150717141712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,6 +216,8 @@ ActiveRecord::Schema.define(version: 20150622155329) do
     t.integer  "children"
     t.integer  "other_passengers"
     t.text     "discounts"
+    t.datetime "negotiated_pu_time"
+    t.datetime "negotiated_do_time"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -585,6 +587,8 @@ ActiveRecord::Schema.define(version: 20150622155329) do
     t.string   "disabled_comment"
     t.string   "fare_user"
     t.string   "booking_system_id"
+    t.string   "booking_token"
+    t.text     "disallowed_purposes"
   end
 
   create_table "services_users", id: false, force: true do |t|
@@ -603,6 +607,14 @@ ActiveRecord::Schema.define(version: 20150622155329) do
     t.string   "status",     default: "pending", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "sponsors", force: true do |t|
+    t.string   "code",       null: false
+    t.integer  "index"
+    t.integer  "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "translation_keys", force: true do |t|
@@ -647,6 +659,7 @@ ActiveRecord::Schema.define(version: 20150622155329) do
     t.integer  "companions"
     t.integer  "children"
     t.integer  "other_passengers"
+    t.text     "note_to_driver"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
