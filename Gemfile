@@ -16,7 +16,8 @@ else
 end
 
 gem 'translation_engine', github: 'derekedwards/translation_engine'
-#gem 'translation_engine', path: '~/code/translation_engine'
+#Switched to custom translation engine that doesn't do inline help.  Inline help was duplicated in 1-click
+#gem 'translation_engine', github: 'camsys/translation_engine'
 
 gem 'fog'
 gem 'coffee-rails'
