@@ -29,6 +29,7 @@ Oneclick::Application.configure do
   config.min_drive_seconds = 180
   config.max_walk_seconds = 1200
   config.allows_booking = false
+  config.restrict_results_registered_services = false #Only show results on the review page from services that the user is registered to book with (used at PA)
   config.replace_long_walks = false
 
   config.street_view_url = '/streetview.html'
@@ -209,6 +210,7 @@ Oneclick::Application.configure do
     #for PA, we ask a follow up question after a person creates an account
     config.initial_signup_question = true
     config.allows_booking = true
+    config.restrict_results_registered_services = true#Only show results on the review page from services that the user is registered to book with (used at PA)
     config.kiosk_available = true
     config.ada_funding_sources = ["ADAYORK1", "ADAYORK2"]
     config.kiosk_counties = ["Adams", "Cambria", "Cumberland", "Dauphin", "Franklin", "Lebanon", "York"]
