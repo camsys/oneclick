@@ -12,13 +12,17 @@
 //Partials for each of the booking dialogs
 .modal-dialog
   %div.booking-dialog{id: 'booking_outbound_association_dialog'}
-    = render partial: 'booking_outbound_association_panel'
+    -if @trip.outbound_part.service_is_bookable?
+      = render partial: 'booking_outbound_association_panel'
   %div.booking-dialog{id: 'booking_outbound_confirmation_dialog'}
-    = render partial: 'booking_outbound_confirmation_panel'
+    -if @trip.outbound_part.service_is_bookable?
+      = render partial: 'booking_outbound_confirmation_panel'
   %div.booking-dialog{id: 'booking_return_association_dialog'}
-    = render partial: 'booking_return_association_panel'
+    -if @trip.return_part.service_is_bookable?
+      = render partial: 'booking_return_association_panel'
   %div.booking-dialog{id: 'booking_return_confirmation_dialog'}
-    = render partial: 'booking_return_confirmation_panel'
+    -if @trip.return_part.service_is_bookable?
+      = render partial: 'booking_return_confirmation_panel'
   %div.booking-dialog{id: 'booking_results_dialog'}
     = render partial: 'booking_results_panel'
 
