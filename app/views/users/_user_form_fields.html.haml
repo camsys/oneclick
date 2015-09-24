@@ -283,7 +283,7 @@
           dataType: "json",
           success: function(data) {
             if (data["success"]) {
-              $(".modal").modal("toggle");
+              $(".modal").modal("hide");
               $("div.table-flash").html(data["msg"]).addClass("alert alert-success fade-in");
               $(".new_buddies select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
               //find row
