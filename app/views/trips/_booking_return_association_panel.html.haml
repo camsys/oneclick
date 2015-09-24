@@ -18,6 +18,12 @@
 
     .modal-body
       .row
+        .col-sm-12.text-center
+          =translate_helper(:more_info_message)
+          =link_to @trip.return_part.selected_itinerary.service.provider.name, provider_url(@trip.return_part.selected_itinerary.service.provider), :target => "_blank"
+          = "."
+
+      .row
         .col-sm-12.booking_message.text-center{:style => 'font-weight:bold;'}
           =""
 
