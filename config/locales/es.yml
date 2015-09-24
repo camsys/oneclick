@@ -875,6 +875,7 @@ es:
   assisting_turned_on: "[es572]Assisting has been turned on.[/es]"
   ask_age: "[es]Are you age %{age} or older?[/es]"
 
+  feedback_type: "[es]Feedback Type[/es]"
   type_of_feedback: "[es]What kind of feedback would you like to leave?[/es]"
   application: "[es]Application[/es]"
   unmet_need: "[es]Unmet Need[/es]"

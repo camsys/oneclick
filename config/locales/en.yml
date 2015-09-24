@@ -938,6 +938,7 @@ en:
   new_esp_successfully_uploaded: "New ESP File Successfully Uploaded"
   thanks_for_the_feedback: "Thank you for your feedback!"
   optional_comments_descr: "If you would like to provide optional comments or a rating for your trip, you can do so below."
+  feedback_type: "Feedback Type"
   type_of_feedback: "What kind of feedback would you like to leave?"
   application: "Application"
   unmet_need: "Unmet Need"
