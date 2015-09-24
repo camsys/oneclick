@@ -197,26 +197,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def associate_service
 
-    Rails.logger.debug 'Are we in her eor what?'
-
-    service =  Service.find(params['service'].to_i)
-    external_user_id = params['external_user_id']
-    external_user_password = params['external_user_password']
-
-    result = service.associate_user(@traveler, external_user_id, '1234')
-
-
-    Rails.logger.info 'The result is'
-    Rails.logger.info result
-
-
-
-    respond_to do |format|
-      format.json { render json: {associated: result} }
-    end
-  end
 
 private
 
