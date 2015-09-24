@@ -110,7 +110,7 @@
             console.log('#{@trip.return_part.service_is_bookable?}');
 
             if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
-              if('#{@trip.return_part.is_associated?}'){
+              if('#{@trip.return_part.is_associated?}' == 'true'){
                 booking_state = 'confirming_return';
               }
               else{
