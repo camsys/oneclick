@@ -18,8 +18,13 @@ class TrapezeServices
 
   def pass_validate_client_password(endpoint, namespace, username, password, client_id, client_password)
 
-    client = create_client(endpoint, namespace, username, password)
-    response = client.call(:pass_validate_client_password, message: {client_id: client_id, password: client_password})
+    begin
+      client = create_client(endpoint, namespace, username, password)
+      response = client.call(:pass_validate_client_password, message: {client_id: client_id, password: client_password})
+    rescue
+      return false
+    end
+
     if response.to_hash[:pass_validate_client_password_response][:validation][:item][:code] == "RESULTOK"
       return true
     else
