@@ -63,6 +63,8 @@ es:
   comments: '[es]Comments[/es]'
   no_comments: '[es]No comments[/es]'
   one_click_trip_planner: '1-Click Planificador de Viajes'
+  cant_modify_booked_trip_reason: "[es]Can't modify this trip because it has been scheduled for pick-up.[/es]"
+  cant_modify_past_trip_reason: "[es]Can't modify this trip: either the depart or arrive time is in the past.[/es]"
   # Actions
   plan_a_trip: 'Planear un Viaje'
   plan_a_new_trip: 'Planear un Viaje Nuevo'

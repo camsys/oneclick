@@ -117,6 +117,8 @@ en:
   booking_link_success: "Success!  You can now book trips with Shared Ride."
   ecolane_login_button: "Shared Ride Login"
   one_click_trip_planner: '1-Click Trip Planner'
+  cant_modify_booked_trip_reason: "Can't modify this trip because it has been scheduled for pick-up."
+  cant_modify_past_trip_reason: "Can't modify this trip: either the depart or arrive time is in the past."
   # Actions
   plan_a_trip: 'Plan a Trip'
   plan_a_new_trip: 'Plan a new trip'

@@ -7,7 +7,7 @@
         -return_associate_button_text = "Associate"
         =return_associate_button_text
 
-      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id: 'closeReturnAssociation', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
@@ -46,6 +46,19 @@
 
 
 :javascript
+  
+  $('#closeReturnAssociation').on('click', function(event) {
+    if($('#bookingModal').data('outbound-booked') == true ){
+      event.preventDefault();
+
+      booking_state = 'showing_results';
+      $('#return_booking_results').hide();
+      update_dialog();
+
+      return false;
+    }
+  });
+
   $('#return_associate_button_btn').on('click', function(event) {
    event.stopPropagation();
    event.stopImmediatePropagation();

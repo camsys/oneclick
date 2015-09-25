@@ -7,7 +7,7 @@
         -outbound_associate_button_text = "Associate"
         =outbound_associate_button_text
 
-      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id:'closeOutboundAssociation', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
@@ -45,6 +45,18 @@
 
 
 :javascript
+  
+  $('#closeOutboundAssociation').on('click', function(event) {
+    if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
+      event.preventDefault();
+
+      booking_state = 'associating_return';
+      update_dialog();
+
+      return false;
+    }
+  });
+
   $('#outbound_associate_button_btn').on('click', function(event) {
    event.stopPropagation();
    event.stopImmediatePropagation();
@@ -57,7 +69,6 @@
   })
 
   $('#outbound_association_form').on('ajax:success', function(event, data, status, xhr) {
-    console.log(data);
     if(data['associated'] == true){
 
       //Populate trip purposes
@@ -65,7 +76,6 @@
       var trip_purpose_html = ""
       for (var key in trip_purposes){
         trip_purpose_html = trip_purpose_html + "<option value=" + trip_purposes[key] + ">" + key + '</option>'
-        console.log(trip_purpose_html);
       }
       $('#outbound_trip_purpose_collection').html(trip_purpose_html);
 

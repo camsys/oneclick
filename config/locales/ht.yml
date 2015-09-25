@@ -39,6 +39,8 @@ ht:
   comments: '[ht]Comments[/ht]'
   no_comments: '[ht]No comments[/ht]'
   one_click_trip_planner: '[ht]1-Click Trip Planner[/ht]'
+  cant_modify_booked_trip_reason: "[ht]Can't modify this trip because it has been scheduled for pick-up.[/ht]"
+  cant_modify_past_trip_reason: "[ht]Can't modify this trip: either the depart or arrive time is in the past.[/ht]"
   # Actions
   plan_a_trip: '[ht]Plan a Trip[/ht]'
   plan_a_new_trip: '[ht]Plan a new trip[/ht]'
