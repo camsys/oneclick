@@ -1,6 +1,9 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:review)}"
 - content_for :head do
   = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
+
+- is_trip_cannot_modify = @trip && !@trip.can_modify ? true : false
+- cannot_modify_message = @trip.cant_modify_reason || '' if is_trip_cannot_modify
 .row
   .col-sm-12#action_header
     .pull-right
@@ -68,6 +71,10 @@
 
   :javascript
     $(function() {
+      if(#{is_trip_cannot_modify}) {
+        show_alert("#{cannot_modify_message}");
+      }
+
       var getConfigValue = function(config) {
 
       };
@@ -220,7 +227,7 @@
       });
 
       var tripResponse = #{@tripResponse.to_json};
-      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, filterConfigs, localeDictFinder);
+      var pageRenderer = new TripReviewPageRenderer(30, 20, tripResponse, filterConfigs, localeDictFinder, #{is_trip_cannot_modify});
       pageRenderer.processTripResponse();
 
       $('#itinerary_modal').on('shown.bs.modal', function() {
