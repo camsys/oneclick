@@ -7,7 +7,7 @@
         -outbound_associate_button_text = "Associate"
         =outbound_associate_button_text
 
-      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id:'closeOutboundAssociation', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
@@ -45,6 +45,18 @@
 
 
 :javascript
+  
+  $('#closeOutboundAssociation').on('click', function(event) {
+    if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
+      event.preventDefault();
+
+      booking_state = 'associating_return';
+      update_dialog();
+
+      return false;
+    }
+  });
+
   $('#outbound_associate_button_btn').on('click', function(event) {
    event.stopPropagation();
    event.stopImmediatePropagation();

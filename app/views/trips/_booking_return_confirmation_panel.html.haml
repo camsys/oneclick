@@ -100,6 +100,7 @@
       $('#return_book_button_btn').hide();
         console.log(result);
         if (result['booked']) {
+            $('#bookingModal').attr('data-return-booked', true);
             var confirmation_number =  result['confirmation'];
             var negotiated_pu_time = result['negotiated_pu_time'];
             var negotiated_pu_window_start = result['negotiated_pu_window_start'];
