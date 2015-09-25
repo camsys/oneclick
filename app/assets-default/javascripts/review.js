@@ -1100,7 +1100,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         if (isDepartAt === undefined) { isDepartAt = false; }
         var disabledStyle = isItineraryUnselectable ? 'disabled' : '';
         var tags =
-            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' disabled='" + disabledStyle + "' " +  
+            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' " + disabledStyle + " " +  
                 "aria-label='Select this option.' tabindex=" + (isDepartAt ? '17' : '16') + ">" +
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
