@@ -46,7 +46,7 @@
 
 :javascript
   
-  $('#closeOutboundAssociation').on('click', function(event) {
+  $('#closeOutboundAssociation, #closeOutboundConfirmation').on('click', function(event) {
     if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
       event.preventDefault();
 

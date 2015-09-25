@@ -47,7 +47,7 @@
 
 :javascript
   
-  $('#closeReturnAssociation').on('click', function(event) {
+  $('#closeReturnAssociation, #closeReturnConfirmation').on('click', function(event) {
     if($('#bookingModal').data('outbound-booked') == true ){
       event.preventDefault();
 

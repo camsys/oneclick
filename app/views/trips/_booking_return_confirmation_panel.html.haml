@@ -6,7 +6,7 @@
       %button.btn.action-button#return_book_button_btn
         =translate_helper(:book)
 
-      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id: 'closeReturnConfirmation', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
