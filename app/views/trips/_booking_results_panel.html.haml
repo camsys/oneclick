@@ -3,7 +3,7 @@
 
     // The Buttons
     .pull-right
-      = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id: 'closeBookingResults', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
@@ -28,3 +28,10 @@
                 ="Your Outbound Trip"
             .panel-body
               = render partial: 'booked_itinerary_confirmation', locals: {itinerary: itinerary}
+
+:javascript
+  $(document).ready(function() {
+    $('body').on('click', '#closeBookingResults', function() {
+      document.location.reload();
+    })
+  });
