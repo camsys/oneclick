@@ -2,6 +2,7 @@
 - is_splash_available = TranslationEngine.show_translation_item?(:splash)
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
+- is_trip_cannot_modify = @trip && !@trip.can_modify ? true : false
 - if is_splash_available
   - non_splash_css = 'col-sm-7 col-xs-12'
   - splash_css = 'col-sm-5 col-xs-12'
@@ -12,9 +13,13 @@
         =translate_helper(:next)
         :javascript
           $(function() {
-            $('button[name=planTrip]').click(function() {
-              $('.plan-a-trip').submit();
-            });
+            if(#{is_trip_cannot_modify}) {
+              $('button[name=planTrip]').hide();
+            } else {
+              $('button[name=planTrip]').click(function() {
+                $('.plan-a-trip').submit();
+              });
+            }
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
 .row

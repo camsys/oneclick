@@ -48,7 +48,7 @@ class CharacteristicsController < TravelerAwareController
 
   def new
 
-
+    
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@traveler)
 
     @trip_id = session[:current_trip_id] || params[:trip_id]

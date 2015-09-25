@@ -50,7 +50,7 @@ module ApplicationHelper
       KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
       KIOSK_ICON_DICTIONARY[mode]
     else
-      Mode.unscoped.where(code: 'mode_' + mode.downcase).first.logo_url
+      Mode.unscoped.where(code: 'mode_' + mode.downcase).first.try(:logo_url)
     end
   end
 

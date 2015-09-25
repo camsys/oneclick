@@ -303,12 +303,8 @@ class Trip < ActiveRecord::Base
   end
 
   def cant_modify_reason
-    in_the_future ? "(can modify)" : "Can't modify this trip: either the depart or arrive time is in the past."
-
-    #DEREK
-    if is_booked?
-      return "Can't modify this trip because it has been scheduled for pick-up."
-    end
+    return "Can't modify this trip because it has been scheduled for pick-up." if is_booked?
+    return "Can't modify this trip: either the depart or arrive time is in the past." if !in_the_future
   end
 
   # Overrides the default to string method.

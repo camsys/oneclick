@@ -84,7 +84,7 @@ function formatDate(dateToFormat) {
  * @param {Object}: localeDictFinder, a hash of localized texts
  * @method processTripResponse: public method to process trip results
  */
-function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterConfigs, localeDictFinder) {
+function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterConfigs, localeDictFinder, isItineraryUnselectable) {
     localeDictFinder = isValidObject(localeDictFinder) ? localeDictFinder : {};
     filterConfigs = isValidObject(filterConfigs) ? filterConfigs : {};
     var _tripResponse = tripResponse; //trip json
@@ -1098,8 +1098,10 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
     function getSelectButtonHtml(isDepartAt) {
         if (isDepartAt === undefined) { isDepartAt = false; }
+        var disabledStyle = isItineraryUnselectable ? 'disabled' : '';
         var tags =
-            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' aria-label='Select this option.' tabindex=" + (isDepartAt ? '17' : '16') + ">" +
+            ("<button role='button' class='btn btn-default single-plan-select action-button select-column-button' disabled='" + disabledStyle + "' " +  
+                "aria-label='Select this option.' tabindex=" + (isDepartAt ? '17' : '16') + ">" +
                 "<span class='hidden-xs'>" + localeDictFinder['select'] + "</span>" +
                 "<span class='visible-xs'>&#10004;</span>" +
                 "</button>");
