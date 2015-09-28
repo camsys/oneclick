@@ -73,13 +73,14 @@
         -if Oneclick::Application.config.allows_booking
           %td.center
             -if trip.is_booked? and trip.in_the_future
-              = button_tag :type => 'button', "data-target" => "#cancelTripConfirmDialog", "data-toggle" => "modal", :alt => translate_helper(:cancel_trip), :title => translate_helper(:cancel_trip), :class => "btn action-button btn-danger delete-button" do
+              = button_tag :type => 'button', "data-target" => "#cancelTripConfirmDialog#{trip.id}", "data-toggle" => "modal", :alt => translate_helper(:cancel_trip), :title => translate_helper(:cancel_trip), :class => "btn action-button btn-danger delete-button" do
                 = translate_helper(:cancel)
-              #cancelTripConfirmDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:cancel_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+              .modal.fade.col-sm-12{:id => "cancelTripConfirmDialog#{trip.id}", "aria-describedby" => translate_helper(:cancel_trip), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
                 .modal-dialog
                   .modal-content
                     .modal-header
                       .pull-right
+                        =trip.id
                         = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button", :method => :post} do
                           = translate_helper(:ok)
                         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
