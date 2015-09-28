@@ -105,6 +105,14 @@
             var negotiated_pu_time = result['negotiated_pu_time'];
             var negotiated_pu_window_start = result['negotiated_pu_window_start'];
             var negotiated_pu_window_end = result['negotiated_pu_window_end'];
+            if($('#bookingModal').data('outbound-booked') == true ){
+              $('#outbound_booking_results').show();
+            } else{
+              $('#outbound_booking_results').hide();
+            }
+
+            $('#return_booking_results').show();
+            
             booking_state = 'showing_results';
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
