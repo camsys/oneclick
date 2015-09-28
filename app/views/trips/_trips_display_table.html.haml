@@ -80,7 +80,6 @@
                   .modal-content
                     .modal-header
                       .pull-right
-                        =trip.id
                         = link_to cancel_user_trip_path(traveler, trip), {:class => "btn action-button", :method => :post} do
                           = translate_helper(:ok)
                         = button_tag class: 'btn action-button', data: {dismiss: 'modal'} do
