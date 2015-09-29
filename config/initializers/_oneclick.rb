@@ -45,7 +45,6 @@ Oneclick::Application.configure do
   config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
 
   config.time_zone = 'Eastern Time (US & Canada)'
-
   I18n.available_locales = [:en, :es] # default
 
   # service/provider logo upload related

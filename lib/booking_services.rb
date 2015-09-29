@@ -27,11 +27,11 @@ class BookingServices
         trapeze_profile = itinerary.service.trapeze_profile
 
         origin = itinerary.trip_part.from_trip_place
-        parsed_address = get_number_and_street(origin.address1)
+        parsed_address = get_number_and_street(origin.raw_address.blank? ? origin.address1 : origin.raw_address)
         origin_hash = {street_num: parsed_address[0], on_street: parsed_address[1], city: origin.city, state: origin.state, zip_code: origin.zip, lat: origin.lat, lon: origin.lon}
 
         destination = itinerary.trip_part.to_trip_place
-        parsed_address = get_number_and_street(destination.address1)
+        parsed_address = get_number_and_street(destination.raw_address.bank? ? destination.address1 : destination.raw_address)
         destination_hash = {street_num: parsed_address[0], on_street: parsed_address[1], city: destination.city, state: destination.state, zip_code: destination.zip, lat: destination.lat, lon: destination.lon}
 
 
@@ -127,8 +127,8 @@ class BookingServices
     end
   end
 
-  def get_number_and_street(street_address)
-    parsable_address = Indirizzo::Address.new(street_address)
+  def get_number_and_street(raw_address)
+    parsable_address = Indirizzo::Address.new(raw_address)
     return [parsable_address.number, parsable_address.street.first]
   end
 
