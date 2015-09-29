@@ -279,7 +279,7 @@ class Admin::UsersController < Admin::BaseController
 
   def set_booking_services(user, services)
 
-    unless Oneclick::Application.config.allows_booking
+    unless Oneclick::Application.config.allows_booking or services.blank?
       return false
     end
     service_ids = services.select { |key, value| key.to_s.match(/^service_\d+/) }
