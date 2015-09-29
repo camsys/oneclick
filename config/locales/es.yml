@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  more: "Mas"
   user_id: "User Id"
   client_id: "Client Id"
   is_return_trip: "Return trip?"
