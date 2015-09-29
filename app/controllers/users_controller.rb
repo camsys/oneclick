@@ -230,7 +230,7 @@ private
 
   def set_booking_services(user, services)
 
-    unless Oneclick::Application.config.allows_booking or services.blank?
+    if not Oneclick::Application.config.allows_booking or services.blank?
       return false
     end
 
