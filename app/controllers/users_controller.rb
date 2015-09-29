@@ -234,6 +234,9 @@ private
       return false
     end
 
+    Rails.logger.info services
+    Rails.logger.info "SERVICES WILL BE AROUND HERE SOMEHWERE"
+
     service_ids = services.select { |key, value| key.to_s.match(/^service_\d+/) }
 
     alert = false
