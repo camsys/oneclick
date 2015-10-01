@@ -66,12 +66,13 @@ class BookingServices
         else
           itinerary.booking_confirmation = booking_id
 
+          fare = booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:fare_amount]
+          itinerary.cost = fare.blank? ? nil : fare.to_f
+
           ### Get and Unpack Times
           times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, booking_id)
 
           unless times_hash[:neg_time].nil?
-            puts itinerary.trip_part.scheduled_time.to_date.to_s + seconds_since_midnight_to_string(times_hash[:neg_time])
-            puts Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " "+ seconds_since_midnight_to_string(times_hash[:neg_time]))
             itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_time]))
             itinerary.negotiated_pu_window_start = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_early]))
             itinerary.negotiated_pu_window_end = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_late]))
