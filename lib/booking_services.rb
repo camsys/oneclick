@@ -42,8 +42,26 @@ class BookingServices
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
         message = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:message]
 
+        Rails.logger.info result.ai
+
         if booking_id.to_i == -1 #Failed to book
-          message = result[:envelope][:body][:pass_create_trip_response][:validation][:item][:message]
+
+          begin
+            message= TranslationEngine.translate_text(:booking_failure_message)
+            items = result[:envelope][:body][:pass_create_trip_response][:validation][:item]
+            unless items.kind_of?(Array) #Check to see if this is an array or a single item
+              message = items[:message]
+            else
+              items.each do |item|
+                if item[:type] == 'error'
+                  message = item[:message]
+                  break
+                end
+              end
+            end
+          rescue
+            message= TranslationEngine.translate_text(:booking_failure_message)
+          end
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
         else
           itinerary.booking_confirmation = booking_id
