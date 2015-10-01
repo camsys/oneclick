@@ -86,12 +86,10 @@ class TrapezeServices
   def pass_create_trip_test(endpoint, namespace, username, password, client_id, client_password)
 
     #hardcoded for now
-    pu_address_hash = {address_mode: 'ZZ', street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status:  -2147483648 }
-    #pu_address_hash = {address_mode: 'ZZ', addr_name: "JTA", street_num: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204"}
+    pu_address_hash = {address_mode: 'ZZ', street_no: 100, on_street: "Myrtle Ave N", city: "Jacksonville", state: "FL", zip_code: "32204", lat: (30.330305*1000000).to_i, lon: (-81.677073*1000000).to_i, geo_status:  -2147483648 }
     pu_leg_hash = {req_time: 36300, request_address: pu_address_hash}
 
-    do_address_hash = {address_mode: 'ZZ', street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status:  -2147483648}
-    #do_address_hash = {address_mode: 'ZZ', addr_name: "Church", street_num: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206"}
+    do_address_hash = {address_mode: 'ZZ', street_no: 22, on_street: "E 3rd St", city: "Jacksonville", state: "FL", zip_code: "32206", lat: (30.339023*1000000).to_i, lon: (-81.653951*1000000).to_i, geo_status:  -2147483648}
     do_leg_hash = {request_address: do_address_hash}
 
     trip_hash = {client_id: 104584, client_code: '104584', date: '20150920', booking_type: 'C', auto_schedule: true, calculate_pick_up_req_time: true, booking_purpose_id: 2, pick_up_leg: pu_leg_hash, drop_off_leg: do_leg_hash}
@@ -105,7 +103,7 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
-    pu_address_hash = {address_mode: 'ZZ', street_num: origin[:street_num], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       pu_leg_hash = {req_time: request_start_seconds_past_midnight, request_address: pu_address_hash}
     else
@@ -113,7 +111,7 @@ class TrapezeServices
     end
 
 
-    do_address_hash = {address_mode: 'ZZ', street_num: destination[:street_num], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    do_address_hash = {address_mode: 'ZZ', street_no: destination[:street_no], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       do_leg_hash = {request_address: do_address_hash}
     else

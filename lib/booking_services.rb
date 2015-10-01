@@ -28,11 +28,11 @@ class BookingServices
 
         origin = itinerary.trip_part.from_trip_place
         parsed_address = get_number_and_street(origin.raw_address.blank? ? origin.address1 : origin.raw_address)
-        origin_hash = {street_num: parsed_address[0], on_street: parsed_address[1], city: origin.city, state: origin.state, zip_code: origin.zip, lat: origin.lat, lon: origin.lon}
+        origin_hash = {street_no: parsed_address[0], on_street: parsed_address[1], city: origin.city, state: origin.state, zip_code: origin.zip, lat: origin.lat, lon: origin.lon}
 
         destination = itinerary.trip_part.to_trip_place
         parsed_address = get_number_and_street(destination.raw_address.blank? ? destination.address1 : destination.raw_address)
-        destination_hash = {street_num: parsed_address[0], on_street: parsed_address[1], city: destination.city, state: destination.state, zip_code: destination.zip, lat: destination.lat, lon: destination.lon}
+        destination_hash = {street_no: parsed_address[0], on_street: parsed_address[1], city: destination.city, state: destination.state, zip_code: destination.zip, lat: destination.lat, lon: destination.lon}
 
 
         ts = TrapezeServices.new
