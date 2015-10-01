@@ -176,6 +176,9 @@ class TrapezeServices
   def get_estimated_times(endpoint, namespace, username, password, client_id, client_password, booking_id)
     result = pass_get_client_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
 
+    Rails.logger.info result.ai
+
+
     begin
       pu_leg = result[:envelope][:body][:pass_get_client_trips_response][:pass_get_client_trips_result][:pass_booking][:pick_up_leg]
     rescue

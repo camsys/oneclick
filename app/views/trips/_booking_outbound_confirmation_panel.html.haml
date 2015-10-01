@@ -103,11 +103,10 @@
         if (result['booked'] == true) {
             $('#bookingModal').attr('data-outbound-booked', true);
             var confirmation_number = result['confirmation'];
+            var cost = result['fare'];
             var negotiated_pu_time = result['negotiated_pu_time'];
             var negotiated_pu_window_start = result['negotiated_pu_window_start'];
             var negotiated_pu_window_end = result['negotiated_pu_window_end'];
-            console.log('#{@trip.selected_itineraries.count}');
-            console.log('#{@trip.return_part.service_is_bookable?}');
 
             if('#{(@trip.selected_itineraries.count > 1 and @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
               if('#{@trip.return_part.is_associated?}' == 'true' || '#{@trip.selected_itineraries.last.service == @trip.selected_itineraries.first.service}' == 'true'){
@@ -122,9 +121,9 @@
               $('#outbound_booking_results').show();
               booking_state = 'showing_results';
             }
-
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(confirmation_number);
+            $('#itinerary_cost_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(cost);
             $('#itinerary_negotiated_pu_time_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
             $('#itinerary_negotiated_pu_window_start_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
             $('#itinerary_negotiated_pu_window_end_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);

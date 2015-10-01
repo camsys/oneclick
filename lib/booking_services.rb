@@ -1,6 +1,7 @@
 class BookingServices
 
   require 'indirizzo'
+  include ActionView::Helpers::NumberHelper
 
   ##### Constants ####
   AGENCY = {
@@ -62,16 +63,14 @@ class BookingServices
           rescue
             message= TranslationEngine.translate_text(:booking_failure_message)
           end
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, message: message}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, confirmation: nil, fare: nil, message: message}
         else
           itinerary.booking_confirmation = booking_id
-
-          fare = booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:fare_amount]
+          fare = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:fare_amount]
           itinerary.cost = fare.blank? ? nil : fare.to_f
 
           ### Get and Unpack Times
           times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, booking_id)
-
           unless times_hash[:neg_time].nil?
             itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_time]))
             itinerary.negotiated_pu_window_start = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_early]))
@@ -80,12 +79,12 @@ class BookingServices
           end
 
           itinerary.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p"), negotiated_pu_window_start: itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p"), negotiated_pu_window_end: itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p"), confirmation: booking_id, message: message}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), negotiated_pu_window_start: (itinerary.negotiated_pu_window_start.blank? ? "n/a" : itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")), negotiated_pu_window_end: (itinerary.negotiated_pu_window_end.blank? ? "n/a" : itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")), confirmation: booking_id, fare: number_to_currency(itinerary.cost), message: message}
 
         end
 
       else
-        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, message: message}
+        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: message}
     end
 
   end

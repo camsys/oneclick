@@ -54,7 +54,6 @@ class ItinerariesController < ApplicationController
 
     @form_data.each do |object|
 
-      puts object
       case object.last[:name]
         when "trip_part[booking_trip_purpose_id]"
           @trip_part.booking_trip_purpose_id = object.last[:value].to_i
