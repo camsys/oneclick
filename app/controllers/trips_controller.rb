@@ -902,11 +902,10 @@ class TripsController < PlaceSearchingController
     trip = Trip.find(params[:id].to_i)
     result = trip.cancel
 
-    #DEREK
     if result
-      message = "Trip Succesfully Canceled"
+      message = translate_helper(:cancel_booking_success)
     else
-      message = "Unable to cancel trip"
+      message = translate_helper(:cancel_booking_failure)
     end
 
     respond_to do |format|

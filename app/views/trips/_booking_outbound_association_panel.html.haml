@@ -4,7 +4,7 @@
     // The Buttons
     .pull-right
       %button.btn.action-button{id: 'outbound_associate_button_btn', type: 'button'}
-        -outbound_associate_button_text = "Associate"
+        -outbound_associate_button_text = translate_helper(:associate)
         =outbound_associate_button_text
 
       = button_tag class: 'btn action-button', id:'closeOutboundAssociation', data: {dismiss: 'modal'} do
@@ -13,7 +13,7 @@
     // The Title
     .modal-title{:style => "text-align:left;"}
       %strong{id: 'booking_title'}
-        =@trip.outbound_part.selected_itinerary.service.name + " Sign In"
+        =@trip.outbound_part.selected_itinerary.service.name + " " + translate_helper(:sign_in)
 
 
     .modal-body
