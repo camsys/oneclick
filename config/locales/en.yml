@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  booking_offset_minutes: "Offset Requested Booking Time (Minutes)"
   associate: "Sign In"
   sign_in: "Sign In"
   more: "More"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150922141426) do
+ActiveRecord::Schema.define(version: 20151002152109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -717,6 +717,7 @@ ActiveRecord::Schema.define(version: 20150922141426) do
     t.datetime "updated_at"
     t.string   "namespace"
     t.integer  "para_service_id"
+    t.integer  "booking_offset_minutes", default: 0, null: false
   end
 
   create_table "traveler_notes", force: true do |t|

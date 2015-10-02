@@ -298,6 +298,7 @@ class ServicesController < ApplicationController
     tp.namespace = trapeze_params[:namespace]
     tp.username = trapeze_params[:username]
     tp.password = trapeze_params[:password]
+    tp.booking_offset_minutes = trapeze_params[:booking_offset_minutes].to_i
     unless tp.para_service_id.blank?
       @service.booking_profile = 1
     else
