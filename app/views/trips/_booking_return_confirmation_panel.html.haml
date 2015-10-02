@@ -56,7 +56,7 @@
             =translate_helper(:passenger1_space_type)  
           = f.input :passenger1_space_type, :label => false, :collection => return_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger1_space_type'}
 
-        #passenger2  
+        #return_passenger2
           .row
             %label.col-sm-4.text-right
               =translate_helper(:passenger2_type)  
@@ -67,7 +67,7 @@
               =translate_helper(:passenger2_space_type)  
             = f.input :passenger2_space_type, :label => false, :collection => return_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger2_space_type'}
 
-        #passenger3
+        #return_passenger3
           .row
             %label.col-sm-4.text-right
               =translate_helper(:passenger3_type)  
@@ -80,7 +80,7 @@
 
 :javascript
 
-  $('#passenger2, #passenger3').hide();
+  $('#return_passenger2, #return_passenger3').hide();
   $('#return_book_button_btn').unbind('click');
   $('#return_book_button_btn').on('click', function(event) {
 
@@ -139,8 +139,8 @@
 
   })
   $('#return_passenger1_type').on('change', function(){
-    if ( $(this).val().length != 0 ) { $('#passenger2').show(); }
+    if ( $(this).val().length != 0 ) { $('#return_passenger2').show(); }
   });
   $('#return_passenger2_type').on('change', function(){
-    if ( $(this).val().length != 0 ) { $('#passenger3').show(); }
+    if ( $(this).val().length != 0 ) { $('#return_passenger3').show(); }
   });
