@@ -903,9 +903,9 @@ class TripsController < PlaceSearchingController
     result = trip.cancel
 
     if result
-      message = translate_helper(:cancel_booking_success)
+      message = TranslationEngine.translate_text(:cancel_booking_success)
     else
-      message = translate_helper(:cancel_booking_failure)
+      message = TranslationEngine.translate_text(:cancel_booking_failure)
     end
 
     respond_to do |format|
