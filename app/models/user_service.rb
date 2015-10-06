@@ -2,6 +2,9 @@ class UserService < ActiveRecord::Base
 
   #Mapping between services and users.  Used for automated booking.
 
+  include Encryption
+  attr_encrypted :user_password, :key => :encryption_key
+
   #associations
   belongs_to :user_profile
   belongs_to :service

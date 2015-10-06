@@ -76,6 +76,7 @@ gem 'bootstrap-kaminari-views'
 gem 'browser'
 gem 'remotipart', '~> 1.2'
 gem 'savon'
+gem 'attr_encrypted'
 
 group :development do
   # gem 'ffi-geos'

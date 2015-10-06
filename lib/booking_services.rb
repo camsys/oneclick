@@ -37,7 +37,7 @@ class BookingServices
 
 
         ts = TrapezeServices.new
-        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, trapeze_profile.para_service_id, user_service.external_user_id,user_service.external_user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.end_time.seconds_since_midnight.to_i, trapeze_profile.booking_offset_minutes, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart, itinerary.trapeze_booking.passenger1_type, itinerary.trapeze_booking.passenger2_type, itinerary.trapeze_booking.passenger3_type, itinerary.trapeze_booking.fare1_type_id, itinerary.trapeze_booking.fare2_type_id, itinerary.trapeze_booking.fare3_type_id, itinerary.trapeze_booking.passenger1_space_type, itinerary.trapeze_booking.passenger2_space_type, itinerary.trapeze_booking.passenger3_space_type)
+        result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, trapeze_profile.para_service_id, user_service.external_user_id,user_service.user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.end_time.seconds_since_midnight.to_i, trapeze_profile.booking_offset_minutes, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart, itinerary.trapeze_booking.passenger1_type, itinerary.trapeze_booking.passenger2_type, itinerary.trapeze_booking.passenger3_type, itinerary.trapeze_booking.fare1_type_id, itinerary.trapeze_booking.fare2_type_id, itinerary.trapeze_booking.fare3_type_id, itinerary.trapeze_booking.passenger1_space_type, itinerary.trapeze_booking.passenger2_space_type, itinerary.trapeze_booking.passenger3_space_type)
         result = result.to_hash
 
         booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id]
@@ -70,7 +70,7 @@ class BookingServices
           itinerary.cost = fare.blank? ? nil : fare.to_f
 
           ### Get and Unpack Times
-          times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, booking_id)
+          times_hash = ts.get_estimated_times(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password, booking_id)
           unless times_hash[:neg_time].nil?
             itinerary.negotiated_pu_time = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_time]))
             itinerary.negotiated_pu_window_start = Chronic.parse((itinerary.trip_part.scheduled_time.to_date.to_s) + " " +  seconds_since_midnight_to_string(times_hash[:neg_early]))
@@ -107,7 +107,7 @@ class BookingServices
         trapeze_profile = itinerary.service.trapeze_profile
 
         ts = TrapezeServices.new
-        ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password, itinerary.booking_confirmation)
+        ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
 
     end
   end
@@ -123,7 +123,7 @@ class BookingServices
         if result
           us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
           us.external_user_id = external_user_id
-          us.external_user_password = external_user_password
+          us.user_password = external_user_password
           us.save
         end
         return result
@@ -142,7 +142,7 @@ class BookingServices
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
-        return ts.pass_validate_client_password(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        return ts.pass_validate_client_password(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
     end
   end
 
@@ -188,7 +188,7 @@ class BookingServices
       else
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
-        purposes = ts.get_booking_purposes(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        purposes = ts.get_booking_purposes(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
         purpose_hash= {}
         purposes.each do |purpose|
           purpose_hash[purpose[:description]] = purpose[:booking_purpose_id]
@@ -220,7 +220,7 @@ class BookingServices
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
-        passenger_types = ts.get_passenger_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        passenger_types = ts.get_passenger_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
         passenger_types_hash = {}
         passenger_types.each do |passenger_type|
           passenger_types_hash[passenger_type[:description]] = passenger_type[:abbreviation] + "%%" + passenger_type[:fare_type_id]
@@ -253,7 +253,7 @@ class BookingServices
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
-        space_types = ts.get_space_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.external_user_password)
+        space_types = ts.get_space_types(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
         space_types_hash = {}
         space_types.each do |space_type|
           space_types_hash[space_type[:description]] = space_type[:abbreviation]
