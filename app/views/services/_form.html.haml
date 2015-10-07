@@ -325,7 +325,7 @@
 
   .row#time-and-booking-panels
     .col-sm-6
-      .panel.panel-default.well3
+      .panel.panel-default
         .panel-heading
           %h4.panel-title
             = translate_helper(:time_window)
@@ -335,27 +335,41 @@
           = f.input :time_factor, as: :float, wrapper_html: {class: "col-sm-6"}
 
     .col-sm-6
-      .panel.panel-default.well3
+      .panel.panel-default
         .panel-heading
           %h4.panel-title
             = translate_helper(:booking_information)
             = add_tooltip("booking_information_help")
         .panel-body
-          = f.simple_fields_for :trapeze_profile do |tp|
-            -unless @service.trapeze_profile.nil?
-              = tp.input :endpoint, input_html: {value: @service.trapeze_profile.endpoint}
-              = tp.input :namespace, input_html: {value: @service.trapeze_profile.namespace}
-              = tp.input :username, input_html: {value: @service.trapeze_profile.username}
-              = tp.input :password, input_html: {value: @service.trapeze_profile.password}
-              = tp.input :para_service_id, label: 'Trapeze ParaServiceId', input_html: {value: @service.trapeze_profile.para_service_id}
-              = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: @service.trapeze_profile.booking_offset_minutes}
-            -else
-              = tp.input :endpoint
-              = tp.input :namespace
-              = tp.input :username
-              = tp.input :password
-              = tp.input :para_service_id, label: 'Trapeze ParaServiceId'
-              = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: 0}
+          = f.input :booking_profile, as: :select, :collection => BookingServices::AGENCY.sort.map {|k,v| [k.to_s.titlecase,v]}
+
+          %div.booking-info-panel#agency2{ style: 'display: none;' }
+            = f.simple_fields_for :ridepilot_profile do |rp|
+              -unless @service.ridepilot_profile.nil?
+                = rp.input :endpoint, input_html: {value: @service.ridepilot_profile.endpoint}
+                = rp.input :api_token, input_html: {value: @service.ridepilot_profile.api_token}
+                = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id), input_html: {value: @service.ridepilot_profile.provider_id}
+              -else
+                = rp.input :endpoint
+                = rp.input :api_token
+                = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
+
+          %div.booking-info-panel#agency1{ style: 'display: none;' }
+            = f.simple_fields_for :trapeze_profile do |tp|
+              -unless @service.trapeze_profile.nil?
+                = tp.input :endpoint, input_html: {value: @service.trapeze_profile.endpoint}
+                = tp.input :namespace, input_html: {value: @service.trapeze_profile.namespace}
+                = tp.input :username, input_html: {value: @service.trapeze_profile.username}
+                = tp.input :password, input_html: {value: @service.trapeze_profile.password}
+                = tp.input :para_service_id, label: 'Trapeze ParaServiceId', input_html: {value: @service.trapeze_profile.para_service_id}
+                = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: @service.trapeze_profile.booking_offset_minutes}
+              -else
+                = tp.input :endpoint
+                = tp.input :namespace
+                = tp.input :username
+                = tp.input :password
+                = tp.input :para_service_id, label: 'Trapeze ParaServiceId'
+                = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: 0}
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @service}
 
@@ -442,9 +456,19 @@
     $('#schedule-panel').closest('.row').append(el);
   }
 
+  // Booking Box Control
+  $('#service_booking_profile').on('change', function(e) {
+    $(".booking-info-panel").hide();
+    var agency_id = $('#service_booking_profile').val();
+    $("#agency" + agency_id).show();
+  });
+
   $(document).ready(function() {
     toggleServiceProfilePanels($('#service_service_type_id').val(), #{transit_id}, #{taxi_id});
-    
+
+    var agency_id = $('#service_booking_profile').val();
+    $("#agency" + agency_id).show();
+
     // show fare fields per service type
     $('#service_service_type_id').on('change', function(e) {
       if($(this).val() != #{paratransit_id}) {

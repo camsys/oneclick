@@ -240,7 +240,7 @@
             %h4.panel-title
               = translate_helper(:booking_information)
               = add_tooltip("booking_information_help")
-          -unless @service.trapeze_profile.nil?
+          -if @service.booking_profile == BookingServices::AGENCY[:trapeze]
             .panel-body
               .row
                 .col-sm-6
@@ -270,7 +270,7 @@
                   %strong=translate_helper(:booking_offset_minutes)
                 .col-sm-6
                   =@service.trapeze_profile.booking_offset_minutes
-          -unless @service.ridepilot_profile.nil?
+          -if @service.booking_profile == BookingServices::AGENCY[:ridepilot]
             .panel-body
               .row
                 .col-sm-6

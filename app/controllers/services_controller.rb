@@ -228,7 +228,13 @@ class ServicesController < ApplicationController
         @service.save
 
         #Setup Trapeze Profile
-        update_trapeze_profile(params[:service][:trapeze_profile])
+        case @service.booking_profile
+          when BookingServices::AGENCY[:trapeze]
+            update_trapeze_profile(params[:service][:trapeze_profile])
+          when BookingServices::AGENCY[:ridepilot]
+            update_ridepilot_profile(params[:service][:ridepilot_profile])
+        end
+
 
         # fare
         if @service.is_paratransit?
@@ -299,13 +305,17 @@ class ServicesController < ApplicationController
     tp.username = trapeze_params[:username]
     tp.password = trapeze_params[:password]
     tp.booking_offset_minutes = trapeze_params[:booking_offset_minutes].to_i
-    unless tp.para_service_id.blank?
-      @service.booking_profile = 1
-    else
-      @service.booking_profile = nil
-    end
-    @service.save
     tp.save
+
+  end
+
+  def update_ridepilot_profile(ridepilot_params)
+
+    rp = RidepilotProfile.where(service: @service).first_or_initialize
+    rp.provider_id = ridepilot_params[:provider_id]
+    rp.endpoint = ridepilot_params[:endpoint]
+    rp.api_token = ridepilot_params[:api_token]
+    rp.save
 
   end
 
@@ -316,7 +326,7 @@ protected
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
-                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :disabled_comment,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :disabled_comment, :booking_profile,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:
