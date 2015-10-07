@@ -4,6 +4,10 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  trapeze_booking_details: "Trapeze Booking Details"
+  ridepilot_booking_details: "Ridepilot Booking Details"
+  api_token: "API Token"
+  ridepilot_provider_id: "Ridepilot Provider ID"
   booking_offset_minutes: "Offset Requested Booking Time (Minutes)"
   associate: "Sign In"
   sign_in: "Sign In"

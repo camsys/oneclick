@@ -27,6 +27,7 @@ class Service < ActiveRecord::Base
   has_many :funding_sources
   has_many :sponsors
   has_one :trapeze_profile
+  has_one :ridepilot_profile
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
 

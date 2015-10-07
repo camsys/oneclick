@@ -6,7 +6,8 @@ class BookingServices
   ##### Constants ####
   AGENCY = {
       :ecolane => 0,
-      :trapeze => 1
+      :trapeze => 1,
+      :ridepilot => 2
   }
 
   def book itinerary
@@ -127,6 +128,8 @@ class BookingServices
           us.save
         end
         return result
+      when AGENCY[:ridepilot]
+        ridepilot_profile = service.ridepilot_profile
     end
   end
 

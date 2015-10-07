@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151006152505) do
+ActiveRecord::Schema.define(version: 20151007153330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -535,6 +535,15 @@ ActiveRecord::Schema.define(version: 20151006152505) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.boolean  "exportable",              default: false
+  end
+
+  create_table "ridepilot_profiles", force: true do |t|
+    t.string   "endpoint"
+    t.string   "api_token"
+    t.string   "provider_id"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roles", force: true do |t|

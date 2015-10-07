@@ -240,8 +240,11 @@
             %h4.panel-title
               = translate_helper(:booking_information)
               = add_tooltip("booking_information_help")
-          .panel-body
-            -unless @service.trapeze_profile.nil?
+          -unless @service.trapeze_profile.nil?
+            .panel-body
+              .row
+                .col-sm-6
+                  %strong=translate_helper(:trapeze_booking_details)
               .row
                 .col-sm-6
                   %strong=translate_helper(:endpoint)
@@ -267,9 +270,26 @@
                   %strong=translate_helper(:booking_offset_minutes)
                 .col-sm-6
                   =@service.trapeze_profile.booking_offset_minutes
-
-
-
+          -unless @service.ridepilot_profile.nil?
+            .panel-body
+              .row
+                .col-sm-6
+                  %strong=translate_helper(:ridepilot_booking_details)
+              .row
+                .col-sm-6
+                  %strong=translate_helper(:endpoint)
+                .col-sm-6
+                  =@service.ridepilot_profile.endpoint
+              .row
+                .col-sm-6
+                  %strong=translate_helper(:api_token)
+                .col-sm-6
+                  =@service.ridepilot_profile.api_token
+              .row
+                .col-sm-6
+                  %strong=translate_helper(:ridepilot_provider_id)
+                .col-sm-6
+                  =@service.ridepilot_profile.provider_id
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
