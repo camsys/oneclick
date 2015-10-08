@@ -11,7 +11,8 @@ class RidepilotServices
     if response and response.code == '200'
       return true, ""
     elsif response
-      return false, response.body[:error]
+      body = JSON.parse(response.body)
+      return false, body["error"]
     else
       return false, ""
     end
@@ -19,13 +20,15 @@ class RidepilotServices
   end
 
   def trip_purposes(endpoint, token, provider_id)
-    url = endpoint + "/trip_purposes?provider_id=" + provider_id
+    url = endpoint + "/trip_purposes?provider_id=" + provider_id.to_s
     response = send_request(url, token, 'GET')
 
     if response and response.code == '200'
-      return true, response.body[:trip_purposes]
+      body = JSON.parse(response.body)
+      return true, body["trip_purposes"]
     elsif response
-      return false, response.body[:error]
+      body = JSON.parse(response.body)
+      return false, body["error"]
     else
       return false, ""
     end
@@ -39,7 +42,8 @@ class RidepilotServices
     if response and response.code == '200'
       return true, ""
     elsif response
-      return false, response.body[:error]
+      body = JSON.parse(response.body)
+      return false, body["error"]
     else
       return false, ""
     end
