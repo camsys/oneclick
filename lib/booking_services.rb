@@ -197,7 +197,7 @@ class BookingServices
     case service.booking_profile
       when AGENCY[:ecolane]
         return []
-      else
+      when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
         purposes = ts.get_booking_purposes(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
@@ -207,6 +207,19 @@ class BookingServices
         end
 
         return purpose_hash
+
+      when AGENCY[:ridepilot]
+        ecolane_profile = service.ecolane_profile
+        rs = RidepilotServices.new
+        result, body = rs.trip_purposes(ecolane_profile.endpoint, ecolane_profile.api_key, ecolane_profile.provider_id)
+        purposes_hash = {}
+        if result
+          body.each do |purpose|
+            purpose_hash[purpose[:name]] = purpose[:code]
+          end
+        end
+
+        return purposes_hash
 
     end
   end

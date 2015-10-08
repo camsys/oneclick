@@ -18,6 +18,19 @@ class RidepilotServices
 
   end
 
+  def trip_purposes(endpoint, token, provider_id)
+    url = endpoint + "/trip_purposes?provider_id=" + provider_id
+    response = send_request(url, token, 'GET')
+
+    if response and response.code == '200'
+      return true, response.body[:trip_purposes]
+    elsif response
+      return false, response.body[:error]
+    else
+      return false, ""
+    end
+  end
+
   def send_request(url, token, type='GET', message=nil, use_ssl=false)
 
     Rails.logger.info("Sending Request . . .")
