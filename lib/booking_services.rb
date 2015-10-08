@@ -130,6 +130,15 @@ class BookingServices
         return result
       when AGENCY[:ridepilot]
         ridepilot_profile = service.ridepilot_profile
+        rs = RidepilotServices.new
+        result, message = rs.authenticate_customer(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, external_user_id, external_user_password)
+        if result
+          us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
+          us.external_user_id = external_user_id
+          us.user_password = external_user_password
+          us.save
+        end
+        return result
     end
   end
 
