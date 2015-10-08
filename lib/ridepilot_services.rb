@@ -31,7 +31,22 @@ class RidepilotServices
     end
   end
 
-  def send_request(url, token, type='GET', message=nil, use_ssl=false)
+  def cancel_trip(endpoint, token, trip_id)
+    url = endpoint + "/cancel"
+    message = {trip_id: trip_id}
+    response = send_request(url, token, type="DELETE", message: message)
+
+    if response and response.code == '200'
+      return true, ""
+    elsif response
+      return false, response.body[:error]
+    else
+      return false, ""
+    end
+
+  end
+
+  def send_request(url, token, type='GET', message=nil, use_ssl=true)
 
     Rails.logger.info("Sending Request . . .")
     Rails.logger.info(url)

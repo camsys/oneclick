@@ -92,7 +92,11 @@ class BookingServices
 
   def cancel itinerary
     #return true is successful, false if not successful
+    user = itinerary.trip_part.trip.user
+    user_service = UserService.find_by(user_profile: user.user_profile, service: itinerary.service)
+
     case itinerary.service.booking_profile
+
       when AGENCY[:ecolane]
         eh = EcolaneHelpers.new
         result = eh.cancel_itinerary self
@@ -102,13 +106,15 @@ class BookingServices
         end
 
       when AGENCY[:trapeze]
-        user = itinerary.trip_part.trip.user
-        user_service = UserService.find_by(user_profile: user.user_profile, service: itinerary.service)
-
         trapeze_profile = itinerary.service.trapeze_profile
-
         ts = TrapezeServices.new
-        ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
+        return ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
+
+      when AGENCY[:ridepilot]
+        ridepilot_profile = itinererary.service.trapeze_profile
+        rs = RidepilotServices.new
+        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, itinerary.booking_confirmation)
+        return result
 
     end
   end
