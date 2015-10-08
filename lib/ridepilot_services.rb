@@ -5,7 +5,7 @@ class RidepilotServices
 
   def authenticate_customer(endpoint, token, provider_id, customer_id, customer_token)
 
-    url = endpoint + "/authenticate_customer?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "&provider_id=" + provider_id.to_s
+    url = endpoint + "/authenticate_customer?provider_id=" + provider_id.to_s + "&customer_id=" + customer_id.to_s  + "&customer_token=" + customer_token.to_s
     response = send_request(url, token, 'GET')
 
     if response and response.code == '200'
@@ -34,9 +34,9 @@ class RidepilotServices
     end
   end
 
-  def cancel_trip(endpoint, token, trip_id)
+  def cancel_trip(endpoint, token, customer_id, customer_token, trip_id)
     url = endpoint + "/cancel"
-    message = {trip_id: trip_id}
+    message = {customer_id: customer_id, customer_token: customer_token, trip_id: trip_id}
     response = send_request(url, token, type="DELETE", message: message)
 
     if response and response.code == '200'

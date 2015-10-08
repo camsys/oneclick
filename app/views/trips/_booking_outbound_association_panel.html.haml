@@ -42,6 +42,8 @@
                   =f.input :external_client_dob, label: translate_helper(:dob), placeholder: "mm/dd/yyyy"
                 -if itinerary.service.booking_profile ==  BookingServices::AGENCY[:trapeze]
                   =f.input :external_client_password, label: translate_helper(:password)
+                -if itinerary.service.booking_profile ==  BookingServices::AGENCY[:ridepilot]
+                  =f.input :external_client_password, label: translate_helper(:token)
 
 
 :javascript

@@ -113,7 +113,7 @@ class BookingServices
       when AGENCY[:ridepilot]
         ridepilot_profile = itinererary.service.trapeze_profile
         rs = RidepilotServices.new
-        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, itinerary.booking_confirmation)
+        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
         return result
 
     end
@@ -215,13 +215,14 @@ class BookingServices
         return purpose_hash
 
       when AGENCY[:ridepilot]
-        ecolane_profile = service.ecolane_profile
+        ridepilot_profile = service.ridepilot_profile
         rs = RidepilotServices.new
-        result, body = rs.trip_purposes(ecolane_profile.endpoint, ecolane_profile.api_key, ecolane_profile.provider_id)
+        result, body = rs.trip_purposes(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id)
         purposes_hash = {}
+        puts body.ai
         if result
           body.each do |purpose|
-            purpose_hash[purpose[:name]] = purpose[:code]
+            purposes_hash[purpose["name"]] = purpose["code"]
           end
         end
 

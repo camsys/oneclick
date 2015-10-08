@@ -229,8 +229,10 @@
                       %div.col-sm-4
                         -if service.booking_profile == BookingServices::AGENCY[:ecolane]
                           =booking_form.input "password_" + service.id.to_s, label: translate_helper(:dob), placeholder: "mm/dd/yyyy"
-                        -if service.booking_profile ==  BookingServices::AGENCY[:trapeze]
+                        -if service.booking_profile == BookingServices::AGENCY[:trapeze]
                           =booking_form.input "password_" + service.id.to_s, label: translate_helper(:password)
+                        -if service.booking_profile == BookingServices::AGENCY[:ridepilot]
+                          =booking_form.input "password_" + service.id.to_s, label: translate_helper(:token)
 
         .col-sm-6
           .panel.panel-default#preferred_modes
