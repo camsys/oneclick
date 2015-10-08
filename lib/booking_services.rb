@@ -97,7 +97,8 @@ class BookingServices
         to_hash = destination.build_place_details_hash
         to = [address: to_hash, address_name: nil, note: nil, in_district: nil]
 
-        create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, 'trip_purpose', leg = 1, from, to, guests = 0, attendants = 0, mobility_devices = 0, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
+        ridepilot_booking = itinerary.ridepilot_booking
+        create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, 'trip_purpose', leg = ridepilot_booking.leg, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
 
       else
         return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: message}
@@ -227,7 +228,7 @@ class BookingServices
           purpose_hash[purpose[:description]] = purpose[:booking_purpose_id]
         end
 
-        return purpose_hash
+        return purpose_hash.sort.to_h
 
       when AGENCY[:ridepilot]
         ridepilot_profile = service.ridepilot_profile
@@ -241,7 +242,7 @@ class BookingServices
           end
         end
 
-        return purposes_hash
+        return purposes_hash.sort.to_h
 
     end
   end
