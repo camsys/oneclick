@@ -54,7 +54,7 @@ class RidepilotServices
   end
 
   def cancel_trip(endpoint, token, customer_id, customer_token, trip_id)
-    url = endpoint + "/cancel"
+    url = endpoint + "/cancel_trip"
     message = {customer_id: customer_id, customer_token: customer_token, trip_id: trip_id}
     response = send_request(url, token, "DELETE", message)
 
@@ -70,7 +70,7 @@ class RidepilotServices
   end
 
   def trip_status(endpoint, token, customer_id, customer_token, trip_id)
-    url = endpoint + "/cancel?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "&trip_id=" + trip_id.to_s
+    url = endpoint + "/trip_status?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "&trip_id=" + trip_id.to_s
     response = send_request(url, token, "GET")
 
     if response and response.code == '200'
@@ -100,8 +100,10 @@ class RidepilotServices
       when 'post'
         req = Net::HTTP::Post.new(uri.path)
         req.body = message.to_json
+        puts req.body.ai
       when 'delete'
         req = Net::HTTP::Delete.new(uri.path)
+        req.body = message.to_json
       else
         req = Net::HTTP::Get.new(uri)
     end

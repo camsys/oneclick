@@ -544,6 +544,8 @@ ActiveRecord::Schema.define(version: 20151008185038) do
     t.integer  "mobility_devices"
     t.integer  "itinerary_id"
     t.string   "trip_purpose_code"
+    t.string   "booking_status_code"
+    t.string   "booking_status_message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

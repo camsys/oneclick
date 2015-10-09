@@ -93,15 +93,24 @@ class BookingServices
 
         origin = itinerary.trip_part.from_trip_place
         from_hash = origin.build_place_details_hash
-        from = [address: from_hash, address_name: nil, note: nil, in_district: nil]
+        from = {address: from_hash, address_name: nil, note: nil, in_district: nil}
 
         destination = itinerary.trip_part.to_trip_place
         to_hash = destination.build_place_details_hash
-        to = [address: to_hash, address_name: nil, note: nil, in_district: nil]
+        to = {address: to_hash, address_name: nil, note: nil, in_district: nil}
 
         ridepilot_booking = itinerary.ridepilot_booking
-        result, body = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, 'trip_purpose', leg = ridepilot_booking.leg, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
-        puts result.ai
+        result, body = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, ridepilot_booking.trip_purpose_code, leg = itinerary.trip_part.sequence + 1, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
+        if result
+          itinerary.booking_confirmation = body["trip_id"]
+          ridepilot_booking.booking_status_code = body["status"]["code"]
+          ridepilot_booking.booking_status_message = body["status"]["message"]
+          itinerary.save
+          ridepilot_profile.save
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
+        else
+
+        end
       else
         return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
     end
@@ -129,7 +138,7 @@ class BookingServices
         return ts.cancel_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
 
       when AGENCY[:ridepilot]
-        ridepilot_profile = itinererary.service.trapeze_profile
+        ridepilot_profile = itinerary.service.ridepilot_profile
         rs = RidepilotServices.new
         result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
         return result
