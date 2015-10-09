@@ -80,6 +80,25 @@ class ItinerariesController < ApplicationController
         end
 
         trapeze_booking.save
+
+      when BookingServices::AGENCY[:ridepilot]
+
+        ridepilot_booking = RidepilotBooking.where(itinerary: @itinerary).first_or_create
+
+        @form_data.each do |object|
+          case object.last[:name]
+            when "trip_part[booking_trip_purpose_code]"
+              ridepilot_booking.trip_purpose_code = object.last[:value]
+            when "trip_part[guests]"
+              ridepilot_booking.guests = object.last[:value].to_i
+            when "trip_part[attendants]"
+              ridepilot_booking.attendants = object.last[:value].to_i
+            when "trip_part[mobility_devices]"
+              ridepilot_booking.mobility_devices = object.last[:value].to_i
+          end
+        end
+
+        ridepilot_booking.save
     end
 
     respond_to do |format|

@@ -23,7 +23,7 @@ class TripPart < ActiveRecord::Base
   validates :to_trip_place, presence: true
 
   #For Booking
-  attr_accessor :passenger1_type, :passenger1_space_type, :passenger2_type, :passenger2_space_type, :passenger3_type, :passenger3_space_type
+  attr_accessor :passenger1_type, :passenger1_space_type, :passenger2_type, :passenger2_space_type, :passenger3_type, :passenger3_space_type, :booking_trip_purpose_code, :guests, :attendants, :mobility_devices
 
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }

@@ -4,6 +4,9 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  number_of_guests: "Number of Guests"
+  number_of_attendants: "Number of Attendants"
+  number_of_mobility_devices: "Number of Mobility Devices"
   token: "Token"
   trapeze_booking_details: "Trapeze Booking Details"
   ridepilot_booking_details: "Ridepilot Booking Details"
