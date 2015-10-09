@@ -70,7 +70,7 @@ class RidepilotServices
   end
 
   def trip_status(endpoint, token, customer_id, customer_token, trip_id)
-    url = endpoint + "/cancel?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "%trip_id=" + trip_id.to_s
+    url = endpoint + "/cancel?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "&trip_id=" + trip_id.to_s
     response = send_request(url, token, "GET")
 
     if response and response.code == '200'
