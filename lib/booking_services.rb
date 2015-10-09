@@ -100,10 +100,10 @@ class BookingServices
         to = [address: to_hash, address_name: nil, note: nil, in_district: nil]
 
         ridepilot_booking = itinerary.ridepilot_booking
-        result = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, 'trip_purpose', leg = ridepilot_booking.leg, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
+        result, body = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, 'trip_purpose', leg = ridepilot_booking.leg, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
         puts result.ai
       else
-        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: message}
+        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
     end
 
   end
@@ -155,7 +155,7 @@ class BookingServices
       when AGENCY[:ridepilot]
         ridepilot_profile = service.ridepilot_profile
         rs = RidepilotServices.new
-        result, message = rs.authenticate_customer(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, external_user_id, external_user_password)
+        result, body = rs.authenticate_customer(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, external_user_id, external_user_password)
         if result
           us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
           us.external_user_id = external_user_id
@@ -237,9 +237,8 @@ class BookingServices
         rs = RidepilotServices.new
         result, body = rs.trip_purposes(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id)
         purposes_hash = {}
-        puts body.ai
         if result
-          body.each do |purpose|
+          body["trip_purposes"].each do |purpose|
             purposes_hash[purpose["name"]] = purpose["code"]
           end
         end
@@ -310,6 +309,13 @@ class BookingServices
         end
         return space_types_hash
     end
+  end
+
+  def get_trip_status(itinerary)
+    service = itinerary.service
+    user = itinerary.trip_part.trip.user
+    user_service = UserService.find_by(service: service, user_profile: user.user_profile)
+
   end
 
 

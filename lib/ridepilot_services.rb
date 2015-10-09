@@ -9,12 +9,12 @@ class RidepilotServices
     response = send_request(url, token, 'GET')
 
     if response and response.code == '200'
-      return true, ""
+      return true, {}
     elsif response
       body = JSON.parse(response.body)
-      return false, body["error"]
+      return false, body
     else
-      return false, ""
+      return false, {}
     end
 
   end
@@ -25,32 +25,30 @@ class RidepilotServices
 
     if response and response.code == '200'
       body = JSON.parse(response.body)
-      return true, body["trip_purposes"]
+      return true, body
     elsif response
       body = JSON.parse(response.body)
-      return false, body["error"]
+      return false, body
     else
-      return false, ""
+      return false, {}
     end
   end
 
   def create_trip(endpoint, token, provider_id, customer_id, customer_token, trip_purpose, leg, from, to, guests, attendants, mobility_devices, pickup_time, dropoff_time)
 
-    puts to.ai
-    puts from.ai
     url = endpoint + "/create_trip"
     message = {provider_id: provider_id, customer_id: customer_id, customer_token: customer_token, trip_purpose: trip_purpose, leg: leg, from_address: from, to_address: to, guests: guests, attendants: attendants, mobility_devices: mobility_devices, pickup_time: pickup_time, dropoff_time: dropoff_time}
     response = send_request(url, token, "POST", message)
     puts response.ai
 
     if response and response.code == '200'
-      #### SUCCESS CODE GOES HERE
-      return true, ""
+      body = JSON.parse(response.body)
+      return true, body
     elsif response
       body = JSON.parse(response.body)
-      return false, body["error"]
+      return false, body
     else
-      return false, ""
+      return false, {}
     end
 
   end
@@ -61,12 +59,28 @@ class RidepilotServices
     response = send_request(url, token, "DELETE", message)
 
     if response and response.code == '200'
-      return true, ""
+      return true, {}
     elsif response
       body = JSON.parse(response.body)
-      return false, body["error"]
+      return false, body
     else
-      return false, ""
+      return false, {}
+    end
+
+  end
+
+  def trip_status(endpoint, token, customer_id, customer_token, trip_id)
+    url = endpoint + "/cancel?customer_id=" + customer_id.to_s + "&customer_token=" + customer_token.to_s + "%trip_id=" + trip_id.to_s
+    response = send_request(url, token, "GET")
+
+    if response and response.code == '200'
+      body = JSON.parse(response.body)
+      return true, body
+    elsif response
+      body = JSON.parse(response.body)
+      return false, body
+    else
+      return false, {}
     end
 
   end
