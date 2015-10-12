@@ -108,7 +108,7 @@ class BookingServices
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
           ridepilot_profile.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.start_time, confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time:  (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
         else
 
         end

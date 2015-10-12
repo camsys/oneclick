@@ -87,10 +87,26 @@
             }
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(confirmation_number);
-            $('#itinerary_cost_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(cost);
-            $('#itinerary_negotiated_pu_time_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
-            $('#itinerary_negotiated_pu_window_start_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
-            $('#itinerary_negotiated_pu_window_end_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
+
+            if(cost){
+              $('#itinerary_cost_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show()
+              $('#itinerary_cost_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(cost);
+            }
+
+            if(negotiated_pu_time){
+              $('#itinerary_negotiated_pu_time_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_time_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
+            }
+
+            if(negotiated_pu_window_start){
+              $('#itinerary_negotiated_pu_window_start_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_window_start_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
+            }
+
+            if(negotiated_pu_window_end){
+              $('#itinerary_negotiated_pu_window_end_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_window_end_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
+            }
         }
         else {
           var confirmation_numbers = "";
