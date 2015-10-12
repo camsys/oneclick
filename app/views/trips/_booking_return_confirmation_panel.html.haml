@@ -6,7 +6,7 @@
       %button.btn.action-button#return_book_button_btn
         =translate_helper(:book)
 
-      = button_tag class: 'btn action-button', id: 'closeReturnConfirmation', data: {dismiss: 'modal'} do
+      = button_tag class: 'btn action-button', id:'closeReturnConfirmation', data: {dismiss: 'modal'} do
         = translate_helper(:close)
 
     // The Title
@@ -37,50 +37,13 @@
         .col-sm-8.text-left
           =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
 
-      -return_space_types = @trip.return_part.get_space_types
-      -return_passenger_types = @trip.return_part.get_passenger_types
-
-      =simple_form_for @trip.return_part, url: user_trip_trip_part_path(trip_id: @trip.id),  html: { id: 'return_confirmation_form', class: 'form-horizontal' } do |f|
-        .row
-          %label.col-sm-4.text-right
-            =translate_helper(:confirm_trip_purpose)  
-          = f.input :booking_trip_purpose_id, :label => false, :collection => @trip.return_part.get_booking_trip_purposes, :include_blank => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_trip_purpose_collection'}
-
-        .row
-          %label.col-sm-4.text-right
-            =translate_helper(:passenger1_type)  
-          = f.input :passenger1_type, :label => false, :collection => return_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger1_type'}
-
-        .row
-          %label.col-sm-4.text-right
-            =translate_helper(:passenger1_space_type)  
-          = f.input :passenger1_space_type, :label => false, :collection => return_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger1_space_type'}
-
-        #return_passenger2
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:passenger2_type)  
-            = f.input :passenger2_type, :label => false, :collection => return_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger2_type'}
-
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:passenger2_space_type)  
-            = f.input :passenger2_space_type, :label => false, :collection => return_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger2_space_type'}
-
-        #return_passenger3
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:passenger3_type)  
-            = f.input :passenger3_type, :label => false, :collection => return_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger3_type'}
-
-          .row
-            %label.col-sm-4.text-right
-              =translate_helper(:passenger3_space_type)  
-            = f.input :passenger3_space_type, :label => false, :collection => return_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_passenger3_space_type'}
+      -if @trip.return_part.selected_itinerary.service.booking_profile == BookingServices::AGENCY[:trapeze]
+        = render partial: 'booking_return_trapeze_confirmation_form'
+      -if @trip.return_part.selected_itinerary.service.booking_profile == BookingServices::AGENCY[:ridepilot]
+        = render partial: 'booking_return_ridepilot_confirmation_form'
 
 :javascript
 
-  $('#return_passenger2, #return_passenger3').hide();
   $('#return_book_button_btn').unbind('click');
   $('#return_book_button_btn').on('click', function(event) {
 
@@ -138,9 +101,3 @@
     })
 
   })
-  $('#return_passenger1_type').on('change', function(){
-    if ( $(this).val().length != 0 ) { $('#return_passenger2').show(); }
-  });
-  $('#return_passenger2_type').on('change', function(){
-    if ( $(this).val().length != 0 ) { $('#return_passenger3').show(); }
-  });

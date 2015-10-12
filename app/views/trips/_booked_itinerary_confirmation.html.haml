@@ -18,27 +18,28 @@
     =translate_helper(:confirmation_capped)
   .col-sm-8.text-left{id: 'itinerary_confirmation_' + itinerary.id.to_s}
     =itinerary.booking_confirmation
-.row
-  %label.col-sm-4.text-right
-    =translate_helper(:fare)
-  .col-sm-8.text-left{id: 'itinerary_cost_' + itinerary.id.to_s}
-    =number_to_currency(itinerary.cost)
-.row
-  %label.col-sm-4.text-right
-    =translate_helper(:time_window_start)
-  .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
-    -if itinerary.negotiated_pu_window_start
+-unless itinerary.cost.blank?
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:fare)
+    .col-sm-8.text-left{id: 'itinerary_cost_' + itinerary.id.to_s}
+      =number_to_currency(itinerary.cost)
+-unless itinerary.negotiated_pu_window_start.blank?
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:time_window_start)
+    .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
       =itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")
-.row
-  %label.col-sm-4.text-right
-    =translate_helper(:estimated_pu_time)
-  .col-sm-8.text-left{id: 'itinerary_negotiated_pu_time_' + itinerary.id.to_s}
-    -if itinerary.negotiated_pu_time
+-unless itinerary.negotiated_pu_time.blank?
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:estimated_pu_time)
+    .col-sm-8.text-left{id: 'itinerary_negotiated_pu_time_' + itinerary.id.to_s}
       =itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")
-.row
-  %label.col-sm-4.text-right
-    =translate_helper(:time_window_end)
-  .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
-    -if itinerary.negotiated_pu_window_end
+-unless itinerary.negotiated_pu_window_end.blank?
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:time_window_end)
+    .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
       =itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")
 

@@ -188,6 +188,11 @@ class BookingServices
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
         return ts.pass_validate_client_password(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, user_service.external_user_id, user_service.user_password)
+      when AGENCY[:ridepilot]
+        ridepilot_profile = service.ridepilot_profile
+        rs = RidepilotServices.new
+        result, body = rs.authenticate_customer(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password)
+        return result
     end
   end
 
