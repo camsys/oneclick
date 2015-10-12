@@ -103,11 +103,12 @@ class BookingServices
         result, body = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, ridepilot_booking.trip_purpose_code, leg = itinerary.trip_part.sequence + 1, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
         if result
           itinerary.booking_confirmation = body["trip_id"]
+          itinerary.negotiated_pu_time = itinerary.start_time
           ridepilot_booking.booking_status_code = body["status"]["code"]
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
           ridepilot_profile.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: itinerary.start_time, confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
         else
 
         end
