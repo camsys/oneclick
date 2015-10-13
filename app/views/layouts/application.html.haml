@@ -5,7 +5,7 @@
     %title= content_for?(:title) ? yield(:title) : translate_helper(:site_title)
     %meta{:content => content_for?(:description) ? yield(:description) : translate_helper(:site_description), :name => "description"}
     = stylesheet_link_tag "stylesheets/application", :media => "all"
-    = javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places"
+    = javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3&libraries=places"
     = javascript_include_tag "javascripts/application"
 
     - if browser.mobile?
