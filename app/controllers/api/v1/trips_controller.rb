@@ -74,6 +74,8 @@ module Api
             itinerary_hash[:prebooking_questions] = itinerary.prebooking_questions
             itinerary_hash[:bookable] = itinerary.is_bookable?
             itinerary_hash[:confirmation_id] = itinerary.booking_confirmation
+            itinerary_hash[:requested_time] = itinerary.trip_part.scheduled_time.iso8601
+            itinerary_hash[:requested_time_type] = itinerary.trip_part.is_depart ? 'depart' : 'arrive'
 
             if itinerary.service
               itinerary_hash[:service_name] = itinerary.service.name
