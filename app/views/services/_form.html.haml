@@ -344,15 +344,7 @@
           = f.input :booking_profile, as: :select, :collection => BookingServices::AGENCY.sort.map {|k,v| [k.to_s.titlecase,v]}
 
           %div.booking-info-panel#agency2{ style: 'display: none;' }
-            = f.simple_fields_for :ridepilot_profile do |rp|
-              -unless @service.ridepilot_profile.nil?
-                = rp.input :endpoint, input_html: {value: @service.ridepilot_profile.endpoint}
-                = rp.input :api_token, input_html: {value: @service.ridepilot_profile.api_token}
-                = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id), input_html: {value: @service.ridepilot_profile.provider_id}
-              -else
-                = rp.input :endpoint
-                = rp.input :api_token
-                = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
+            = render partial: 'services/ridepilot_form', locals: {f: f}
 
           %div.booking-info-panel#agency1{ style: 'display: none;' }
             = f.simple_fields_for :trapeze_profile do |tp|

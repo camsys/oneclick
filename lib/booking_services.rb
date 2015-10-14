@@ -303,6 +303,21 @@ class BookingServices
 
   end
 
+  def authenticate_provider_from_profile(booking_profile)
+    service = booking_profile.service
+    authenticate_provider(booking_profile.endpoint, booking_profile.api_token, booking_profile.provider_id, service)
+  end
+
+  def authenticate_provider(endpoint, api_token, provider_id, service)
+
+    case service.booking_profile
+      when AGENCY[:ridepilot]
+        rp = RidepilotServices.new
+        result, body = rp.authenticate_provider(endpoint, api_token, provider_id)
+        return {authenticated: result, message: body["error"]}
+    end
+  end
+
   def get_space_types(user_service)
 
     if user_service.nil?

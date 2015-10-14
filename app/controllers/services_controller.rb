@@ -319,6 +319,17 @@ class ServicesController < ApplicationController
 
   end
 
+  def authenticate_booking_settings
+    service = Service.find(params[:id])
+    bs = BookingServices.new
+    result = bs.authenticate_provider(params[:endpoint], params[:api_token], params[:provider_id], service)
+    if result[:authenticated]
+      render json: {message: TranslationEngine.translate_text(:successful_connection)}
+    else
+      render json: {message: result[:message]}
+    end
+  end
+
 protected
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,

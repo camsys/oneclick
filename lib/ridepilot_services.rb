@@ -39,7 +39,6 @@ class RidepilotServices
     url = endpoint + "/create_trip"
     message = {provider_id: provider_id, customer_id: customer_id, customer_token: customer_token, trip_purpose: trip_purpose, leg: leg, from_address: from, to_address: to, guests: guests, attendants: attendants, mobility_devices: mobility_devices, pickup_time: pickup_time, dropoff_time: dropoff_time}
     response = send_request(url, token, "POST", message)
-    puts response.ai
 
     if response and response.code == '200'
       body = JSON.parse(response.body)
@@ -51,6 +50,29 @@ class RidepilotServices
       return false, {}
     end
 
+  end
+
+  def authenticate_provider(endpoint, token, provider_id)
+    url = endpoint + '/authenticate_provider?provider_id=' + provider_id.to_s
+    begin
+      response = send_request(url, token, 'GET')
+    rescue
+      return false, {'error' =>  'Bad Endpoint'}
+    end
+
+    if response and response.code == '200'
+      body = JSON.parse(response.body)
+      return true, body
+    elsif response
+      begin
+        body = JSON.parse(response.body)
+      rescue
+        return false, {'error' => 'Bad Endpoint'}
+      end
+      return false, body
+    else
+      return false, {'error' => "Unknown Error"}
+    end
   end
 
   def cancel_trip(endpoint, token, customer_id, customer_token, trip_id)

@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  successful_connection: "These settings are correct. Be sure to apply these changes before exiting."
+  test_connection: "Test Settings"
   number_of_guests: "Number of Guests"
   number_of_attendants: "Number of Attendants"
   number_of_mobility_devices: "Number of Mobility Devices"

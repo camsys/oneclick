@@ -384,6 +384,7 @@ Oneclick::Application.routes.draw do
         get 'fare_type_form'
         patch 'undelete'
         get 'view'
+        get 'authenticate_booking_settings'
       end
     end
     resources :ratings, only: [:index, :create] do
