@@ -20,7 +20,7 @@
     =itinerary.booking_confirmation
 
 -if itinerary.cost.blank?
-  %div{id: 'itinerary_cost_div_' + itinerary.id.to_s, style: 'display_none;'}
+  %div{id: 'itinerary_cost_div_' + itinerary.id.to_s, style: 'display:none;'}
 -else
   %div{id: 'itinerary_cost_div_' + itinerary.id.to_s}
     .row
@@ -30,7 +30,7 @@
         =number_to_currency(itinerary.cost)
 
 -if itinerary.negotiated_pu_window_start.blank?
-  %div{id: 'itinerary_negotiated_pu_window_start_div_' + itinerary.id.to_s, style: 'display_none;'}
+  %div{id: 'itinerary_negotiated_pu_window_start_div_' + itinerary.id.to_s, style: 'display:none;'}
 -else
   %div{id: 'itinerary_negotiated_pu_window_start_div_' + itinerary.id.to_s}
     .row
@@ -40,7 +40,7 @@
         =itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")
 
 -if itinerary.negotiated_pu_time.blank?
-  %div{id: 'itinerary_negotiated_pu_time_div_' + itinerary.id.to_s, style: 'display_none;'}
+  %div{id: 'itinerary_negotiated_pu_time_div_' + itinerary.id.to_s, style: 'display:none;'}
 -else
   %div{id: 'itinerary_negotiated_pu_time_div_' + itinerary.id.to_s}
     .row
@@ -50,7 +50,7 @@
         =itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")
 
 -if itinerary.negotiated_pu_window_end.blank?
-  %div{id: 'itinerary_negotiated_pu_window_end_div_' + itinerary.id.to_s, style: 'display_none;'}
+  %div{id: 'itinerary_negotiated_pu_window_end_div_' + itinerary.id.to_s, style: 'display:none;'}
 -else
   %div{id: 'itinerary_negotiated_pu_window_end_div_' + itinerary.id.to_s}
     .row
@@ -58,4 +58,18 @@
         =translate_helper(:time_window_end)
       .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
         =itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")
+
+-if itinerary.ridepilot_booking
+  -ridepilot_booking = itinerary.ridepilot_booking
+  -if ridepilot_booking.booking_status_message.blank?
+    %div{id: 'itinerary_booking_status_message_div_' + itinerary.id.to_s, style: 'display:none;'}
+  -else
+    %div{id: 'itinerary_booking_status_message_div_' + itinerary.id.to_s}
+      .row
+        %label.col-sm-4.text-right
+          =translate_helper(:trip_status)
+        .col-sm-8.text-left{id: 'itinerary_booking_status_message_' + itinerary.id.to_s}
+          =ridepilot_booking.booking_status_message
+
+
 

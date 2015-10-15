@@ -27,6 +27,15 @@ class TripsController < PlaceSearchingController
     @trip_views = total_trips.page(page).per(@per_page)
     @trips = Trip.where(id: @trip_views.pluck(:id))
 
+    # If any itineraries are booked, update their statuses
+    @itineraries = []
+    @trips.each do |trip|
+      @itineraries += trip.itineraries.booked
+    end
+    @itineraries.each do |itinerary|
+      itinerary.update_booking_status
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @trips }
@@ -187,6 +196,11 @@ class TripsController < PlaceSearchingController
         if itinerary.service_is_bookable?
           user_service = UserService.where(service: itinerary.service, user_profile: @traveler.user_profile).first_or_initialize
           @user_services[itinerary.id] = user_service
+        end
+
+        #Update the booking status if it has changed
+        if itinerary.is_booked?
+          itinerary.update_booking_status
         end
 
         itinerary.selected = true

@@ -113,9 +113,6 @@ class RidepilotServices
     Rails.logger.info(url)
     Rails.logger.info(message)
 
-    puts url.ai
-    puts message.ai
-
     #begin
     uri = URI.parse(url)
     case type.downcase
@@ -141,10 +138,6 @@ class RidepilotServices
     resp = http.start {|http| http.request(req)}
     return resp
 
-    #rescue Exception=>e
-    #  Rails.logger.info("Sending Error")
-    #  return nil
-    #end
   end
 
 end

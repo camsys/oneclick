@@ -367,6 +367,31 @@ class Itinerary < ActiveRecord::Base
     self.service.is_bookable?
   end
 
+  def update_booking_status
+    if self.booking_confirmation.nil?
+      return nil
+    end
+    bs = BookingServices.new
+    bs.update_trip_status self
+  end
+
+  def booking_status_code
+    if self.service.nil?
+      return nil
+    end
+
+    case self.service.booking_profile
+      when BookingServices::AGENCY[:ridepilot]
+        return self.ridepilot_booking.booking_status_code
+      else
+        if self.is_booked?
+          return 'BOOKED'
+        else
+          return nil
+        end
+    end
+  end
+
   ##################################
 
   protected

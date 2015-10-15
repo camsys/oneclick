@@ -107,10 +107,10 @@ class BookingServices
           ridepilot_booking.booking_status_code = body["status"]["code"]
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
-          ridepilot_profile.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time:  (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), confirmation: body["trip_id"], fare: nil, message: body["status"]["code"]}
+          ridepilot_booking.save
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time:  (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), confirmation: body["trip_id"], fare: nil, message: body["status"]["code"], booking_status_message: ridepilot_booking.booking_status_message}
         else
-
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
         end
       else
         return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
@@ -341,12 +341,29 @@ class BookingServices
     end
   end
 
-  def get_trip_status(itinerary)
+  def update_trip_status(itinerary)
     service = itinerary.service
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(service: service, user_profile: user.user_profile)
 
+    case service.booking_profile
+      when AGENCY[:ridepilot]
+        ridepilot_profile = service.ridepilot_profile
+        ridepilot_booking = itinerary.ridepilot_booking
+        rs = RidepilotServices.new
+        result, body = rs.trip_status(ridepilot_profile.endpoint, ridepilot_profile.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
+        if result
+          itinerary.booking_confirmation = body["trip_id"]
+          itinerary.negotiated_pu_time = itinerary.start_time
+          ridepilot_booking.booking_status_code = body["status"]["code"]
+          ridepilot_booking.booking_status_message = body["status"]["message"]
+          itinerary.save
+          ridepilot_booking.save
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time:  (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), confirmation: body["trip_id"], fare: nil, message: body["status"]["code"], booking_status_message: ridepilot_booking.booking_status_message}
+        else
+          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
+        end
+    end
   end
-
 
 end

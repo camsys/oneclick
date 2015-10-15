@@ -69,6 +69,7 @@
             var negotiated_pu_time = result['negotiated_pu_time'];
             var negotiated_pu_window_start = result['negotiated_pu_window_start'];
             var negotiated_pu_window_end = result['negotiated_pu_window_end'];
+            var booking_status_message = result['booking_status_message']
             if($('#bookingModal').data('outbound-booked') == true ){
               $('#outbound_booking_results').show();
             } else{
@@ -99,6 +100,11 @@
             if(negotiated_pu_window_end){
               $('#itinerary_negotiated_pu_window_end_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
               $('#itinerary_negotiated_pu_window_end_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
+            }
+
+            if (booking_status_message){
+              $('#itinerary_booking_status_message_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_booking_status_message_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(booking_status_message);
             }
 
         }
