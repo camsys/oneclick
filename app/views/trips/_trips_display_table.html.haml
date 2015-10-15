@@ -92,7 +92,7 @@
           %td.center
             - trip.trip_parts.each do |tp|
               - tp.itineraries.where.not(booking_confirmation: nil).each do |itinerary|
-                =(tp.is_return_trip? ? translate_helper(:return) : translate_helper(:outbound)) + " / " + itinerary.booking_confirmation.to_s + " / " + itinerary.booking_status_code.to_s
+                =(tp.is_return_trip? ? translate_helper(:return) : translate_helper(:outbound)) + "/" + itinerary.booking_confirmation.to_s + "/" + itinerary.booking_status_code.to_s
         %td.center.nowrap
           = link_to repeat_user_trip_path(traveler, trip), {:alt => translate_helper(:repeat_trip), :title => translate_helper(:repeat_trip), :class => "btn btn-sm", "aria-label" => "#{translate_helper(:repeat_trip)}"} do
             %i.fa.fa-rotate-right
