@@ -587,6 +587,17 @@ end
     FeedbackIssuesFeedbackType.where(feedback_type: type3, feedback_issue: FeedbackIssue.find(8)).first_or_create
   end
 
+  desc "Update booked trips status"
+  task update_booked_trips: :environment do
+    Itinerary.booked.upcoming.each do |itinerary|
+      itinerary.update_booking_status
+    end
+
+    Itinerary.booked.within_last_24hours.each do |itinerary|
+      itinerary.update_booking_status
+    end
+  end
+
   desc "Transfer old Ratings into new Feedback"
   task change_ratings_to_feedback: :environment do
     Rating.all.each do |rating|

@@ -25,6 +25,8 @@ class Itinerary < ActiveRecord::Base
   scope :good_score, -> {where('match_score < 3')}
   scope :booked, -> {where.not(booking_confirmation: nil)}
   scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at >= ? AND itineraries.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
+  scope :upcoming, -> {where('start_time > ?', Time.now)}
+  scope :within_last_24hours, -> {where('start_time > ? AND start_time <= ?', Time.now - 24.hours, Time.now)}
   # NOTE that: mode scopes are based on :returned_mode_code as it represents the real mode code
   #    when itinerary.mode.code == :mode_transit, itinerary.returned_mode_code could be
   #        mode_transit
@@ -371,8 +373,13 @@ class Itinerary < ActiveRecord::Base
     if self.booking_confirmation.nil?
       return nil
     end
-    bs = BookingServices.new
-    bs.update_trip_status self
+    begin
+      bs = BookingServices.new
+      bs.update_trip_status self
+    rescue
+      return nil
+    end
+
   end
 
   def booking_status_code
