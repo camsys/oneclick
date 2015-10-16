@@ -8,14 +8,14 @@
   .row
     %label.col-sm-4.text-right
       =translate_helper(:number_of_guests)
-    = f.input :guests, :as => :integer, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
+    = f.input :guests, collection: 0..10, :include_blank => false, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
 
   .row
     %label.col-sm-4.text-right
       =translate_helper(:number_of_attendants)
-    = f.input :attendants, :as => :integer, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
+    = f.input :attendants, collection: 0..10, :include_blank => false, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
 
   .row
     %label.col-sm-4.text-right
       =translate_helper(:number_of_mobility_devices)
-    = f.input :mobility_devices, :as => :integer, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
+    = f.input :mobility_devices, collection: 0..10, :include_blank => false, :label => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}
