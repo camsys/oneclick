@@ -21,7 +21,7 @@
      var ridepilot_provider_id = $('#service_ridepilot_profile_provider_id').val();
 
      $.ajax({
-       url: '/services/' + '#{@service.id}' + '/authenticate_booking_settings?endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
+       url: '/services/' + '#{@service.id}' + '/authenticate_booking_settings?booking_profile=' + '#{BookingServices::AGENCY[:ridepilot]}' + '&endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
        method: 'GET',
        success: function(result){
          $('#ridepilot_form_button').prop('disabled', false);

@@ -322,7 +322,8 @@ class ServicesController < ApplicationController
   def authenticate_booking_settings
     service = Service.find(params[:id])
     bs = BookingServices.new
-    result = bs.authenticate_provider(params[:endpoint], params[:api_token], params[:provider_id], service)
+    result = bs.authenticate_provider(params[:endpoint], params[:api_token], params[:provider_id], params[:booking_profile])
+
     if result[:authenticated]
       render json: {message: TranslationEngine.translate_text(:successful_connection)}
     else

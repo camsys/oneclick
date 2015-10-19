@@ -341,7 +341,7 @@
             = translate_helper(:booking_information)
             = add_tooltip("booking_information_help")
         .panel-body
-          = f.input :booking_profile, as: :select, :collection => BookingServices::AGENCY.sort.map {|k,v| [k.to_s.titlecase,v]}
+          = f.input :booking_profile, as: :select, :collection => BookingServices::AGENCY.sort.map {|k,v| [translate_helper(k),v]}
 
           %div.booking-info-panel#agency2{ style: 'display: none;' }
             = render partial: 'services/ridepilot_form', locals: {f: f}

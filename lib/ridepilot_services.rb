@@ -53,7 +53,9 @@ class RidepilotServices
   end
 
   def authenticate_provider(endpoint, token, provider_id)
+
     url = endpoint + '/authenticate_provider?provider_id=' + provider_id.to_s
+
     begin
       response = send_request(url, token, 'GET')
     rescue

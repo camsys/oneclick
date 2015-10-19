@@ -4,6 +4,9 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  :ridepilot: "RidePilot"
+  :ecolane: "Ecolane"
+  :trapeze: "Trapeze"
   booking_status: "Booking Status"
   trip_status: "Trip Status"
   successful_connection: "These settings are correct. Be sure to apply these changes before exiting."

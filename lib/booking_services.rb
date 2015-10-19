@@ -305,12 +305,12 @@ class BookingServices
 
   def authenticate_provider_from_profile(booking_profile)
     service = booking_profile.service
-    authenticate_provider(booking_profile.endpoint, booking_profile.api_token, booking_profile.provider_id, service)
+    authenticate_provider(booking_profile.endpoint, booking_profile.api_token, booking_profile.provider_id, service.booking_profile)
   end
 
-  def authenticate_provider(endpoint, api_token, provider_id, service)
+  def authenticate_provider(endpoint, api_token, provider_id, booking_profile)
 
-    case service.booking_profile
+    case booking_profile.to_i
       when AGENCY[:ridepilot]
         rp = RidepilotServices.new
         result, body = rp.authenticate_provider(endpoint, api_token, provider_id)
