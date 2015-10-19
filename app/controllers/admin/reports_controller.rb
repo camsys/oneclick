@@ -184,5 +184,18 @@ class Admin::ReportsController < Admin::BaseController
       @provider_id = p.id
     end
   end
+
+  def update_reports_data
+    refresh_materialized_views
+    respond_to do |format|
+      format.json { render json: {result: true} }
+    end
+  end
+
+  private
+
+  def refresh_materialized_views
+    ActiveRecord::Base.connection.execute("select * from refreshallmaterializedviews();")
+  end
   
 end

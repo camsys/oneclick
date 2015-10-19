@@ -310,6 +310,7 @@ Oneclick::Application.routes.draw do
     namespace :admin do
 
       get '/reports/trips_datatable' => 'reports#trips_datatable'
+      post '/reports/update_reports_data' => 'reports#update_reports_data'
 
       resources :reports, :only => [:index, :show] do
         get 'results'

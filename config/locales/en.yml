@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  :refresh_materialized_views: "Update Report Data"
   :ridepilot: "RidePilot"
   :ecolane: "Ecolane"
   :trapeze: "Trapeze"

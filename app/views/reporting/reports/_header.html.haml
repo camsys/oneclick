@@ -3,10 +3,32 @@
     .btns.pull-right
       = button_tag type: :submit, id: 'runReporting', class: 'btn action-button controls' do
         = translate_helper(:run)
+      = button_tag type: :button, id: 'refreshMaterializedViews', class: 'btn action-button controls' do
+        = translate_helper(:refresh_materialized_views)
     %h1
       = translate_helper(:report_parameters)
+
 
   :javascript
     $('#runReporting').on('click', function() {
       $('.filter-form').submit();
     });
+
+
+    $('#refreshMaterializedViews').on('click', function(event) {
+      console.log('pushed it');
+      event.stopPropagation();
+      var text = "#{translate_helper(:please_wait)}" + "..."
+      $('#refreshMaterializedViews').addClass('disabled');
+      $.ajax({
+        url: "/admin/reports/update_reports_data",
+        method: 'POST',
+        success: function(result) {
+          console.log(result);
+          $('#refreshMaterializedViews').removeClass('disabled');
+        },
+        error: function(result){
+          console.log(result);
+        }
+      })
+    })
