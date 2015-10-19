@@ -598,6 +598,11 @@ end
     end
   end
 
+  desc "Refresh materialized views for reports"
+  task refresh_materialized_views: :environment do
+    ActiveRecord::Base.connection.execute("select * from refreshallmaterializedviews();")
+  end
+
   desc "Transfer old Ratings into new Feedback"
   task change_ratings_to_feedback: :environment do
     Rating.all.each do |rating|
