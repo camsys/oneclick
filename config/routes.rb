@@ -380,12 +380,15 @@ Oneclick::Application.routes.draw do
 
     resources :services do
       resources :fare_zones, only: [:create]
+      collection do
+        get 'authenticate_booking_settings'
+      end
 
       member do
         get 'fare_type_form'
         patch 'undelete'
         get 'view'
-        get 'authenticate_booking_settings'
+
       end
     end
     resources :ratings, only: [:index, :create] do
