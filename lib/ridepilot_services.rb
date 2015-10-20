@@ -115,30 +115,33 @@ class RidepilotServices
     Rails.logger.info(url)
     Rails.logger.info(message)
 
-    #begin
-    uri = URI.parse(url)
-    case type.downcase
-      when 'post'
-        req = Net::HTTP::Post.new(uri.path)
-        req.body = message.to_json
-        puts req.body.ai
-      when 'delete'
-        req = Net::HTTP::Delete.new(uri.path)
-        req.body = message.to_json
-      else
-        req = Net::HTTP::Get.new(uri)
+    begin
+      uri = URI.parse(url)
+      case type.downcase
+        when 'post'
+          req = Net::HTTP::Post.new(uri.path)
+          req.body = message.to_json
+          puts req.body.ai
+        when 'delete'
+          req = Net::HTTP::Delete.new(uri.path)
+          req.body = message.to_json
+        else
+          req = Net::HTTP::Get.new(uri)
+      end
+
+      req.add_field 'X-RIDEPILOT-TOKEN', token
+      req.add_field 'Content-Type', 'application/json'
+
+      http = Net::HTTP.new(uri.host, uri.port)
+
+      http.use_ssl = use_ssl
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      resp = http.start {|http| http.request(req)}
+      return resp
+    rescue
+      return nil
     end
 
-    req.add_field 'X-RIDEPILOT-TOKEN', token
-    req.add_field 'Content-Type', 'application/json'
-
-    http = Net::HTTP.new(uri.host, uri.port)
-
-    http.use_ssl = use_ssl
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    resp = http.start {|http| http.request(req)}
-    return resp
 
   end
 
