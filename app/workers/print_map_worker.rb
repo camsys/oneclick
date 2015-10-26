@@ -9,7 +9,8 @@ class PrintMapWorker
     Capybara.register_driver :poltergeist do |app|
       Capybara::Poltergeist::Driver.new(app,
         :phantomjs_options => ['--debug=no', '--ignore-ssl-errors=yes', '--ssl-protocol=TLSv1'], 
-        :debug => false)
+        :debug => false,
+        :js_errors => false)
     end
 
     session = Capybara::Session.new :poltergeist
@@ -23,7 +24,7 @@ class PrintMapWorker
     i.map_image = File.open(tempfile)
 
     Rails.logger.info "Map IMAGE DONE"
-    Rails.logger.info (map_image.url)
+    Rails.logger.info (i.map_image.url)
     i.save!
   ensure
     session.driver.quit
