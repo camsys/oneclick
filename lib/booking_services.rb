@@ -105,6 +105,7 @@ class BookingServices
           itinerary.booking_confirmation = body["trip_id"]
           itinerary.negotiated_pu_time = itinerary.start_time
           ridepilot_booking.booking_status_code = body["status"]["code"]
+          ridepilot_booking.booking_status_name = body["status"]["name"]
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
           ridepilot_booking.save
@@ -356,6 +357,7 @@ class BookingServices
           itinerary.booking_confirmation = body["trip_id"]
           itinerary.negotiated_pu_time = itinerary.start_time
           ridepilot_booking.booking_status_code = body["status"]["code"]
+          ridepilot_booking.booking_status_name = body["status"]["name"]
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
           ridepilot_booking.save

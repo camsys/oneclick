@@ -399,6 +399,23 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  def booking_status_name
+    if self.service.nil?
+      return nil
+    end
+
+    case self.service.booking_profile
+      when BookingServices::AGENCY[:ridepilot]
+        return self.ridepilot_booking.booking_status_name
+      else
+        if self.is_booked?
+          return 'Booked'
+        else
+          return nil
+        end
+    end
+  end
+
   ##################################
 
   protected
