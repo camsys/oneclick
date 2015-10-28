@@ -293,6 +293,7 @@ class Trip < ActiveRecord::Base
   # returns true is this trip can be edited or deleted. Note that this
   # bascially comes down to wether the planned trip is in the future or if it has been booked
   def can_modify
+    return true
     if trip_parts.empty?
       return true
     elsif is_booked?

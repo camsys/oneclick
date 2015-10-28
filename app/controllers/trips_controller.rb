@@ -460,6 +460,8 @@ class TripsController < PlaceSearchingController
 
     setup_modes
 
+    @is_repeat = true
+
     respond_to do |format|
       format.html { render :action => 'edit'}
     end
@@ -491,6 +493,8 @@ class TripsController < PlaceSearchingController
     # Create markers for the map control
     @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
+
+    @is_repeat = false
 
     respond_to do |format|
       format.html
