@@ -54,7 +54,10 @@
       %td{:style=>'width: 50%'}
         = translate_helper(a) +":"
       %td
-        = sanitize_nil_to_na b
+        -if a == :url
+          =link_to b, b, :target => "_blank"
+        -else
+          = sanitize_nil_to_na b
 
 -if itinerary.service.accommodations.count > 0
   .well.well-sm.comments
