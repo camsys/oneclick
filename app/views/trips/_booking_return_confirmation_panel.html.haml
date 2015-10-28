@@ -83,26 +83,26 @@
             booking_state = 'showing_results';
             update_dialog();
             $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
-            if(cost){
+            if(!(cost === null)){
               $('#itinerary_cost_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show()
               $('#itinerary_cost_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(cost);
             }
-            if(negotiated_pu_time){
+            if(!(negotiated_pu_time === null)){
               $('#itinerary_negotiated_pu_time_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
               $('#itinerary_negotiated_pu_time_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
             }
 
-            if(negotiated_pu_window_start){
+            if(!(negotiated_pu_window_start === null)){
               $('#itinerary_negotiated_pu_window_start_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
               $('#itinerary_negotiated_pu_window_start_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
             }
 
-            if(negotiated_pu_window_end){
+            if(!(negotiated_pu_window_end === null)){
               $('#itinerary_negotiated_pu_window_end_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
               $('#itinerary_negotiated_pu_window_end_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
             }
 
-            if (booking_status_message){
+            if (!(booking_status_message === null)){
               $('#itinerary_booking_status_message_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
               $('#itinerary_booking_status_message_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(booking_status_message);
             }
