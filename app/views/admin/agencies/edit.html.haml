@@ -163,7 +163,7 @@
         dataType: "json",
         success: function(data) {
           if (data["success"]) {
-            $(".modal").modal("toggle");
+            $("#add_agent").modal("toggle");
             $("div.agent-flash").html(data["msg"]).addClass("alert alert-success fade-in");
             $(".new_agents select").append("<option selected value=" + data["output"] + ">"+ data["output"] + "</option>")
 
