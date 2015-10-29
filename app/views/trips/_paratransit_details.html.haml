@@ -50,14 +50,15 @@
 
 %table{:style=>'width: 100%;'}
   - itinerary.service.get_contact_info_array.each do |a,b|
-    %tr
-      %td{:style=>'width: 50%'}
-        = translate_helper(a) +":"
-      %td
-        -if a == :url
-          =link_to b, b, :target => "_blank"
-        -else
-          = sanitize_nil_to_na b
+    -unless b.empty?
+      %tr
+        %td{:style=>'width: 50%'}
+          = translate_helper(a) +":"
+        %td
+          -if a == :url
+            =link_to b, b, :target => "_blank"
+          -else
+            = sanitize_nil_to_na b
 
 -if itinerary.service.accommodations.count > 0
   .well.well-sm.comments
