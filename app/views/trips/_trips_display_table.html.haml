@@ -89,7 +89,7 @@
                           = translate_helper(:site_title)
                     .modal-body{:style => "text-align:left;"}
                       = translate_helper(:confirm_cancel_trip)
-          %td.center
+          %td.center.nowrap
             - trip.trip_parts.each do |tp|
               - tp.itineraries.where.not(booking_confirmation: nil).each do |itinerary|
                 %div.row.nowrap
