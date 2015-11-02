@@ -287,6 +287,9 @@ class Service < ActiveRecord::Base
         #Rails.logger.info  "Updating Endpoint Area"
         if self.endpoint_area_geom
           merged = self.endpoint_area_geom.geom.union(polygon)
+          if merged.nil?
+            next
+          end
           self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
           self.endpoint_area_geom.save!
         else
@@ -298,6 +301,9 @@ class Service < ActiveRecord::Base
         #Rails.logger.info  "Updating Coverage Area"
         if self.coverage_area_geom
           merged = self.coverage_area_geom.geom.union(polygon)
+          if merged.nil?
+            next
+          end
           self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
           self.coverage_area_geom.save!
         else
