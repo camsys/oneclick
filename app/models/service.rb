@@ -26,6 +26,7 @@ class Service < ActiveRecord::Base
   has_many :fare_zones
   has_many :funding_sources
   has_many :sponsors
+  has_one  :ecolane_profile
 
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }

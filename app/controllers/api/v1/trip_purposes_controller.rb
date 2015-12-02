@@ -41,6 +41,8 @@ module Api
             end
           end
 
+
+          default_trip_purpose = nil
           if service
             unless service.booking_system_id.nil?
               begin
@@ -51,6 +53,10 @@ module Api
                 )
                 trip_purposes = []
               end
+            end
+
+            if service.ecolane_profile
+              default_trip_purpose = service.ecolane_profile.default_trip_purpose
             end
           end
 
@@ -65,7 +71,7 @@ module Api
           index+=1
         end
 
-        hash = {trip_purposes: purposes}
+        hash = {trip_purposes: purposes, default_trip_purpose: default_trip_purpose}
         render json: hash
 
       end
