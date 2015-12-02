@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20151202214301) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "default_trip_purpose"
+    t.integer  "service_id"
   end
 
   create_table "fare_structures", force: true do |t|
