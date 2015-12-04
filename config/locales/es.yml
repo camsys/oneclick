@@ -195,6 +195,7 @@ es:
   buddy_revoke_email:   ''
   buddy_revoke_email_header: ''
   buddy_revoke_email_footer: ''
+  buddy_request_message: "[es]You have a new buddy request from %{requester}. You need to edit your profile to accept it if you haven't done so.[/es]"
   traveler_confirm_email:   ''
   traveler_confirm_email_header: ''
   traveler_confirm_email_footer: ''

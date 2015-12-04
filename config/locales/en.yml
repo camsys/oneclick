@@ -266,6 +266,7 @@ en:
   buddy_revoke_email:   "Your buddy has revoked your status"
   buddy_revoke_email_header: ''
   buddy_revoke_email_footer: ''
+  buddy_request_message: "You have a new buddy request from %{requester}. You need to edit your profile to accept it if you haven't done so."
   traveler_confirm_email:   "Your buddy has accepted your request"
   traveler_confirm_email_header: ''
   traveler_confirm_email_footer: ''

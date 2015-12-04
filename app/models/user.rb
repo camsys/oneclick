@@ -240,13 +240,20 @@ class User < ActiveRecord::Base
 
   def add_buddies emails
     unless emails.nil?
+      request_message = create_buddy_request_message
       emails.each do |email|
         rel = UserRelationship.find_or_create_by(user_id: self.id, delegate_id: User.find_by(email: email).id) do |ur|
           ur.relationship_status_id = RelationshipStatus::PENDING
         end
+        request_message.recipients << rel.delegate
         UserMailer.buddy_request_email(rel.delegate.email, rel.traveler).deliver
       end
+      request_message.save rescue nil
     end
+  end
+
+  def create_buddy_request_message
+    Message.create(sender: self, body: TranslationEngine.translate_text(:buddy_request_message, requester: name || email))
   end
 
   def soft_delete
