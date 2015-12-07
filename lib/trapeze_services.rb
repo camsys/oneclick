@@ -103,6 +103,8 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, offset_minutes, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
+    exclude_validation_checks = 18
+
     pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       pu_leg_hash = {req_time: [request_start_seconds_past_midnight + (offset_minutes*60), 86399].min, request_address: pu_address_hash}
@@ -131,14 +133,27 @@ class TrapezeServices
       trip_hash[:pass_booking_passengers] = passengers_array
     end
 
-
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
 
+    funding_source_array = get_funding_source_array(endpoint, namespace, username, password, client_id, client_password)
+    final_result = {}
+    funding_source_array.each do |funding_source|
+      trip_hash[:exclude_validation_checks] = funding_source[:exclude_validation_checks]
+      trip_hash[:funding_source_id] = funding_source[:funding_source_id]
+      Rails.logger.info trip_hash.ai
 
+      result = client.call(:pass_create_trip, message: trip_hash, cookies: auth_cookies)
+      Rails.logger.info result.hash
+      result = result.hash
+      booking_id = result[:envelope][:body][:pass_create_trip_response][:pass_create_trip_result][:booking_id].to_i
+      unless booking_id == -1
+        return result
+      end
+      final_result = result
+    end
 
-    Rails.logger.info trip_hash.ai
-    result = client.call(:pass_create_trip, message: trip_hash, cookies: auth_cookies)
-    result.hash
+    return final_result
+
   end
 
   def pass_cancel_trip(endpoint, namespace, username, password, client_id, client_password, booking_id)
@@ -193,6 +208,24 @@ class TrapezeServices
 
   end
 
+  def get_funding_source_array(endpoint, namespace, username, password, client_id, client_password)
+    ada_funding_sources = Oneclick::Application.config.ada_funding_sources
+    ignore_polygon = Oneclick::Application.config.ignore_polygon_id
+    check_polygon = Oneclick::Application.config.check_polygon_id
+
+    funding_source_array = []
+    pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).each do |funding_source|
+      if funding_source[:funding_source_name].in? ada_funding_sources
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, exclude_validation_checks: check_polygon, fare_type_id: 1}
+      else
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, exclude_validation_checks: ignore_polygon, fare_type_id: 14}
+      end
+    end
+
+    funding_source_array
+  end
+
+
   def pass_get_passenger_types(endpoint, namespace, username, password, client_id, client_password)
     client, auth_cookies = create_client_and_login(endpoint, namespace, username, password, client_id, client_password)
     message = {client_id: client_id}
@@ -223,6 +256,11 @@ class TrapezeServices
       space_type = "AM"
     end
     return {pass_booking_passenger: {passenger_type: type, space_type: space_type, passenger_count: 1, fare_type: fare_type_id}}
+  end
+
+  def pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password)
+    client_info = pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
+    client_info[:envelope][:body][:pass_get_client_info_response][:pass_get_client_info_result][:pass_client_funding_sources][:pass_client_funding_source]
   end
 
 end
