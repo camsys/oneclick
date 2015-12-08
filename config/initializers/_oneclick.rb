@@ -216,8 +216,8 @@ Oneclick::Application.configure do
 
   when 'jta'
     config.ada_funding_sources = ['ADA']
-    config.ignore_polygon_id = 18
-    config.check_polygon_id = 0
+    config.ignore_polygon_id = 30
+    config.check_polygon_id = 30
     config.allows_booking = true
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
