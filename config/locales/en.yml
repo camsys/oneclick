@@ -1172,7 +1172,7 @@ en:
       second: Seconds
       year: Year
   unauthorized:
-    default: 'You are not authorized to access that page.'
+    default: 'Please login to access this page.'
   locales:
     en: "English"
     es: "En Español"
