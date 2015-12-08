@@ -103,7 +103,7 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, offset_minutes, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
-    exclude_validation_checks = 18
+    exclude_validation_checks = 30
 
     pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
