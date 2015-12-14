@@ -103,8 +103,6 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, offset_minutes, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
-    exclude_validation_checks = 30
-
     pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       pu_leg_hash = {req_time: [request_start_seconds_past_midnight + (offset_minutes*60), 86399].min, request_address: pu_address_hash}
@@ -138,7 +136,7 @@ class TrapezeServices
     funding_source_array = get_funding_source_array(endpoint, namespace, username, password, client_id, client_password)
     final_result = {}
     funding_source_array.each do |funding_source|
-      trip_hash[:exclude_validation_checks] = funding_source[:exclude_validation_checks]
+      trip_hash[:excluded_validation_checks] = funding_source[:excluded_validation_checks]
       trip_hash[:funding_source_id] = funding_source[:funding_source_id]
       Rails.logger.info trip_hash.ai
 
@@ -216,9 +214,9 @@ class TrapezeServices
     funding_source_array = []
     pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).each do |funding_source|
       if funding_source[:funding_source_name].in? ada_funding_sources
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, exclude_validation_checks: check_polygon, fare_type_id: 1}
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: 1}
       else
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, exclude_validation_checks: ignore_polygon, fare_type_id: 14}
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: ignore_polygon, fare_type_id: 14}
       end
     end
 
