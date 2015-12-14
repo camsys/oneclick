@@ -634,4 +634,22 @@ end
     end
   end
 
+  desc "Enable ride-hailing mode"
+  task enable_ride_hailing_mode: :environment do
+    # mode
+    ride_hailing_mode = Mode.where(
+      name: 'mode_ride_hailing_name',
+      code: 'mode_ride_hailing'
+      ).first_or_create
+
+    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true
+
+    # service type
+    ServiceType.where(
+      name: 'ride_hailing_name',
+      code: 'ride_hailing',
+      note: 'ride_hailing_note'
+    ).first_or_create   
+  end
+
 end

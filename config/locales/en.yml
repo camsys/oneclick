@@ -776,6 +776,8 @@ en:
   inactive: "Inactive"
   service_id: "Service Id"
   service_type: "Service Type"
+  mode_ride_hailing_name: 'Ride Hailing'
+  ride_hailing_name: 'Ride Hailing'
   booking_service_code: "Booking Service Code"
   back_to_services: "Back to services"
   service: "Service"
