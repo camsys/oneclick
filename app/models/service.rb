@@ -62,7 +62,8 @@ class Service < ActiveRecord::Base
   has_many :user_profiles, through: :user_services, source: :user_profile
 
   scope :active, -> {where(active: true)}
-  scope :paratransit, -> {joins(:service_type).where("service_types.code IN (?,?,?,?,?)", "paratransit", "volunteer", "nemt", "tap", "dial_a_ride")}
+  scope :ride_hailing, ->  {joins(:service_type).where(service_types: {code: ['uber_x']}) }
+  scope :paratransit, -> {joins(:service_type).where(service_types: {code: ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"] })}
   #scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
   scope :bookable, -> {where.not(booking_profile: nil)}
 
@@ -76,9 +77,6 @@ class Service < ActiveRecord::Base
   validate :ensure_valid_advanced_book_day_range
 
   mount_uploader :logo, ServiceLogoUploader
-
-
-
 
   def is_paratransit?
     is_service_type('paratransit')

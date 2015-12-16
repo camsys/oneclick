@@ -371,6 +371,10 @@ $legend-height: 20px;
   background-color: $trip-leg-taxi;
 }
 
+.travel-legend-ride_hailing {
+  background-color: $trip-leg-ride_hailing;
+}
+
 .travel-legend-bike {
   background-color: $trip-leg-bicycle;
 }
@@ -445,6 +449,10 @@ $legend-height: 20px;
 
 .travel-type-taxi {
   fill: $trip-leg-taxi;
+}
+
+.travel-type-ride_hailing {
+  fill: $trip-leg-ride_hailing;
 }
 
 .travel-type-bike {

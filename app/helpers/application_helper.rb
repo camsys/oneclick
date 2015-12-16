@@ -240,7 +240,7 @@ module ApplicationHelper
       'paratransit_details'
     elsif mode_code == 'livery'
       'paratransit_details'
-    elsif mode_code == 'taxi'
+    elsif mode_code == 'taxi' || mode_code == 'ride_hailing'
       'taxi_details'
     elsif mode_code == 'rideshare'
       'rideshare_details'

@@ -558,6 +558,9 @@ GEM
     typhoeus (0.6.9)
       ethon (>= 0.7.1)
     tzinfo (0.3.44)
+    uber-ruby (0.4.0)
+      faraday (~> 0.9.0)
+      json (~> 1.8)
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -678,5 +681,9 @@ DEPENDENCIES
   twilio-ruby
   twitter-bootstrap-rails-confirm!
   twitter-typeahead-rails!
+  uber-ruby
   uglifier (>= 1.0.3)
   yard
+
+BUNDLED WITH
+   1.10.6

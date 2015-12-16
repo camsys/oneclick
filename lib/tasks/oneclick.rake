@@ -642,14 +642,35 @@ end
       code: 'mode_ride_hailing'
       ).first_or_create
 
-    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true
-
-    # service type
-    ServiceType.where(
-      name: 'ride_hailing_name',
-      code: 'ride_hailing',
-      note: 'ride_hailing_note'
-    ).first_or_create   
+    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true 
   end
 
+  desc 'Enable uberX service'
+  task enable_uberx_service: :environment do 
+    require 'open-uri'
+    # service type
+    type = ServiceType.where(
+      name: 'uber_x_name',
+      code: 'uber_x',
+      note: 'uber_x_note'
+    ).first_or_create  
+
+    # Uber provider
+    provider = Provider.where(name: 'Uber').first_or_create
+    #provider.update_attribute :logo_url, 'uber/uber.png'
+    open(Rails.root.join('public', 'init-assets', 'uber', 'uber.png')) do |f|
+      provider.logo = f.read
+      provider.save
+    end rescue nil
+
+    # uberX Service
+    uberx_service = Service.where(provider: provider, service_type: type, name: 'uberX').first_or_create
+    #uberx_service.update_attribute :logo_url, 'uber/uberx.png'
+    uberx = UberHelpers.new.get_product_by_name('uberX') if UberHelpers.available?
+    if uberx 
+      uberx_service.external_id = uberx.product_id
+      uberx_service.remote_logo_url = uberx.image
+      uberx_service.save
+    end
+  end
 end

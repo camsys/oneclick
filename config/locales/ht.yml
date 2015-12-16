@@ -635,6 +635,9 @@ ht:
   service_type: "[ht]Service Type[/ht]"
   mode_ride_hailing_name: '[ht]Ride Hailing[/ht]'
   ride_hailing_name: '[ht]Ride Hailing[/ht]'
+  ride_hailing: '[ht]Ride Hailing[/ht]'
+  uber_x: '[ht]uberX[/ht]'
+  uber_x_name: '[ht]uberX[/ht]'
   booking_service_code: "[ht]Booking Service Code[/ht]"
   back_to_services: "[ht]Back to services[/ht]"
   service: "[ht]Service[/ht]"

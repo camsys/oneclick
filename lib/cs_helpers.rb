@@ -303,6 +303,8 @@ module CsHelpers
       TranslationEngine.translate_text(:drive)
     elsif mode_code == 'bicycle'
       TranslationEngine.translate_text(:bicycle)
+    elsif mode_code == 'ride_hailing'
+      TranslationEngine.translate_text(:ride_hailing)
     end
     return title
   end

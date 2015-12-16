@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151027202017) do
+ActiveRecord::Schema.define(version: 20151215155146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -263,10 +263,6 @@ ActiveRecord::Schema.define(version: 20151027202017) do
     t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
-    t.boolean  "assistant"
-    t.integer  "companions"
-    t.integer  "children"
-    t.integer  "other_passengers"
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
@@ -538,7 +534,6 @@ ActiveRecord::Schema.define(version: 20151027202017) do
   end
 
   create_table "ridepilot_bookings", force: true do |t|
-    t.integer  "leg"
     t.integer  "guests"
     t.integer  "attendants"
     t.integer  "mobility_devices"
@@ -621,9 +616,10 @@ ActiveRecord::Schema.define(version: 20151027202017) do
   end
 
   create_table "service_types", force: true do |t|
-    t.string "name", limit: 64, null: false
-    t.string "note"
-    t.string "code"
+    t.string  "name",   limit: 64,                null: false
+    t.string  "note"
+    t.string  "code"
+    t.boolean "active",            default: true
   end
 
   create_table "services", force: true do |t|
@@ -660,8 +656,8 @@ ActiveRecord::Schema.define(version: 20151027202017) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.boolean  "use_gtfs_colors"
     t.string   "disabled_comment"
+    t.boolean  "use_gtfs_colors"
     t.string   "fare_user"
     t.string   "booking_system_id"
     t.string   "booking_token"

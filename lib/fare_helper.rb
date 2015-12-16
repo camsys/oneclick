@@ -218,6 +218,7 @@ class FareHelper
         else
           case itinerary.mode
           when Mode.taxi
+          when Mode.ride_hailing
             if fare
               fare = fare.ceil
               estimated = true

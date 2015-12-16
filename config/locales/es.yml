@@ -694,6 +694,9 @@ es:
   service_type: "[es]Service Type[/es]"
   mode_ride_hailing_name: '[es]Ride Hailing[/es]'
   ride_hailing_name: '[es]Ride Hailing[/es]'
+  ride_hailing: '[es]Ride Hailing[/es]'
+  uber_x: '[es]uberX[/es]'
+  uber_x_name: '[es]uberX[/es]'
   booking_service_code: "[es]Booking Service Code[/es]"
   back_to_services: "[es]Back to services[/es]"
   service: "[es]Service[/es]"

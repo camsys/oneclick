@@ -1,9 +1,9 @@
 - is_transit = @service.is_transit?
-- transit_id = ServiceType.where(code: 'transit').first.id if ServiceType.where(code: 'transit').first
+- transit_id = ServiceType.where(code: 'transit').first.try(:id) 
 - is_taxi = @service.is_taxi?
-- taxi_id = ServiceType.where(code: 'taxi').first.id if ServiceType.where(code: 'taxi').first
+- taxi_id = ServiceType.where(code: 'taxi').first.try(:id) 
 - is_paratransit = @service.is_paratransit?
-- paratransit_id = ServiceType.where(code: 'paratransit').first.id if ServiceType.where(code: 'paratransit').first
+- paratransit_id = ServiceType.where(code: 'paratransit').first.try(:id) 
 
 = simple_form_for @service, html: { class: 'form-horizontal service-edit-form', multipart: true},
         wrapper: :horizontal_form do |f|
@@ -43,7 +43,7 @@
           = f.input :email
           = f.input :url
           = f.association :service_type,
-                  collection: ServiceType.all.map{|t| [ translate_helper(t.name), t.id ] }
+                  collection: ServiceType.available.map{|t| [ translate_helper(t.name), t.id ] }
           = f.input :external_id, label: translate_helper(:service_id)
           = f.input :use_gtfs_colors, label: translate_helper(:use_gtfs_colors)
 

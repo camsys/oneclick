@@ -196,6 +196,10 @@ class TripPart < ActiveRecord::Base
         timed "rideshare" do
           itins += create_rideshare_itineraries
         end
+      when Mode.ride_hailing 
+        timed "ride_hailing" do
+          itins += RideHailingItinerary.get_itineraries(self)
+        end
       else
         # OTP modes
         if (!mode.otp_mode.blank?)

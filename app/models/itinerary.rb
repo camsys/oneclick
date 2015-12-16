@@ -56,7 +56,7 @@ class Itinerary < ActiveRecord::Base
   # returns true if this itinerary can be mapped
   def is_mappable
 
-    return mode.code.in? ['mode_transit', 'mode_bicycle', 'mode_car', 'mode_walk', 'mode_paratransit', 'mode_taxi', 'mode_rideshare']
+    return mode.code.in? ['mode_transit', 'mode_bicycle', 'mode_car', 'mode_walk', 'mode_paratransit', 'mode_taxi', 'mode_rideshare', 'mode_ride_hailing']
   end
 
   # returns true if this itinerary is a walk-only trip. These are a special case of Transit
