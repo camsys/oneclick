@@ -1,6 +1,4 @@
 class UberItinerary < RideHailingItinerary
-  UBER_WAITING_TIME = 5.minutes
-
   def formulate
     return [] unless service && trip_part
       
