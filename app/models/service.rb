@@ -82,6 +82,10 @@ class Service < ActiveRecord::Base
     is_service_type('paratransit')
   end
 
+  def is_ride_hailing?
+    service_type && ['uber_x'].index(service_type.code)
+  end
+
   def is_transit?
     is_service_type('transit')
   end

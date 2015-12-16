@@ -4,6 +4,7 @@
 - is_transit = @service.is_transit?
 - is_taxi = @service.is_taxi?
 - is_paratransit = @service.is_paratransit?
+- is_ride_hailing = @service.is_ride_hailing?
 
 -if can? :index, Service
   .col-sm-12
@@ -80,220 +81,221 @@
                   = translate_helper(:user) + ": "
                 %td.text-left
                   %strong= @contact.name
--if can_manage_provider
-  .row
-    - unless is_transit
-      .col-sm-4#schedule-panel
-        .panel.panel-default.well2
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:schedule)
-              = add_tooltip("schedule_help")
-          .panel-body
-            %table.ALTtable
-              %tr
-                %th.text-center
-                  = translate_helper('datetime.prompts.day')
-                %th.text-center
-                  = translate_helper(:start_time)
-                %th.text-center
-                  = translate_helper(:end_time)
-              %tbody
-                -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
-                  %tr
-                    %td.text-center
-                      = translate_helper('date.day_names').split(",")[schedule.day_of_week]
-
-                    %td.text-center
-                      =schedule.start_string
-                    %td.text-center
-                      =schedule.end_string
-    - unless is_transit || is_taxi
-      .col-sm-4
-        .panel.panel-default.well2
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:advance_notice_required)
-              = add_tooltip("advance_notice_required_help")
-          .panel-body
-            %strong
-              = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
-            =" " + translate_helper(:advance_notice_required).downcase + "."
-            - # booking cut off times
-            %table.ALTtable
-              %tr
-                %th.text-center
-                  = translate_helper('datetime.prompts.day')
-                %th.text-center
-                  = translate_helper(:cut_off_time)
-              %tbody
-                -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
-                  %tr
-                    %td.text-center
-                      = translate_helper('date.day_names').split(",")[cut_off_time.day_of_week]
-                    %td.text-center
-                      =cut_off_time.cut_off_time_string
-    - unless is_transit
-      .col-sm-4
-        .panel.panel-default.well2
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:accommodations)
-              = add_tooltip("accommodations_help")
-          .panel-body
-            -if @service.accommodations.count == 0
-              = translate_helper(:no_accommodations)
-            -else
-              %ul
-                -@service.accommodations.each do |accom|
-                  %li
-                    =translate_helper(accom.name)
-  .row
-    - unless is_transit || is_taxi
-      .col-sm-4
-        .panel.panel-default.well1
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:eligibility)
-              = add_tooltip("eligibility_help")
-            = translate_helper(:eligibility_rules_descr)
-          .panel-body
-            - if @service.service_characteristics.count > 0
-              %ul
-              - groups = @service.service_characteristics.map(&:group).uniq
-              - groups.each do |group|
-                %li
-                  = @eh.service_characteristics_group_to_s @service.service_characteristics.where(group: group)
-            - else
-              = translate_helper(:no_restriction)
-
-      .col-sm-4
-        .panel.panel-default.well1
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:trip_purposes)
-              = add_tooltip("trip_purposes_help")
-          .panel-body
-            -if @service.trip_purposes.count == 0
-              = translate_helper(:no_restriction)
-            -else
-              %ul
-                -@service.trip_purposes.each do |purpose|
-                  %li
-                    =translate_helper(purpose.name)
-
-    - unless is_transit
-      .col-sm-4#fare-panel
-        .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:fare)
-              = add_tooltip("fare_help")
-          -@service.fare_structures.each do |fare|
-            .panel-body
-              - if is_paratransit
-                .row_fluid
-                  = render partial: 'services/paratransit_fares/show', locals: {fare_structure: fare}
-              - else
-                .row_fluid
-                  %strong= translate_helper(:base_rate) + ": "
-                  -if fare.base
-                    = number_to_currency(fare.base.to_f).to_s
-                  -else
-                    = translate_helper(:flat_fare_unavailable) + "."
-                .row_fluid
-                  %strong= translate_helper(:taxi_fare_finder_city) + ": "
-                  -if @service.taxi_fare_finder_city.present?
-                    = @service.taxi_fare_finder_city
-                  -else
-                    = translate_helper(:none)
-                .row_fluid
-                  - if fare.rate
-                    %strong= translate_helper(:mileage_rate) + ": "
-                    = number_to_currency(fare.rate.to_f).to_s
-              - if fare.public_comments.empty?
-                = translate_helper(:no_comments)
-              - else
-                %dl
-                  - fare.public_comments.each do |comment|
-                    %dt= [translate_helper("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
-                    %dd= comment.comment.try(:html_safe)
-                    %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
-                    %dd= comment.comment.try(:html_safe)
-
-  - unless is_transit || is_taxi
+-if can_manage_provider 
+  - unless is_ride_hailing
     .row
-      .col-sm-6
-        .panel.panel-default.well3
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:time_window)
-              = add_tooltip("time_window_help")
-          .panel-body
-            = @service.service_window ? translate_helper(:service_window) + ": " + @service.service_window.to_s : translate_helper(:no_str) + " " + translate_helper(:service_window)
-            %br
-            = @service.time_factor ? translate_helper(:time_factor) + ": " + @service.time_factor.to_s : translate_helper(:no_str) + " " + translate_helper(:time_factor)
+      - unless is_transit
+        .col-sm-4#schedule-panel
+          .panel.panel-default.well2
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:schedule)
+                = add_tooltip("schedule_help")
+            .panel-body
+              %table.ALTtable
+                %tr
+                  %th.text-center
+                    = translate_helper('datetime.prompts.day')
+                  %th.text-center
+                    = translate_helper(:start_time)
+                  %th.text-center
+                    = translate_helper(:end_time)
+                %tbody
+                  -@service.schedules.order(:day_of_week, :start_seconds, :end_seconds).each do |schedule|
+                    %tr
+                      %td.text-center
+                        = translate_helper('date.day_names').split(",")[schedule.day_of_week]
 
-      .col-sm-6
-        .panel.panel-default.well3
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:booking_information)
-              = add_tooltip("booking_information_help")
-          -if @service.booking_profile == BookingServices::AGENCY[:trapeze] and @service.trapeze_profile
+                      %td.text-center
+                        =schedule.start_string
+                      %td.text-center
+                        =schedule.end_string
+      - unless is_transit || is_taxi
+        .col-sm-4
+          .panel.panel-default.well2
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:advance_notice_required)
+                = add_tooltip("advance_notice_required_help")
             .panel-body
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:trapeze_booking_details)
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:endpoint)
-                .col-sm-6
-                  =@service.trapeze_profile.endpoint
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:namespace)
-                .col-sm-6
-                  =@service.trapeze_profile.namespace
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:username)
-                .col-sm-6
-                  =@service.trapeze_profile.username
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:trapeze_para_service_id)
-                .col-sm-6
-                  =@service.trapeze_profile.para_service_id
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:booking_offset_minutes)
-                .col-sm-6
-                  =@service.trapeze_profile.booking_offset_minutes
-          -if @service.booking_profile == BookingServices::AGENCY[:ridepilot] and @service.ridepilot_profile
+              %strong
+                = day_range_to_words(@service.advanced_notice_minutes*60, @service.max_advanced_book_minutes*60)
+              =" " + translate_helper(:advance_notice_required).downcase + "."
+              - # booking cut off times
+              %table.ALTtable
+                %tr
+                  %th.text-center
+                    = translate_helper('datetime.prompts.day')
+                  %th.text-center
+                    = translate_helper(:cut_off_time)
+                %tbody
+                  -@service.booking_cut_off_times.order(:day_of_week, :cut_off_seconds).each do |cut_off_time|
+                    %tr
+                      %td.text-center
+                        = translate_helper('date.day_names').split(",")[cut_off_time.day_of_week]
+                      %td.text-center
+                        =cut_off_time.cut_off_time_string
+      - unless is_transit
+        .col-sm-4
+          .panel.panel-default.well2
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:accommodations)
+                = add_tooltip("accommodations_help")
             .panel-body
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:ridepilot_booking_details)
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:endpoint)
-                .col-sm-6
-                  =@service.ridepilot_profile.endpoint
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:api_token)
-                .col-sm-6
-                  =@service.ridepilot_profile.api_token
-              .row
-                .col-sm-6
-                  %strong=translate_helper(:ridepilot_provider_id)
-                .col-sm-6
-                  =@service.ridepilot_profile.provider_id
+              -if @service.accommodations.count == 0
+                = translate_helper(:no_accommodations)
+              -else
+                %ul
+                  -@service.accommodations.each do |accom|
+                    %li
+                      =translate_helper(accom.name)
+    .row
+      - unless is_transit || is_taxi
+        .col-sm-4
+          .panel.panel-default.well1
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:eligibility)
+                = add_tooltip("eligibility_help")
+              = translate_helper(:eligibility_rules_descr)
+            .panel-body
+              - if @service.service_characteristics.count > 0
+                %ul
+                - groups = @service.service_characteristics.map(&:group).uniq
+                - groups.each do |group|
+                  %li
+                    = @eh.service_characteristics_group_to_s @service.service_characteristics.where(group: group)
+              - else
+                = translate_helper(:no_restriction)
+
+        .col-sm-4
+          .panel.panel-default.well1
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:trip_purposes)
+                = add_tooltip("trip_purposes_help")
+            .panel-body
+              -if @service.trip_purposes.count == 0
+                = translate_helper(:no_restriction)
+              -else
+                %ul
+                  -@service.trip_purposes.each do |purpose|
+                    %li
+                      =translate_helper(purpose.name)
+
+      - unless is_transit
+        .col-sm-4#fare-panel
+          .panel.panel-default{class: "#{is_taxi ? 'well2' : 'well1'}"}
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:fare)
+                = add_tooltip("fare_help")
+            -@service.fare_structures.each do |fare|
+              .panel-body
+                - if is_paratransit
+                  .row_fluid
+                    = render partial: 'services/paratransit_fares/show', locals: {fare_structure: fare}
+                - else
+                  .row_fluid
+                    %strong= translate_helper(:base_rate) + ": "
+                    -if fare.base
+                      = number_to_currency(fare.base.to_f).to_s
+                    -else
+                      = translate_helper(:flat_fare_unavailable) + "."
+                  .row_fluid
+                    %strong= translate_helper(:taxi_fare_finder_city) + ": "
+                    -if @service.taxi_fare_finder_city.present?
+                      = @service.taxi_fare_finder_city
+                    -else
+                      = translate_helper(:none)
+                  .row_fluid
+                    - if fare.rate
+                      %strong= translate_helper(:mileage_rate) + ": "
+                      = number_to_currency(fare.rate.to_f).to_s
+                - if fare.public_comments.empty?
+                  = translate_helper(:no_comments)
+                - else
+                  %dl
+                    - fare.public_comments.each do |comment|
+                      %dt= [translate_helper("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
+                      %dd= comment.comment.try(:html_safe)
+                      %dt= [t("locales.#{comment.locale}"), translate_helper(:comment)].join(' ') + ":"
+                      %dd= comment.comment.try(:html_safe)
+
+    - unless is_transit || is_taxi
+      .row
+        .col-sm-6
+          .panel.panel-default.well3
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:time_window)
+                = add_tooltip("time_window_help")
+            .panel-body
+              = @service.service_window ? translate_helper(:service_window) + ": " + @service.service_window.to_s : translate_helper(:no_str) + " " + translate_helper(:service_window)
+              %br
+              = @service.time_factor ? translate_helper(:time_factor) + ": " + @service.time_factor.to_s : translate_helper(:no_str) + " " + translate_helper(:time_factor)
+
+        .col-sm-6
+          .panel.panel-default.well3
+            .panel-heading
+              %h4.panel-title
+                = translate_helper(:booking_information)
+                = add_tooltip("booking_information_help")
+            -if @service.booking_profile == BookingServices::AGENCY[:trapeze] and @service.trapeze_profile
+              .panel-body
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:trapeze_booking_details)
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:endpoint)
+                  .col-sm-6
+                    =@service.trapeze_profile.endpoint
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:namespace)
+                  .col-sm-6
+                    =@service.trapeze_profile.namespace
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:username)
+                  .col-sm-6
+                    =@service.trapeze_profile.username
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:trapeze_para_service_id)
+                  .col-sm-6
+                    =@service.trapeze_profile.para_service_id
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:booking_offset_minutes)
+                  .col-sm-6
+                    =@service.trapeze_profile.booking_offset_minutes
+            -if @service.booking_profile == BookingServices::AGENCY[:ridepilot] and @service.ridepilot_profile
+              .panel-body
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:ridepilot_booking_details)
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:endpoint)
+                  .col-sm-6
+                    =@service.ridepilot_profile.endpoint
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:api_token)
+                  .col-sm-6
+                    =@service.ridepilot_profile.api_token
+                .row
+                  .col-sm-6
+                    %strong=translate_helper(:ridepilot_provider_id)
+                  .col-sm-6
+                    =@service.ridepilot_profile.provider_id
 
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
-  - unless is_transit
+  - unless is_transit || is_ride_hailing
     .row
       .col-sm-12
         .panel.panel-default
