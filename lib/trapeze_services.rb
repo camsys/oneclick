@@ -212,7 +212,8 @@ class TrapezeServices
     check_polygon = Oneclick::Application.config.check_polygon_id
 
     funding_source_array = []
-    pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).each do |funding_source|
+    funding_sources = pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).sort{ |fs| fs[:sequence] }
+    funding_sources.each do |funding_source|
       if funding_source[:funding_source_name].in? ada_funding_sources
         funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: 1}
       else
