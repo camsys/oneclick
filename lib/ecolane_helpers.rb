@@ -463,7 +463,7 @@ class EcolaneHelpers
   end
 
   def build_order_hash(itinerary, funding_xml=nil)
-    order = {customer_id: get_customer_id(itinerary), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order = {customer_id: get_customer_id(itinerary), assistant: yes_or_no(itinerary.assistant || false), companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
 
     if funding_xml
       order[:funding] = build_funding_hash(itinerary, funding_xml)
@@ -568,7 +568,7 @@ class EcolaneHelpers
   end
 
   def build_discount_order_hash(itinerary, funding_source, guest_id)
-    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: itinerary.assistant || false, companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: yes_or_no(itinerary.assistant || false), companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
     order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(itinerary).body))
     order
   end
@@ -766,6 +766,10 @@ class EcolaneHelpers
 
   def test2_build_location_hash(place)
     {street_number: 514, street:"S Pershing Ave", city: "York", state: 'PA'}
+  end
+
+  def yes_or_no value
+    value.to_bool ? "yes" : "no"
   end
 
 end
