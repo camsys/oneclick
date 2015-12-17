@@ -166,7 +166,7 @@ module Api
 
           #Set Companions
           trip_part = itinerary.trip_part
-          trip_part.assistant = itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool
+          trip_part.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
           trip_part.children = itinerary_hash[:children].to_i
           trip_part.companions = itinerary_hash[:companions].to_i
           trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
@@ -269,6 +269,10 @@ module Api
           PrintMapWorker.perform_async(print_url, itin.id)
         end
         return
+      end
+
+      def yes_or_no value
+        value.to_bool ? 'yes' : no
       end
 
     end #Itineraries Controller
