@@ -769,7 +769,7 @@ class EcolaneHelpers
   end
 
   def yes_or_no value
-    value.to_bool ? "yes" : "no"
+    value.to_bool ? 1 : 0
   end
 
 end
