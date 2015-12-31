@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215155146) do
+ActiveRecord::Schema.define(version: 20151231151341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,13 @@ ActiveRecord::Schema.define(version: 20151215155146) do
     t.string   "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "ecolane_profiles", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "default_trip_purpose"
+    t.integer  "service_id"
   end
 
   create_table "fare_structures", force: true do |t|
@@ -263,6 +270,10 @@ ActiveRecord::Schema.define(version: 20151215155146) do
     t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
@@ -329,15 +340,16 @@ ActiveRecord::Schema.define(version: 20151215155146) do
   add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
 
   create_table "modes", force: true do |t|
-    t.string  "name",               limit: 64,                 null: false
-    t.boolean "active",                                        null: false
+    t.string  "name",                limit: 64,                 null: false
+    t.boolean "active",                                         null: false
     t.string  "code"
-    t.boolean "elig_dependent",                default: false
+    t.boolean "elig_dependent",                 default: false
     t.integer "parent_id"
     t.string  "otp_mode"
     t.integer "results_sort_order"
     t.string  "logo_url"
-    t.boolean "visible",                       default: false
+    t.boolean "visible",                        default: false
+    t.boolean "selected_by_default",            default: true
   end
 
   create_table "multi_origin_dest_trips", force: true do |t|
@@ -534,6 +546,7 @@ ActiveRecord::Schema.define(version: 20151215155146) do
   end
 
   create_table "ridepilot_bookings", force: true do |t|
+    t.integer  "leg"
     t.integer  "guests"
     t.integer  "attendants"
     t.integer  "mobility_devices"
@@ -656,8 +669,8 @@ ActiveRecord::Schema.define(version: 20151215155146) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
     t.string   "fare_user"
     t.string   "booking_system_id"
     t.string   "booking_token"
