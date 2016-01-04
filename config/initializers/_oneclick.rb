@@ -215,6 +215,9 @@ Oneclick::Application.configure do
     config.kiosk_counties = ["Adams", "Cambria", "Cumberland", "Dauphin", "Franklin", "Lebanon", "York"]
 
   when 'jta'
+    config.ada_funding_sources = ['ADA']
+    config.ignore_polygon_id = 18
+    config.check_polygon_id = 0
     config.allows_booking = true
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
