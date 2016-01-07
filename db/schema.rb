@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151231151341) do
+ActiveRecord::Schema.define(version: 20160107191834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,19 @@ ActiveRecord::Schema.define(version: 20151231151341) do
     t.string   "code"
     t.string   "start_date"
     t.string   "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ecolane_bookings", force: true do |t|
+    t.boolean  "assistant"
+    t.integer  "children"
+    t.integer  "companions"
+    t.integer  "other_passengers"
+    t.string   "note_to_driver"
+    t.string   "booking_status_code"
+    t.string   "booking_status_message"
+    t.integer  "itinerary_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

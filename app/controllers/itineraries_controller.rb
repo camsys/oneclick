@@ -51,6 +51,23 @@ class ItinerariesController < ApplicationController
     @form_data = params[:form_data]
 
     case @itinerary.service.booking_profile
+
+      when BookingServices::AGENCY[:ecolane]
+
+        ecolane_booking = EcolaneBooking.where(itinerary: @itinerary).first_or_create
+
+        @form_data.each do |object|
+
+          #This is an placeholder for when/if Ecolane Bookings is brought back to the desktop interface
+          case object.last[:name]
+            when "trip_part[booking_trip_purpose_id]"
+              @trip_part.booking_trip_purpose_id = object.last[:value].to_bool
+              @trip_part.save
+          end
+        end
+
+        ecolane_booking.save
+
       when BookingServices::AGENCY[:trapeze]
 
         trapeze_booking = TrapezeBooking.where(itinerary: @itinerary).first_or_create

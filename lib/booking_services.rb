@@ -80,7 +80,7 @@ class BookingServices
           end
 
           itinerary.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time: (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), negotiated_pu_window_start: (itinerary.negotiated_pu_window_start.blank? ? "n/a" : itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")), negotiated_pu_window_end: (itinerary.negotiated_pu_window_end.blank? ? "n/a" : itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")), confirmation: booking_id, fare: number_to_currency(itinerary.cost), message: message}
+
 
         end
 
