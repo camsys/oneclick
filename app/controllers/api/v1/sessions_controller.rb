@@ -38,6 +38,8 @@ module Api
         if user
           if user.valid_password? password
             user.reset_authentication_token!
+            user.sign_in_count += 1
+            user.save
             # Note that the data which should be returned depends heavily of the API client needs.
             render status: 200, json: { email: user.email, authentication_token: user.authentication_token}
           else
@@ -59,14 +61,11 @@ module Api
           return
         end
 
-
-        Rails.logger.info('Logged in with: ' + county.to_s)
-        Rails.logger.info(county.to_s + ' uses system_id: ' + service.booking_system_id)
-
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
         @traveler.reset_authentication_token!
-
+        @traveler.sign_in_count += 1
+        @traveler.save
 
         #Update Age
         @traveler.user_profile.update_age dob

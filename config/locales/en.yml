@@ -65,6 +65,12 @@ en:
   merge_message_3: "'s account. You may also edit"
   merge_message_4: "'s account using the fields below."
   merge_warning: "WARNING: Hitting 'Apply' will merge these two accounts. You CANNOT undo this."
+
+  wheelchair_lift_equipped_note: "Do you require a vehicle equipped with a wheelchair lift? "
+  wheelchair_lift_equipped_name: "Wheelchair lift equipped"
+  driver_assistance_name: "Driver assistance provided"
+  driver_assistance_note: "Do you require assistance from the driver to enter the vehicle?"
+
   dial_a_ride: "Dial-a-Ride"
   dial_a_ride_name: "Dial-a-Ride"
   dial_a_ride_note: "Dial-a-Ride"
