@@ -164,14 +164,15 @@ module Api
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
+          ecolane_booking = EcolaneBooking.where(itinerary: @itinerary).first_or_create
+
           #Set Companions
-          trip_part = itinerary.trip_part
-          trip_part.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
-          trip_part.children = itinerary_hash[:children].to_i
-          trip_part.companions = itinerary_hash[:companions].to_i
-          trip_part.other_passengers = itinerary_hash[:other_passengers].to_i
-          trip_part.note_to_driver = itinerary_hash[:note]
-          trip_part.save
+          ecolane_booking.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
+          ecolane_booking.children = itinerary_hash[:children].to_i
+          ecolane_booking.companions = itinerary_hash[:companions].to_i
+          ecolane_booking.other_passengers = itinerary_hash[:other_passengers].to_i
+          ecolane_booking.note_to_driver = itinerary_hash[:note]
+          ecolane_booking.save
 
           result, message = itinerary.book
 

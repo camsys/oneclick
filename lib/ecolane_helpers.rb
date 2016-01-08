@@ -36,9 +36,9 @@ class EcolaneHelpers
   end
 
   ## Post/Put Operations
-  def book_itinerary(itinerary)
+  def book_itinerary(itinerary)  #Derek
     begin
-      funding_options = query_funding_options(itinerary)
+      funding_options = query_funding_options(itinerary) #Derek
       funding_xml = Nokogiri::XML(funding_options.body)
       Rails.logger.info(funding_xml)
     rescue
@@ -160,10 +160,10 @@ class EcolaneHelpers
     result
   end
 
-  def query_funding_options(itinerary)
+  def query_funding_options(itinerary) #Derek
     url_options = "/api/order/" + itinerary.service.booking_system_id + '/queryfunding'
     url = BASE_URL + url_options
-    order =  build_order(itinerary)
+    order =  build_order(itinerary) #Derek
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
@@ -449,7 +449,7 @@ class EcolaneHelpers
     #  return itinerary.order_xml
     #end
 
-    order_hash = build_order_hash(itinerary, funding_xml)
+    order_hash = build_order_hash(itinerary, funding_xml)  #Derek
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
 
     #If this is an order that includes funding information, save it and re-use it instead of building a new order
@@ -473,7 +473,7 @@ class EcolaneHelpers
 
   end
 
-  def build_funding_hash(itinerary, funding_xml)
+  def build_funding_hash(itinerary, funding_xml) #Derek
 
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
@@ -507,11 +507,11 @@ class EcolaneHelpers
       end
     end
 
-    return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml)
+    return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml) #Derek
 
   end
 
-  def build_funding_hash_from_funding_source(itinerary, funding_source, funding_xml)
+  def build_funding_hash_from_funding_source(itinerary, funding_source, funding_xml) #Derek
 
     purpose = itinerary.trip_part.trip.trip_purpose_raw
     sponsors = itinerary.service.sponsors

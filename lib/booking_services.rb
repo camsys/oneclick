@@ -20,6 +20,8 @@ class BookingServices
 
       when AGENCY[:ecolane]
         eh = EcolaneHelpers.new
+
+
         return eh.book_itinerary itinerary
 
       when AGENCY[:trapeze]
@@ -121,14 +123,16 @@ class BookingServices
 
   def cancel itinerary
     #return true is successful, false if not successful
+
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(user_profile: user.user_profile, service: itinerary.service)
 
     case itinerary.service.booking_profile
 
       when AGENCY[:ecolane]
-        eh = EcolaneHelpers.new
-        result = eh.cancel_itinerary self
+        ecolane_profile = itinerary.service.ecolane_profile
+        es = Ecolanservices.new
+        result = es.cancel(itinerary.booking_confirmation, ecolane_profile.system, ecolane_profile.token)
         if result
           self.selected = false
           self.save
