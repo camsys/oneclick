@@ -155,7 +155,18 @@ class BookingServices
   def associate_user(service, user, external_user_id, external_user_password)
     case service.booking_profile
       when AGENCY[:ecolane]
-        puts 'todo'
+        ecolane_profile = service.ecolane_profile
+
+        es = EcolaneServices.new
+        result = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        if result
+          us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
+          us.external_user_id = external_user_id
+          us.user_password = external_user_password
+          us.save
+        end
+        return result
+
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
