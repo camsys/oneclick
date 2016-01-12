@@ -32,9 +32,9 @@ class EcolaneServices
   end
 
   ## Post/Put Operations
-  def book_itinerary(itinerary)  #Derek
+  def book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
     begin
-      funding_options = query_funding_options(itinerary) #Derek
+      funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
       funding_xml = Nokogiri::XML(funding_options.body)
       Rails.logger.info(funding_xml)
     rescue
@@ -143,10 +143,10 @@ class EcolaneServices
 
   end
 
-  def request_booking(itinerary, funding_xml, system_id, token)
+  def request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, system_id, token)
     url_options = "/api/order/" + system_id + "?overlaps=reject"
     url = BASE_URL + url_options
-    order =  build_order(itinerary, funding_xml)
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
@@ -156,30 +156,30 @@ class EcolaneServices
     result
   end
 
-  def query_funding_options(itinerary) #Derek
-    url_options = "/api/order/" + itinerary.service.booking_system_id + '/queryfunding'
+  def query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token) #Derek
+    url_options = "/api/order/" + system + '/queryfunding'
     url = BASE_URL + url_options
-    order =  build_order(itinerary) #Derek
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token) #Derek
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    send_request(url, itinerary.service.booking_token, 'POST', order)
+    send_request(url, token, 'POST', order)
   end
 
-  def query_fare(itinerary)
+  def query_fare(itinerary, system, token)
 
-    url_options =  "/api/order/" + itinerary.service.booking_system_id + "/queryfare"
+    url_options =  "/api/order/" + system + "/queryfare"
     url = BASE_URL + url_options
-    funding_options = query_funding_options(itinerary)
+    funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
     funding_xml = Nokogiri::XML(funding_options.body)
     Rails.logger.info("Begin Funding info")
     Rails.logger.info(funding_xml)
     Rails.logger.info("End Funding info")
-    order =  build_order(itinerary, funding_xml)
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
-    resp = send_request(url, itinerary.service.booking_token, 'POST', order)
+    resp = send_request(url, token, 'POST', order)
 
     begin
       resp_code = resp.code
@@ -442,45 +442,39 @@ class EcolaneServices
 
 
   ## Building hash objects that become XML nodes
-  def build_order(itinerary, funding_xml=nil)
+  def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil)
 
     #If we have already built an order for this itinerary, return it
     #if itinerary.order_xml?
     #  return itinerary.order_xml
     #end
 
-    order_hash = build_order_hash(itinerary, funding_xml)  #Derek
+    order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml)  #Derek
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
-
-    #If this is an order that includes funding information, save it and re-use it instead of building a new order
-    if funding_xml
-      itinerary.order_xml = order_xml
-      itinerary.save
-    end
 
     order_xml
 
   end
 
-  def build_order_hash(itinerary, funding_xml=nil)
-    order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(itinerary.assistant || false), companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
+  def build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil)
+    order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
 
     if funding_xml
-      order[:funding] = build_funding_hash(itinerary, funding_xml)
+      order[:funding] = build_funding_hash(sponsors, trip_purpose_raw, customer_number, system, token, funding_xml)
     end
     Rails.logger.info(order)
     order
 
   end
 
-  def build_funding_hash(itinerary, funding_xml) #Derek
+  def build_funding_hash(sponsors, trip_purpose_raw, customer_number, system, token, funding_xml) #Derek
 
     #Get the default funding source for this customer and build an array of valid funding source ordered from
     # most desired to least desired.
-    default_funding = get_default_funding_source(get_customer_id(customer_number, system, token), itinerary.service.booking_system_id, itinerary.service.booking_token)
-    funding_array = [default_funding] +   FundingSource.where(service: itinerary.service).order(:index).pluck(:code)
+    default_funding = get_default_funding_source(get_customer_id(customer_number, system, token), system, token)
+    funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
 
-    purpose = itinerary.trip_part.trip.trip_purpose_raw
+    purpose = trip_purpose_raw
     min_index = 10000
     best_funding_source = nil
 
@@ -499,7 +493,7 @@ class EcolaneServices
 
           #If we match the default funding source, go ahead and find the purpose
           if min_index == 0
-            return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml )
+            return build_funding_hash_from_funding_source(sponsors, trip_purpose_raw, best_funding_source, funding_xml)
           end
 
         end
@@ -507,14 +501,14 @@ class EcolaneServices
       end
     end
 
-    return build_funding_hash_from_funding_source(itinerary, best_funding_source, funding_xml) #Derek
+    return build_funding_hash_from_funding_source(sponsors, trip_purpose_raw, best_funding_source, funding_xml) #Derek
 
   end
 
-  def build_funding_hash_from_funding_source(itinerary, funding_source, funding_xml) #Derek
+  def build_funding_hash_from_funding_source(sponsors, trip_purpose_raw, funding_source, funding_xml) #Derek
 
-    purpose = itinerary.trip_part.trip.trip_purpose_raw
-    sponsors = itinerary.service.sponsors
+    purpose = trip_purpose_raw
+    sponsors = sponsors
     if sponsors.count == 0
       return {funding_source: funding_source, purpose: purpose, sponsor: nil}
     end
@@ -569,7 +563,7 @@ class EcolaneServices
 
   def build_discount_order_hash(itinerary, funding_source, guest_id)
     order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: yes_or_no(itinerary.assistant || false), companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
-    order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(itinerary).body))
+    order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token).body))
     order
   end
 
@@ -595,21 +589,21 @@ class EcolaneServices
   end
 
   #Build the hash for the pickup request
-  def build_pu_hash(itinerary)
-    if itinerary.trip_part.is_depart
-      pu_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
+  def build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver)
+    if is_depart
+      pu_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(from_trip_place), note: note_to_driver}
     else
-      pu_hash = {location: build_location_hash(itinerary.trip_part.from_trip_place), note: itinerary.note_to_driver}
+      pu_hash = {location: build_location_hash(from_trip_place), note: note_to_driver}
     end
     pu_hash
   end
 
   #Build the hash for the drop off request
-  def build_do_hash(itinerary) #temp funciton
+  def build_do_hash(is_depart, scheduled_time, to_trip_place)
     if itinerary.trip_part.is_depart
-      do_hash = {location: build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {location: to_trip_place}
     else
-      do_hash = {requested: (itinerary.trip_part.scheduled_time).xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(itinerary.trip_part.to_trip_place)}
+      do_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(to_trip_place)}
     end
     do_hash
   end
