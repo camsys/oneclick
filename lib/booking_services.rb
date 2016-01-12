@@ -1,5 +1,12 @@
 class BookingServices
 
+  ########
+  ##  Booking services divies up all the booking functionality calls between 1-Click and the booking services
+  ##  The calls include book, cancel, associate user, and other utility functions
+  ##  This library routes the calls to the agency-specific libraries, specifically ecolane_services.rb, ridepilot_services.rb, and trapeze_services.rb
+  ##  This library has knowledge of 1-click objects e.g., service.rb, user.rb, etc.  The individual agency-specific libraries do not have knowledge of these objects.
+  ########
+
   require 'indirizzo'
   include ActionView::Helpers::NumberHelper
 
@@ -10,6 +17,9 @@ class BookingServices
       :ridepilot => 2
   }
 
+  #Called from itinerary.book
+  #This is the generic itinerary booking method.  It calls the appropriate agency_services depending on which agency
+  #is being used to book the trip E.g., RidePilot, Ecoloane, or Trapeze
   def book itinerary
 
     if itinerary.is_booked?
@@ -20,8 +30,6 @@ class BookingServices
 
       when AGENCY[:ecolane]
         eh = EcolaneHelpers.new
-
-
         return eh.book_itinerary itinerary
 
       when AGENCY[:trapeze]
@@ -121,6 +129,8 @@ class BookingServices
 
   end
 
+
+  #Cancels a booked itinerary from the appropriate agency.
   def cancel itinerary
     #return true is successful, false if not successful
 
@@ -152,6 +162,9 @@ class BookingServices
     end
   end
 
+  # Given a service, a user, and login credentials, test to see if the login credentials are valid, if they are create
+  # a user_service to link the service and the user.  This user_service contains all the information necessary to allow the user to book trips with the given service
+  # This method returns a boolean
   def associate_user(service, user, external_user_id, external_user_password)
     case service.booking_profile
       when AGENCY[:ecolane]
@@ -192,6 +205,8 @@ class BookingServices
     end
   end
 
+  # Given a service and a user, test to see if the user's login credentials are present and still valid to book with the given service
+  # This method returns a boolean
   def check_association(service, user)
     user_service = UserService.find_by(service: service, user_profile: user.user_profile)
     if user_service.nil?
@@ -200,7 +215,9 @@ class BookingServices
 
     case service.booking_profile
       when AGENCY[:ecolane]
-        return false
+        ecolane_profile = service.ecolane_profile
+        es = EcolaneServices.new
+        return es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
@@ -213,11 +230,13 @@ class BookingServices
     end
   end
 
+  #Utility function needed to parse the address number and street name from a raw address
   def get_number_and_street(raw_address)
     parsable_address = Indirizzo::Address.new(raw_address)
     return [parsable_address.number, parsable_address.street.first]
   end
 
+  #Utility function needed to convert seconds since midnight into a parsable time string
   def seconds_since_midnight_to_string(seconds_since_midnight)
     seconds_since_midnight = seconds_since_midnight.to_i
     hour =seconds_since_midnight/3600
@@ -227,11 +246,11 @@ class BookingServices
     return hour + ':' + minute.to_s + ":" + second.to_s
   end
 
+
   def get_purposes_from_itinerary(itinerary)
     service = itinerary.service
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(service: service, user_profile: user.user_profile)
-
 
     if user_service.nil?
       return {}
