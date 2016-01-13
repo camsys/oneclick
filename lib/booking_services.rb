@@ -17,9 +17,9 @@ class BookingServices
       :ridepilot => 2
   }
 
-  #Called from itinerary.book
-  #This is the generic itinerary booking method.  It calls the appropriate agency_services depending on which agency
-  #is being used to book the trip E.g., RidePilot, Ecoloane, or Trapeze
+  # Called from itinerary.book
+  # This is the generic itinerary booking method.  It calls the appropriate agency_services depending on which agency
+  # is being used to book the trip E.g., RidePilot, Ecoloane, or Trapeze
   def book itinerary
 
     if itinerary.is_booked?
@@ -29,8 +29,36 @@ class BookingServices
     case itinerary.service.booking_profile
 
       when AGENCY[:ecolane]
-        eh = EcolaneHelpers.new
-        return eh.book_itinerary itinerary
+        service = itinerary.service
+        user = itinerary.trip_part.trip.user
+        user_service = UserService.find_by(user_profile: user.user_profile, service: service)
+        es = EcolaneServices.new
+
+        #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+        sponsors = service.sponsors.order(:index).pluck(:code).as_json
+        trip_purpose_raw = itinerary.trip_part.trip.trip_purpose_raw
+        is_depart = itinerary.trip_part.is_depart
+        scheduled_time = itinerary.trip_part.scheduled_time
+        from_trip_place = itinerary.trip_part.from_trip_place.as_json
+        to_trip_place = itinerary.trip_part.to_trip_place.as_json
+        note_to_driver = itinerary.note_to_driver
+        assistant = itinerary.assistant
+        companions = itinerary.companions
+        children = itinerary.children
+        other_passengers = itinerary.other_passengers
+        customer_number = user_service.external_user_id
+        system = service.ecolane_profile.system
+        token = service.ecolane_profile.token
+
+        #Get the default funding source for this customer and build an array of valid funding source ordered from
+        # most desired to least desired.
+        default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+        funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+
+        result, messages = es.book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
+        Rails.logger.info messages
+        itinerary.booking_confirmation = messages.last
+        itinerary.save
 
       when AGENCY[:trapeze]
         user = itinerary.trip_part.trip.user
@@ -130,9 +158,9 @@ class BookingServices
   end
 
 
-  #Cancels a booked itinerary from the appropriate agency.
+  # Cancels a booked itinerary from the appropriate agency.
   def cancel itinerary
-    #return true is successful, false if not successful
+    # return true is successful, false if not successful
 
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(user_profile: user.user_profile, service: itinerary.service)
@@ -400,6 +428,20 @@ class BookingServices
           return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: ""}
         end
     end
+  end
+
+  # Find the default funding source for a customer id.  Used by Ecolane
+  # (customer_id is the internal id and not the client id)
+  def get_default_funding_source(customer_id, system_id, token)
+    es = EcolaneServices.new
+    customer_information = es.fetch_customer_information(customer_id, system_id, token, funding = true)
+    resp_xml = Nokogiri::XML(customer_information)
+    resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
+      if funding_source.attribute("default") and funding_source.attribute("default").value.downcase == "yes"
+        return funding_source.xpath("name").text
+      end
+    end
+    nil
   end
 
 end
