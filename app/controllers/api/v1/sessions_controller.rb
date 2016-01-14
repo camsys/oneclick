@@ -62,6 +62,7 @@ module Api
           return
         end
 
+        puts user_service.ai
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = user_service.user_profile.user
         @traveler.reset_authentication_token!
