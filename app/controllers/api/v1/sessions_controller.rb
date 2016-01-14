@@ -51,18 +51,19 @@ module Api
       end
 
       def ecolane_sign_in(external_user_id, dob, county)
-        eh = EcolaneHelpers.new
+        bs = BookingServices.new
         #If the formatting is correct, check to see if this is a valid user
-        service = eh.county_to_service county
+        service = bs.county_to_service county
 
-        result, first_name, last_name = eh.validate_passenger(external_user_id, dob, service.booking_system_id, service.booking_token)
+        result, user_service = bs.associate_user(service, nil, external_user_id, dob)
+
         unless result
           render status: 401, json: { message: 'Invalid Ecolane Id or Date of Birth.' }
           return
         end
 
         #If everything checks out, create a link between the OneClick user and the Booking Service
-        @traveler = eh.get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
+        @traveler = user_service.user_profile.user
         @traveler.reset_authentication_token!
         @traveler.sign_in_count += 1
         @traveler.save
@@ -70,7 +71,7 @@ module Api
         #Update Age
         @traveler.user_profile.update_age dob
 
-        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: first_name, last_name: last_name}
+        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: @traveler.first_name, last_name: @traveler.last_name}
       end
 
 
@@ -86,7 +87,6 @@ module Api
           render status: 204, json: {message: 'Signed out' }
         end
       end
-
-    end
+     end
   end
 end

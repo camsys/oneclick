@@ -199,37 +199,37 @@ class BookingServices
         ecolane_profile = service.ecolane_profile
 
         es = EcolaneServices.new
-        result = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        result, first_name, last_name = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
         if result
-          us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
-          us.external_user_id = external_user_id
-          us.user_password = external_user_password
-          us.save
+          #For Ecolane, we create a new user if the user doesn't exist
+          user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service)
         end
-        return result
+        return result, user_service
 
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
         result = ts.pass_validate_client_password(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, external_user_id, external_user_password)
+        us = nil
         if result
           us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
           us.external_user_id = external_user_id
           us.user_password = external_user_password
           us.save
         end
-        return result
+        return result, us
       when AGENCY[:ridepilot]
         ridepilot_profile = service.ridepilot_profile
         rs = RidepilotServices.new
         result, body = rs.authenticate_customer(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, external_user_id, external_user_password)
+        us = nil
         if result
           us = UserService.where(service: service, user_profile: user.user_profile).first_or_initialize
           us.external_user_id = external_user_id
           us.user_password = external_user_password
           us.save
         end
-        return result
+        return result, us
     end
   end
 
@@ -245,7 +245,8 @@ class BookingServices
       when AGENCY[:ecolane]
         ecolane_profile = service.ecolane_profile
         es = EcolaneServices.new
-        return es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        result, first_name, last_name = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        return result
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
@@ -430,8 +431,11 @@ class BookingServices
     end
   end
 
+  ####################################
+  # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
   # (customer_id is the internal id and not the client id)
+  ###################################
   def get_default_funding_source(customer_id, system_id, token)
     es = EcolaneServices.new
     customer_information = es.fetch_customer_information(customer_id, system_id, token, funding = true)
@@ -443,5 +447,53 @@ class BookingServices
     end
     nil
   end
+
+  def county_to_service(county)
+    Service.find_by(external_id: county_to_external_id(county).downcase.strip)
+  end
+
+  def county_to_external_id(county)
+    mapping = Oneclick::Application.config.ecolane_county_mapping[county.downcase.strip.to_s]
+    return mapping.nil? ? county : mapping
+  end
+
+  def get_or_create_ecolane_traveler(external_user_id, dob, service)
+
+    user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
+    if user_service
+      u = user_service.user_profile.user
+    else
+      new_user = true
+      u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
+      u.password = dob
+      u.password_confirmation = dob
+      u.roles << Role.where(name: "registered_traveler").first
+      up = UserProfile.new
+      up.user = u
+      up.save!
+      result = u.save
+    end
+
+    #Update Birth Year
+    dob_object = Characteristic.where(code: "date_of_birth").first
+    if dob_object
+      user_characteristic = UserCharacteristic.where(characteristic_id: dob_object.id, user_profile: u.user_profile).first_or_initialize
+      user_characteristic.value = dob.split('/')[2]
+      user_characteristic.save
+    end
+
+    if new_user #Create User Service
+      user_service = UserService.where(user_profile_id: u.user_profile.id, service_id: service.id).first_or_initialize
+      user_service.external_user_id = external_user_id
+      user_service.save
+    end
+
+    return user_service
+
+  end
+
+  ####################################
+  # End Ecolane Specific Functions
+  ###################################
 
 end

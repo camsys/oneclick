@@ -345,7 +345,7 @@ class EcolaneServices
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
-    url = BASE_URL + url_options
+    url = Oneclick::Application.config.ecolane_base_url + url_options
     resp = send_request(url, token)
   end
 
@@ -379,7 +379,7 @@ class EcolaneServices
     end
     resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id, token)
     resp = unpack_validation_response(resp)
-    return resp[0]
+    return resp[0], resp[2][0], resp[2][1]
   end
 
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)

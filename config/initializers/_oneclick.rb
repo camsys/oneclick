@@ -1,5 +1,5 @@
 Oneclick::Application.configure do
-
+  config.ecolane_base_url = "https://apiserver.ecolane.com"
   # defaults for all brands
   config.enable_rideshare = false
   ENV['SMTP_MAIL_ADDR'] ||= "smtp.gmail.com"
@@ -203,7 +203,7 @@ Oneclick::Application.configure do
     ##Ecolane Variables
     config.ecolane_system_id = ENV['ECOLANE_SYSTEM_ID']
     config.ecolane_x_ecolane_token = ENV['X_ECOLANE_TOKEN']
-    config.ecolane_base_url = "https://apiserver.ecolane.com"
+
     I18n.available_locales = [:en]
 
     #for PA, we ask a follow up question after a person creates an account

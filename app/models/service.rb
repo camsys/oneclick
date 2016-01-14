@@ -531,7 +531,8 @@ class Service < ActiveRecord::Base
 
   def associate_user(user, external_user_id, external_user_password)
     bs = BookingServices.new
-    result = bs.associate_user(self, user, external_user_id, external_user_password)
+    result, user_profile = bs.associate_user(self, user, external_user_id, external_user_password)
+    return result
   end
 
   def is_associated_with_user? user
