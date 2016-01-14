@@ -289,6 +289,9 @@ class BookingServices
 
   end
 
+
+  # Get purposes returns a list of valid purpuoses for the user to select from when booking.
+  # The format of the purposes is {purpose_description_1: purpose_code_1, purpose_description_2: purpose_code_2, etc. }
   def get_purposes(user_service)
 
     if user_service.nil?
@@ -299,7 +302,18 @@ class BookingServices
 
     case service.booking_profile
       when AGENCY[:ecolane]
-        return []
+
+        es = EcolaneServices.new
+        purposes =  es.get_trip_purposes(es.get_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
+        purposes_hash = {}
+
+        #This creates a hash for the purposes.  For Ecolane the description/name and id are the same.
+        purposes.each do |purpose|
+          purposes_hash[purpose] = purpose
+        end
+
+        return purposes_hash
+
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new

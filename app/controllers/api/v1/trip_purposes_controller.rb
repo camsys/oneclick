@@ -3,29 +3,29 @@ module Api
     class TripPurposesController < Api::V1::ApiController
 
       def index
-        eh = EcolaneHelpers.new
-
+        bs = BookingServices.new
         service = nil
         #See if the @traveler is registered to book with a service
-
         user_service = nil
         if @traveler
           user_service = UserService.where(user_profile_id: @traveler.user_profile).first
         end
 
+        #If the user is registered with a service, use his/her trip purposes
         if user_service
 
           Rails.logger.info("User is Registered")
 
           service = user_service.service
           begin
-            trip_purposes = eh.get_trip_purposes_from_traveler(@traveler)
+            trip_purposes = bs.get_purposes(@traveler.user_profile.user_service).keys
           rescue Exception=>e
             Honeybadger.notify(
                 :error_class   => "Trip Purposes Failure #1",
             )
             trip_purposes = []
           end
+        #If the user is a guest, use a generic list of purposes
         else
           Rails.logger.info("No user service")
           origin = params[:geometry]
