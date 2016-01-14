@@ -475,11 +475,9 @@ class BookingServices
 
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
-      puts 'old user'
       u = user_service.user_profile.user
       user_profile = u.user_profile
     else
-      puts 'new user'
       new_user = true
       u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
