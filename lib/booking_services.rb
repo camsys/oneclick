@@ -445,6 +445,47 @@ class BookingServices
     end
   end
 
+  def query_fare(itinerary)
+    user = itinerary.trip_part.trip.user
+    service = itinerary.service
+
+    case service.booking_profile
+      when AGENCY[:ecolane]
+        es = EcolaneServices.new
+
+        ##The next block makes the assumption that each user only belongs to 1 Booking Service.  This is the case for PA, but may not be the case for future deployments
+        user = itinerary.trip_part.trip.user
+        user_service = user.user_profile.user_services.first
+        service = user_service.service
+        ## End Assumption
+
+        #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+        sponsors = service.sponsors.order(:index).pluck(:code).as_json
+        trip_purpose_raw = itinerary.trip_part.trip.trip_purpose_raw
+        is_depart = itinerary.trip_part.is_depart
+        scheduled_time = itinerary.trip_part.scheduled_time
+        from_trip_place = itinerary.trip_part.from_trip_place.as_json
+        to_trip_place = itinerary.trip_part.to_trip_place.as_json
+        customer_number = user_service.external_user_id
+        system = service.ecolane_profile.system
+        token = service.ecolane_profile.token
+
+        #Get the default funding source for this customer and build an array of valid funding source ordered from
+        # most desired to least desired.
+        default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+        funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+
+        result, fare = es.query_fare(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token, funding_array)
+        if result
+          return fare
+        else
+          return nil
+        end
+      else
+        return nil
+    end
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
@@ -472,18 +513,11 @@ class BookingServices
   end
 
   def get_or_create_ecolane_traveler(external_user_id, dob, service, first_name, last_name)
-    puts external_user_id
-    puts dob
-    puts service.ai
-    puts first_name
-    puts last_name
 
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
-      puts 'not a new user'
       u = user_service.user_profile.user
     else
-      puts 'a new user'
       new_user = true
       u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
@@ -509,9 +543,6 @@ class BookingServices
       user_service.external_user_id = external_user_id
       user_service.save
     end
-
-    puts 'this is the user service'
-    puts user_service.ai
 
     return user_service
 

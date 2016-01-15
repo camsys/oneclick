@@ -154,26 +154,26 @@ class EcolaneServices
     result
   end
 
-  def query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
+  def query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
     url_options = "/api/order/" + system + '/queryfunding'
     url = BASE_URL + url_options
-    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
     send_request(url, token, 'POST', order)
   end
 
-  def query_fare(itinerary, system, token)
+  def query_fare(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token, funding_array)
 
     url_options =  "/api/order/" + system + "/queryfare"
     url = BASE_URL + url_options
-    funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
+    funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token)
     funding_xml = Nokogiri::XML(funding_options.body)
     Rails.logger.info("Begin Funding info")
     Rails.logger.info(funding_xml)
     Rails.logger.info("End Funding info")
-    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml)
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token, funding_xml, funding_array)
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
@@ -193,7 +193,7 @@ class EcolaneServices
       )
       return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
-    fare = unpack_fare_response(resp, itinerary)
+    fare = unpack_fare_response(resp)
     return true, fare
   end
 
@@ -227,7 +227,7 @@ class EcolaneServices
       )
       return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
-    fare = unpack_fare_response(resp, itinerary)
+    fare = unpack_fare_response(resp)
 
     return true, fare
 
@@ -260,7 +260,7 @@ class EcolaneServices
       end
 
       if resp_code == "200"
-        fare = unpack_fare_response(resp, itinerary)
+        fare = unpack_fare_response(resp)
         discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code, base_fare: funding_source.general_public})
       end
     end
@@ -270,7 +270,7 @@ class EcolaneServices
   end
 
 
-  def unpack_fare_response (resp, itinerary)
+  def unpack_fare_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
     Rails.logger.info(resp_xml)
     client_copay = resp_xml.xpath("fare").xpath("client_copay").text

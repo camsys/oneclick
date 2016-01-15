@@ -24,12 +24,9 @@ class FareHelper
   def query_fare(itinerary)
     case itinerary.service.booking_service_code
     when 'ecolane'
-      eh = EcolaneHelpers.new
-      result, my_fare =  eh.query_fare(itinerary)
-      if result
-        itinerary.cost = my_fare
-      end
-
+      bs = BookingServices.new
+      my_fare =  bs.query_fare(itinerary)
+      itinerary.cost = my_fare
       itinerary.save
     end
   end
