@@ -472,12 +472,18 @@ class BookingServices
   end
 
   def get_or_create_ecolane_traveler(external_user_id, dob, service, first_name, last_name)
+    puts external_user_id
+    puts dob
+    puts service.ai
+    puts first_name
+    puts last_name
 
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     if user_service
+      puts 'not a new user'
       u = user_service.user_profile.user
-      user_profile = u.user_profile
     else
+      puts 'a new user'
       new_user = true
       u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
       u.first_name = first_name
@@ -486,12 +492,9 @@ class BookingServices
       u.password_confirmation = dob
       u.roles << Role.where(name: "registered_traveler").first
       result = u.save!
-
-      user_profile = UserProfile.new
-      user_profile.user = u
-      user_profile.save!
-
     end
+
+    user_profile = u.user_profile
 
     #Update Birth Year
     dob_object = Characteristic.where(code: "date_of_birth").first
@@ -506,6 +509,9 @@ class BookingServices
       user_service.external_user_id = external_user_id
       user_service.save
     end
+
+    puts 'this is the user service'
+    puts user_service.ai
 
     return user_service
 

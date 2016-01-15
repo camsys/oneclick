@@ -9,6 +9,7 @@ module Api
         user_service = nil
         if @traveler
           user_service = UserService.where(user_profile_id: @traveler.user_profile).first
+          puts @traveler.ai
         end
 
         #If the user is registered with a service, use his/her trip purposes
@@ -18,7 +19,7 @@ module Api
 
           service = user_service.service
           begin
-            trip_purposes = bs.get_purposes(@traveler.user_profile.user_service).keys
+            trip_purposes = bs.get_purposes(@traveler.user_profile.user_services.first).keys
           rescue Exception=>e
             Honeybadger.notify(
                 :error_class   => "Trip Purposes Failure #1",

@@ -158,11 +158,19 @@ module Api
       end
 
       def book
+
+        puts 'Viewing Booking Params'
+        puts params.ai
+
+
         booking_request = params[:booking_request]
         booked_itineraries = []
 
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
+
+          puts 'viewing itinerary'
+          puts itinerary.ai
 
           ecolane_booking = EcolaneBooking.where(itinerary: @itinerary).first_or_create
 

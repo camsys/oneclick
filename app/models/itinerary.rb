@@ -15,6 +15,7 @@ class Itinerary < ActiveRecord::Base
   belongs_to :service
   has_one :trapeze_booking
   has_one :ridepilot_booking
+  has_one :ecolane_booking
 
   # You should usually *always* used the valid scope
   scope :valid, -> {where('mode_id is not null and server_status=200')}
