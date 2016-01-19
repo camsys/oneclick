@@ -499,9 +499,6 @@ class BookingServices
     end
   end
 
-  def trip_status(itinerary)
-  end
-  end
 
   ####################################
   # Ecolane Specific Functions
