@@ -94,12 +94,8 @@ class EcolaneServices
   end
 
   def get_trip_info(booking_confirmation, system, token)
-    unless itinerary.service
-      return false, '500'
-    end
     resp = fetch_single_order(booking_confirmation, system, token)
     return unpack_fetch_single(resp, booking_confirmation)
-
   end
 
   def get_trip_status(trip_id, system_id, token)
