@@ -419,12 +419,25 @@ class BookingServices
     end
   end
 
-  def update_trip_status(itinerary)
+  def update_trip_status(itinerary)   #TODO; Returned objects should be consistent across agencies
     service = itinerary.service
     user = itinerary.trip_part.trip.user
     user_service = UserService.find_by(service: service, user_profile: user.user_profile)
 
     case service.booking_profile
+      when AGENCY[:ecolane]
+        es = EcolaneServices.new
+        status = es.get_trip_info(itinerary.booking_confirmation, service.ecolane_profile.system, service.ecolane_profile.token)
+
+        unless status[0]
+          return status
+        end
+
+        itinerary.negotiated_pu_time = status[1][:pu_time]
+        itinerary.negotiated_do_time = status[1][:do_time]
+        itinerary.save
+
+        return status
       when AGENCY[:ridepilot]
         ridepilot_profile = service.ridepilot_profile
         ridepilot_booking = itinerary.ridepilot_booking
@@ -484,6 +497,10 @@ class BookingServices
       else
         return nil
     end
+  end
+
+  def trip_status(itinerary)
+  end
   end
 
   ####################################

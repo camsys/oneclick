@@ -93,12 +93,12 @@ class EcolaneServices
     return false, "Unknown response."
   end
 
-  def get_trip_info(itinerary)
+  def get_trip_info(booking_confirmation, system, token)
     unless itinerary.service
       return false, '500'
     end
-    resp = fetch_single_order(itinerary.booking_confirmation, itinerary.service.booking_system_id, itinerary.service.booking_token)
-    return unpack_fetch_single(resp, itinerary.booking_confirmation)
+    resp = fetch_single_order(booking_confirmation, system, token)
+    return unpack_fetch_single(resp, booking_confirmation)
 
   end
 
