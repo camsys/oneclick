@@ -234,7 +234,7 @@ class Itinerary < ActiveRecord::Base
     bs.book self
   end
 
-  def update_status
+  def status
     unless self.booking_confirmation
       return false, "404"
     end
