@@ -172,7 +172,7 @@ module Api
           puts 'viewing itinerary'
           puts itinerary.ai
 
-          ecolane_booking = EcolaneBooking.where(itinerary: @itinerary).first_or_create
+          ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
 
           #Set Companions
           ecolane_booking.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
