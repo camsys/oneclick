@@ -169,7 +169,7 @@ class BookingServices
 
       when AGENCY[:ecolane]
         ecolane_profile = itinerary.service.ecolane_profile
-        es = Ecolanservices.new
+        es = EcolaneServices.new
         result = es.cancel(itinerary.booking_confirmation, ecolane_profile.system, ecolane_profile.token)
         if result
           self.selected = false
