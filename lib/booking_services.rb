@@ -57,7 +57,7 @@ class BookingServices
 
         result, messages = es.book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
         Rails.logger.info messages
-        itinerary.booking_confirmation = messages.last
+        itinerary.booking_confirmation = messages
         itinerary.save
 
       when AGENCY[:trapeze]
@@ -172,8 +172,8 @@ class BookingServices
         es = EcolaneServices.new
         result = es.cancel(itinerary.booking_confirmation, ecolane_profile.system, ecolane_profile.token)
         if result
-          self.selected = false
-          self.save
+          itinerary.selected = false
+          itinerary.save
         end
 
       when AGENCY[:trapeze]
