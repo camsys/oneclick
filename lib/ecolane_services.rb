@@ -4,13 +4,17 @@ require 'indirizzo'
 
 class EcolaneServices
 
+  #TODO: move from a global variable to a service-specific variable
   begin
     BASE_URL = Oneclick::Application.config.ecolane_base_url
   rescue NoMethodError
     BASE_URL = nil
   end
 
-  #OK
+  # Ecolane users two identifiers for each customer.
+  # customer_number: the publicly-known customer that each person is given.
+  # customer_id: an internal id that is used in most requests.
+  # This function converts a customer_numnber into a customer_id
   def get_customer_id(customer_number, system, token)
     resp = search_for_customers(terms = {customer_number: customer_number}, system, token)
     resp_xml = Nokogiri::XML(resp.body)
@@ -31,7 +35,23 @@ class EcolaneServices
     end
   end
 
-  ## Post/Put Operations
+  ## This books a 1-way trips
+  ## Definition of variables:
+  # sponsors: Ordered array of sponsors specific to each service
+  # trip_purpose_raw: A string representing the purpose for this trip
+  # is_depart: boolean.  Does the scheduled_time represent the time that a customer wishes to depart, or the time the customer wishes to arrive?
+  # scheduled_time: Time of eiver arrival or departure
+  # from_trip_place: JSON hash of trip origin
+  # to_trip_place: JSON hash of trip destination
+  # note_to_driver: Text note to driver
+  # assistant: Boolean, is an assistant present on this trip?
+  # companions: integer, number of companions
+  # children: integer, number of children
+  # other_passengers: integer, number of other passengers
+  # customer_number: string, publicly known number
+  # funding_array: Ordered array of funding_sources that the service permits users to book with
+  # system: Ecolane system id for this service
+  # token: Ecolane API token for this service
   def book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
     begin
       funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
@@ -47,6 +67,9 @@ class EcolaneServices
     return unpack_booking_response(resp)
   end
 
+  # Convert the booking message from an xml to a boolean and a message
+  # If the trip booking is successful, the boolean is true and the message is the confirmation number for the trip
+  # If the trip is not not successful, the boolean is false and the message is an error message
   def unpack_booking_response(resp)
     begin
       resp_xml = Nokogiri::XML(resp.body)
@@ -93,26 +116,13 @@ class EcolaneServices
     return false, "Unknown response."
   end
 
+  # Given a booking_confirmation, returns the current info of this trip (pu_time, do_time, confirmation_number)
   def get_trip_info(booking_confirmation, system, token)
     resp = fetch_single_order(booking_confirmation, system, token)
     return unpack_fetch_single(resp, booking_confirmation)
   end
 
-  def get_trip_status(trip_id, system_id, token)
-    resp = fetch_single_order(trip_id, system_id, token)
-    begin
-      resp_code = resp.code
-    rescue
-      return nil
-    end
-    unless resp_code == "200"
-      return nil
-    end
-    resp_xml = Nokogiri::XML(resp.body)
-    resp_xml.xpath("order").xpath("status").text
-  end
-
-
+  # Utility function used to parse the result of get_trip_info
   def unpack_fetch_single (resp, confirmation)
     begin
       resp_code = resp.code
@@ -137,6 +147,23 @@ class EcolaneServices
 
   end
 
+  #Gets the tatus of the trip.  Used to see if a trip is canceled or not
+  def get_trip_status(trip_id, system_id, token)
+    resp = fetch_single_order(trip_id, system_id, token)
+    begin
+      resp_code = resp.code
+    rescue
+      return nil
+    end
+    unless resp_code == "200"
+      return nil
+    end
+    resp_xml = Nokogiri::XML(resp.body)
+    resp_xml.xpath("order").xpath("status").text
+  end
+
+
+  # Builds the booking request and sends it to Ecolane
   def request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_xml, funding_array, system, token)
     url_options = "/api/order/" + system + "?overlaps=reject"
     url = BASE_URL + url_options
@@ -150,6 +177,7 @@ class EcolaneServices
     result
   end
 
+  # Checks on an itineraries funding options and sends the request to Ecolane
   def query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
     url_options = "/api/order/" + system + '/queryfunding'
     url = BASE_URL + url_options
@@ -218,11 +246,6 @@ class EcolaneServices
 
   end
 
-  #OK
-  def verify_client_id(customer_number, dob, system, token)
-    search_for_customers([['customer_number', customer_number], ['date_of_birth', dob]], system, token)
-  end
-
   def fetch_customer_information(customer_id, system_id, token, funding=false, locations=false)
     url_options = "/api/customer/" + system_id.to_s + '/'
     url_options += customer_id.to_s
@@ -245,9 +268,8 @@ class EcolaneServices
     resp.body
   end
 
-  #OK
-  def search_for_customers(terms = {}, system, token)
 
+  def search_for_customers(terms = {}, system, token)
 
     url_options = "/api/customer/" + system.to_s + '/search?'
     terms.each do |term|
@@ -256,8 +278,6 @@ class EcolaneServices
     url = Oneclick::Application.config.ecolane_base_url + url_options
     resp = send_request(url, token)
   end
-
-
 
   def unpack_validation_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
@@ -343,30 +363,23 @@ class EcolaneServices
   end
 
 
-
   ## Building hash objects that become XML nodes
   def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-
     order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
-
     order_xml
-
   end
 
   def build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
     order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
-
     if funding_xml
       order[:funding] = build_funding_hash(sponsors, trip_purpose_raw, funding_xml, funding_array)
     end
     Rails.logger.info(order)
     order
-
   end
 
   def build_funding_hash(sponsors, purpose, funding_xml, funding_array)
-
     min_index = 10000
     best_funding_source = nil
 
@@ -476,11 +489,11 @@ class EcolaneServices
       order = order.to_s
       resp = send_request(url, token, 'POST', order)
 
-      #begin
+      begin
         resp_code = resp.code
-      #rescue
-      #  resp_code = nil
-      #end
+      rescue
+        resp_code = nil
+      end
 
       if resp_code == "200"
         fare = unpack_fare_response(resp)
@@ -536,7 +549,7 @@ class EcolaneServices
     Rails.logger.info("MESSAGE")
     Rails.logger.info(message)
 
-    #begin
+    begin
       uri = URI.parse(url)
       case type.downcase
         when 'post'
@@ -562,17 +575,20 @@ class EcolaneServices
       Rails.logger.info(resp.body)
       Rails.logger.info("End")
       return resp
-    #rescue Exception=>e
-    #  Honeybadger.notify(
-    #      :error_class   => "Service failure",
-    #      :error_message => "Service failure: fixed: #{e.message}",
-    #      :parameters    => {url: url}
-    #  )
-    #  Rails.logger.info("Sending Error")
-    #  return false, {'id'=>500, 'msg'=>e.to_s}
-    #end
+    rescue Exception=>e
+      Honeybadger.notify(
+          :error_class   => "Service failure",
+          :error_message => "Service failure: fixed: #{e.message}",
+          :parameters    => {url: url}
+      )
+      Rails.logger.info("Sending Error")
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end
   end
 
+
+  #Cancel an Ecolane Booking
+  # Returns boolean
   def cancel(confirmation_number, system, token)
     url_options = "/api/order/" + system + '/'
     url_options += confirmation_number.to_s
