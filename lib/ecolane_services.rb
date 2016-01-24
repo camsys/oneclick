@@ -229,63 +229,11 @@ class EcolaneServices
 
   end
 
-  def build_discount_array(itinerary)
-    url_options =  "/api/order/" + itinerary.service.booking_system_id + "/queryfare"
-    url = BASE_URL + url_options
-
-    #First: Find Gen Public Fare
-    service = itinerary.service
-    funding_sources = service.funding_sources
-    guest_id = service.fare_user
-    discount_array = []
-    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
-
-    funding_sources.each do |funding_source|
-      Rails.logger.info(funding_source.code)
-
-      order = build_discount_order(itinerary, funding_source.code, guest_id)
-      order = Nokogiri::XML(order)
-      order.children.first.set_attribute('version', '2')
-      order = order.to_s
-      resp = send_request(url, itinerary.service.booking_token, 'POST', order)
-
-      begin
-        resp_code = resp.code
-      rescue
-        resp_code = nil
-      end
-
-      if resp_code == "200"
-        fare = unpack_fare_response(resp)
-        discount_array.append({fare: fare, comment: funding_source.comment, funding_source: funding_source.code, base_fare: funding_source.general_public})
-      end
-    end
-
-    discount_array
-
-  end
-
-
   def unpack_fare_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
     Rails.logger.info(resp_xml)
     client_copay = resp_xml.xpath("fare").xpath("client_copay").text
     return client_copay.to_f/100.0
-  end
-
-
-  ## GET Operations
-  def get_trip_purposes_from_itinerary(itinerary)
-    get_trip_purposes(get_customer_id(cu), itinerary.service.booking_system_id, itinerary.service.booking_token, itinerary.service.disallowed_purposes_array)
-  end
-
-  def get_trip_purposes_from_traveler(traveler)
-    user_service = UserService.where(user_profile: traveler.user_profile).order('created_at').last
-    get_trip_purposes(get_ecolane_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
-  end
-
-  def get_trip_purposes_from_customer_number(customer_number, system_id, token)
-    get_trip_purposes(get_ecolane_customer_id(customer_number, system_id, token), system_id, token, Service.find_by(booking_system_id: system_id).disallowed_purposes_array)
   end
 
   def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
@@ -671,7 +619,6 @@ class EcolaneServices
   ## Utility functions:
   #Ecolane has two unique identifiers customer_number and customer_id.
 
-
   def iso8601ify(dob)
 
     dob = dob.split('/')
@@ -686,15 +633,6 @@ class EcolaneServices
     end
 
     Date.iso8601(dob.delete('/'))
-  end
-
-  def county_to_service(county)
-    Service.find_by(external_id: county_to_external_id(county).downcase.strip)
-  end
-
-  def county_to_external_id(county)
-    mapping = Oneclick::Application.config.ecolane_county_mapping[county.downcase.strip.to_s]
-    return mapping.nil? ? county : mapping
   end
 
   def yes_or_no value

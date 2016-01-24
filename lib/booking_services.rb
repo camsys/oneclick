@@ -562,6 +562,14 @@ class BookingServices
 
   end
 
+  def get_dummy_trip_purposes(service)
+    customer_number = service.fare_user #String of the Dummy customer_number
+    ecolane_profile = service.ecolane_profile
+    disallowed_purposes_array = service.disallowed_purposes
+    es = EcolaneServices.new
+    es.get_trip_purposes(es.get_customer_id(customer_number, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, disallowed_purposes_array)
+  end
+
   ####################################
   # End Ecolane Specific Functions
   ###################################

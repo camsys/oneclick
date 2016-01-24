@@ -46,14 +46,14 @@ module Api
           default_trip_purpose = nil
           if service
             unless service.booking_system_id.nil?
-              begin
-                trip_purposes = eh.get_trip_purposes_from_customer_number(service.fare_user, service.booking_system_id, service.booking_token)
-              rescue Exception=>e
-                Honeybadger.notify(
-                    :error_class   => "Trip Purposes Failure #2",
-                )
-                trip_purposes = []
-              end
+              #begin
+              trip_purposes = bs.get_dummy_trip_purposes(service)
+              #rescue Exception=>e
+              #  Honeybadger.notify(
+              #      :error_class   => "Trip Purposes Failure #2",
+              #  )
+              #  trip_purposes = []
+              #end
             end
 
             if service.ecolane_profile
