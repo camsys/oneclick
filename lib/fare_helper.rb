@@ -34,11 +34,11 @@ class FareHelper
   def query_guest_fare(itinerary)
 
     #Get the official fare for this itinerary
-    eh = EcolaneHelpers.new
+    bs = BookingServices.new
     itinerary.cost = nil
 
     #Get an array of potential discounts
-    itinerary.discounts = eh.build_discount_array(itinerary).to_json
+    itinerary.discounts = bs.build_discount_array(itinerary).to_json
 
     itinerary.save
   end

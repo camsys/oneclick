@@ -193,42 +193,6 @@ class EcolaneServices
     return true, fare
   end
 
-  def query_guest_fare(itinerary)
-
-    url_options =  "/api/order/" + itinerary.service.booking_system_id + "/queryfare"
-    url = BASE_URL + url_options
-
-    #First: Find Gen Public Fare
-    service = itinerary.service
-    funding_source = service.funding_sources.where(general_public: true).first
-    guest_id = service.fare_user
-
-    order = build_discount_order(itinerary, funding_source.code, guest_id)
-    order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
-    order = order.to_s
-    resp = send_request(url, itinerary.service.booking_token, 'POST', order)
-
-    begin
-      resp_code = resp.code
-    rescue
-      return false, "500"
-    end
-
-    if resp_code != "200"
-      Honeybadger.notify(
-          :error_class   => "Unable to query fare",
-          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-          :parameters    => {resp_code: resp_code, resp: resp}
-      )
-      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
-    end
-    fare = unpack_fare_response(resp)
-
-    return true, fare
-
-  end
-
   def unpack_fare_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
     Rails.logger.info(resp_xml)
@@ -383,11 +347,6 @@ class EcolaneServices
   ## Building hash objects that become XML nodes
   def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
 
-    #If we have already built an order for this itinerary, return it
-    #if itinerary.order_xml?
-    #  return itinerary.order_xml
-    #end
-
     order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
 
@@ -485,21 +444,51 @@ class EcolaneServices
   ############################################################
   #Find Fares for users that do not have accounts with ecolane
   ############################################################
-  def build_discount_order(itinerary, funding_source, guest_id)
-    order_hash = build_discount_order_hash(itinerary, funding_source, guest_id)
+  def build_discount_order(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
+    order_hash = build_discount_order_hash(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
   end
 
-  def build_discount_order_hash(itinerary, funding_source, guest_id)
-    order = {customer_id: get_ecolane_customer_id(guest_id, itinerary.service.booking_system_id, itinerary.service.booking_token), assistant: yes_or_no(itinerary.assistant || false), companions: itinerary.companions || 0, children: itinerary.children || 0, other_passengers: itinerary.other_passengers || 0, pickup: build_pu_hash(itinerary), dropoff: build_do_hash(itinerary)}
-    order[:funding] = build_funding_hash_from_funding_source(itinerary, funding_source, Nokogiri::XML(query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token).body))
+  def build_discount_order_hash(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
+    order = {customer_id: customer_id, assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver=""), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
+    funding_options = query_funding_options(sponsors, trip_purpose, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant, companions, children, other_passengers, customer_number, system, token)
+    funding_xml = Nokogiri::XML(funding_options.body)
+    order[:funding] = build_funding_hash_from_funding_source(sponsors, trip_purpose, funding_source, funding_xml)
     order
   end
 
-  def build_discount_funding_hash(itinerary, funding_source)
-    #TODO: This purpose has to be updated when trip purposes are pulled in on-the-fly
-    return {funding_source: funding_source, purpose: itinerary.trip_part.trip.trip_purpose_raw}
+  def build_discount_array(funding_sources, sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, system, token)
+    url_options =  "/api/order/" + system + "/queryfare"
+    url = Oneclick::Application.config.ecolane_base_url + url_options
+
+    #First: Find Gen Public Fare
+    discount_array = []
+    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
+
+    funding_sources.each do |funding_source|
+      Rails.logger.info(funding_source['code'])
+
+      funding_source_code = funding_source['code']
+      order = build_discount_order(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source_code, system, token)
+      order = Nokogiri::XML(order)
+      order.children.first.set_attribute('version', '2')
+      order = order.to_s
+      resp = send_request(url, token, 'POST', order)
+
+      #begin
+        resp_code = resp.code
+      #rescue
+      #  resp_code = nil
+      #end
+
+      if resp_code == "200"
+        fare = unpack_fare_response(resp)
+        discount_array.append({fare: fare, comment: funding_source['comment'], funding_source: funding_source['code'], base_fare: funding_source['general_public']})
+      end
+    end
+
+    discount_array
   end
   ############################################################
 
@@ -547,7 +536,7 @@ class EcolaneServices
     Rails.logger.info("MESSAGE")
     Rails.logger.info(message)
 
-    begin
+    #begin
       uri = URI.parse(url)
       case type.downcase
         when 'post'
@@ -573,15 +562,15 @@ class EcolaneServices
       Rails.logger.info(resp.body)
       Rails.logger.info("End")
       return resp
-    rescue Exception=>e
-      Honeybadger.notify(
-          :error_class   => "Service failure",
-          :error_message => "Service failure: fixed: #{e.message}",
-          :parameters    => {url: url}
-      )
-      Rails.logger.info("Sending Error")
-      return false, {'id'=>500, 'msg'=>e.to_s}
-    end
+    #rescue Exception=>e
+    #  Honeybadger.notify(
+    #      :error_class   => "Service failure",
+    #      :error_message => "Service failure: fixed: #{e.message}",
+    #      :parameters    => {url: url}
+    #  )
+    #  Rails.logger.info("Sending Error")
+    #  return false, {'id'=>500, 'msg'=>e.to_s}
+    #end
   end
 
   def cancel(confirmation_number, system, token)

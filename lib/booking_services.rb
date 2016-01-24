@@ -570,6 +570,30 @@ class BookingServices
     es.get_trip_purposes(es.get_customer_id(customer_number, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, disallowed_purposes_array)
   end
 
+  def build_discount_array(itinerary)
+    es = EcolaneServices.new
+    service = itinerary.service
+
+    #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+    system = service.ecolane_profile.system
+    token = service.ecolane_profile.token
+    funding_sources = service.funding_sources.as_json
+    sponsors = service.sponsors.order(:index).pluck(:code).as_json
+    trip_purpose = itinerary.trip_part.trip.trip_purpose_raw
+    customer_number = service.fare_user
+    customer_id = es.get_customer_id(customer_number, system, token)
+    assistant = itinerary.assistant
+    companions = itinerary.companions
+    children = itinerary.children
+    other_passengers = itinerary.other_passengers
+    is_depart = itinerary.trip_part.is_depart
+    scheduled_time = itinerary.trip_part.scheduled_time
+    to_trip_place = itinerary.trip_part.to_trip_place.as_json
+    from_trip_place = itinerary.trip_part.from_trip_place.as_json
+
+    return es.build_discount_array(funding_sources, sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, system, token)
+  end
+
   ####################################
   # End Ecolane Specific Functions
   ###################################
