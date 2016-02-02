@@ -256,3 +256,4 @@ Rake::Task['oneclick:set_default_logo'].invoke
 Rake::Task['oneclick:set_mode_icons'].invoke
 Rake::Task['oneclick:add_otp_modes'].invoke
 Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke
+Rake::Task["oneclick:add_feedback_types"].invoke
