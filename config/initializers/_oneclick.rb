@@ -118,6 +118,9 @@ Oneclick::Application.configure do
   config.default_county = 'Suffolk'
   config.state = 'MA'
 
+  config.show_characteristic_logos = false
+  config.user_radio_buttons = false
+
   config.max_walk_seconds = 3600
   config.enable_satisfaction_surveys = false
 

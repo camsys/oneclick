@@ -9,7 +9,7 @@
     .col-sm-6.btns
       .pull-right
         = f.submit translate_helper(:apply), class: "btn action-button"
-        = link_to user_trip_path_for_ui_mode(@traveler, @trip), class: "btn action-button" do
+        = link_to user_trip_path(@traveler, @trip), class: "btn action-button" do
           = translate_helper(:cancel)
 
   .row

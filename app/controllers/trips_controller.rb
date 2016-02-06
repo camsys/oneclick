@@ -650,11 +650,11 @@ class TripsController < PlaceSearchingController
             if session[:is_multi_od] == true
               @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
-              @path = user_trip_path_for_ui_mode(@traveler, @trip)
+              @path = user_trip_path(@traveler, @trip)
             end
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
+            @path = new_user_trip_characteristic_path(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
@@ -676,7 +676,7 @@ class TripsController < PlaceSearchingController
   end
 
   def populate
-    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
+    redirect_to user_trip_path(@traveler, @trip)
   end
 
   # POST /trips
@@ -785,7 +785,7 @@ class TripsController < PlaceSearchingController
     @trip.trip_parts.each do |tp|
       tp.create_itineraries
     end
-    @path = user_trip_path_for_ui_mode(@traveler, @trip)
+    @path = user_trip_path(@traveler, @trip)
     session[:current_trip_id] = nil
 
     respond_to do |format|
@@ -862,7 +862,7 @@ class TripsController < PlaceSearchingController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
+    redirect_to user_trip_path(@traveler, @trip)
   end
 
   def unselect_all
@@ -874,7 +874,7 @@ class TripsController < PlaceSearchingController
     itinerary = Itinerary.find(params[:itin])
     itinerary.update_attribute :selected, true
     respond_to do |format|
-      format.html { redirect_to(user_trip_path_for_ui_mode(@traveler, @trip)) }
+      format.html { redirect_to(user_trip_path(@traveler, @trip)) }
       format.json { head :no_content }
     end
   end
@@ -1016,8 +1016,6 @@ protected
               @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
               @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
             else
-              #@trip.create_itineraries
-              #@path = user_trip_path_for_ui_mode(@traveler, @trip)
 
               # changed to async loading
               @trip.remove_itineraries
@@ -1025,7 +1023,7 @@ protected
             end
           else
             session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
+            @path = new_user_trip_characteristic_path(@traveler, @trip)
           end
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }

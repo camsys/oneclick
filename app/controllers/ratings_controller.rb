@@ -80,7 +80,7 @@ class RatingsController < ApplicationController
     @trip.rate(@trip.user, params[:rating][:value], params[:rating][:comments])
 
     flash[:notice]= TranslationEngine.translate_text(:thanks_for_the_feedback)
-    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
+    redirect_to user_trip_path(@traveler, @trip)
   end
 
   def context

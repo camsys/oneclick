@@ -17,9 +17,9 @@ class ProgramsController < TravelerAwareController
           @trip = Trip.find(session[:current_trip_id])
           session[:current_trip_id] =  nil
           @trip.create_itineraries
-          @path = user_trip_path_for_ui_mode(@traveler, @trip)
+          @path = user_trip_path(@traveler, @trip)
         else
-          @path = skip_user_trip_path_for_ui_mode(@traveler, session[:current_trip_id])
+          @path = skip_user_trip_path(@traveler, session[:current_trip_id])
         end
       end
     else
