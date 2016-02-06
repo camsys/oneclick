@@ -201,6 +201,13 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     parent_id: transit_mode.id,
     logo_url: 'bicycle.png',
   },
+  {
+    klass: Mode,
+    active: 0,
+    name: 'mode_ride_hailing_name',
+    code: 'mode_ride_hailing',
+    logo_url: 'auto.png'
+  },
 
  { klass: DateOption, name: 'All', code: 'date_option_all',
    start_date: 'beginning of time', end_date: 'end of time',
@@ -257,3 +264,4 @@ Rake::Task['oneclick:set_mode_icons'].invoke
 Rake::Task['oneclick:add_otp_modes'].invoke
 Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke
 Rake::Task["oneclick:add_feedback_types"].invoke
+Rake::Task["oneclick:load_locales"].invoke
