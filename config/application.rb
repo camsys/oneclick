@@ -106,9 +106,6 @@ module Oneclick
       config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
     config.assets.precompile += %w(
         application.css
-        arc.css
-        pa.css
-        broward.css
         tadaaapickr.en.js
         typeahead.js-bootstrap.css
         users.css
@@ -119,7 +116,6 @@ module Oneclick
         application.css
         _base.css
         style.css
-        pa.css
         ext/fontawesome-ext-webfont.eot
         ext/fontawesome-ext-webfont.svg
         ext/fontawesome-ext-webfont.ttf

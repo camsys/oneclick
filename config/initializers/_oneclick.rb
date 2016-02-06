@@ -26,8 +26,6 @@ Oneclick::Application.configure do
   config.service_max_allow_advanced_book_days = 365
   config.session_timeout       = ENV['SESSION_TIMEOUT']
   config.session_alert_timeout = ENV['SESSION_ALERT_TIMEOUT']
-  ENV['SMTP_MAIL_USER_NAME'] ||= "oneclick.arc.camsys" # TODO
-  ENV['SMTP_MAIL_PASSWORD'] ||= "CatDogMonkey" # TODO
   ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "donotreply@1-click.org" # TODO
   ENV['SEND_FEEDBACK_TO_ADDRESS'] ||= "1-Click@camsys.com"
   ENV['GOOGLE_GEOCODER_ACCOUNT'] ||=  "gme-cambridgesystematics"
@@ -119,8 +117,6 @@ Oneclick::Application.configure do
   config.agent_read_feedback = true
   config.provider_read_all_feedback = true
   config.tripless_feedback = false
-  honeybadger_api_key = 'c23d4c30'
-  #config.poi_file = 'db/jta/locations.csv'
   config.default_county = 'Suffolk'
   config.state = 'MA'
 
@@ -133,9 +129,6 @@ Oneclick::Application.configure do
   ENV['SMTP_MAIL_ADDR'] ||=           "smtp.gmail.com"
   ENV['SMTP_MAIL_PORT'] ||=           "587"
   ENV['SMTP_MAIL_DOMAIN'] ||=         "gmail.com"
-  ENV['SMTP_MAIL_USER_NAME'] ||=      "oneclick.broward.camsys"
-  ENV['SMTP_MAIL_PASSWORD'] ||=       "CatDogMonkey"
-
 
   # General UI configuration settings
   config.ui_typeahead_delay = 300       # milliseconds delay between keystrokes before a query is sent to the server to retrieve a typeahead list

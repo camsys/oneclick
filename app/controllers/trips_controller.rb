@@ -389,16 +389,6 @@ class TripsController < PlaceSearchingController
   end
 
   def email_itinerary2_values
-    # @itinerary = Itinerary.find(params[:itinerary].to_i)
-
-    # Rails.logger.info "Begin email"
-    # email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    # Rails.logger.info email_addresses.inspect
-    # email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
-    # email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
-    # Rails.logger.info email_addresses.inspect
-    # from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    # UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
     services = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.service.name}}
     providers = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.provider.name}}
     respond_to do |format|
