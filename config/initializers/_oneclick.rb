@@ -106,7 +106,7 @@ Oneclick::Application.configure do
   config.default_zoom = 12
   config.open_trip_planner = "http://otp-ma.camsys-apps.com:8080/otp/routers/ma/plan?"
   config.transit_respects_ada = false
-  config.taxi_fare_finder_api_key = "SIefr5akieS5"
+  config.taxi_fare_finder_api_key = ENV['TAXI_FARE_FINDER_API_KEY']
   config.taxi_fare_finder_api_city = "Boston"
   config.name = '1-Click/MA'
 

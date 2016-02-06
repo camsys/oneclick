@@ -371,7 +371,6 @@ age.update_attributes!(for_traveler: false, linked_characteristic: dob,
 
 #Run additional Rake Tasks
 Oneclick::Application.load_tasks
-Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke
 Rake::Task["oneclick:add_feedback_types"].invoke
 Rake::Task["oneclick:load_locales"].invoke
 
