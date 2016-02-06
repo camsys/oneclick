@@ -72,7 +72,7 @@ u.add_role :system_administrator
 # Transit has to be handled separate to support submodes.
 transit_hash =
   { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK",
-    logo_url: 'transit.png', visible: true,}
+    logo_url: '/assets/modes/transit.png', visible: true,}
 transit_mode = build_internationalized_records(structure_records_from_flat_hash(transit_hash))
 
 [
@@ -97,7 +97,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Paratransit',
     code: 'mode_paratransit',
     elig_dependent: true,
-    logo_url: 'paratransit.png',
+    logo_url: '/assets/modes/paratransit.png',
     visible: true
   },
   {
@@ -105,7 +105,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     active: 1,
     name: 'Taxi',
     code: 'mode_taxi',
-    logo_url: 'taxi.png',
+    logo_url: '/assets/modes/taxi.png',
     visible: true
   },
   {
@@ -113,7 +113,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     active: 0,
     name: 'Rideshare',
     code: 'mode_rideshare',
-    logo_url: 'rideshare.png',
+    logo_url: '/assets/modes/rideshare.png',
   },
   {
     klass: Mode,
@@ -121,14 +121,14 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Bike',
     code: 'mode_bicycle',
     otp_mode: "BICYCLE",
-    logo_url: 'bicycle.png',
+    logo_url: '/assets/modes/bicycle.png',
   },
   {
     klass: Mode,
     active: 0,
     name: 'Bikeshare',
     code: 'mode_bikeshare',
-    logo_url: 'bicycle.png',
+    logo_url: '/assets/modes/bicycle.png',
   },
   {
     klass: Mode,
@@ -136,7 +136,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Drive',
     code: 'mode_car',
     otp_mode: "CAR",
-    logo_url: 'auto.png',
+    logo_url: '/assets/modes/auto.png',
   },
   {
     klass: Mode,
@@ -144,7 +144,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Walk',
     code: 'mode_walk',
     otp_mode: "WALK",
-    logo_url: 'walk.png',
+    logo_url: '/assets/modes/walk.png',
   },
   {
     klass: Mode,
@@ -152,7 +152,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Bus', code: 'mode_bus',
     otp_mode: "BUSISH,WALK",
     parent_id: transit_mode.id,
-    logo_url: 'transit.png',
+    logo_url: '/assets/modes/transit.png',
     visible: true
   },
   {
@@ -162,7 +162,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_rail',
     otp_mode: "TRAINISH,WALK",
     parent_id: transit_mode.id,
-    logo_url: 'rail.png',
+    logo_url: '/assets/modes/rail.png',
     visible: true
   },
   {
@@ -172,7 +172,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_bike_park_transit',
     otp_mode: "BICYCLE_PARK,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: 'bicycle.png',
+    logo_url: '/assets/modes/bicycle.png',
   },
   {
     klass: Mode,
@@ -181,7 +181,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_car_transit',
     otp_mode: "CAR,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: 'transit.png',
+    logo_url: '/assets/modes/transit.png',
   },
   {
     klass: Mode,
@@ -190,7 +190,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_park_transit',
     otp_mode: "CAR_PARK,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: 'transit.png',
+    logo_url: '/assets/modes/transit.png',
   },
   {
     klass: Mode,
@@ -199,14 +199,68 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_bike_transit',
     otp_mode: "TRANSIT,BICYCLE",
     parent_id: transit_mode.id,
-    logo_url: 'bicycle.png',
+    logo_url: '/assets/modes/bicycle.png',
   },
   {
     klass: Mode,
     active: 0,
     name: 'mode_ride_hailing_name',
     code: 'mode_ride_hailing',
-    logo_url: 'auto.png'
+    logo_url: '/assets/modes/auto.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_ferry_name',
+    code: 'mode_ferry',
+    otp_mode: "FERRY",
+    logo_url: '/assets/modes/ferry.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_cable_car_name',
+    code: 'mode_cable_car',
+    otp_mode: "CABLE_CAR",
+    logo_url: '/assets/modes/cable_car.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_gondola_name',
+    code: 'mode_gondola',
+    otp_mode: "GONDOLA",
+    logo_url: '/assets/modes/gondola.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_funicular_name',
+    code: 'mode_funicular',
+    otp_mode: "FUNICULAR",
+    logo_url: '/assets/modes/funicular.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_subway_name',
+    code: 'mode_subway',
+    otp_mode: "SUBWAY",
+    logo_url: '/assets/modes/subway.png'
+  },
+  {
+    klass: Mode,
+    active: 1,
+    visible: 0,
+    name: 'mode_tram_name',
+    code: 'mode_tram',
+    otp_mode: "TRAM",
+    logo_url: '/assets/modes/tram.png'
   },
 
  { klass: DateOption, name: 'All', code: 'date_option_all',
@@ -257,11 +311,69 @@ WalkingMaximumDistance.where(value: 2, is_default: true).first_or_create!
 WalkingMaximumDistance.where(value: 3).first_or_create!
 WalkingMaximumDistance.where(value: 4).first_or_create!
 
+#Traveler characteristics
+[{klass:Characteristic, characteristic_type: 'personal_factor', code: 'disabled', name: 'Disabled', note: 'Do you have a permanent or temporary disability?', datatype: 'bool'},
+#{klass:Characteristic, characteristic_type: 'personal_factor', code: 'no_tranQs', name: 'No Means of Transportation', note: 'Do you own or have access to a personal vehicle?', datatype: 'bool', desc: },
+#{klass:Characteristic, characteristic_type: 'program', code: 'nemt_eligible', name: 'Medicaid', note: 'Are you eligible for Medicaid?', datatype: 'bool', desc:},
+    {klass:Characteristic, characteristic_type: 'program', code: 'ada_eligible', name: 'ADA Paratransit', note: 'Are you eligible for ADA paratransit?', datatype: 'bool'},
+    {klass:Characteristic, characteristic_type: 'program', code: 'matp', name: 'Medical Assistance Transportation Program', note: 'Do you have a Medical Assistance Access Card?', datatype: 'bool'},
+    {klass:Characteristic, characteristic_type: 'personal_factor', code: 'veteran', name: 'Veteran', note: 'Are you a military veteran?', datatype: 'bool'},
+#{klass:Characteristic, characteristic_type: 'personal_factor', code: 'low_income', name: 'Low income', note: "Are you low income?", datatype: 'disabled',desc: },
+    {klass:Characteristic, characteristic_type: 'personal_factor', code: 'date_of_birth', name: 'Date of Birth', note: "What is your birth year?", datatype: 'date'},
+    { klass: Characteristic, characteristic_type: 'personal_factor', code: 'age', name: 'Age is', note: "What is your birth year?", datatype: 'integer',
+    desc: 'You must be 65 or older to use this service. Please confirm your birth year.'},
+    {klass:Characteristic, characteristic_type: 'personal_factor', code: 'walk_distance', name: 'Walk distance', note: 'Are you able to comfortably walk for 5, 10, 15, 20, 25, 30 minutes?', datatype: 'disabled'},
+
+#Traveler accommodations
+    {klass:Accommodation, code: 'folding_wheelchair_accessible', name: 'Folding wheelchair accessible.', note: 'Do you need a vehicle that has space for a folding wheelchair?', datatype: 'bool'},
+    {klass:Accommodation, code: 'motorized_wheelchair_accessible', name: 'Motorized wheelchair accessible.', note: 'Do you need a vehicle than has space for a motorized wheelchair?', datatype: 'bool'},
+#{klass:Accommodation, code: 'door_to_door', name: 'Door-to-door', note: 'Do you need assistance getting to your front door?', datatype: 'bool'},
+    {klass:Accommodation, code: 'curb_to_curb', name: 'Curb-to-curb', note: 'Do you need delivery to the curb in front of your home?', datatype: 'bool'},
+#{klass:Accommodation, code: 'driver_assistance_available', name: 'Driver assistance available.', note: 'Do you need personal assistance from the driver?', datatype: 'bool'},
+#Service types
+    {klass:ServiceType, code: 'paratransit', name: 'Paratransit', note: 'This is a general purpose paratransit service.'},
+    {klass:ServiceType, code: 'volunteer', name: 'Volunteer', note: 'This is a volunteer service'},
+    {klass:ServiceType, code: 'nemt', name: 'Non-Emergency Medical Service', note: 'This is a paratransit service only to be used for medical trips.'},
+    {klass: ServiceType, code: 'transit', name: 'Fixed-route Transit', note: 'This is a transit service.'},
+    {klass: ServiceType, code: 'taxi', name: 'Taxi', note: 'Taxi services.'},
+].each do |record|
+  structured_hash = structure_records_from_flat_hash record
+  build_internationalized_records structured_hash
+end
+
+#trip_purposes
+# {klass:TripPurpose, code: 'medical', name: 'Medical', note: 'General medical trip.', active: 1, sort_order: 2},
+# {klass:TripPurpose, code: 'cancer', name: 'Cancer Treatment', note: 'Trip to receive cancer treatment.', active: 1, sort_order: 2},
+# {klass:TripPurpose, code: 'general', name: 'General Purpose', note: 'General purpose/unspecified purpose.', active: 1, sort_order: 1},
+#  {klass:TripPurpose, code: 'grocery', name: 'Grocery Trip', note: 'Grocery shopping trip.', active: 1, sort_order: 2}
+#  # {klass:TripPurpose, code: 'vamc', name: 'Visit Lebanon VA Medical Center', note: 'Visit Lebanon VA Medical Center', active: 1, sort_order: 2}
+
+['Other',
+ 'Grocery',
+ 'Medical',
+ 'Work'].each do |name|
+  record = {klass:TripPurpose, code: name.downcase.gsub(%r{[ /]}, '_'), name: name, note: name, active: 1, sort_order: 2}
+  record[:sort_order] = 1 if record[:code]=='general_purpose'
+  record[:sort_order] = 3 if record[:code]=='other'
+  structured_hash = structure_records_from_flat_hash record
+  build_internationalized_records structured_hash
+end
+
+# update linked characteristics
+age = Characteristic.unscoped.find_by(code: 'age')
+dob = Characteristic.unscoped.find_by(code: 'date_of_birth')
+
+dob.update_attributes!(for_service: false, linked_characteristic: age,
+    link_handler: 'AgeCharacteristicHandler') rescue puts "dob.update_attributes! failed"
+
+age.update_attributes!(for_traveler: false, linked_characteristic: dob,
+    link_handler: 'AgeCharacteristicHandler') rescue Rails.logger.warn "age.update_attributes failed!"
+
 #Run additional Rake Tasks
 Oneclick::Application.load_tasks
 Rake::Task['oneclick:set_default_logo'].invoke
-Rake::Task['oneclick:set_mode_icons'].invoke
 Rake::Task['oneclick:add_otp_modes'].invoke
 Rake::Task["translation_engine:wipe_and_reload_from_arc_qa_data"].invoke
 Rake::Task["oneclick:add_feedback_types"].invoke
 Rake::Task["oneclick:load_locales"].invoke
+
