@@ -98,7 +98,7 @@ Oneclick::Application.configure do
   config.host = 'oneclick.camsys-apps.com'
   ENV['HOST'] ||= config.host
   config.logo_text = "A R C logo - Simply Get There"
-  config.ui_logo = 'ma/logo.png'
+  config.ui_logo = '/assets/logo.png'
   config.logo_text = "1-Click"
   config.favicon = ''
   config.mobile_favicon = ''
