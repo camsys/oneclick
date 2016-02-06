@@ -7,13 +7,8 @@ gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
 gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 
-unless ENV['UI_MODE']=='kiosk'
-  gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.2'
-  gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
-else
-  gem 'bootstrap-sass', '~> 2.3.2.0'
-  gem 'simple_form', '3.0.1'
-end
+gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.2'
+gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
 
 gem 'translation_engine', github: 'derekedwards/translation_engine'
 #Switched to custom translation engine that doesn't do inline help.  Inline help was duplicated in 1-click
@@ -82,12 +77,6 @@ group :development do
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'guard', '~> 1.8.3'
-  gem 'guard-bundler'
-  gem 'guard-cucumber'
-  gem 'guard-rails'
-  gem 'guard-rspec'
-  gem 'guard-puma'
   gem 'pry-byebug'
   gem 'html2haml'
   gem 'quiet_assets'

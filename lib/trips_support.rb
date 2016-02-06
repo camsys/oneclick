@@ -31,7 +31,6 @@ module TripsSupport
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
   PLACES_AUTOCOMPLETE_TYPE = '5'
-  KIOSK_LOCATION_TYPE = '6'
 
   # Set the default travel time/date to x mins from now
   # def default_trip_time
@@ -151,15 +150,6 @@ module TripsSupport
         formatted_address: place['formatted_address'],
         lat:               place['geometry']['location']['lat'],
         lon:               place['geometry']['location']['lng'],
-      }
-    when KIOSK_LOCATION_TYPE
-      place = KioskLocation.find(place_id)
-
-      {
-        name:              place[:name],
-        formatted_address: place[:addr],
-        lat:               place[:lat],
-        lon:               place[:lon]
       }
     else
       raise "unhandled place type: #{place_type}"

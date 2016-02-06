@@ -5,17 +5,6 @@ module ApplicationHelper
 
   include CsHelpers
 
-  KIOSK_ICON_DICTIONARY = {
-    Leg::TripLeg::WALK => 'travelcon-walk',
-    Leg::TripLeg::TRAM => 'travelcon-subway',
-    Leg::TripLeg::SUBWAY => 'travelcon-subway',
-    Leg::TripLeg::RAIL => 'travelcon-rail',
-    Leg::TripLeg::BUS => 'travelcon-bus',
-    Leg::TripLeg::FERRY => 'travelcon-boat',
-    Leg::TripLeg::CAR => 'travelcon-car',
-    Leg::TripLeg::BICYCLE => 'travelcon-bicycle'
-  }
-
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
     return Oneclick::Application.config.ui_logo
@@ -46,12 +35,7 @@ module ApplicationHelper
 
   # Returns a mode-specific icon
   def get_mode_icon(mode)
-    if ENV['UI_MODE']=='kiosk'
-      KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
-      KIOSK_ICON_DICTIONARY[mode]
-    else
-      Mode.unscoped.where(code: 'mode_' + mode.downcase).first.try(:logo_url)
-    end
+    Mode.unscoped.where(code: 'mode_' + mode.downcase).first.try(:logo_url)
   end
 
   # Returns a service-specific icon
@@ -259,7 +243,7 @@ module ApplicationHelper
   def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
 
-    fa_prefix = ui_mode_kiosk? ? 'icon' : 'fa'
+    fa_prefix = 'fa'
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     icon_name = if mode_code == 'rail'

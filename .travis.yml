@@ -17,6 +17,7 @@ after_script:
 - ls -a
 - git describe
 rvm:
+
 - 2.1.7
 language: ruby
 cache: bundler

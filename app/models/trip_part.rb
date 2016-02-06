@@ -296,10 +296,6 @@ class TripPart < ActiveRecord::Base
       itins = check_for_short_drives(itins)
     end
 
-    # Don't hide duplicate itineraries in new UI
-    # See https://www.pivotaltracker.com/story/show/71254872
-    # TODO This will probably break kiosk, will add story
-    # hide_duplicate_fixed_route(itineraries)
     itins
   end
 

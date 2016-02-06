@@ -158,17 +158,4 @@ function adjust_thumbnails(window_width) {
     $('.trip_summary').removeClass("col-sm-12 col-sm-6 col-sm-4 col-sm-3").addClass(span_size);
     $('.thumbnail').removeClass('first-in-row');
     // Add the first-in-row class to the first thumbnail in each row
-    if (OneClick.Config['ui_mode'] != 'kiosk') {
-        var i = 0;
-        $('.thumbnail').each(function() {
-            var remainder = i % counter;
-            //alert('i = ' + i + ' remainder = ' + remainder);
-            if (remainder == 0) {
-                $(this).addClass('first-in-row');
-            }
-            i++;
-        })
-    } else {
-        // console.log('kiosk')
-    }
 };

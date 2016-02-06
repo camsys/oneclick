@@ -136,14 +136,6 @@ module CsHelpers
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
 
-  def ui_mode_kiosk?
-    CsHelpers::ui_mode_kiosk?
-  end
-
-  def self.ui_mode_kiosk?
-    Oneclick::Application.config.ui_mode=='kiosk'
-  end
-
   def current_or_guest_user
     if current_user
       if session[:guest_user_id]
@@ -329,72 +321,6 @@ module CsHelpers
     name_string.chop.chop
   end
 
-  # Kiosk-related helpers
-
-  def user_trip_path_for_ui_mode traveler, trip
-    unless ui_mode_kiosk?
-      user_trip_path traveler, trip, locale: I18n.locale
-    else
-      kiosk_user_trip_path traveler, trip
-    end
-  end
-
-  def new_user_characteristic_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_characteristic_path traveler, options
-    else
-      new_kiosk_user_characteristic_path traveler, options
-    end
-  end
-
-  def unhide_all_user_trip_part_path_for_ui_mode traveler, trip_part
-    unless ui_mode_kiosk?
-      unhide_all_user_trip_part_path traveler, trip_part
-    else
-      unhide_all_kiosk_user_trip_part_path traveler, trip_part
-    end
-  end
-
-  def new_user_program_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_program_path traveler, options
-    else
-      new_kiosk_user_program_path traveler, options
-    end
-  end
-
-  def user_program_path_for_ui_mode traveler, user_programs_proxy_id, options = {}
-    unless ui_mode_kiosk?
-      user_program_path traveler, user_programs_proxy_id, options
-    else
-      kiosk_user_program_path traveler, user_programs_proxy_id, options
-    end
-  end
-
-  def new_user_accommodation_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_accommodation_path traveler, options
-    else
-      new_kiosk_user_accommodation_path traveler, options
-    end
-  end
-
-  def skip_user_trip_path_for_ui_mode traveler, current_trip_id
-    unless ui_mode_kiosk?
-      skip_user_trip_path traveler, current_trip_id
-    else
-      skip_kiosk_user_trip_path traveler, current_trip_id
-    end
-  end
-
-  def new_user_trip_characteristic_path_for_ui_mode traveler, trip
-    unless ui_mode_kiosk?
-      new_user_trip_characteristic_path traveler, trip, locale: I18n.locale
-    else
-      raise "new_user_trip_characteristic_path not defined for kiosk yet"
-    end
-  end
-
   # first check if itinerary service or provider has customized logo
   # then check if it's a walk itinerary, to show walk logo
   # last, just get itineary mode logo
@@ -455,18 +381,7 @@ module CsHelpers
   end
 
   def unselect_all_user_trip_part_path_for_ui_mode traveler, trip_part
-    # unless ui_mode_kiosk?
-      unselect_all_user_trip_part_path traveler, trip_part
-    # else
-    #   unselect_all_kiosk_user_trip_part_path traveler, trip_part
-    # end
+        unselect_all_user_trip_part_path traveler, trip_part
   end
 
-  def is_arc?
-    Oneclick::Application.config.brand == 'arc'
-  end
-
-  def is_ieuw?
-    Oneclick::Application.config.brand == 'ieuw'
-  end
 end

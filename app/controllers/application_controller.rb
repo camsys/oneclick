@@ -130,11 +130,7 @@ class ApplicationController < ActionController::Base
       @trip.create_itineraries
       user_trip_path(@traveler, @trip)
     else
-      if ui_mode_kiosk?
-        new_user_trip_path(current_or_guest_user)
-      else
-        root_path(locale: current_or_guest_user.preferred_locale)
-      end
+      root_path(locale: current_or_guest_user.preferred_locale)
     end
   end
 

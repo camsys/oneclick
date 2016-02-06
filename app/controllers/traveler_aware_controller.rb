@@ -6,7 +6,7 @@ class TravelerAwareController < ApplicationController
     def confirm_traveler
       if params[:user_id]
         get_traveler
-        if params[:user_id] != @traveler.id.to_s && ENV['UI_MODE'] != 'kiosk'
+        if params[:user_id] != @traveler.id.to_s
           raise CanCan::AccessDenied.new
         end
       end
@@ -16,7 +16,7 @@ class TravelerAwareController < ApplicationController
     def confirm_traveler_new
       if params[:user_id]
         get_traveler
-        if params[:user_id] != @traveler.id.to_s && ENV['UI_MODE'] != 'kiosk'
+        if params[:user_id] != @traveler.id.to_s
           redirect_to root_url
         end
       end

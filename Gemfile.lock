@@ -113,7 +113,6 @@ GEM
     addressable (2.3.6)
     ajax-datatables-rails (0.2.0)
       railties (>= 3.1)
-    ajaxful_rating (3.0.0.beta8)
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
@@ -270,28 +269,6 @@ GEM
     gherkin (2.12.2)
       multi_json (~> 1.3)
     growl (1.0.3)
-    guard (1.8.3)
-      formatador (>= 0.2.4)
-      listen (~> 1.3)
-      lumberjack (>= 1.0.2)
-      pry (>= 0.9.10)
-      thor (>= 0.14.6)
-    guard-bundler (1.0.0)
-      bundler (~> 1.0)
-      guard (~> 1.1)
-    guard-cucumber (1.4.1)
-      cucumber (>= 1.2.0)
-      guard (>= 1.1.0)
-    guard-puma (0.2.4)
-      guard (>= 1.0.1)
-      libnotify
-      puma
-      rb-inotify
-    guard-rails (0.4.7)
-      guard (>= 0.2.2)
-    guard-rspec (3.1.0)
-      guard (>= 1.8)
-      rspec (~> 2.13)
     gyoku (1.3.1)
       builder (>= 2.1.2)
     haml (4.1.0.beta.1)
@@ -341,14 +318,11 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.2.0)
       launchy (~> 2.2)
-    libnotify (0.8.3)
-      ffi (>= 1.0.11)
     listen (1.3.1)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     lorem-ipsum-me (0.1.0)
-    lumberjack (1.0.9)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -460,10 +434,6 @@ GEM
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
     rolify (3.4.1)
-    rspec (2.14.1)
-      rspec-core (~> 2.14.0)
-      rspec-expectations (~> 2.14.0)
-      rspec-mocks (~> 2.14.0)
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -591,7 +561,6 @@ DEPENDENCIES
   activemodel
   activerecord-postgis-adapter (= 1.1.0)
   ajax-datatables-rails (> 0.1.2)
-  ajaxful_rating (>= 3.0.0.beta7)
   attr_encrypted
   awesome_print
   better_errors
@@ -620,12 +589,6 @@ DEPENDENCIES
   foreman
   geocoder
   growl
-  guard (~> 1.8.3)
-  guard-bundler
-  guard-cucumber
-  guard-puma
-  guard-rails
-  guard-rspec
   haml-rails
   handlebars_assets
   html2haml

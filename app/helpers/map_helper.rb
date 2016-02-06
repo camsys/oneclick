@@ -2,13 +2,8 @@ module MapHelper
 
   ALPHABET = ('A'..'Z').to_a
 
-  unless ENV['UI_MODE']=='kiosk'
-    POPUP_PARTIAL = "/shared/map_popup"
-    BUILDING_ICON = 'fa-building-o'
-  else
-    POPUP_PARTIAL = "/shared/map_popup_b2"
-    BUILDING_ICON = 'icon-building'
-  end
+  POPUP_PARTIAL = "/shared/map_popup"
+  BUILDING_ICON = 'fa-building-o'
 
   # Returns a formatted string for displaying a map marker image that includes a A,B,C, etc. designator.
   #

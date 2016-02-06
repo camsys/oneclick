@@ -4,11 +4,7 @@ Oneclick::Application.routes.draw do
 
   scope "(:locale)", locale: oneclick_available_locales do
 
-    if Oneclick::Application.config.ui_mode == 'kiosk'
-      root to: redirect('/kiosk')
-    else
-      root to: 'home#index'
-    end
+    root to: 'home#index'
 
     authenticated :user do
       root :to => 'trips#new', as: :authenticated_root
@@ -178,122 +174,6 @@ Oneclick::Application.routes.draw do
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
     get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
 
-    namespace :kiosk do
-      get '/', to: 'home#index'
-      get 'reset', to: 'home#reset'
-
-      get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
-
-      resources :locations, only: [:show]
-      resources :call, only: [:show, :index] do
-        post :outgoing, on: :collection
-      end
-
-      # TODO can probably remove a lot of these routes
-      resources :users do
-        member do
-          get   'profile'
-          post  'update'
-        end
-
-        namespace :new_trip do
-          resource :start
-          resource :to
-          resource :from
-          resource :pickup_time
-          resource :purpose
-          resource :return_time
-          resource :overview
-        end
-
-        resources :characteristics, :only => [:new, :create, :edit, :update] do
-          collection do
-            get 'header'
-          end
-          member do
-            put 'set'
-          end
-        end
-
-        resources :programs, :only => [:new, :create, :edit, :update] do
-          member do
-            put 'set'
-          end
-        end
-
-        resources :accommodations, :only => [:new, :create, :edit, :update] do
-          member do
-            put 'set'
-          end
-        end
-
-        # user relationships
-        resources :user_relationships, :only => [:new, :create] do
-          member do
-            get   'traveler_retract'
-            get   'traveler_revoke'
-            get   'traveler_hide'
-            get   'delegate_accept'
-            get   'delegate_decline'
-            get   'delegate_revoke'
-          end
-        end
-
-        # users have places
-        resources :places, :only => [:index, :new, :create, :destroy, :edit, :update] do
-          collection do
-            get   'search'
-            post  'geocode'
-          end
-        end
-
-        # users have trips
-        resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
-          collection do
-            post  'set_traveler'
-            get   'unset_traveler'
-            get   'search'
-            post  'geocode'
-          end
-
-          member do
-            get 'start'
-            get   'repeat'
-            get   'select'
-            get   'details'
-            get   'itinerary'
-            post  'email'
-            post  'email_provider'
-            post  'email_itinerary'
-            get   'email_itinerary2_values'
-            post  'email2'
-            get   'hide'
-            get   'unhide_all'
-            get   'skip'
-            post  'comments'
-            post  'admin_comments'
-            get   'email_feedback'
-            get   'show_printer_friendly'
-          end
-        end
-
-        resources :trip_parts do
-          member do
-            get 'unhide_all'
-          end
-        end
-
-      end # kiosk
-
-    end # user
-
-    devise_scope :user do
-      post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
-      get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
-      get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
-    end
-
-    # TODO This should go somewhere else
     get '/place_search' => 'trips#search'
     get '/place_search_my' => 'trips#search_my'
     get '/place_search_poi' => 'trips#search_poi'
@@ -433,11 +313,6 @@ Oneclick::Application.routes.draw do
     get '/501' => 'errors#error_501', as: 'error_501'
 
   end
-
-  unless Oneclick::Application.config.ui_mode == 'kiosk'
-    # get '*not_found' => 'errors#handle404'
-  end
-
 
 
   #API

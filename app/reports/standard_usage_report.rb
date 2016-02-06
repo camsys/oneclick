@@ -55,7 +55,7 @@ class StandardUsageReport < AbstractReport
     ]
 
     @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
-  end    
+  end
 
   def self.available_date_option_collections
     StandardUsageReport::AVAILABLE_DATE_OPTIONS.map {|option| [TranslationEngine.translate_text(option), option]}
