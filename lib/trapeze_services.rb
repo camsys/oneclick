@@ -212,7 +212,16 @@ class TrapezeServices
     check_polygon = Oneclick::Application.config.check_polygon_id
 
     funding_source_array = []
-    funding_sources = pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).sort_by{ |fs| fs[:sequence] }
+    funding_sources = pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password)
+
+    # If this client has 1 funding source returned, the returned object is a json hash.
+    # If this client has more than 1 funding source, the returned object is an array of json_hashes
+    # Turn all results into an array
+    unless funding_sources.kind_of?(Array)
+      funding_sources = [funding_sources]
+    end
+
+    funding_sources = funding_sources.sort_by{ |fs| fs[:sequence] }
     funding_sources.each do |funding_source|
       Rails.logger.info funding_source.ai
       if funding_source[:funding_source_name].in? ada_funding_sources
