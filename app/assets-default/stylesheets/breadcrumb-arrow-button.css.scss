@@ -96,6 +96,10 @@
   background-color: $past-breadcrumb-bg;
 }
 
+.prev-page:hover {
+  background-color: $past-breadcrumb-bg;
+}
+
 .current-page, .current-page:hover {
     background-color: $breadcrum-current-step-bg-color;
     cursor: default;
