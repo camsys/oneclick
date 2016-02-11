@@ -1,7 +1,17 @@
 // JTA brand-lib. Variables and mixins definitions only. No styles.
 
-$btn-primary-bg: #D92530;
+$btn-primary-bg: #ED7A1F;
 
 $font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $breadcrum-current-step-bg-color: #094A84;
+
+//colors for trip legs
+$trip-leg-paratransit: #ED7A1F;
+$trip-leg-bicycle: #C07440;
+$trip-leg-bikeshare: #C07440;
+$trip-leg-bus: #094A84;
+$trip-leg-drive: #005200;
+$trip-leg-tram: #880015;
+$trip-leg-walk: #67686C;
+$trip-leg-wait: #C0C0C0;
