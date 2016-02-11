@@ -85,9 +85,15 @@
 .prev-page{
     a {
         color: $btn-primary-color;
+        background-color: $past-breadcrumb-bg;
         font-weight: bold;
         text-decoration: none;
     }
+  background-color: $past-breadcrumb-bg;
+}
+
+.prev-page:hover {
+  background-color: $past-breadcrumb-bg;
 }
 
 .current-page, .current-page:hover {
