@@ -21,10 +21,10 @@ module SeedsHelpers
           locale = Locale.find_or_create_by!(name: locale)
           translation_key = TranslationKey.find_or_create_by!(name: translation_fkey)
           Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id) do |t|
-            if locale.eql? :en
+            if locale.name.eql? "en"
               t.value = v
             else
-              t.value = "[#{locale}]#{v}[/#{locale}]"
+              t.value = "[#{locale.name}]#{v}[/#{locale.name}]"
             end
           end
         end
