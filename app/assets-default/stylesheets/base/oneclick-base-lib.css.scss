@@ -81,21 +81,21 @@ $breadcrum-next-step-font-color: black;
 $single-plan-height: 50px !default; //the height of each itinerary chart container
 
 //colors for trip legs
-$trip-leg-bus: #00C000;
-$trip-leg-drive: #F5BBAF;
-$trip-leg-rideshare: #92D692;
-$trip-leg-paratransit: #FFCE81;
-$trip-leg-subway: #5D8794;
-$trip-leg-tram: #005200;
-$trip-leg-rail: #5D8794;
-$trip-leg-taxi: #FFD700;
-$trip-leg-wait: #C0C0C0;
-$trip-leg-walk: #EE74A8;
-$trip-leg-bicycle: #BC9EFA;
-$trip-leg-bikeshare: #AEF31C;
-$trip-leg-unknown: #494D43; //unrecognized leg type or mode
-$trip-leg-ferry: #beecfa;
-$trip-leg-cable_car: #005200;
-$trip-leg-gondola: #005200;
-$trip-leg-funicular: #005200;
-$trip-leg-ride_hailing: #484B4D;
+$trip-leg-bus: getenv("TRIP_LEG_BUS_COLOR", #00C000);
+$trip-leg-drive: getenv("TRIP_LEG_DRIVE_COLOR", #F5BBAF);
+$trip-leg-rideshare: getenv("TRIP_LEG_RIDESHARE_COLOR", #92D692);
+$trip-leg-paratransit: getenv("TRIP_LEG_SUBWAY_COLOR", #FFCE81);
+$trip-leg-subway: getenv("TRIP_LEG_SUBWAY_COLOR", orange);
+$trip-leg-tram: getenv("TRIP_LEG_TRAM_COLOR", orange);
+$trip-leg-rail: getenv("TRIP_LEG_RAIL_COLOR", #5D8794);
+$trip-leg-taxi: getenv("TRIP_LEG_TAXI_COLOR", #FFD700);
+$trip-leg-wait: getenv("TRIP_LEG_WAIT_COLOR", #C0C0C0);
+$trip-leg-walk: getenv("TRIP_LEG_WALK_COLOR", #EE74A8);
+$trip-leg-bicycle: getenv("TRIP_LEG_BICYCLE_COLOR", #BC9EFA);
+$trip-leg-bikeshare: getenv("TRIP_LEG_BIKESHARE_COLOR", #AEF31C);
+$trip-leg-unknown: getenv("TRIP_LEG_UNKNOWN_COLOR", #494D43); //unrecognized leg type or mode
+$trip-leg-ferry: getenv("TRIP_LEG_FERRY_COLOR", #beecfa);
+$trip-leg-cable_car: getenv("TRIP_LEG_CABLE_CAR_COLOR", #005200);
+$trip-leg-gondola: getenv("TRIP_LEG_GONDOLA_COLOR", #005200);
+$trip-leg-funicular: getenv("TRIP_LEG_FUNICULAR_COLOR", #005200);
+$trip-leg-ride_hailing: getenv("TRIP_LEG_RIDE_HAILING_COLOR", #484B4D);
