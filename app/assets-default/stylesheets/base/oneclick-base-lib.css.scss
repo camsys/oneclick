@@ -99,3 +99,9 @@ $trip-leg-cable_car: getenv("TRIP_LEG_CABLE_CAR_COLOR", #005200);
 $trip-leg-gondola: getenv("TRIP_LEG_GONDOLA_COLOR", #005200);
 $trip-leg-funicular: getenv("TRIP_LEG_FUNICULAR_COLOR", #005200);
 $trip-leg-ride_hailing: getenv("TRIP_LEG_RIDE_HAILING_COLOR", #484B4D);
+
+
+
+$btn-primary-bg: getenv("BTN_PRIMARY_BG", #E45034);
+$past-breadcrumb-bg: getenv("PAST_BREADCRUMB_BG", #E45034);
+$breadcrum-current-step-bg-color: getenv("BREADCRUM_CURRENT_STEP_BG_COLOR", gray);
