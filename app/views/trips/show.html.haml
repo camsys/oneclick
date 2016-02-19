@@ -14,8 +14,6 @@
             %i.fa.fa-thumbs-down.fa-flip-horizontal
             = translate_helper(:feedback)
 
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button", tabindex: "8" do
-        =translate_helper(:next)
     = render partial: 'shared/trip_plan_breadcrumbs'
 
 .row
@@ -46,8 +44,6 @@
             %i.fa.fa-thumbs-down.fa-flip-horizontal
             = translate_helper(:feedback)
 
-      = button_tag :type => 'button', :name => "planButton", :class => "btn action-button" do
-        =translate_helper(:next)
   .col-sm-12
     = render partial: 'shared/page_comments', locals: {key: :review_footer_comment}
   / end of review columns
@@ -251,28 +247,6 @@
         $('html, body').animate({
             scrollTop: ($chartContainer.offset().top - 100)
         }, 500);
-      });
-
-      //Plan button to jump to Plan page
-      $('button[name=planButton]').on('click', function(e) {
-        var selectedPlanIds = [];
-        var tripParts = $('#tripContainer').find('.single-trip-part');
-        var selectedPlans = tripParts.find('.single-plan-selected');
-        if(tripParts.length != selectedPlans.length) {
-          show_alert(localeDictFinder['select_a_plan_each_trip_part']);
-          return;
-        }
-
-        var selectedPlanIds = [];
-        selectedPlans.each(function() {
-          var tmpPlanId = parseInt($(this).attr('data-plan-id'));
-          if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
-            selectedPlanIds.push(tmpPlanId);
-          }
-        });
-
-        //jump to Plan page
-        window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
       });
 
       $("#save_survey").click(function(){

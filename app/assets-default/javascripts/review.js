@@ -292,6 +292,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         //clicking Select button to change styles
         $('.single-plan-review .single-plan-select').click(function() {
             selectItineraryByClickingSelectButton(this);
+            moveToPlan(this);
         });
 
         //clicking ? button to pop up eligibility questions
@@ -468,6 +469,29 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         $(planSelectButton).parents('.single-plan-review')
             .removeClass('single-plan-unselected')
             .addClass('single-plan-selected');
+    }
+
+
+    //Plan button to jump to Plan page
+    function moveToPlan() {
+        //$('button[name=planButton]').on('click', function(e) {
+        var selectedPlanIds = [];
+        var tripParts = $('#tripContainer').find('.single-trip-part');
+        var selectedPlans = tripParts.find('.single-plan-selected');
+        if(tripParts.length != selectedPlans.length) {
+            return;
+        }
+
+        var selectedPlanIds = [];
+        selectedPlans.each(function() {
+          var tmpPlanId = parseInt($(this).attr('data-plan-id'));
+          if(typeof(tmpPlanId) === 'number' && !isNaN(tmpPlanId)) {
+            selectedPlanIds.push(tmpPlanId);
+          }
+        });
+
+        //jump to Plan page
+        window.location.href = ( window.location.href + '/plan?itinids=' + selectedPlanIds.toString() );
     }
 
     /*
@@ -839,7 +863,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                         strTripStartTime,
                         strTripEndTime,
                         isDepartAt,
-                        tripPlan.selected,
+                        false,
                         paratransitCounter
                     );
                 }
@@ -888,7 +912,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                             strTripStartTime,
                             strTripEndTime,
                             isDepartAt,
-                            tripPlan.selected,
+                            false,
                             paratransitCounter
                         );
 

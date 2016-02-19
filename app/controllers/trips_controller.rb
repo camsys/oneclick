@@ -43,19 +43,6 @@ class TripsController < PlaceSearchingController
 
   end
 
-  def show_old
-    @show_hidden = params[:show_hidden]
-
-    if session[:current_trip_id]
-      session[:current_trip_id] = nil
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trip }
-    end
-  end
-
   def show
     trip_serialization(params)
 
