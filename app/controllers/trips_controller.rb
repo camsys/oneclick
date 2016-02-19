@@ -725,7 +725,7 @@ class TripsController < PlaceSearchingController
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
 
-    @trip_proxy.is_round_trip = true
+    @trip_proxy.is_round_trip = false
     if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
       @trip_proxy.is_round_trip = false
     end
@@ -945,7 +945,7 @@ protected
     # default to a round trip. The default return trip time is set the the default trip time plus
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
+    @trip_proxy.is_round_trip = false
 
     if mobile?
       @trip_proxy.return_trip_date = return_trip_time.strftime("%Y-%m-%d")

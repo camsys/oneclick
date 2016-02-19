@@ -58,11 +58,11 @@
                   =translate_helper(:trip_dir)
                   = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
+                  %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{translate_helper(:one_way)}
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
                   %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{translate_helper(:round_trip)}
 
-                  %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{translate_helper(:one_way)}
 
             = field_set_tag do
 
