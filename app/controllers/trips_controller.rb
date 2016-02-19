@@ -646,16 +646,12 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
 
-          if !@trip.eligibility_dependent?
-            if session[:is_multi_od] == true
-              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
-            else
-              @path = user_trip_path(@traveler, @trip)
-            end
+          if session[:is_multi_od] == true
+            @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
           else
-            session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path(@traveler, @trip)
+            @path = user_trip_path(@traveler, @trip)
           end
+
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
@@ -998,10 +994,6 @@ protected
       return
     end
 
-    # Create markers for the map control
-    #@markers = create_trip_proxy_markers(trip_proxy, session[:is_multi_od]).to_json
-    #@places = create_place_markers(@traveler.places)
-
     respond_to do |format|
       Rails.logger.info trip_proxy.to_json
       @trip = Trip.create_from_proxy(trip_proxy, current_or_guest_user, @traveler)
@@ -1009,22 +1001,19 @@ protected
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
-          if !@trip.eligibility_dependent? or @traveler.can_book?
-            Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
-            if session[:is_multi_od] == true
-              session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
-              @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
-            else
+          Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
 
-              # changed to async loading
-              @trip.remove_itineraries
-              @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
-            end
+          if session[:is_multi_od] == true
+            session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
+            @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+            @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
           else
-            session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path(@traveler, @trip)
+
+            # changed to async loading
+            @trip.remove_itineraries
+            @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
           end
+
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else

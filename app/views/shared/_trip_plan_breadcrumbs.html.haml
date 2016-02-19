@@ -1,7 +1,7 @@
 .hidden-xs#breadcrumbs{:role => "navigation", :aria => {:label => 'Breadcrumbs'}}
   %ol{style: 'padding: 0px;'}
-    - breadcrumbs = %w{trip options review plan}
-    - breadcrumbs = %w{trip options grid review plan} if session[:is_multi_od] == true
+    - breadcrumbs = %w{trip review plan}
+    - breadcrumbs = %w{trip grid review plan} if session[:is_multi_od] == true
     - breadcrumbs.each do |t|
       - t = t.to_sym
       %h2{style: "display:inline;margin:0;"}
