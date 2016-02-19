@@ -108,8 +108,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
     var baseContainerId = 'reviewBaseContainer'; //id of review page base container
     var tripContainerId = 'tripContainer'; //id of trip container Div
     var accessoryContainerId = "accessoryContainer"; //id of accessory container div (legends, filters)
-    var legendContainerId = "legendDiv"; //id of legend container div
-    var legendButtonId = 'legendButton'; //id of Show/Hide Legend button
     var filterContainerId = "filterDiv"; //id of filter container div
     var filterButtonId = 'filterButton'; //id of Show/Hide Filter button
     var modeContainerId = "modeContainer"; //id of mode filter container div
@@ -308,7 +306,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         //render legend & filter
         if (filterConfigs.show_legend == true) { addLegendHtml(_tripResponse.trip_parts); }
-        
+
         addFilterHtml(_tripResponse.trip_parts);
 
         resizePlanColumns();
@@ -1747,25 +1745,6 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
             return 0;
         });
 
-        if (legendNames.length > 0) { //only show legend container when legend(s) are available
-            if ($('#' + legendContainerId).length === 0) {
-                var legendPanelTags =
-                    "<div id='" + legendContainerId + "' class='panel panel-default col-xs-12 hidden-xs-sm' style='padding: 0px;'>" +
-                    "<div class='panel-heading'><h2 class='panel-title legend-label' tabindex='9'>" + addReviewTooltip("legend_help")+ localeDictFinder['legend'] + "</h2></div>" +
-                    "<div class='panel-body'></div>";
-                $('#' + accessoryContainerId).append(legendPanelTags);
-            }
-            legendNames.forEach(function(el) {
-                legendTags +=
-                    "<div class='travel-legend-container'>" +
-                    "<div class='travel-legend " + el.cls + "' style='" + (el.displayColor == null ? '' : 'background-color:' + el.displayColor + ';') + "'/>" +
-                    "<span class='travel-legend-text'>" + el.name + "</span>" +
-                    "</div>";
-            });
-            $('#' + legendContainerId + ' .panel-body').append(legendTags);
-        } else { //remove Show/Hide legend button
-            $('#' + legendButtonId).remove();
-        }
     }
 
     /*
