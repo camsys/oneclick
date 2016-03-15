@@ -57,20 +57,10 @@ class TripPlanner
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.ai)
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: #{e.message}",
-        :parameters    => {url: url}
-      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     if resp.code != "200"
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-        :parameters    => {resp_code: resp.code, resp: resp}
-      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
 
