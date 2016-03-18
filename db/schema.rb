@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107213049) do
+ActiveRecord::Schema.define(version: 20160318142848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -410,18 +410,19 @@ ActiveRecord::Schema.define(version: 20160107213049) do
   end
 
   create_table "pois", force: true do |t|
-    t.integer  "poi_type_id",             null: false
-    t.string   "name",        limit: 256, null: false
-    t.string   "address1",    limit: 128
-    t.string   "address2",    limit: 128
-    t.string   "city",        limit: 128
-    t.string   "state",       limit: 64
-    t.string   "zip",         limit: 10
+    t.integer  "poi_type_id",                 null: false
+    t.string   "name",            limit: 256, null: false
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "county",      limit: 128
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "county",          limit: 128
+    t.string   "google_place_id"
   end
 
   create_table "profile_types", force: true do |t|

@@ -36,6 +36,7 @@ class Admin::PoisController < Admin::BaseController
             end
           rescue Exception => ex
             error_msgs << ex.message
+            OneclickConfiguration.create_or_update(:poi_is_loading, false)
           end
         end
       else

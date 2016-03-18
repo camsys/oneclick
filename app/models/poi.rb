@@ -72,7 +72,8 @@ class Poi < GeocodedAddress
                 city: poi_city,
                 state: row[6],
                 zip: row[7],
-                county: row[8]
+                county: row[8],
+                google_place_id: row[10]
               })
               count_good += 1
             else
@@ -97,7 +98,7 @@ class Poi < GeocodedAddress
       count_bad: count_bad,
       count_possible_existing: count_possible_existing
     }
-    summary_info = TranslationEngine.translate_text(:pois_load_summary) % sub_pairs
+    summary_info = count_good.to_s + ' Pois Loaded'#TranslationEngine.translate_text(:pois_load_summary) % sub_pairs
     OneclickConfiguration.create_or_update(:poi_last_loading_summary, summary_info)
     OneclickConfiguration.create_or_update(:poi_is_loading, false)
 
@@ -186,6 +187,7 @@ class Poi < GeocodedAddress
     ],
 
         formatted_address: self.address,
+        place_id: self.google_place_id,
         geometry: {
         location: {
         lat: self.lat,
