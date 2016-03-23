@@ -1,4 +1,3 @@
 https://github.com/peterkeen/heroku-buildpack-vendorbinaries.git
-https://github.com/aaronrenner/heroku-buildpack-rgeo-prep.git
-https://github.com/ddollar/heroku-buildpack-apt
-https://github.com/heroku/heroku-buildpack-ruby
+https://github.com/diowa/heroku-buildpack-rgeo-prep.git
+https://github.com/heroku/heroku-buildpack-ruby.git

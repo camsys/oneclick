@@ -40,7 +40,7 @@ gem 'draper'
 gem 'rubyzip'
 gem 'lorem-ipsum-me'
 gem 'faraday_middleware'
-gem 'twilio-ruby'
+#gem 'twilio-ruby'
 gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
 gem 'font-awesome-rails'
 gem 'twitter-typeahead-rails', github: 'camsys/twitter-typeahead-rails'
@@ -72,8 +72,9 @@ gem 'savon'
 gem 'attr_encrypted'
 gem 'uber-ruby', require: 'uber'
 
+
 group :development do
-  # gem 'ffi-geos'
+  #gem 'ffi-geos'
   #gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller'
