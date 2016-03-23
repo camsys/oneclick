@@ -44,6 +44,11 @@ module Api
         lat = origin[:location][:lat]
         lng = origin[:location][:lng]
 
+        gs = GeographyServices.new
+        if gs.global_boundary_exists?
+          return gs.within_global_boundary?(lat,lng)
+        end
+
         Service.active.paratransit.each do |service |
           if service.endpoint_contains?(lat,lng)
             render json: {result: true}
