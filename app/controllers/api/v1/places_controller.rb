@@ -46,7 +46,7 @@ module Api
 
         gs = GeographyServices.new
         if gs.global_boundary_exists?
-          return gs.within_global_boundary?(lat,lng)
+          render json: {result: gs.within_global_boundary?(lat,lng)}
         end
 
         Service.active.paratransit.each do |service |
