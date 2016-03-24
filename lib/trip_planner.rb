@@ -174,11 +174,6 @@ class TripPlanner
       doc = Nokogiri::HTML(page.body)
       results = doc.css('#results li div.marker.dest')
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
-        :parameters    => {service_url: service_url, query: query}
-      )
       Rails.logger.warn "Service failure: rideshare: #{e.message}"
       Rails.logger.warn "URL was #{service_url}"
       Rails.logger.warn e.backtrace.join("\n")

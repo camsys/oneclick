@@ -8,9 +8,9 @@
     = javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3&libraries=places"
     = javascript_include_tag "javascripts/application"
 
-    - if browser.mobile?
+    - if browser.device.mobile?
       = favicon_link_tag "#{get_favicon_path("mobile")}"
-    - elsif browser.tablet?
+    - elsif browser.device.tablet?
       = favicon_link_tag "#{get_favicon_path("tablet")}"
     - else
       = favicon_link_tag "#{get_favicon_path}"
