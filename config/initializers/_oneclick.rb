@@ -12,6 +12,7 @@ Oneclick::Application.configure do
   config.ecolane_base_url = "https://apiserver.ecolane.com"
   config.get_fares_from_ecolane = false
   config.service_max_allow_advanced_book_days = 365
+  config.ada_funding_sources = []
 
   #Review the necessity of these variables
   config.show_update_services = false
