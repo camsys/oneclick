@@ -67,11 +67,6 @@ class TripPlanner
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error' and not result['error'].nil?
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: result has error: #{result['error']}",
-        :parameters    => {result: result}
-      )
       return false, result['error']
     else
       return true, result['plan']
