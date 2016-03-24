@@ -1,2 +1,4 @@
-https://s3.amazonaws.com/diowa-buildpacks/geos-3.5.0-heroku.tar.gz
-https://s3.amazonaws.com/diowa-buildpacks/proj-4.9.1-heroku.tar.gz
+https://s3-us-west-2.amazonaws.com/heroku.buildpack.binaries/libjpeg-9a.tar.gz
+https://s3-us-west-2.amazonaws.com/heroku.buildpack.binaries/gdal-1.10.1-1.tar.gz
+https://s3-us-west-2.amazonaws.com/heroku.buildpack.binaries/geos-3.4.1.tar.gz
+https://s3-us-west-2.amazonaws.com/heroku.buildpack.binaries/proj-4.8.0-1.tar.gz
