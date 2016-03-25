@@ -11,6 +11,8 @@ class Poi < GeocodedAddress
   # set the default scope
   default_scope {order('pois.name')}
   scope :has_address, -> { where.not(:address1 => nil) }
+  scope :is_old, -> { where(:old => true) }
+  scope :is_new, -> { where(:old => false) }
 
   def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)
