@@ -14,7 +14,7 @@ Oneclick::Application.configure do
   config.service_max_allow_advanced_book_days = 365
   config.ada_funding_sources = []
 
-  if Rails.env.development?
+  unless Rails.env.production?
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
   end
 
