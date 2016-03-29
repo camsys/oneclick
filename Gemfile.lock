@@ -61,8 +61,8 @@ GIT
 
 GIT
   remote: git://github.com/derekedwards/translation_engine.git
-  revision: 8bd0b8b72a0e9663c7cff1cd8812cedd26fc6cf3
-  tag: v0.1.0
+  revision: 93ba43933b8e56ced06c5306c98d11fedb3fe37d
+  tag: v0.1.1
   specs:
     translation_engine (3.6.6)
       honeybadger

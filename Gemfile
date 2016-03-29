@@ -15,7 +15,7 @@ else
   gem 'simple_form', '3.0.1'
 end
 
-gem 'translation_engine', github: 'derekedwards/translation_engine', :tag => 'v0.1.0'
+gem 'translation_engine', github: 'derekedwards/translation_engine', :tag => 'v0.1.1'
 #Switched to custom translation engine that doesn't do inline help.  Inline help was duplicated in 1-click
 #gem 'translation_engine', github: 'camsys/translation_engine'
 
