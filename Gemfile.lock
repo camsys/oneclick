@@ -61,13 +61,14 @@ GIT
 
 GIT
   remote: git://github.com/derekedwards/translation_engine.git
-  revision: 99e2cedcc8804b2fdf58c653cb1d14278af4b06e
+  revision: 8bd0b8b72a0e9663c7cff1cd8812cedd26fc6cf3
+  tag: v0.1.0
   specs:
     translation_engine (3.6.6)
       honeybadger
       i18n-active_record
       pg
-      rails (~> 4.0.0)
+      rails (~> 4.0)
       sass-rails
       simple_form
 
@@ -322,7 +323,7 @@ GEM
     httpi (2.4.1)
       rack
     i18n (0.7.0)
-    i18n-active_record (0.0.2)
+    i18n-active_record (0.1.0)
       i18n (>= 0.5.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
@@ -686,4 +687,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
