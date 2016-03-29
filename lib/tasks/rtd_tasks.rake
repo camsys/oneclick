@@ -34,7 +34,7 @@ namespace :oneclick do
     og = OneclickGeocoder.new
     CSV.foreach(landmarks_file, {:col_sep => ",", :headers => true}) do |row|
       begin
-        poi_type_name = row[6]
+        poi_type_name = row[8]
         if poi_type_name.blank?
           poi_type_name = 'Unknown'
         end
@@ -49,14 +49,13 @@ namespace :oneclick do
         if poi_name
           p = Poi.create!({
                               poi_type: poi_type,
-              lon: row[8],
-              lat: row[9],
+              lon: row[13],
+              lat: row[14],
               name: poi_name,
               address1: row[2],
               city: poi_city,
               state: "CO",
               zip: row[4],
-              #google_place_id: row[10]
               old: false,
           })
 
