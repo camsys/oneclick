@@ -1,0 +1,21 @@
+='Landmarks Upload Succeeded'
+
+
+%div.row
+  -if @non_geocoded_pois.count > 0
+    =@non_geocoded_pois.count.to_s + " Landmarks were not geocoded"
+    -@non_geocoded_pois.each do |poi|
+      %div.row
+        =poi.name.to_s + ', ' + poi.address1.to_s + ', ' + poi.city.to_s + ', ' + poi.state.to_s + ', ' + poi.zip.to_s + ', ' + poi.lat.to_s + ', ' + poi.lon.to_s
+
+  -else
+    ="All " + Poi.count.to_s + " Landmarks were geocoded."
+
+
+
+%div.row
+  ='This file is located at: '
+  %a{href: Oneclick::Application.config.landmarks_file}
+    =Oneclick::Application.config.landmarks_file
+
+

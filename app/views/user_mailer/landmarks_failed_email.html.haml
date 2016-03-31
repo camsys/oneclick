@@ -1,0 +1,10 @@
+='Landmarks Upload Failed'
+
+%div.row
+  =@message
+%div.row
+  =@row
+%div.row
+  ='This file is located at: '
+  %a{href: Oneclick::Application.config.landmarks_file}
+    =Oneclick::Application.config.landmarks_file

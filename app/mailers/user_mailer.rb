@@ -102,4 +102,19 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, from: @@from, subject: TranslationEngine.translate_text(:agency_now_assisting, agency: agency.name))
   end
 
+  def landmarks_failed_email(emails, message, row)
+    emails.each do |email|
+      @message = message
+      @row = row
+      mail(to: email, from: @@from, subject: 'Landmarks Upload Failed')
+    end
+  end
+
+  def landmarks_succeeded_email(emails, non_geocoded_pois)
+    @non_geocoded_pois = non_geocoded_pois
+    emails.each do |email|
+      mail(to: email, from: @@from, subject: 'Landmarks Upload Succeeded')
+    end
+  end
+
 end

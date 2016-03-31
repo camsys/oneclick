@@ -81,12 +81,17 @@ namespace :oneclick do
         end
       rescue
         #Found an error, back out all changes and restore previous POIs
-        puts 'Error found on line: ' + line.to_s
+        error_string = 'Error found on line: ' + line.to_s
+        row_string = row
+        puts error_string
         puts row
         puts 'All changes have been rolled-back and previous Landmarks have been restored'
         Poi.is_new.delete_all
         Poi.is_old.update_all(old: false)
         failed = true
+
+        #Email alert of failure
+        UserMailer.landmarks_failed_email(Oneclick::Application.config.support_emails.split(','), error_string, row_string).deliver!
         break
       end
       line += 1
@@ -96,6 +101,11 @@ namespace :oneclick do
       puts 'Done: Loaded ' + (line - 2).to_s + ' new Landmarks'
       Poi.is_old.delete_all
       Poi.update_all(old: false)
+
+      non_geocoded_pois = Poi.where(google_place_id: nil)
+
+      #Alert that the new landmarks file was successfuly updated
+      UserMailer.landmarks_succeeded_email(Oneclick::Application.config.support_emails.split(','), non_geocoded_pois).deliver!
     end
 
   end

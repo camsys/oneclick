@@ -18,6 +18,9 @@ Oneclick::Application.configure do
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
   end
 
+  #Support email
+  config.support_emails = 'dedwards@camsys.com' #where to send emails for maintenance alerts
+
   #Review the necessity of these variables
   config.show_update_services = false
   config.min_drive_seconds = 180
