@@ -61,7 +61,7 @@ namespace :oneclick do
 
           #Check to see if a Google Place exits and get the Google Place ID
           begin
-            geocoded = og.geocode(p.address1.to_s + ' ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
+            geocoded = og.geocode(p.name.to_s + ', ' + p.address1.to_s + ' ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
             if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
               place_id = geocoded[2].first[:place_id]
               p.google_place_id = place_id
