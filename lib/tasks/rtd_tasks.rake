@@ -61,17 +61,31 @@ namespace :oneclick do
 
           #Check to see if a Google Place exits and get the Google Place ID
           begin
-            geocoded = og.geocode(p.name.to_s + ', ' + p.address1.to_s + ' ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
+
+            #First try geocoding without the name/city/state/zip and NOT with the address
+            # This will let us identify Google Places instaed of addresses
+            geocoded = og.geocode(p.name.to_s + ', ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
             if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
               place_id = geocoded[2].first[:place_id]
               p.google_place_id = place_id
               p.save
-            else #Try Reverse Geocoding
-              reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
-              if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
-                place_id = reverse_geocoded[2].first[:place_id]
+            else
+
+              #Second try throwing in the address
+              geocoded = og.geocode(p.name.to_s + ', ' + p.address1.to_s + ' ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
+              if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
+                place_id = geocoded[2].first[:place_id]
                 p.google_place_id = place_id
                 p.save
+              else
+
+               #If the other two attempts fail, just use the Lat,Lng
+               reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
+               if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
+                 place_id = reverse_geocoded[2].first[:place_id]
+                 p.google_place_id = place_id
+                 p.save
+               end
               end
             end
           rescue
