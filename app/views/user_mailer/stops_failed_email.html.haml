@@ -1,0 +1,8 @@
+='Stops Upload Failed'
+%div.row
+  ='run rake oneclick:load_new_stops to retry'
+
+%div.row
+  ='This file is located at: '
+  %a{href: Oneclick::Application.config.open_trip_planner + '/index/stops'}
+    =Oneclick::Application.config.open_trip_planner

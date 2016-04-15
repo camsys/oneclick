@@ -13,6 +13,8 @@ class Poi < GeocodedAddress
   scope :has_address, -> { where.not(:address1 => nil) }
   scope :is_old, -> { where(:old => true) }
   scope :is_new, -> { where(:old => false) }
+  scope :landmarks, -> {joins(:poi_type).where(poi_types: {name: ['LANDMARK']})}
+  scope :stops, -> {joins(:poi_type).where(poi_types: {name: ['STOP']})}
 
   def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)

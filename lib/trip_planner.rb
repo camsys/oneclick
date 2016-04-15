@@ -41,7 +41,7 @@ class TripPlanner
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
-    base_url = Oneclick::Application.config.open_trip_planner
+    base_url = Oneclick::Application.config.open_trip_planner + '/plan?'
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
@@ -216,6 +216,21 @@ class TripPlanner
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
     itinerary = response['itineraries'].first
     return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
+  end
+
+  def last_built
+    url = Oneclick::Application.config.open_trip_planner
+    resp = Net::HTTP.get_response(URI.parse(url))
+    data = JSON.parse(resp.body)
+    time = data['buildTime']/1000
+    return Time.at(time)
+  end
+
+  def get_stops
+    stops_path = '/index/stops'
+    url = Oneclick::Application.config.open_trip_planner + stops_path
+    resp = Net::HTTP.get_response(URI.parse(url))
+    return JSON.parse(resp.body)
   end
 
 end

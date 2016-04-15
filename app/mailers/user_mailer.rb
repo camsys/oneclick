@@ -117,4 +117,16 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  def stops_failed_email(emails)
+    emails.each do |email|
+      mail(to: email, from: @@from, subject: 'Stops Upload Failed')
+    end
+  end
+
+  def stops_succeeded_email(emails)
+    emails.each do |email|
+      mail(to: email, from: @@from, subject: 'Stops Upload Succeeded')
+    end
+  end
+
 end
