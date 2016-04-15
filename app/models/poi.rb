@@ -154,7 +154,7 @@ class Poi < GeocodedAddress
     require 'indirizzo'
     #Based on Google Place Details
 
-    parsable_address = Indirizzo::Address.new(self.address1)
+    parsable_address = Indirizzo::Address.new(self.address1 || " ")
 
     {
         address_components: [
@@ -200,7 +200,8 @@ class Poi < GeocodedAddress
     },
         id: self.id,
         name: self.name,
-        scope: "user"
+        scope: "user",
+        stop_code: self.stop_code
     }
 
   end
