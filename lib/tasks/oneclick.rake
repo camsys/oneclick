@@ -461,6 +461,24 @@ namespace :oneclick do
           #this is a comma separated string with no spaces around the commas, and all lower-case
           service.disallowed_purposes = 'adult day care,human services,mental health,self determination,sheltered workshop'
 
+        when 'northumberland'
+
+          #Funding Sources
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['AAA', 1]]
+
+          #Dummy User
+          #service.fare_user = "7832"
+
+          #Booking System Id
+          service.booking_system_id = 'northumberland'
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          #service.disallowed_purposes = 'special approved trips'
+
 
           else
           puts 'Cannot find service with external_id: ' + county
