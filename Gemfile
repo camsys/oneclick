@@ -10,7 +10,7 @@ gem 'sass-rails', github: 'camsys/sass-rails', tag: 'v4.0.3a'
 gem 'bootstrap-sass', github: 'camsys/bootstrap-sass', tag: '3.2.0.CS.2'
 gem 'simple_form', '~> 3.1.0.rc1', github: 'camsys/simple_form', branch: 'cs-3.0'
 
-gem 'translation_engine', github: 'derekedwards/translation_engine'
+gem 'translation_engine', github: 'derekedwards/translation_engine', :tag => 'v0.1.1'
 #Switched to custom translation engine that doesn't do inline help.  Inline help was duplicated in 1-click
 #gem 'translation_engine', github: 'camsys/translation_engine'
 
