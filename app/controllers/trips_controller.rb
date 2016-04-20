@@ -1064,6 +1064,7 @@ protected
 
     # TODO This seems incredibly hacky to go to json and back for this, but...
     @tripResponseHash = JSON.parse(@tripResponse.to_json)
+
     if @tripResponseHash['status'] == 0
       flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
     end
