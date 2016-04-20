@@ -226,7 +226,7 @@ class TripsController < PlaceSearchingController
     if @is_plan_valid
       # Just before render, save off the html on the trip, so that we can access it later for ratings.
       planned_trip_html = render_to_string partial: "selected_itineraries_details", locals: { trip: @trip, for_db: true }
-      @trip.update_attributes(planned_trip_html: planned_trip_html, needs_feedback_prompt: true)
+      @trip.update_attributes(planned_trip_html: planned_trip_html)
       @booking_proxy = UserServiceProxy.new()
 
       respond_to do |format|
@@ -338,35 +338,6 @@ class TripsController < PlaceSearchingController
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
-    end
-  end
-
-  def email_feedback
-    @trip = Trip.find(params[:id])
-    if @trip.user.email
-      Rails.logger.info "Begin email"
-      UserMailer.feedback_email(@trip).deliver
-      notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
-    else
-      Rails.logger.info "no email found"
-      notice_text = TranslationEngine.translate_text(:no_email_found)
-    end
-
-    if current_user.agency
-      respond_to do |format|
-        format.html { redirect_to admin_agency_trips_path(current_user.agency), :notice => notice_text, locale: I18n.locale  }
-        format.json { render json: @trip }
-      end
-    elsif current_user.provider
-      respond_to do |format|
-        format.html { redirect_to admin_provider_trips_path(current_user.provider), :notice => notice_text, locale: I18n.locale  }
-        format.json { render json: @trip }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to admin_trips_path, :notice => notice_text, locale: I18n.locale  }
-        format.json { render json: @trip }
-      end
     end
   end
 
