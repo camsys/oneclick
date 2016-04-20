@@ -32,7 +32,6 @@ class TripView < ActiveRecord::Base
       TranslationEngine.translate_text(:from),
       TranslationEngine.translate_text(:to),
       TranslationEngine.translate_text(:trip_purpose),
-      TranslationEngine.translate_text(:rating),
     ]
   end
 
@@ -44,7 +43,6 @@ class TripView < ActiveRecord::Base
       :from_address,
       :to_address,
       :trip_purpose,
-      :trip_rating
     ]
   end
 

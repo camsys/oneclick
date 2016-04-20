@@ -836,25 +836,6 @@ class TripsController < PlaceSearchingController
 
   end
 
-  def new_rating_from_email
-    @trip = Trip.find(params[:id])
-    unless ((@trip.md5_hash.eql? params[:hash]) || (authorize! :create, @trip.ratings.build(rateable: @trip)))
-      flash[:notice] = TranslationEngine.translate_text(:http_404_not_found)
-      redirect_to :root
-    end
-
-    taken = true.to_s.eql? params[:taken] # convert to a boolean for future use (ruby isn't falsy enough for me here)
-    @trip.taken = taken
-    @trip.save
-
-    unless taken
-      render 'ratings/untaken_trip'
-    else
-      @ratings_proxy = RatingsProxy.new(@trip, @trip.user) # rateable must be a trip here.  Guarded by the initial check (md5 hash)
-      render 'ratings/new_from_email'
-    end
-  end
-
   def cancel
     trip = Trip.find(params[:id].to_i)
     result = trip.cancel

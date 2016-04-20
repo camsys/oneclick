@@ -38,7 +38,6 @@ class User
     end
 
     def merge_special_cases
-      @sub.ratings.each { |rating| rating.update(user_id: @main.id) }
       UserRelationship.where(user_id: @sub.id).each { |relation| relation.update(user_id: @main.id) }
       UserRelationship.where(delegate_id: @sub.id).each { |relation| relation.update(delegate_id: @main.id) }
       @sub.user_mode_preferences.each { |preference| preference.update(user_id: @main.id) }

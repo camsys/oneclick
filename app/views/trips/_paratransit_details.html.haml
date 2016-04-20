@@ -80,11 +80,3 @@
           -(Accommodation.all - itinerary.service.accommodations).each do |accom|
             =translate_helper(accom.name)
             %br
-
-- if @current_ability and can? :read, itinerary.service.ratings.build(user: @traveler)
-  %table{:style => "width: 100%;"}
-    %tr
-      %td{:style => "width: 50%;"}
-        = translate_helper(:rating) +":"
-      %td
-        = RateableDecorator.decorate(itinerary.service).rating_in_stars

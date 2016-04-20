@@ -1,5 +1,4 @@
 class Trip < ActiveRecord::Base
-  include Rateable # mixin to handle all rating methods
   # Associations
   belongs_to :user
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"

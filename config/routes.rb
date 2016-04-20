@@ -118,12 +118,10 @@ Oneclick::Application.routes.draw do
           get   'skip'
           post  'comments'
           post  'admin_comments'
-          get   'email_feedback'
           get   'show_printer_friendly'
           get   'example'
           get   'book'
           get   'plan'
-          get   'new_rating_from_email'
           post  'cancel'
           get   'serialize_trip'
         end
@@ -207,7 +205,6 @@ Oneclick::Application.routes.draw do
       patch '/upload_application_logo' => 'util#upload_application_logo'
       patch '/upload_favicon' => 'util#upload_favicon'
       get '/' => 'admin_home#index'
-      resource :feedback
       resources :sidewalk_obstructions, :only => [:index] do
         collection do
           patch "approve"
@@ -253,11 +250,6 @@ Oneclick::Application.routes.draw do
       resources :oneclick_configurations
     end#admin
 
-    # gives a shallow RESTful endpoint for rating any rateable
-    resources :agencies, :trips, :services, shallow: true, only: [] do
-      resources :ratings, only: [:index, :new, :create]
-    end
-
     resources :services do
       resources :fare_zones, only: [:create]
       collection do
@@ -271,22 +263,8 @@ Oneclick::Application.routes.draw do
 
       end
     end
-    resources :ratings, only: [:index, :create] do
-      collection do
-        patch "approve"
-        get "context"
-      end
-    end
 
     resources :satisfaction_surveys
-
-    resources :feedbacks do
-      collection do
-        get 'get_ratings_and_issues'
-        patch 'approve'
-        get "context"
-      end
-    end
 
     resources :trips do
       member do
@@ -294,7 +272,6 @@ Oneclick::Application.routes.draw do
       end
     end
     get "plan_a_trip" => 'trips#plan_a_trip'
-    post "trips/:trip_id/ratings/trip_only" => 'ratings#trip_only', as: :trip_only_rating
 
     resources :esp_reader do
       collection do

@@ -2,7 +2,6 @@ require 'carrierwave/orm/activerecord'
 
 class Provider < ActiveRecord::Base
   include DisableCommented
-  include Rateable
   include Commentable
   resourcify
 
@@ -14,7 +13,6 @@ class Provider < ActiveRecord::Base
   #associations
   has_many :users
   has_many :services
-  has_many :ratings, through: :services
 
   has_many :cs_roles, -> {where(resource_type: 'Provider')}, class_name: 'Role',
         foreign_key: :resource_id

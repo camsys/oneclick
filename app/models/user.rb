@@ -69,8 +69,6 @@ class User < ActiveRecord::Base
   belongs_to :walking_maximum_distance
   has_and_belongs_to_many :services
 
-  has_many :ratings # ratings created by the user, not ratings of the user
-
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
   # scope :buddyable, -> User.where.not(id: User.with_role(:anonymous_traveler).pluck(users: :id))

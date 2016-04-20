@@ -37,9 +37,6 @@ module CsHelpers
       {label: TranslationEngine.translate_text(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
       {label: TranslationEngine.translate_text(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
-    if Rating.feedback_on?
-      a.push({label: TranslationEngine.translate_text(:feedback), target: feedbacks_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
-    end
     if SidewalkObstruction.sidewalk_obstruction_on?
       a.push({label: TranslationEngine.translate_text(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
     end

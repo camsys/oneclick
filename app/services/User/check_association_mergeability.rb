@@ -45,7 +45,6 @@ class User
         roles: true,
         accomodations: true,
         user_accomodations: true,
-        ratings: true,
         buddies: true,
         buddy_relationships: true,
         delegates: true,

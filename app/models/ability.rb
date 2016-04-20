@@ -28,7 +28,6 @@ class Ability
     if user.has_role? :feedback_administrator
       can [:see], :admin_menu
       can :access, :admin_feedback
-      can [:manage], Rating # feedback admin will always be able to read feedback
       can [:manage], SidewalkObstruction # feedback admin will always be able to read sidwalk feedback
       can :send_follow_up, Trip
     end
@@ -136,41 +135,6 @@ class Ability
     can :show, Provider # Will have view privileges for individual info purposes
     can :show, Agency # Will have view privileges for individual info purposes
 
-###### RATING LOGIC (configurable by deployment)  ##################
-# TODO: This is a branding opportunity.  It would be fantastic if we could find a way to clean this up
-    if Rating.feedback_on?
-      can :read, Rating do |r|
-        if user.has_role? :agent # read only for own agency or don't read at all
-          Rating.agent_read_feedback? and r.rateable == user.agency
-        end
-        if user.has_role? :agency_administrator # always read for own agency
-          r.rateable == user.agency
-        end
-        if user.has_role? :provider_staff # read only for own provider or don't read at all
-          Rating.provider_read_feedback? and r.rateable == user.provider
-        end
-        if user.has_role? :registered_traveler
-          case r.rateable_type
-          when "Trip"
-            r.user.id == user.id
-          when "Agency", "Service", "Provider"
-            Rating.traveler_read_all_organization_feedback? || (r.user.id == user.id)
-          end
-        end
-      end
-
-      can :create, Rating do |r|
-        case r.rateable_type
-        when "Trip"
-          true
-        when "Agency", "Service"
-          Rating.tripless_feedback?
-        end
-      end
-      # nobody can rate a provider directly.  All ratings come through its services
-      cannot :create, Rating, rateable_type: "Provider"
-    end
-####################################################################
   end
 
 end

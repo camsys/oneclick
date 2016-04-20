@@ -1,6 +1,6 @@
 class SystemUsageReport < AbstractReport
 
-  attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
+  attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols
   
   def initialize(attributes = {})
     @totals_cols = []
@@ -15,8 +15,7 @@ class SystemUsageReport < AbstractReport
       @trip_cols.insert(3, :bookings)
     end
     
-    @rating_cols = [:total_ratings, :average_rating]
-  end    
+  end
 
   def get_data(current_user, report)
     date_option = DateOption.find(report.date_range)
@@ -77,15 +76,6 @@ class SystemUsageReport < AbstractReport
       end
     end
 
-    @rating_cols.each do |col|
-      data[col] = case col
-      when :total_ratings
-        Rating.where(status: "approved", updated_at: date_range).count
-      when :average_rating
-        Rating.where(status: "approved", updated_at: date_range).average(:value)
-      end
-    end
-    
     data
   end
   

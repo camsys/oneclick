@@ -1,7 +1,6 @@
 class Service < ActiveRecord::Base
   require 'zip'
   require 'rgeo/shapefile'
-  include Rateable # mixin to handle all rating methods
   include Commentable
   include DisableCommented
 

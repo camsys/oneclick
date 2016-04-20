@@ -15,7 +15,6 @@ class User
     end
 
     def merge_ratings_and_buddies
-      @sub.ratings.each { |rating| rating.update!(user_id: @main.id) }
       @sub.buddies.each { |buddy| buddy.update!(user_id: @main.id)}
     end
 

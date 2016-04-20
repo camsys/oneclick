@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160420220533) do
+ActiveRecord::Schema.define(version: 20160420221734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -410,17 +410,6 @@ ActiveRecord::Schema.define(version: 20160420220533) do
     t.string  "icon"
     t.string  "logo"
     t.string  "disabled_comment"
-  end
-
-  create_table "ratings", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
-    t.integer  "value",                             null: false
-    t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",        default: "pending"
   end
 
   create_table "relationship_statuses", force: true do |t|

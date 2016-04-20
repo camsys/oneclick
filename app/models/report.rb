@@ -38,7 +38,7 @@ class Report < ActiveRecord::Base
   end
 
   def self.summary_types
-    ['Day', 'Week', 'Month', 'Traveler Type', 'Purpose', 'Rating']
+    ['Day', 'Week', 'Month', 'Traveler Type', 'Purpose']
   end
 
   # TODO Add modes and accomodations
