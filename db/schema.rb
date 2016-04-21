@@ -512,7 +512,7 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.integer "service_id", null: false
   end
 
-  add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
+#  add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
 
   create_table "sidewalk_obstructions", force: true do |t|
     t.integer  "user_id",                        null: false
