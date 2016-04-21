@@ -72,6 +72,9 @@ gem 'savon'
 gem 'attr_encrypted'
 gem 'uber-ruby', require: 'uber'
 
+#Needed for Oracle DB Connection
+gem 'activerecord-oracle_enhanced-adapter', '~> 1.5.0'
+gem 'ruby-oci8'
 
 group :development do
   #gem 'ffi-geos'
