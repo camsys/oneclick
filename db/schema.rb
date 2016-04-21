@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160421132301) do
+ActiveRecord::Schema.define(version: 20160421133612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,8 +151,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.datetime "updated_at"
   end
 
-  add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
-
   create_table "funding_sources", force: true do |t|
     t.string   "code",                           null: false
     t.integer  "index"
@@ -268,8 +266,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
 
   create_table "modes", force: true do |t|
     t.string  "name",                limit: 64,                 null: false
@@ -416,7 +412,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "satisfaction_surveys", force: true do |t|
@@ -453,12 +448,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.boolean "active",                           default: true,  null: false
     t.integer "rel_code",                         default: 1,     null: false
     t.integer "group",                            default: 0,     null: false
-  end
-
-  create_table "service_coverage_maps", force: true do |t|
-    t.integer "service_id"
-    t.integer "geo_coverage_id"
-    t.string  "rule"
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
@@ -618,8 +607,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.string   "booking_trip_purpose_desc"
   end
 
-  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
-
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
     t.integer  "sequence",                 null: false
@@ -703,19 +690,6 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.integer  "verified_by_id"
   end
 
-  create_table "user_messages", force: true do |t|
-    t.integer  "recipient_id"
-    t.integer  "message_id"
-    t.boolean  "read",              default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "last_displayed_at"
-    t.datetime "read_at"
-  end
-
-  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
-  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
-
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
     t.integer  "mode_id"
@@ -787,9 +761,7 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.string   "disabled_comment"
   end
 
-  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64
@@ -821,9 +793,5 @@ ActiveRecord::Schema.define(version: 20160421132301) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
-  add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
-  add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
 
 end
