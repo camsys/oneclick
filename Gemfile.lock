@@ -1,12 +1,12 @@
 GIT
-  remote: git://github.com/bluerail/twitter-bootstrap-rails-confirm.git
+  remote: https://github.com/bluerail/twitter-bootstrap-rails-confirm
   revision: 92dd750dd04f492526aca894c5ec1b321a6e25a9
   branch: bootstrap3
   specs:
     twitter-bootstrap-rails-confirm (1.0.2)
 
 GIT
-  remote: git://github.com/camsys/bootstrap-sass.git
+  remote: https://github.com/camsys/bootstrap-sass
   revision: f6d2eb50b70a5cf29219bf3ec7bdf86f8f9a6e64
   tag: 3.2.0.CS.2
   specs:
@@ -14,13 +14,13 @@ GIT
       sass (~> 3.2)
 
 GIT
-  remote: git://github.com/camsys/leaflet-rails.git
+  remote: https://github.com/camsys/leaflet-rails
   revision: e1b7912a34c2b0565adc2f119b0e2f809d67c5dd
   specs:
     leaflet-rails (0.7.3)
 
 GIT
-  remote: git://github.com/camsys/ransack.git
+  remote: https://github.com/camsys/ransack
   revision: 1a591f3d2d1746bede332e61efbc48da74914525
   specs:
     ransack (1.6.6)
@@ -31,7 +31,7 @@ GIT
       polyamorous (~> 1.2)
 
 GIT
-  remote: git://github.com/camsys/sass-rails.git
+  remote: https://github.com/camsys/sass-rails
   revision: baf4f108c999da4941ce68085a9de7fac10e262f
   tag: v4.0.3a
   specs:
@@ -42,7 +42,7 @@ GIT
       sprockets-rails (~> 2.0)
 
 GIT
-  remote: git://github.com/camsys/simple_form.git
+  remote: https://github.com/camsys/simple_form
   revision: 35b40134c1683eb309d31819fe883e0beb5b8408
   branch: cs-3.0
   specs:
@@ -51,7 +51,7 @@ GIT
       activemodel (~> 4.0)
 
 GIT
-  remote: git://github.com/camsys/twitter-typeahead-rails.git
+  remote: https://github.com/camsys/twitter-typeahead-rails
   revision: b9e407f9a4224f0840b60a523a2df42eeca7dfe7
   specs:
     twitter-typeahead-rails (0.10.2)
@@ -60,7 +60,7 @@ GIT
       railties (>= 3.1)
 
 GIT
-  remote: git://github.com/derekedwards/translation_engine.git
+  remote: https://github.com/derekedwards/translation_engine
   revision: 93ba43933b8e56ced06c5306c98d11fedb3fe37d
   tag: v0.1.1
   specs:
