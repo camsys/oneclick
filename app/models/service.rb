@@ -18,7 +18,6 @@ class Service < ActiveRecord::Base
   has_many :service_accommodations
   has_many :service_characteristics
   has_many :service_trip_purpose_maps
-  has_many :service_coverage_maps
   has_many :itineraries
   has_many :user_services
   has_and_belongs_to_many :users # primarily for internal contact
@@ -40,9 +39,6 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :fare_structures
 
-  accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
-  reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
-
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
   # attr_accessible: booking_service_code
@@ -50,15 +46,10 @@ class Service < ActiveRecord::Base
   has_many :accommodations, through: :service_accommodations, source: :accommodation
   has_many :characteristics, through: :service_characteristics, source: :characteristic
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
-  has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
   has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
 
   has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
-
-  belongs_to :endpoint_area_geom, class_name: 'GeoCoverage'
-  belongs_to :coverage_area_geom, class_name: 'GeoCoverage'
-  belongs_to :residence_area_geom, class_name: 'GeoCoverage'
 
   has_many :user_profiles, through: :user_services, source: :user_profile
 
@@ -266,162 +257,7 @@ class Service < ActiveRecord::Base
     return nil
   end
 
-  def save_new_coverage_area_from_shp(rule, geom)
-    gc = GeoCoverage.create! coverage_type: rule, geom: geom
-    case rule
-    when 'endpoint_area'
-      self.endpoint_area_geom = gc
-    when 'coverage_area'
-      self.coverage_area_geom = gc
-    end
-    self.save!
-  end
 
-  def update_coverage_map(rule)
-    scms = self.service_coverage_maps.where(rule: rule)
-    scms.each do |scm|
-      polygon = polygon_from_attribute(scm)
-      if polygon.nil?
-        next
-      end
-      #Rails.logger.info "polygon is #{polygon.ai}"
-      case rule
-      when 'endpoint_area'
-        #Rails.logger.info  "Updating Endpoint Area"
-        if self.endpoint_area_geom
-          merged = self.endpoint_area_geom.geom.union(polygon)
-          if merged.nil?
-            next
-          end
-          self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-          self.endpoint_area_geom.save!
-        else
-          gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
-          self.endpoint_area_geom = gc
-          self.save!
-        end
-      when 'coverage_area'
-        #Rails.logger.info  "Updating Coverage Area"
-        if self.coverage_area_geom
-          merged = self.coverage_area_geom.geom.union(polygon)
-          if merged.nil?
-            next
-          end
-          self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-          self.coverage_area_geom.save!
-        else
-          gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
-          self.coverage_area_geom = gc
-          self.save!
-        end
-      end
-    end
-    self.save!
-  end
-
-  def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
-
-    #endpoint area
-    endpoint_rule = 'endpoint_area'
-    endpoint_area_geom = get_shapefile_first_geometry(temp_endpoints_shapefile_path)
-    unless endpoint_area_geom.nil?
-      self.service_coverage_maps.where(rule: endpoint_rule).destroy_all
-      save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
-    else
-      unless temp_endpoints_shapefile_path.nil?
-        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(endpoint_rule).to_s
-      end
-      if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
-        self.endpoint_area_geom = nil
-      end
-      update_coverage_map(endpoint_rule)
-    end
-
-    #coverage area
-    coverage_rule = 'coverage_area'
-    coverage_area_geom = get_shapefile_first_geometry(temp_coverages_shapefile_path)
-    unless coverage_area_geom.nil?
-      self.service_coverage_maps.where(rule: coverage_rule).destroy_all
-      save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
-    else
-      unless temp_coverages_shapefile_path.nil?
-        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(coverage_rule).to_s
-      end
-      if self.service_coverage_maps.where(rule: coverage_rule).count > 0
-        self.coverage_area_geom = nil
-      end
-      update_coverage_map(coverage_rule)
-    end
-
-    alert_msg
-  end
-
-  def polygon_from_attribute scm
-    #RGeo::Feature.cast(merged, :type => york.geom.geometry_type)
-    state = Oneclick::Application.config.state
-    case scm.geo_coverage.coverage_type
-      when 'county_name'
-        county = County.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
-        if county.length > 0
-          return county.first.geom
-        end
-      when 'zipcode'
-        zipcode = Zipcode.where(zipcode: scm.geo_coverage.value, state: state)
-        if zipcode.length > 0
-          return zipcode.first.geom
-        end
-      when 'city'
-        city = City.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
-        if city.length > 0
-          return city.first.geom
-        end
-      when 'polygon'
-        return scm.geo_coverage.geom
-    end
-    nil
-  end
-
-  def destroy_endpoint_geom
-    endpoint_area_geom.destroy if endpoint_area_geom
-    endpoint_area_geom = nil
-  end
-
-  def destroy_coverage_geom
-    coverage_area_geom.destroy if coverage_area_geom
-    coverage_area_geom = nil
-  end
-
-  def wkt_to_array(rule = 'endpoint_area')
-    myArray = []
-    case rule
-      when 'endpoint_area'
-        geometry = self.endpoint_area_geom
-      when 'coverage_area'
-        geometry = self.coverage_area_geom
-    end
-    if geometry
-      geometry.geom.each do |polygon|
-        polygon_array = []
-        ring_array  = []
-        polygon.exterior_ring.points.each do |point|
-          ring_array << [point.y, point.x]
-        end
-        polygon_array << ring_array
-
-        polygon.interior_rings.each do |ring|
-          ring_array = []
-          ring.points.each do |point|
-            ring_array << [point.y, point.x]
-          end
-          polygon_array << ring_array
-        end
-        myArray << polygon_array
-      end
-    end
-    myArray
-  end
-
-  # csv
   ransacker :id do
     Arel.sql(
       "regexp_replace(

@@ -72,7 +72,7 @@ gem 'savon'
 gem 'attr_encrypted'
 gem 'uber-ruby', require: 'uber'
 
-group :production do 
+group :production do
   #Needed for Oracle DB Connection
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.5.0'
   gem 'ruby-oci8'
