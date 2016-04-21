@@ -29,7 +29,7 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
         #Move to a config.  API does not pass modes.
-        modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
+        modes = ['mode_transit']
 
         #Unpack params
         trip_parts = params[:itinerary_request]
