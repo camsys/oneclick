@@ -18,44 +18,6 @@ Rake::Task["translation_engine:implement_new_database_schema"].invoke
   Role.create!(name: role.to_sym)
 end
 
-#Create reports and internationalize their names
-[
-  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: false},
-  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: false},
-  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: false},
-  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: false},
-  {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
-   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: false},
-  {name: 'Trips Details', description: 'Details of all trips.',
-   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
-  {name: 'System Usage', description: 'Overall system usage statistics.',
-   view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true},
-  {name: 'Trips Details', description: 'Details of all trips.', exportable: true,
-   view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true},
-  {name: 'Feedback', description: 'List of all ratings.', exportable: true,
-   view_name: 'ratings_report', class_name: 'RatingsReport', active: true}
-
-].each do |rep|
-  # Need to correctly handle updating active state; match everything except that.
-  is_active = rep[:active]
-  rep.delete :active
-  report = Report.unscoped.find_or_create_by!(rep)
-  report.update_attributes(active: is_active)
-
-
-  locale = Locale.find_or_create_by!(name: "en")
-  translation_key = TranslationKey.find_or_create_by!(name: rep[:class_name])
-
-  Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id, value: rep[:name] + " Report")
-
-  I18n.available_locales.reject{|x| x == :en}.each do |l|
-    locale = Locale.find_or_create_by!(name: l.to_s)
-    translation_key = TranslationKey.find_or_create_by!(name: rep[:class_name])
-    translation_value = "[#{l}]#{rep[:name]} Report[/#{l}]"
-    Translation.find_or_create_by!(translation_key_id: translation_key.id, locale_id: locale.id, value: translation_value)
-  end
-end
-
 # Create Admin User
 User.find_by_email(admin[:email]).destroy rescue nil
 u = User.find_or_create_by!(email: 'email@camsys.com') do |u|
@@ -371,6 +333,5 @@ age.update_attributes!(for_traveler: false, linked_characteristic: dob,
 
 #Run additional Rake Tasks
 Oneclick::Application.load_tasks
-Rake::Task["oneclick:add_feedback_types"].invoke
 Rake::Task["oneclick:load_locales"].invoke
 

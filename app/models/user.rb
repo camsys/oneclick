@@ -262,9 +262,4 @@ class User < ActiveRecord::Base
     update_attribute(:deleted_at, nil)
   end
 
-  def unread_received_messages
-    received_messages.where(read: false)
-      .joins(:message).where('messages.from_date is ? or messages.from_date <= ?',nil,DateTime.now)
-      .where('messages.to_date is ? or messages.to_date >= ?',nil,DateTime.now)
-  end
 end
