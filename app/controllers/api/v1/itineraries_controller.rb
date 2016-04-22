@@ -43,6 +43,7 @@ module Api
         trip.trip_purpose_raw = purpose
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
+        puts trip.ai
         trip.save
 
         #Build the Trip Places
