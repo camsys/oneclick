@@ -178,8 +178,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
   end
 
   create_table "flat_fares", force: true do |t|
-    t.decimal  "one_way_rate"
-    t.decimal  "round_trip_rate"
+    t.integer  "one_way_rate",      precision: 38, scale: 0
+    t.integer  "round_trip_rate",   precision: 38, scale: 0
     t.integer  "fare_structure_id", precision: 38, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.integer  "walk_time",                  precision: 38, scale: 0
     t.integer  "transit_time",               precision: 38, scale: 0
     t.integer  "wait_time",                  precision: 38, scale: 0
-    t.decimal  "walk_distance"
+    t.integer  "walk_distance",              precision: 38, scale: 0
     t.integer  "transfers",                  precision: 38, scale: 0
     t.integer  "count",                      precision: 38, scale: 0
     t.text     "legs"
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.datetime "updated_at",                                                          null: false
     t.integer  "ride_count",                 precision: 38, scale: 0
     t.text     "external_info"
-    t.decimal  "match_score",                                         default: 0.0
+    t.integer  "match_score",                precision: 38, scale: 0, default: 0
     t.boolean  "missing_information",        precision: 1,  scale: 0, default: false
     t.boolean  "accommodation_mismatch",     precision: 1,  scale: 0, default: false
     t.text     "missing_information_text"
@@ -249,8 +249,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.string   "name"
     t.integer  "address_type", precision: 38, scale: 0
     t.string   "addr"
-    t.decimal  "lat"
-    t.decimal  "lon"
+    t.integer  "lat",          precision: 38, scale: 0
+    t.integer  "lon",          precision: 38, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -262,8 +262,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.integer  "mode_id_id",                      precision: 38, scale: 0
     t.datetime "start_time"
     t.datetime "end_time"
-    t.decimal  "leg_time"
-    t.decimal  "leg_distance"
+    t.integer  "leg_time",                        precision: 38, scale: 0
+    t.integer  "leg_distance",                    precision: 38, scale: 0
     t.integer  "cost",                 limit: 10, precision: 10, scale: 0
     t.string   "cost_comments"
     t.text     "otp_leg"
@@ -294,8 +294,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id"
 
   create_table "mileage_fares", force: true do |t|
-    t.decimal  "base_rate"
-    t.decimal  "mileage_rate"
+    t.integer  "base_rate",         precision: 38, scale: 0
+    t.integer  "mileage_rate",      precision: 38, scale: 0
     t.integer  "fare_structure_id", precision: 38, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -341,8 +341,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.string   "city",        limit: 128
     t.string   "state",       limit: 64
     t.string   "zip",         limit: 10
-    t.decimal  "lat"
-    t.decimal  "lon"
+    t.integer  "lat",                     precision: 38, scale: 0
+    t.integer  "lon",                     precision: 38, scale: 0
     t.boolean  "active",                  precision: 1,  scale: 0, default: true
     t.datetime "created_at",                                                      null: false
     t.datetime "updated_at",                                                      null: false
@@ -363,8 +363,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.string   "city",            limit: 128
     t.string   "state",           limit: 64
     t.string   "zip",             limit: 10
-    t.decimal  "lat"
-    t.decimal  "lon"
+    t.integer  "lat",                         precision: 38, scale: 0
+    t.integer  "lon",                         precision: 38, scale: 0
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
     t.string   "county",          limit: 128
@@ -516,7 +516,7 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.string   "url"
     t.string   "booking_service_code"
     t.integer  "service_window",                           precision: 38, scale: 0
-    t.decimal  "time_factor"
+    t.integer  "time_factor",                              precision: 38, scale: 0
     t.string   "internal_contact_name"
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
@@ -548,8 +548,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
 
   create_table "sidewalk_obstructions", force: true do |t|
     t.integer  "user_id",    precision: 38, scale: 0,                     null: false
-    t.decimal  "lat",                                                     null: false
-    t.decimal  "lon",                                                     null: false
+    t.integer  "lat",        precision: 38, scale: 0,                     null: false
+    t.integer  "lon",        precision: 38, scale: 0,                     null: false
     t.string   "comment",                                                 null: false
     t.datetime "removed_at"
     t.string   "status",                              default: "pending", null: false
@@ -645,8 +645,8 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.integer  "place_id",                 precision: 38, scale: 0
     t.integer  "poi_id",                   precision: 38, scale: 0
     t.string   "raw_address"
-    t.decimal  "lat"
-    t.decimal  "lon"
+    t.integer  "lat",                      precision: 38, scale: 0
+    t.integer  "lon",                      precision: 38, scale: 0
     t.datetime "created_at",                                        null: false
     t.datetime "updated_at",                                        null: false
     t.string   "address1",     limit: 128
@@ -802,17 +802,17 @@ ActiveRecord::Schema.define(version: 20160422171104) do
   end
 
   create_table "walking_maximum_distances", force: true do |t|
-    t.decimal  "value",                                              null: false
-    t.boolean  "is_default", precision: 1, scale: 0, default: false
+    t.integer  "value",      precision: 38, scale: 0,                 null: false
+    t.boolean  "is_default", precision: 1,  scale: 0, default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "walking_speeds", force: true do |t|
-    t.string   "code",                                               null: false
-    t.string   "name",                                               null: false
-    t.decimal  "value",                                              null: false
-    t.boolean  "is_default", precision: 1, scale: 0, default: false
+    t.string   "code",                                                null: false
+    t.string   "name",                                                null: false
+    t.integer  "value",      precision: 38, scale: 0,                 null: false
+    t.boolean  "is_default", precision: 1,  scale: 0, default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -821,7 +821,7 @@ ActiveRecord::Schema.define(version: 20160422171104) do
     t.integer  "from_zone_id",      precision: 38, scale: 0
     t.integer  "to_zone_id",        precision: 38, scale: 0
     t.integer  "fare_structure_id", precision: 38, scale: 0
-    t.decimal  "rate"
+    t.integer  "rate",              precision: 38, scale: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
