@@ -48,7 +48,10 @@ module Api
         # This is a stub.
         # More details will be added as-needed.
         if trip
-          hash = {status: {code: trip.status[:code], description: trip.status[:description]}, details: trip}
+          trip_json = trip.as_json
+          trip_json[:origin] = trip.from_place.build_place_details_hash
+          trip_json[:destination] = trip.to_place.build_place_details_hash
+          hash = {status: {code: trip.status[:code], description: trip.status[:description]}, details: trip_json}
         else
           hash = {status: {code: '404', description: 'Trip Not Found'}, details: nil}
         end
