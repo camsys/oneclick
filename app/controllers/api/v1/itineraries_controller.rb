@@ -44,7 +44,7 @@ module Api
         trip.trip_purpose_raw = purpose
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
-        trip.optimize = optimize
+        trip.optimize = optimize || "TIME"
         trip.save
 
         #Build the Trip Places
