@@ -12,6 +12,7 @@ Oneclick::Application.configure do
   config.ecolane_base_url = "https://apiserver.ecolane.com"
   config.get_fares_from_ecolane = false
   config.service_max_allow_advanced_book_days = 365
+  config.ada_funding_sources = []
 
   #Review the necessity of these variables
   config.show_update_services = false
@@ -104,8 +105,13 @@ Oneclick::Application.configure do
   config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
   config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
   config.default_zoom = 12
-  config.open_trip_planner = "http://otp-ma.camsys-apps.com:8080/otp/routers/ma/plan?"
+
+  #Open Trip Planner Configs
+  config.open_trip_planner = "http://otp-rtd.camsys-apps.com:8080/otp/routers/default"
+  config.otp_walk_reluctance = "20" #If an OTP Trip is set to optmimize walkTime, then this walk_reluctance is used to discourage walking time
+  config.otp_transfer_penalty = "1800" #If an OTP Trip is set to optimize/minimize transfers then this value replaces the default transfer penalty
   config.transit_respects_ada = false
+
   config.taxi_fare_finder_api_key = ENV['TAXI_FARE_FINDER_API_KEY']
   config.taxi_fare_finder_api_city = "Boston"
   config.name = '1-Click/MA'
