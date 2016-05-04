@@ -34,6 +34,12 @@ class Trip < ActiveRecord::Base
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
   scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
 
+  #Constants
+  QUICK = 'QUICK'
+  TRANSFERS = 'TRANSFERS'
+  WALK = 'WALK'
+
+
   def self.planned_between(start_time = nil, end_time = nil)
     base_trips = Trip.where(is_planned: true)
 

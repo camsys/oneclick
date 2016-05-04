@@ -35,6 +35,7 @@ module Api
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
         trip_token = params[:trip_token]
+        optimize = params[:optimize]
 
         #Assign Meta Data
         trip = Trip.new
@@ -43,7 +44,7 @@ module Api
         trip.trip_purpose_raw = purpose
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
-        puts trip.ai
+        trip.optimize = optimize
         trip.save
 
         #Build the Trip Places

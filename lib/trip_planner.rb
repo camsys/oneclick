@@ -10,13 +10,13 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=Oneclick::Application.config.OTP_retry_count)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, optimize='QUICK', try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
     result = nil
     response = nil
 
     while try <= try_count
-      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance)
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, optimize)
       if result
         break
       else
@@ -34,7 +34,7 @@ class TripPlanner
 
   end
 
-  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, optimize='QUICK')
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
@@ -49,6 +49,14 @@ class TripPlanner
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
     url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+
+    #Unless the optimiziton = QUICK (which is the default), set additional parameters
+    case optimize.downcase
+      when 'walking'
+        url_options += "&walkReluctance=" + Oneclick::Application.config.otp_walk_reluctance.to_s
+      when 'transfers'
+        url_options += "&transferPenalty=" + Oneclick::Application.config.otp_transfer_penalty.to_s
+    end
 
     url = base_url + url_options
     Rails.logger.info URI.parse(url)
