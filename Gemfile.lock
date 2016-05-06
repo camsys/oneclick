@@ -125,6 +125,7 @@ GEM
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-combobox (1.2.6)
@@ -434,6 +435,12 @@ GEM
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
     rolify (3.4.1)
+    rgeo-geojson (0.3.1)
+      rgeo (~> 0.3)
+    rgeo-shapefile (0.4.1)
+      dbf (~> 3.0)
+      rgeo (~> 0.3)
+    rolify (5.1.0)
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -621,6 +628,7 @@ DEPENDENCIES
   remotipart (~> 1.2)
   rgeo
   rgeo-activerecord
+  rgeo-geojson
   rgeo-shapefile
   rolify
   rspec-core (~> 2.14.0)
