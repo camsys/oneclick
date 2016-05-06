@@ -528,6 +528,8 @@ GEM
     rgeo-activerecord (1.0.0)
       activerecord (~> 4.0)
       rgeo (~> 0.3.20)
+    rgeo-geojson (0.3.1)
+      rgeo (~> 0.3)
     rgeo-shapefile (0.4.1)
       dbf (~> 3.0)
       rgeo (~> 0.3)
@@ -712,6 +714,7 @@ DEPENDENCIES
   remotipart (~> 1.2)
   rgeo
   rgeo-activerecord
+  rgeo-geojson
   rgeo-shapefile
   rolify
   rspec-core (~> 2.14.0)

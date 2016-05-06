@@ -67,6 +67,16 @@ module Api
         render json: {result: false}
       end
 
+      def boundary
+        gs =  GeographyServices.new
+        if gs.global_boundary_exists?
+          render json: gs.global_boundary_as_geojson
+          return
+        end
+
+        render :status => 404, json: {message: 'No Global Boundary'}
+      end
+
     end
   end
 end
