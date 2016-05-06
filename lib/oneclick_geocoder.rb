@@ -70,6 +70,17 @@ class OneclickGeocoder
     end
     [@errors.empty?, @errors, @results]
   end
+
+  #Takes in results from geocode or reverse_geocode
+  def get_street_address(results)
+    results = results.last
+    result = results.first
+    if result
+      return result[:street_address]
+    else
+      return nil
+    end
+  end
   
 protected
   

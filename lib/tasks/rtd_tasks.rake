@@ -176,10 +176,36 @@ namespace :oneclick do
 
   end
 
+  desc "Replace Intersections With Street Address"
+  task :replace_intersections => :environment do
+    og = OneclickGeocoder.new
+    Poi.all.each do |p|
+
+      unless p.address1
+        next
+      end
+
+      #Intersections from RTD have @ signs in them
+      unless ('@').in? p.address1
+        next
+      end
+
+      street_address = og.get_street_address(og.reverse_geocode(p.lat, p.lon))
+      if street_address
+        puts 'Replacing ' + p.address1.to_s + ' with ' + street_address.to_s
+        p.address1 = street_address
+        p.save
+      end
+    end
+  end
+
   desc "Load Landmarks and Stops"
   task :load_new_landmarks_and_stops => :environment do
     Rake::Task['oneclick:load_new_landmarks'].invoke
     Rake::Task['oneclick:load_new_stops'].invoke
+    Rake::Task['oneclick:replace_intersections'].invoke
   end
+
+
 
 end
