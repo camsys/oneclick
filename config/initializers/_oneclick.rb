@@ -111,6 +111,7 @@ Oneclick::Application.configure do
   config.geocoder_components = 'country:US'
   config.map_bounds      = [[39.496227, -105.338796], [39.998374, -104.688062]]
   config.geocoder_bounds = [[39.496227, -105.338796], [39.998374, -104.688062]]
+  config.default_county = "Denver"
   config.default_zoom = 12
   config.landmarks_file = "https://s3.amazonaws.com/oneclick-bin/tmp/landmarks.csv"
 
