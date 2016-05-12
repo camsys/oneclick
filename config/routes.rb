@@ -335,6 +335,13 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :services do
+        collection do
+          get 'ids'
+          get 'ids_humanized'
+        end
+      end
+
       resources :trips do
         collection do
           get 'status_from_token'

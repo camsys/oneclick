@@ -5,7 +5,7 @@ module Api
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
 
-      #passed an array of itineraries to be selected
+      # passed an array of itineraries to be selected
       def select
         #Get the itineraries
         itineraries = []

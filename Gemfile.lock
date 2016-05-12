@@ -431,15 +431,11 @@ GEM
     rgeo-activerecord (1.0.0)
       activerecord (~> 4.0)
       rgeo (~> 0.3.20)
+    rgeo-geojson (0.3.1)
+      rgeo (~> 0.3)
     rgeo-shapefile (0.2.3)
       dbf (>= 1.7.0)
       rgeo (>= 0.3.3)
-    rolify (3.4.1)
-    rgeo-geojson (0.3.1)
-      rgeo (~> 0.3)
-    rgeo-shapefile (0.4.1)
-      dbf (~> 3.0)
-      rgeo (~> 0.3)
     rolify (5.1.0)
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
@@ -656,4 +652,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
