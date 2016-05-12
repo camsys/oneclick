@@ -159,7 +159,7 @@ class TripPlace < GeocodedAddress
       end
     end
 
-    self.raw_address = details[:formatted_address]
+    self.raw_address = details[:formatted_address] || details[:name]
     self.lat = details[:geometry][:location][:lat]
     self.lon = details[:geometry][:location][:lng]
     self.name = details[:name]
