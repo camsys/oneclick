@@ -102,16 +102,17 @@ Oneclick::Application.configure do
   config.api_activated = true
 
   config.host = 'oneclick.camsys-apps.com'
-  config.logo_text = "A R C logo - Simply Get There"
+  config.logo_text = "1-Click"
   config.ui_logo = '/assets/logo.png'
   config.logo_text = "1-Click"
   config.favicon = ''
   config.mobile_favicon = ''
   config.tablet_favicon = ''
   config.geocoder_components = 'country:US'
-  config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
-  config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
+  config.map_bounds      = [[39.496227, -105.338796], [39.998374, -104.688062]]
+  config.geocoder_bounds = [[39.496227, -105.338796], [39.998374, -104.688062]]
   config.default_zoom = 12
+  config.landmarks_file = "https://s3.amazonaws.com/oneclick-bin/tmp/landmarks.csv"
 
   #Open Trip Planner Configs
   config.open_trip_planner = "http://otp-rtd.camsys-apps.com:8080/otp/routers/default"
@@ -120,16 +121,15 @@ Oneclick::Application.configure do
   config.transit_respects_ada = false
 
   config.taxi_fare_finder_api_key = ENV['TAXI_FARE_FINDER_API_KEY']
-  config.taxi_fare_finder_api_city = "Boston"
-  config.name = '1-Click/MA'
+  config.taxi_fare_finder_api_city = "Denver"
+  config.name = '1-Click/RTD'
 
   config.enable_feedback = true
   config.traveler_read_all_organization_feedback = true
   config.agent_read_feedback = true
   config.provider_read_all_feedback = true
   config.tripless_feedback = false
-  config.default_county = 'Suffolk'
-  config.state = 'MA'
+  config.state = 'CO'
 
   config.show_characteristic_logos = false
   config.user_radio_buttons = false
