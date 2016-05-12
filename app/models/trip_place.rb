@@ -141,19 +141,21 @@ class TripPlace < GeocodedAddress
   def from_place_details details
 
     components = details[:address_components]
-    components.each do |component|
-      types = component[:types]
-      if types.nil?
-        next
-      end
-      if 'street_address'.in? types
-        self.address1 = component[:long_name]
-      elsif 'administrative_area_level_1'.in? types
-        self.state = component[:long_name]
-      elsif 'locality'.in? types
-        self.city = component[:long_name]
-      elsif 'postal_code'.in? types
-        self.zip = component[:long_name]
+    unless components.nil?
+      components.each do |component|
+        types = component[:types]
+        if types.nil?
+          next
+        end
+        if 'street_address'.in? types
+          self.address1 = component[:long_name]
+        elsif 'administrative_area_level_1'.in? types
+          self.state = component[:long_name]
+        elsif 'locality'.in? types
+          self.city = component[:long_name]
+        elsif 'postal_code'.in? types
+          self.zip = component[:long_name]
+        end
       end
     end
 
