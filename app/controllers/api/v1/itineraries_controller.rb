@@ -36,6 +36,9 @@ module Api
         purpose = params[:trip_purpose]
         trip_token = params[:trip_token]
         optimize = params[:optimize]
+        max_walk_miles = params[:max_walk_miles] # Miles
+        max_walk_seconds = params[:max_walk_seconds] # Seconds
+        walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
 
         #Assign Meta Data
         trip = Trip.new
@@ -45,6 +48,9 @@ module Api
         trip.desired_modes = Mode.where(code: modes)
         trip.token = trip_token
         trip.optimize = optimize || "TIME"
+        trip.max_walk_miles = max_walk_miles
+        trip.max_walk_seconds = max_walk_seconds
+        trip.walk_mph = walk_mph
         trip.save
 
         #Build the Trip Places

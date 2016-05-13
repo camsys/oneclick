@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504154430) do
+ActiveRecord::Schema.define(version: 20160513184405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -855,6 +855,9 @@ ActiveRecord::Schema.define(version: 20160504154430) do
     t.string   "agency_token"
     t.string   "trip_purpose_raw"
     t.string   "optimize",                             default: "TIME"
+    t.float    "max_walk_miles"
+    t.integer  "max_walk_seconds"
+    t.float    "walk_mph",                             default: 3.0
   end
 
   create_table "trips_desired_modes", force: true do |t|
