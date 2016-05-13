@@ -254,13 +254,33 @@ class TripPart < ActiveRecord::Base
 
     default_walk_speed = WalkingSpeed.where(is_default:true).first
     default_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
-    walk_speed = default_walk_speed ? default_walk_speed.value : 3
-    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2
-    if trip.user.walking_speed
+    walk_speed = default_walk_speed ? default_walk_speed.value : 3.0
+    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2.0
+
+    # SET THE WALKING SPEED
+    #Check to see if the trip has a walking_speed
+    if trip.walk_mph
+      walk_speed = trip.walk_mph
+    #If the trip doesn't have a walk speed, check to see if the user does
+    elsif trip.user.walking_speed
       walk_speed = trip.user.walking_speed.value
     end
-    if trip.user.walking_maximum_distance
+
+    # SET MAX WALK DISTANCE
+    #Check to see if the trip has a maximum distance
+    if trip.max_walk_miles
+      max_walk_distance = trip.max_walk_miles
+    #If the trip doesn't have a max walk distance, check to see if the user does
+    elsif trip.user.walking_maximum_distance
       max_walk_distance = trip.user.walking_maximum_distance.value
+    end
+
+    # If the max walk time is shorter than the distance allows, override the distance
+    # Check to see if the trip has a maximum walk time
+    if trip.max_walk_seconds
+      if (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f) < max_walk_distance
+        max_walk_distance = (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f)
+      end
     end
 
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.optimize)
