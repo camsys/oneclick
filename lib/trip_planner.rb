@@ -10,13 +10,13 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, optimize='QUICK', num_itineraries = 3, try_count=Oneclick::Application.config.OTP_retry_count)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
     result = nil
     response = nil
 
     while try <= try_count
-      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, optimize, num_itineraries)
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, max_bicycle_distance, optimize, num_itineraries)
       if result
         break
       else
@@ -34,7 +34,7 @@ class TripPlanner
 
   end
 
-  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, optimize='QUICK', num_itineraries=3)
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3)
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
@@ -48,7 +48,14 @@ class TripPlanner
     url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
-    url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+
+    #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
+    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
+      url_options += "&maxWalkDistance=" + (1609.34*max_bicycle_distance).to_s
+    else
+      url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+    end
+
     url_options += "&numItineraries=" + num_itineraries.to_s
 
     #Unless the optimiziton = QUICK (which is the default), set additional parameters
@@ -60,6 +67,7 @@ class TripPlanner
     end
 
     url = base_url + url_options
+
     Rails.logger.info URI.parse(url)
     t = Time.now
     begin
@@ -131,12 +139,15 @@ class TripPlanner
       trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
+
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+        if itinerary['fare']
+          trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+        end
       rescue Exception => e
-        Rails.logger.error e
-        Rails.logger.error itinerary['fare'].ai
+        Rails.logger.info e
+        Rails.logger.info itinerary['fare'].ai
         #do nothing, leave the cost element blank
       end
       agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil

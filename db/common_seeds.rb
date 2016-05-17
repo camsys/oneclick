@@ -158,7 +158,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     klass: Mode,
     active: 0,
     name: 'Bicycle & Transit',
-    code: 'mode_bike_transit',
+    code: 'mode_bicycle_transit',
     otp_mode: "TRANSIT,BICYCLE",
     parent_id: transit_mode.id,
     logo_url: '/assets/modes/bicycle.png',
