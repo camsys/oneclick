@@ -78,7 +78,12 @@ module Api
           last_destination = last_trip.destination.build_place_details_hash
         else
           # Replace the origin below with the user's home address
-          last_origin = nil
+          home = @traveler.home
+          if home
+            last_origin = home.build_place_details_hash
+          else
+            last_origin = nil
+          end
           last_destination = nil
         end
 

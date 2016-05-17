@@ -156,7 +156,7 @@ class User < ActiveRecord::Base
   end
 
   def home
-    self.places.find_by_home(true)
+    self.places.where(home: true).first
   end
 
   def clear_home
