@@ -310,6 +310,41 @@ class EcolaneServices
     return resp[0], resp[2][0], resp[2][1]
   end
 
+  def get_passenger_home(customer_number, system_id, token)
+    customer_id = get_customer_id(customer_number, system_id, token)
+    passenger_xml = fetch_customer_information(customer_id, system_id, token, funding=false, locations=true)
+    passenger_hash = Hash.from_xml(passenger_xml)
+
+    #Unpack one at a time, return if any information is nil
+    customer = passenger_hash['customer']
+    unless customer
+      return nil
+    end
+
+    locations = customer['locations']
+    unless locations
+      return nil
+    end
+
+    locations = locations['location']
+    unless locations
+      return nil
+    end
+
+    possible_home = nil
+    locations.each do |location|
+      if location['type'].downcase == 'home'
+        return location
+      end
+      if location['name'].downcase == 'home'
+        possible_home = location
+      end
+    end
+
+    return possible_home
+
+  end
+
   def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
 
     service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)

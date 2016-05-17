@@ -68,8 +68,6 @@ module Api
         @traveler.sign_in_count += 1
         @traveler.save
 
-        puts @traveler.ai
-
         #Update Age
         @traveler.user_profile.update_age dob
 
