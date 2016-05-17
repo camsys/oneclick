@@ -283,7 +283,7 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.optimize)
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.optimize, self.trip.num_itineraries)
 
     #TODO: Save errored results to an event log
     if result
@@ -383,7 +383,7 @@ class TripPart < ActiveRecord::Base
 
           ##Build a short drive itinerary
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
-                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, self.trip.optimize, self.trip.num_itineraries)
 
           #TODO: Save errored results to an event log
           if result
@@ -438,7 +438,7 @@ class TripPart < ActiveRecord::Base
 
           ##Build a short drive itinerary
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
-                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, self.trip.optimize, self.trip.num_itineraries)
 
           #TODO: Save errored results to an event log
           if result

@@ -51,6 +51,7 @@ module Api
         trip.max_walk_miles = max_walk_miles
         trip.max_walk_seconds = max_walk_seconds
         trip.walk_mph = walk_mph
+        trip.num_itineraries = params[:num_itineraries].to_i || 3
         trip.save
 
         #Build the Trip Places
