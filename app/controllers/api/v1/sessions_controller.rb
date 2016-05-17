@@ -62,9 +62,6 @@ module Api
           return
         end
 
-        puts' user-service'
-        puts user_service.ai
-
         #If everything checks out, create a link between the OneClick user and the Booking Service
         @traveler = user_service.user_profile.user
         @traveler.reset_authentication_token!
@@ -76,7 +73,18 @@ module Api
         #Update Age
         @traveler.user_profile.update_age dob
 
-        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: @traveler.first_name, last_name: @traveler.last_name}
+        #Last Trip
+        last_trip = @traveler.trips.order('created_at').last
+        if last_trip
+          last_origin = last_trip.origin.build_place_details_hash
+          last_destination = last_trip.destination.build_place_details_hash
+        else
+          # Replace the origin below with the user's home address
+          last_origin = nil
+          last_destination = nil
+        end
+
+        render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: @traveler.first_name, last_name: @traveler.last_name, last_origin: last_origin, last_destination: last_destination}
       end
 
 
