@@ -28,15 +28,15 @@ module Api
 
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
-        #Move to a config.  API does not pass modes.
-        modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
 
         #Unpack params
+        modes = params['modes'] || ['mode_transit', 'mode_taxi', 'mode_paratransit']
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
         trip_token = params[:trip_token]
         optimize = params[:optimize]
-        max_walk_miles = params[:max_walk_miles] # Miles
+        max_walk_miles = params[:max_walk_miles]
+        max_bike_miles = params[:max_bike_miles] # Miles
         max_walk_seconds = params[:max_walk_seconds] # Seconds
         walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
 
@@ -46,6 +46,7 @@ module Api
         trip.user = @traveler
         trip.trip_purpose_raw = purpose
         trip.desired_modes = Mode.where(code: modes)
+
         trip.token = trip_token
         trip.optimize = optimize || "TIME"
         trip.max_walk_miles = max_walk_miles
