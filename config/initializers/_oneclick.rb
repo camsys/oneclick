@@ -95,7 +95,7 @@ Oneclick::Application.configure do
   config.api_activated = true
 
   config.host = 'oneclick.camsys-apps.com'
-  config.logo_text = "A R C logo - Simply Get There"
+  config.logo_text = "1-Click"
   config.ui_logo = '/assets/logo.png'
   config.logo_text = "1-Click"
   config.favicon = ''
@@ -107,7 +107,7 @@ Oneclick::Application.configure do
   config.default_zoom = 12
 
   #Open Trip Planner Configs
-  config.open_trip_planner = "http://otp-rtd.camsys-apps.com:8080/otp/routers/default"
+  config.open_trip_planner = "http://otp-ma.camsys-apps.com:8080/otp/routers/default/plan?"
   config.otp_walk_reluctance = "20" #If an OTP Trip is set to optmimize walkTime, then this walk_reluctance is used to discourage walking time
   config.otp_transfer_penalty = "1800" #If an OTP Trip is set to optimize/minimize transfers then this value replaces the default transfer penalty
   config.transit_respects_ada = false
