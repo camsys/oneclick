@@ -21,9 +21,6 @@ module Api
           begin
             trip_purposes = bs.get_purposes(@traveler.user_profile.user_services.first).keys
           rescue Exception=>e
-            Honeybadger.notify(
-                :error_class   => "Trip Purposes Failure #1",
-            )
             trip_purposes = []
           end
         #If the user is a guest, use a generic list of purposes
@@ -46,14 +43,7 @@ module Api
           default_trip_purpose = nil
           if service
             unless service.booking_system_id.nil?
-              #begin
               trip_purposes = bs.get_dummy_trip_purposes(service)
-              #rescue Exception=>e
-              #  Honeybadger.notify(
-              #      :error_class   => "Trip Purposes Failure #2",
-              #  )
-              #  trip_purposes = []
-              #end
             end
 
             if service.ecolane_profile

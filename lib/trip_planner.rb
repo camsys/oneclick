@@ -74,31 +74,16 @@ class TripPlanner
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.ai)
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: #{e.message}",
-        :parameters    => {url: url}
-      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     if resp.code != "200"
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-        :parameters    => {resp_code: resp.code, resp: resp}
-      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
 
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error' and not result['error'].nil?
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: result has error: #{result['error']}",
-        :parameters    => {result: result}
-      )
       return false, result['error']
     else
       return true, result['plan']
@@ -209,11 +194,6 @@ class TripPlanner
       doc = Nokogiri::HTML(page.body)
       results = doc.css('#results li div.marker.dest')
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
-        :parameters    => {service_url: service_url, query: query}
-      )
       Rails.logger.warn "Service failure: rideshare: #{e.message}"
       Rails.logger.warn "URL was #{service_url}"
       Rails.logger.warn e.backtrace.join("\n")

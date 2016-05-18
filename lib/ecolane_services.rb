@@ -210,11 +210,6 @@ class EcolaneServices
     end
 
     if resp_code != "200"
-      Honeybadger.notify(
-          :error_class   => "Unable to query fare",
-          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-          :parameters    => {resp_code: resp_code, resp: resp}
-      )
       return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
     fare = unpack_fare_response(resp)
@@ -258,11 +253,6 @@ class EcolaneServices
     resp = send_request(url, token )
 
     if resp.code != "200"
-      Honeybadger.notify(
-          :error_class   => "Service failure",
-          :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-          :parameters    => {resp_code: resp.code, resp: resp}
-      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
     resp.body
@@ -611,11 +601,6 @@ class EcolaneServices
       Rails.logger.info("End")
       return resp
     rescue Exception=>e
-      Honeybadger.notify(
-          :error_class   => "Service failure",
-          :error_message => "Service failure: fixed: #{e.message}",
-          :parameters    => {url: url}
-      )
       Rails.logger.info("Sending Error")
       return false, {'id'=>500, 'msg'=>e.to_s}
     end

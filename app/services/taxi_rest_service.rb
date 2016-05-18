@@ -18,7 +18,6 @@ class TaxiRestService
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
-      log_error_to_honeybadger("Service failure: taxi: #{e.message}",{url: url, resp: resp})
       return
     end
 
@@ -26,8 +25,7 @@ class TaxiRestService
 
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
-      log_error_to_honeybadger("Service failure: taxi: fare status not OK",{fare: fare})
-      return 
+      return
     end
 
     #Get providers
@@ -39,7 +37,6 @@ class TaxiRestService
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
     rescue Exception=>e
-      log_error_to_honeybadger("Service failure: taxi: #{e.message}",{resp: resp})
       return
     end
 
@@ -48,20 +45,11 @@ class TaxiRestService
     businesses = JSON.parse(resp.body)
 
     if businesses['status'] != "OK"
-      log_error_to_honeybadger("Service failure: taxi: business status not OK",{businesses:businesses})
       return
     else
       return format_response_object([fare, businesses])
     end
 
-  end
-
-  def self.log_error_to_honeybadger(message, params)
-  	  Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => message,
-        :parameters    => params
-      )
   end
 
   def self.format_response_object(response_object)

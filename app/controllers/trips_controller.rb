@@ -235,11 +235,6 @@ class TripsController < PlaceSearchingController
       end
     else
       @tripHash = JSON.parse(@trip.to_json)
-      Honeybadger.notify(
-        :error_class   => "Some selected itineraries not available for Plan page",
-        :error_message => "Supposedly each trip part should have one and only valid selected itinerary, however, this is not the case. Check parameters about trip data.",
-        :parameters    => @tripHash
-      )
       flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
     end
   end
@@ -1070,11 +1065,6 @@ protected
     # TODO This seems incredibly hacky to go to json and back for this, but...
     @tripResponseHash = JSON.parse(@tripResponse.to_json)
     if @tripResponseHash['status'] == 0
-      Honeybadger.notify(
-        :error_class   => "Trip serialization failure for review page",
-        :error_message => @tripResponseHash['status_text'],
-        :parameters    => @tripResponseHash
-      )
       flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
     end
   end

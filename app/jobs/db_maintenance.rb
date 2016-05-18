@@ -8,10 +8,6 @@ class DbMaintenance
       puts "DbMaintenance#check_trips_without_user: All trips have valid users."
     else
       puts "*** DbMaintenance#check_trips_without_user: Not all trips have valid users. ***"
-      Honeybadger.notify(
-        :error_class   => "Data integrity problem",
-        :error_message => "Not all trips have valid users"
-      )      
     end
   end
 
