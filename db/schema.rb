@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517212729) do
+ActiveRecord::Schema.define(version: 20160518181852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,23 +385,27 @@ ActiveRecord::Schema.define(version: 20160517212729) do
   end
 
   create_table "places", force: true do |t|
-    t.integer  "user_id",                                null: false
+    t.integer  "user_id",                                    null: false
     t.integer  "creator_id"
-    t.string   "name",        limit: 64,                 null: false
+    t.string   "name",            limit: 64,                 null: false
     t.integer  "poi_id"
-    t.string   "raw_address", limit: 254
-    t.string   "address1",    limit: 128
-    t.string   "address2",    limit: 128
-    t.string   "city",        limit: 128
-    t.string   "state",       limit: 64
-    t.string   "zip",         limit: 10
+    t.string   "raw_address",     limit: 254
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
     t.float    "lat"
     t.float    "lon"
-    t.boolean  "active",                  default: true
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "county",      limit: 128
+    t.boolean  "active",                      default: true
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "county",          limit: 128
     t.boolean  "home"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "google_place_id"
+    t.string   "stop_code"
   end
 
   create_table "poi_types", force: true do |t|
@@ -410,18 +414,23 @@ ActiveRecord::Schema.define(version: 20160517212729) do
   end
 
   create_table "pois", force: true do |t|
-    t.integer  "poi_type_id",             null: false
-    t.string   "name",        limit: 256, null: false
-    t.string   "address1",    limit: 128
-    t.string   "address2",    limit: 128
-    t.string   "city",        limit: 128
-    t.string   "state",       limit: 64
-    t.string   "zip",         limit: 10
-    t.float    "lat"
-    t.float    "lon"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "county",      limit: 128
+    t.integer  "poi_type_id",                                           null: false
+    t.string   "name",            limit: 256,                           null: false
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
+    t.decimal  "lat",                         precision: 15, scale: 10
+    t.decimal  "lon",                         precision: 15, scale: 10
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.string   "county",          limit: 128
+    t.string   "google_place_id"
+    t.boolean  "old"
+    t.string   "stop_code"
+    t.string   "street_number"
+    t.string   "route"
   end
 
   create_table "profile_types", force: true do |t|
@@ -798,22 +807,26 @@ ActiveRecord::Schema.define(version: 20160517212729) do
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
-    t.integer  "sequence",                 null: false
+    t.integer  "sequence",                                              null: false
     t.integer  "place_id"
     t.integer  "poi_id"
     t.string   "raw_address"
-    t.float    "lat"
-    t.float    "lon"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "address1",     limit: 128
-    t.string   "address2",     limit: 128
-    t.string   "city",         limit: 128
-    t.string   "state",        limit: 64
-    t.string   "zip",          limit: 10
-    t.string   "county",       limit: 128
+    t.decimal  "lat",                         precision: 15, scale: 10
+    t.decimal  "lon",                         precision: 15, scale: 10
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
+    t.string   "county",          limit: 128
     t.string   "result_types"
-    t.string   "name",         limit: 256
+    t.string   "name",            limit: 256
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "google_place_id"
+    t.string   "stop_code"
   end
 
   create_table "trip_purposes", force: true do |t|
