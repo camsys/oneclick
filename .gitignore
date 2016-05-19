@@ -10,6 +10,9 @@
 # http://github.com/RailsApps/rails-composer/issues
 #----------------------------------------------------------------------------
 
+#Customer Specific Sample Data
+lib/tasks/cpta_sample_data.rake
+
 # bundler state
 /.bundle
 /vendor/bundle/

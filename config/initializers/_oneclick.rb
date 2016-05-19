@@ -8,6 +8,8 @@ Oneclick::Application.configure do
   # will be stored in ENV variables, but ultimately will be copied to a config
   # Configs in this file are the defaults.  To overwrite the defaults, add an entry to the OneclickConfigurations table
 
+  ActiveRecord::Base.logger.level = 1
+
   #Remove these via improved ecolane support
   config.ecolane_base_url = "https://apiserver.ecolane.com"
   config.get_fares_from_ecolane = false
