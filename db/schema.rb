@@ -426,7 +426,6 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.string   "county",          limit: 128
-    t.string   "google_place_id"
     t.boolean  "old"
     t.string   "stop_code"
     t.string   "street_number"
