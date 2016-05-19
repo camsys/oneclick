@@ -151,7 +151,7 @@ class Poi < GeocodedAddress
     {
         address_components: self.address_components,
 
-        formatted_address: self.raw_address,
+        formatted_address: self.address,
         place_id: self.google_place_id,
         geometry: {
         location: {
