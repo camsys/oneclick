@@ -618,27 +618,32 @@ class BookingServices
       user_service = UserService.where(user_profile_id: user_profile.id, service_id: service.id).first_or_initialize
       user_service.external_user_id = external_user_id
       user_service.save
-
-      #Create Home from Ecolane If it Exists
-      ecolane_profile = service.ecolane_profile
-      es = EcolaneServices.new
-      home = es.get_passenger_home(external_user_id, ecolane_profile.system, ecolane_profile.token)
-      if home
-        my_place = Place.new
-        my_place.city = home['city']
-        my_place.county = home['county']
-        my_place.lat = home['latitude']
-        my_place.lon = home['longitude']
-        my_place.name = "Home"
-        my_place.zip = home['postcode']
-        my_place.state = home['state']
-        my_place.address1 = home['street_number'].to_s + ' ' + home['street'].to_s
-        my_place.user = user_profile.user
-        my_place.home = true
-        my_place.save
-      end
-
     end
+
+    #Create Home from Ecolane If it Exists
+    current_home = u.home
+    ecolane_profile = service.ecolane_profile
+    es = EcolaneServices.new
+    home = es.get_passenger_home(external_user_id, ecolane_profile.system, ecolane_profile.token)
+    if home
+      my_place = Place.new
+      my_place.city = home['city']
+      my_place.county = home['county']
+      my_place.lat = home['latitude']
+      my_place.lon = home['longitude']
+      my_place.name = "Home"
+      my_place.zip = home['postcode']
+      my_place.state = home['state']
+      my_place.address1 = home['street_number'].to_s + ' ' + home['street'].to_s
+      my_place.user = user_profile.user
+      my_place.home = true
+      my_place.save
+      if current_home
+        current_home.delete
+      end
+    end
+
+
 
     return user_service
 
