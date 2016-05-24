@@ -34,9 +34,9 @@ module Api
       def get_trip_status trip
 
         if trip
-          hash = {trip_status_report: {trip_token: trip.token, trip_id: trip.id, code: trip.status[:code], description: trip.status[:description]}}
+          hash = {modes: trip.desired_modes_raw, trip_status_report: {trip_token: trip.token, trip_id: trip.id, code: trip.status[:code], description: trip.status[:description]}}
         else
-          hash = {trip_status_report: {trip_token: nil, trip_id: nil, code: "404", description: "Trip not found."}}
+          hash = {modes: nil,trip_status_report: {trip_token: nil, trip_id: nil, code: "404", description: "Trip not found."}}
         end
 
         respond_with hash
@@ -51,9 +51,9 @@ module Api
           trip_json = trip.as_json
           trip_json[:origin] = trip.from_place.build_place_details_hash
           trip_json[:destination] = trip.to_place.build_place_details_hash
-          hash = {status: {code: trip.status[:code], description: trip.status[:description]}, details: trip_json}
+          hash = {status: {code: trip.status[:code], description: trip.status[:description]}, modes: trip.desired_modes_raw,  details: trip_json}
         else
-          hash = {status: {code: '404', description: 'Trip Not Found'}, details: nil}
+          hash = {status: {code: '404', description: 'Trip Not Found'}, nodes: nil, details: nil}
         end
         respond_with hash
 
