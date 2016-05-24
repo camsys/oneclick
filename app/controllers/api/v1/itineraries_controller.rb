@@ -45,6 +45,7 @@ module Api
         trip.creator = @traveler
         trip.user = @traveler
         trip.trip_purpose_raw = purpose
+        trip.desired_modes_raw = modes
         trip.desired_modes = Mode.where(code: modes)
 
         trip.token = trip_token
@@ -166,7 +167,7 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
+        render json: {trip_id: trip.id, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 
       end
 

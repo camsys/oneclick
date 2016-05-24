@@ -34,6 +34,8 @@ class Trip < ActiveRecord::Base
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
   scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
 
+  serialize :desired_modes_raw
+
   #Constants
   QUICK = 'QUICK'
   TRANSFERS = 'TRANSFERS'
