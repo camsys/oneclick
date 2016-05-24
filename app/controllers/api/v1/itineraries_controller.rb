@@ -117,6 +117,7 @@ module Api
           #Append data for API
           my_itins.each do |itinerary|
             i_hash = itinerary.as_json
+            i_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
             i_hash[:segment_index] = itinerary.trip_part.sequence
             i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
             i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash

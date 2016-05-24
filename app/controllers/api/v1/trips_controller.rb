@@ -70,7 +70,6 @@ module Api
             itinerary_hash = itinerary.attributes
             mode = itinerary.mode
             itinerary_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
-
             itinerary_hash[:segment_index] = itinerary.trip_part.sequence
             itinerary_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
             itinerary_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
