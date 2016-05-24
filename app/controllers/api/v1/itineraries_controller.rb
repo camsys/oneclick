@@ -36,7 +36,7 @@ module Api
         trip_token = params[:trip_token]
         optimize = params[:optimize]
         max_walk_miles = params[:max_walk_miles]
-        max_bike_miles = params[:max_bike_miles] # Miles
+        max_bike_miles = params[:max_bicycle_miles] # Miles
         max_walk_seconds = params[:max_walk_seconds] # Seconds
         walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
 
