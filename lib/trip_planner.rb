@@ -51,7 +51,7 @@ class TripPlanner
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
     if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
-      url_options += "&maxWalkDistance=" + (1609.34*max_bicycle_distance).to_s
+      url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
       url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
     end

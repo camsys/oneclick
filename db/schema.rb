@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160518181852) do
+ActiveRecord::Schema.define(version: 20160524155637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,12 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.datetime "updated_at"
   end
 
+  create_table "boundaries", force: true do |t|
+    t.integer "gid"
+    t.string  "agency"
+    t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
+  end
+
   create_table "characteristics", force: true do |t|
     t.string  "name",                     limit: 64
     t.string  "note",                                                 null: false
@@ -95,6 +101,13 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.string   "commentable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "counties", force: true do |t|
+    t.integer "gid"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "coverage_areas", force: true do |t|
@@ -143,6 +156,68 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.text    "desc"
   end
 
+  create_table "fare_zones", force: true do |t|
+    t.string   "zone_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+  end
+
+  add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
+
+  create_table "feedback_issues", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_issues_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",  null: false
+    t.integer "feedback_issue_id", null: false
+  end
+
+  create_table "feedback_issues_feedbacks", force: true do |t|
+    t.integer "feedback_id",       null: false
+    t.integer "feedback_issue_id", null: false
+    t.boolean "value"
+  end
+
+  create_table "feedback_ratings", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_ratings_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",   null: false
+    t.integer "feedback_rating_id", null: false
+  end
+
+  create_table "feedback_ratings_feedbacks", force: true do |t|
+    t.integer "feedback_id",        null: false
+    t.integer "feedback_rating_id", null: false
+    t.integer "value"
+  end
+
+  create_table "feedback_statuses", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_types", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedbacks", force: true do |t|
+    t.string   "user_email"
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.integer  "feedback_type_id"
+    t.integer  "feedback_rating_id"
+    t.integer  "feedback_issue_id"
+    t.integer  "feedback_status_id"
+    t.text     "comment"
+    t.float    "average_rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "flat_fares", force: true do |t|
     t.float    "one_way_rate"
     t.float    "round_trip_rate"
@@ -160,6 +235,15 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.text     "comment"
     t.boolean  "general_public", default: false
   end
+
+  create_table "geo_coverages", force: true do |t|
+    t.string  "value"
+    t.string  "coverage_type", limit: 128
+    t.string  "polygon"
+    t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
+  end
+
+  add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
 
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
@@ -382,9 +466,104 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.string  "disabled_comment"
   end
 
+  create_table "ratings", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "rateable_id"
+    t.string   "rateable_type"
+    t.integer  "value",                             null: false
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",        default: "pending"
+  end
+
   create_table "relationship_statuses", force: true do |t|
     t.string "name", limit: 64
     t.string "code"
+  end
+
+  create_table "reporting_filter_fields", force: true do |t|
+    t.integer  "reporting_filter_group_id",             null: false
+    t.integer  "reporting_filter_type_id",              null: false
+    t.integer  "reporting_lookup_table_id"
+    t.string   "name",                                  null: false
+    t.string   "title"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "sort_order",                default: 1, null: false
+    t.string   "value_type"
+  end
+
+  add_index "reporting_filter_fields", ["reporting_filter_group_id"], :name => "index_reporting_filter_fields_on_reporting_filter_group_id"
+  add_index "reporting_filter_fields", ["reporting_filter_type_id"], :name => "index_reporting_filter_fields_on_reporting_filter_type_id"
+  add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
+
+  create_table "reporting_filter_groups", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reporting_filter_types", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reporting_lookup_tables", force: true do |t|
+    t.string   "name",                              null: false
+    t.string   "display_field_name",                null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "id_field_name",      default: "id", null: false
+    t.string   "data_access_type"
+  end
+
+  create_table "reporting_output_fields", force: true do |t|
+    t.integer  "reporting_report_id", null: false
+    t.string   "name",                null: false
+    t.string   "title"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "formatter"
+    t.integer  "numeric_precision"
+  end
+
+  add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
+
+  create_table "reporting_reports", force: true do |t|
+    t.string   "name",                             null: false
+    t.string   "description"
+    t.string   "data_source",                      null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "is_sys_admin"
+    t.boolean  "is_provider_staff"
+    t.boolean  "is_agency_admin"
+    t.boolean  "is_agent"
+    t.string   "primary_key",       default: "id", null: false
+  end
+
+  create_table "reporting_specific_filter_groups", force: true do |t|
+    t.integer  "reporting_report_id"
+    t.integer  "reporting_filter_group_id"
+    t.integer  "sort_order",                default: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reporting_specific_filter_groups", ["reporting_filter_group_id"], :name => "index_of_filter_group_on_specific_filter_group"
+  add_index "reporting_specific_filter_groups", ["reporting_report_id"], :name => "index_of_report_on_specific_filter_group"
+
+  create_table "reports", force: true do |t|
+    t.string   "name",        limit: 64
+    t.string   "description", limit: 254
+    t.string   "view_name",   limit: 64
+    t.string   "class_name",  limit: 64
+    t.boolean  "active"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.boolean  "exportable",              default: false
   end
 
   create_table "ridepilot_bookings", force: true do |t|
@@ -454,6 +633,12 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.boolean "active",                           default: true,  null: false
     t.integer "rel_code",                         default: 1,     null: false
     t.integer "group",                            default: 0,     null: false
+  end
+
+  create_table "service_coverage_maps", force: true do |t|
+    t.integer "service_id"
+    t.integer "geo_coverage_id"
+    t.string  "rule"
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
@@ -681,6 +866,7 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.float    "walk_mph",                             default: 3.0
     t.integer  "num_itineraries",                      default: 3
     t.float    "max_bike_miles",                       default: 5.0
+    t.string   "desired_modes_raw"
   end
 
   create_table "trips_desired_modes", id: false, force: true do |t|
@@ -705,6 +891,19 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.datetime "verified_at"
     t.integer  "verified_by_id"
   end
+
+  create_table "user_messages", force: true do |t|
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.boolean  "read",              default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "last_displayed_at"
+    t.datetime "read_at"
+  end
+
+  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
 
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
@@ -799,6 +998,14 @@ ActiveRecord::Schema.define(version: 20160518181852) do
     t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "zipcodes", force: true do |t|
+    t.integer "gid"
+    t.string  "zipcode"
+    t.string  "name"
+    t.string  "state"
+    t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "zone_fares", force: true do |t|
