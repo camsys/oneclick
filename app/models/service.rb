@@ -65,7 +65,7 @@ class Service < ActiveRecord::Base
 
   scope :active, -> {where(active: true)}
   scope :ride_hailing, ->  {joins(:service_type).where(service_types: {code: ['uber_x']}) }
-  scope :paratransit, -> {joins(:service_type).where(service_types: {code: ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"] })}
+  scope :paratransit, -> {joins(:service_type).where(service_types: {code: ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"] }).order('external_id')}
   #scope :bookable, -> {where.not(booking_service_code: nil).where.not(booking_service_code: '')}
   scope :bookable, -> {where.not(booking_profile: nil)}
 
