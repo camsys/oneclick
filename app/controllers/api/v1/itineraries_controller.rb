@@ -118,8 +118,8 @@ module Api
           my_itins.each do |itinerary|
             i_hash = itinerary.as_json
             i_hash[:segment_index] = itinerary.trip_part.sequence
-            i_hash[:start_location] = itinerary.trip_part.from_trip_place.build_place_details_hash
-            i_hash[:end_location] = itinerary.trip_part.to_trip_place.build_place_details_hash
+            i_hash[:start_location] = itinerary.trip_part.trip.origin.build_place_details_hash
+            i_hash[:end_location] = itinerary.trip_part.trip.destination.build_place_details_hash
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
             if itinerary.service
