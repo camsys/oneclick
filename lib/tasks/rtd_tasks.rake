@@ -169,6 +169,7 @@ namespace :oneclick do
             p.save
           end
           geocoded += 1
+          puts "Geocoding " + geocoded.to_s + " of " + stops.count.to_s
         else
           puts 'skipping geocoding'
         end
