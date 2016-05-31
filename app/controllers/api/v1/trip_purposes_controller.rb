@@ -55,6 +55,7 @@ module Api
         Rails.logger.info("Trip Purposes:")
         Rails.logger.info(trip_purposes)
 
+        #Append extra information to Trip Purposes Array
         purposes = []
         index =  0
         trip_purposes.each do |tp|
@@ -62,7 +63,16 @@ module Api
           index+=1
         end
 
-        hash = {trip_purposes: purposes, default_trip_purpose: default_trip_purpose}
+        #Append extra information to Top Trip Purposes Array
+        top_trip_purposes = bs.get_top_purposes(trip_purposes).keys
+        top_purposes = []
+        index =  0
+        top_trip_purposes.each do |tp|
+          top_purposes.append({name: tp, code: tp, sort_order: index})
+          index+=1
+        end
+
+        hash = {top_trip_purposes: top_trip_purposes, trip_purposes: purposes, default_trip_purpose: default_trip_purpose}
         render json: hash
 
       end

@@ -305,9 +305,9 @@ class BookingServices
 
         es = EcolaneServices.new
         purposes =  es.get_trip_purposes(es.get_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
-        purposes_hash = {}
 
         #This creates a hash for the purposes.  For Ecolane the description/name and id are the same.
+        purposes_hash = {}
         purposes.each do |purpose|
           purposes_hash[purpose] = purpose
         end
@@ -587,6 +587,39 @@ class BookingServices
     disallowed_purposes_array = service.disallowed_purposes
     es = EcolaneServices.new
     es.get_trip_purposes(es.get_customer_id(customer_number, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, disallowed_purposes_array)
+  end
+
+  def get_top_purposes(purposes)
+
+    puts purposes.ai
+    #Get a list of top purposes:  TODO expand this to include the passengers recent trips. Those are more likely than a global setting of top trip purposes.
+    top_purposes = Oneclick::Application.config.top_ecolane_purposes
+
+    puts top_purposes.ai
+    top_purposes = (top_purposes & purposes)[0 .. 3] #Find the intersection of top purposes and purposes for this person.  Take the top 4
+
+    puts top_purposes.ai
+
+    #If there aren't at least 4, then add in more until we reach four.
+    if top_purposes.count < 4
+      additional_top = (purposes - top_purposes)[0 .. (4 - top_purposes.count - 1)]
+      top_purposes = top_purposes + additional_top
+    end
+
+    #This creates a hash for the purposes.  For Ecolane the description/name and id are the same.
+    purposes_hash = {}
+    purposes.each do |purpose|
+      purposes_hash[purpose] = purpose
+    end
+
+    #This creates a hash for the TOP purposes.  For Ecolane the description/name and id are the same.
+    top_purposes_hash = {}
+    top_purposes.each do |purpose|
+      top_purposes_hash[purpose] = purpose
+    end
+
+    return top_purposes_hash
+
   end
 
   def build_discount_array(itinerary)
