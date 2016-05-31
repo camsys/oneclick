@@ -140,9 +140,12 @@ namespace :oneclick do
     Poi.where(poi_type: poi_type).update_all(old: true)
     failed = false
 
+    og = OneclickGeocoder.new
+    geocoded = 0
+
     stops = tp.get_stops
     stops.each do |stop|
-      begin
+      #begin
         #each stop id comes in the form "agency_id:stop_id", we only want the stop_id
         stop_code = stop['id'].split(':').last  #TODO: The GTFS doesn't have stop_codes, using id for now.
         name = stop['name']
@@ -157,14 +160,27 @@ namespace :oneclick do
             name: name,
             old: false,
         })
-      rescue
-        Poi.where(poi_type: poi_type).is_new.delete_all
-        Poi.where(poi_type: poi_type).is_old.update_all(old: false)
-        failed = true
-        UserMailer.stops_failed_email(Oneclick::Application.config.support_emails.split(',')).deliver!
-        puts 'Error encountered loading stops from OpenTripPlanner at ' + Oneclick::Application.config.open_trip_planner.to_s
-        break
-      end
+
+        if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
+          #Reverse Geocode the Lat Lng to fill in the City
+          reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
+          if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
+            p.city = reverse_geocoded[2].first[:city]
+            p.save
+          end
+          geocoded += 1
+        else
+          puts 'skipping geocoding'
+        end
+
+      #rescue
+      #  Poi.where(poi_type: poi_type).is_new.delete_all
+      #  Poi.where(poi_type: poi_type).is_old.update_all(old: false)
+      #  failed = true
+      #  UserMailer.stops_failed_email(Oneclick::Application.config.support_emails.split(',')).deliver!
+      #  puts 'Error encountered loading stops from OpenTripPlanner at ' + Oneclick::Application.config.open_trip_planner.to_s
+      #  break
+      #end
     end
 
     unless failed

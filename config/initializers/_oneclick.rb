@@ -18,6 +18,17 @@ Oneclick::Application.configure do
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
   end
 
+  #Used by geocoding stops.  9000 new stops needing to be geocoded will approach the daily limit
+  #This parameter tells us to only do the first 100 or so stops.
+  if Rails.env.production?
+    config.limit_geocoding = false
+  else
+    config.limit_geocoding = true
+  end
+
+  #Only used if limit_gecoding = true
+  config.geocoding_limit = 100
+
   #Support email
   config.support_emails = 'dedwards@camsys.com' #where to send emails for maintenance alerts
 
