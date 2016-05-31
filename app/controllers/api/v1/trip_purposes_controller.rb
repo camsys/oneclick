@@ -72,7 +72,7 @@ module Api
           index+=1
         end
 
-        hash = {top_trip_purposes: top_trip_purposes, trip_purposes: purposes, default_trip_purpose: default_trip_purpose}
+        hash = {top_trip_purposes: top_purposes, trip_purposes: purposes, default_trip_purpose: default_trip_purpose}
         render json: hash
 
       end
