@@ -116,6 +116,17 @@ class EcolaneServices
     return false, "Unknown response."
   end
 
+  #Return a hash of all upcoming trips
+  def get_future_orders customer_number, system, token
+    customer_id = get_customer_id(customer_number, system, token)
+    url_options = "/api/customer/" + system + '/'
+    url_options += customer_id.to_s
+    url_options += "/orders"
+    url_options += "?start=" + Time.now.iso8601[0...-6]
+    url = BASE_URL + url_options
+    send_request(url, token)
+  end
+
   # Given a booking_confirmation, returns the current info of this trip (pu_time, do_time, confirmation_number)
   def get_trip_info(booking_confirmation, system, token)
     resp = fetch_single_order(booking_confirmation, system, token)

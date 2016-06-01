@@ -499,6 +499,19 @@ class BookingServices
     end
   end
 
+  def past_trips(traveler, n = 10, start=Time.now)
+    # Traveler = User object
+    # n = the maximum number of results to return
+    # start = all results must be after or at this time
+    # Returns: ALL trips that are upcoming and n trips in the past
+
+  end
+
+  def upcoming_trips traveler
+
+
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
