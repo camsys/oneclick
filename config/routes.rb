@@ -348,6 +348,7 @@ Oneclick::Application.routes.draw do
           get 'details_from_token'
           get 'list'
           get 'index'
+          get 'future_trips'
         end
 
         member do

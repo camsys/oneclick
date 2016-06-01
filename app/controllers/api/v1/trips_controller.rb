@@ -61,6 +61,15 @@ module Api
 
       def future_trips
 
+        trips_hash = {}
+
+        bs = BookingServices.new
+        if @traveler
+          trips_hash = bs.future_trips @traveler
+        end
+
+        respond_with trips_hash
+
       end
 
       def list
