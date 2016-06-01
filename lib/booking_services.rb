@@ -507,9 +507,31 @@ class BookingServices
 
   end
 
-  def upcoming_trips traveler
+  #Get All Future Trips and Convert them to a Hash to be returned by the API
+  # TODO Update to do this for RidePilot and Trapeze
+  def future_trips user, agency=AGENCY[:ecolane]
 
+    case agency
+      when AGENCY[:ecolane]
+        es = EcolaneServices.new
+        #Ecolane users only have one user_service
+        user_service = user.user_profile.user_services.first
+        service = user_service.service
 
+        #Get the info needed for the Ecolane API Call
+        customer_number = user_service.external_user_id
+        system = service.ecolane_profile.system
+        token = service.ecolane_profile.token
+
+        es = EcolaneServices.new
+
+        future_trips = es.get_future_orders customer_number, system, token
+
+        future_trips
+
+      else
+        return nil
+    end
   end
 
   ####################################
@@ -625,6 +647,13 @@ class BookingServices
 
     return es.build_discount_array(funding_sources, sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, system, token)
   end
+
+  #Take the hash of itineraries returned from Ecolane's future/past trips call and convert them to the
+  # Itinerary Hash format that the API needs to return
+  def build_itinerary_hash_from_ecolane_hash hash
+
+  end
+
 
   ####################################
   # End Ecolane Specific Functions

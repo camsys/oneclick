@@ -62,7 +62,6 @@ u = User.find_or_create_by!(email: 'email@camsys.com') do |u|
   u.first_name = 'sys'
   u.last_name = 'admin'
   u.password = u.password_confirmation ='welcome1'
-
 end
 up = UserProfile.find_or_create_by! user: u
 u.add_role :system_administrator
