@@ -516,6 +516,10 @@ class BookingServices
         es = EcolaneServices.new
         #Ecolane users only have one user_service
         user_service = user.user_profile.user_services.first
+        if user_service.nil?
+          return []
+        end
+
         service = user_service.service
 
         #Get the info needed for the Ecolane API Call
@@ -530,7 +534,7 @@ class BookingServices
         build_itinerary_hash_from_ecolane_hash future_trips
 
       else
-        return nil
+        return []
     end
   end
 
