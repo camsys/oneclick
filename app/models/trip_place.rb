@@ -8,6 +8,7 @@ class TripPlace < GeocodedAddress
   ]
 
   validate :validator
+  serialize :types
 
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
@@ -169,6 +170,7 @@ class TripPlace < GeocodedAddress
     self.name = details[:name]
     self.google_place_id = details[:place_id]
     self.stop_code = details[:stop_code]
+    self.types = details[:types]
 
   end
 
@@ -189,7 +191,8 @@ class TripPlace < GeocodedAddress
       id: self.id,
       name: self.name,
       scope: "user",
-      stop_code: self.stop_code
+      stop_code: self.stop_code,
+      types: self.types
     }
   end
 
