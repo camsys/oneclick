@@ -61,6 +61,8 @@ module Api
 
       def future_trips
 
+      end
+
       def list
         trips_array = []
         @traveler.trips.selected.order(created_at: :desc)[0..19].each do |trip|

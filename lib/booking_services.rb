@@ -527,7 +527,7 @@ class BookingServices
 
         future_trips = es.get_future_orders customer_number, system, token
 
-        future_trips
+        build_itinerary_hash_from_ecolane_hash future_trips
 
       else
         return nil
@@ -650,10 +650,85 @@ class BookingServices
 
   #Take the hash of itineraries returned from Ecolane's future/past trips call and convert them to the
   # Itinerary Hash format that the API needs to return
-  def build_itinerary_hash_from_ecolane_hash hash
+  def build_itinerary_hash_from_ecolane_hash hashes
+
+    trip_hashes = []
+
+    #TODO: All trips are 1 itinerary.
+    hashes.each do |hash|
+
+      trip_hash = {}
+      new_itinerary = {}
+      new_itinerary[:mode] = 'mode_paratransit'
+      new_itinerary[:booking_confirmation] = hash['id']
+      new_itinerary[:system] = hash['system']
+      new_itinerary[:customer_id] = hash['customer_id']
+      new_itinerary[:status] = hash['status']
+      new_itinerary[:negotiated_pu_time] = hash['pickup']['negotiated']
+      new_itinerary[:negotiated_do_time] = hash['dropoff']['negotiated']
+      new_itinerary[:fare] = (hash['fare']['client_copay'].to_f)/100.0
+      new_itinerary[:assistant] = hash['assistant']
+      new_itinerary[:children] = hash['children']
+      new_itinerary[:companions] = hash['companions']
+      new_itinerary[:origin] = google_place_from_ecolane_location(hash['pickup']['location'])
+      new_itinerary[:destination] = google_place_from_ecolane_location(hash['dropoff']['location'])
+      trip_hash[0] = new_itinerary
+      trip_hashes << trip_hash
+
+    end
+
+    trip_hashes
 
   end
 
+  def google_place_from_ecolane_location location
+
+    #Based on Google Place Details
+    {
+      address_components: address_components(location),
+
+      formatted_address: location['street_number'].to_s + ' ' + location['street'].to_s + ', ' + location['city'].to_s + ', ' + location['state'].to_s,
+      geometry: {
+        location: {
+          lat: location['latitude'],
+          lng: location['longitude'],
+        }
+      }
+    }
+
+  end
+
+  def address_components location
+    address_components = []
+
+    #street_number
+    if location['street_number']
+      address_components << {long_name: location['street_number'], short_name: location['street_number'], types: ['street_number']}
+    end
+
+    #Route
+    if location['street']
+      address_components << {long_name: location['street'], short_name: location['street'], types: ['route']}
+    end
+
+    #Street Address
+    if location['street_number'] and location['street']
+      address_components << {long_name: location['street_number'] + ' ' + location['street'], short_name: location['street_number'] + ' ' + location['street'], types: ['street_address']}
+    end
+
+    #City
+    if location['city']
+      address_components << {long_name: location['city'], short_name: location['city'], types: ["locality", "political"]}
+    end
+
+    #State
+    if location['state']
+      address_components << {long_name: location['state'], short_name: location['state'], types: ["postal_code"]}
+    end
+
+    return address_components
+
+  end
 
   ####################################
   # End Ecolane Specific Functions
