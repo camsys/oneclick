@@ -2,6 +2,7 @@ class Poi < GeocodedAddress
   
   # Associations
   belongs_to :poi_type
+  serialize :types
 
   #after_validation :reverse_geocode
   
@@ -163,7 +164,8 @@ class Poi < GeocodedAddress
         id: self.id,
         name: self.name,
         scope: "user",
-        stop_code: self.stop_code
+        stop_code: self.stop_code,
+        types: self.types
     }
   end
 

@@ -5,7 +5,8 @@ class Place < GeocodedAddress
   belongs_to  :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to  :poi       # optional
   has_many    :trip_places # optional
-  
+  serialize :types
+
   # attr_protected :id, :user_id, :created_at, :updated_at
   # attr_accessible :name, :raw_address
   # attr_accessible :creator_id, :poi_id, :active, :home, :lat, :lon
@@ -125,7 +126,8 @@ class Place < GeocodedAddress
         id: self.id,
         name: self.name,
         scope: "user",
-        stop_code: self.stop_code
+        stop_code: self.stop_code,
+        types: self.types
     }
   end
 
