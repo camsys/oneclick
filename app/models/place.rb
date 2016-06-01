@@ -160,7 +160,7 @@ class Place < GeocodedAddress
     end
 
     #Zip
-    if self.state
+    if self.zip
       address_components << {long_name: self.zip, short_name: self.zip, types: ["administrative_area_level_1","political"]}
     end
 
