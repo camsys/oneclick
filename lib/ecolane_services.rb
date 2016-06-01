@@ -124,7 +124,33 @@ class EcolaneServices
     url_options += "/orders"
     url_options += "?start=" + Time.now.iso8601[0...-6]
     url = BASE_URL + url_options
-    send_request(url, token)
+    response = send_request(url, token)
+    unpack_future_orders(response)
+  end
+
+  def unpack_future_orders response
+
+    begin
+      resp_code = response.code
+    rescue
+      return false, "500"
+    end
+
+    unless resp_code == "200"
+      return false, response.message
+    end
+
+    body = Hash.from_xml(response.body)
+
+    orders = body['orders']['order']
+
+    #Ecolane will not return an array of only one object
+    unless orders.is_a? Array
+      orders = [orders]
+    end
+
+    orders
+
   end
 
   # Given a booking_confirmation, returns the current info of this trip (pu_time, do_time, confirmation_number)
