@@ -499,14 +499,6 @@ class BookingServices
     end
   end
 
-  def past_trips(traveler, n = 10, start=Time.now)
-    # Traveler = User object
-    # n = the maximum number of results to return
-    # start = all results must be after or at this time
-    # Returns: ALL trips that are upcoming and n trips in the past
-
-  end
-
   #Get All Future Trips and Convert them to a Hash to be returned by the API
   # TODO Update to do this for RidePilot and Trapeze
   def future_trips user, agency=AGENCY[:ecolane]
@@ -532,6 +524,38 @@ class BookingServices
         future_trips = es.get_future_orders customer_number, system, token
 
         build_itinerary_hash_from_ecolane_hash future_trips
+
+      else
+        return []
+    end
+  end
+
+
+  #Get All Future Trips and Convert them to a Hash to be returned by the API
+  # TODO Update to do this for RidePilot and Trapeze
+  def past_trips user, max_results = 10, start_time = Time.now.iso8601, agency=AGENCY[:ecolane]
+
+    case agency
+      when AGENCY[:ecolane]
+        es = EcolaneServices.new
+        #Ecolane users only have one user_service
+        user_service = user.user_profile.user_services.first
+        if user_service.nil?
+          return []
+        end
+
+        service = user_service.service
+
+        #Get the info needed for the Ecolane API Call
+        customer_number = user_service.external_user_id
+        system = service.ecolane_profile.system
+        token = service.ecolane_profile.token
+
+        es = EcolaneServices.new
+
+        past_trips = es.get_past_orders(customer_number, max_results, start_time, system, token)
+
+        build_itinerary_hash_from_ecolane_hash past_trips
 
       else
         return []

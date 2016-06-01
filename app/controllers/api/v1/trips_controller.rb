@@ -30,7 +30,6 @@ module Api
         get_trip_details trip
       end
 
-
       def get_trip_status trip
 
         if trip
@@ -65,7 +64,24 @@ module Api
 
         bs = BookingServices.new
         if @traveler
-          trips_hash = bs.future_trips @traveler
+          paratarnsit_trips_hash = bs.future_trips @traveler
+        end
+
+        respond_with paratransit_trips_hash
+
+      end
+
+      def past_trips
+
+        max_results = (params[:max_results] || 10).to_i
+        start_time = params[:start_time].nil? ? Time.now.iso8601 : Time.parse(params[:start_time]).iso8601
+
+        trips_hash = {}
+
+        bs = BookingServices.new
+        if @traveler
+          trips_hash = bs.past_trips @traveler, max_results, start_time
+
         end
 
         respond_with trips_hash

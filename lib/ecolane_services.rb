@@ -128,6 +128,21 @@ class EcolaneServices
     unpack_future_orders(response)
   end
 
+  def get_past_orders(customer_number, max_results, start_time, system, token)
+    customer_id = get_customer_id(customer_number, system, token)
+    url_options = "/api/customer/" + system + '/'
+    url_options += customer_id.to_s
+    url_options += "/orders"
+    url_options += "?end=" + start_time[0...-6]
+    url_options += "&limit=" + (max_results || 10).to_s
+    url = BASE_URL + url_options
+
+    puts url.ai
+
+    response = send_request(url, token)
+    unpack_future_orders(response)
+  end
+
   def unpack_future_orders response
 
     begin
