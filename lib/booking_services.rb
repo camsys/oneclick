@@ -714,7 +714,7 @@ class BookingServices
 
   end
 
-  def google_place_from_ecolane_location location                                         .
+  def google_place_from_ecolane_location location
 
     #Based on Google Place Details
     {
