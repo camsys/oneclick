@@ -113,7 +113,7 @@ module Oneclick
     #Alloow CORS to the API from 1 domain
     config.action_dispatch.default_headers = {
         'Access-Control-Allow-Origin' => ENV['ALLOWED_API_DOMAIN'],
-        'Access-Control-Request-Method' => %w{GET POST}.join(",")
+        'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
     }
 
     # Version of your assets, change this if you want to expire all your assets
