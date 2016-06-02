@@ -1,5 +1,5 @@
 Oneclick::Application.routes.draw do
-  
+
   get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: oneclick_available_locales do
@@ -318,6 +318,8 @@ Oneclick::Application.routes.draw do
   #API
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
+      match '*path', :controller => 'api', :action => 'handle_options_request', via: [:options]
+
       resources :trip_purposes do
         collection do
           post 'list' => 'trip_purposes#list'

@@ -13,6 +13,10 @@ module Api
       before_action :confirm_user_token
       before_action :get_api_traveler
 
+
+      def handle_options_request
+        head(:ok) if request.request_method == "OPTIONS"
+      end
       protected
 
       def confirm_user_token
