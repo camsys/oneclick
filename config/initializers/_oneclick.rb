@@ -15,6 +15,7 @@ Oneclick::Application.configure do
   config.get_fares_from_ecolane = false
   config.service_max_allow_advanced_book_days = 365
   config.ada_funding_sources = []
+  config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
 
   #Review the necessity of these variables
   config.show_update_services = false
