@@ -48,6 +48,7 @@ class TripPlanner
     url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
+    url_options += "&showIntermediateStops=" + Oneclick::Application.config.show_intermediate_stops.to_s
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
     if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
