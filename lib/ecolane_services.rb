@@ -373,6 +373,12 @@ class EcolaneServices
       return nil
     end
 
+    # If there is only one locations, it comes back as a single element instead of an array
+    # Ensure that we always get an array
+    unless locations.kind_of?(Array)
+      locations = [locations]
+    end
+
     possible_home = nil
     locations.each do |location|
       if location['type'].downcase == 'home'
