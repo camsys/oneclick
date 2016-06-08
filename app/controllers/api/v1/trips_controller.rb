@@ -66,7 +66,6 @@ module Api
         if @traveler
           paratransit_trips_hash = @traveler.future_trips
         end
-
         respond_with paratransit_trips_hash
 
       end
@@ -80,7 +79,7 @@ module Api
 
         bs = BookingServices.new
         if @traveler
-          trips_hash = bs.past_trips @traveler, max_results, start_time
+          trips_hash = @traveler.past_results(start_time, max_results)
 
         end
 
