@@ -503,7 +503,7 @@ class Service < ActiveRecord::Base
   end
 
   def endpoint_contains?(lat,lng)
-    return true
+
     mercator_factory = RGeo::Geographic.simple_mercator_factory
      test_point = mercator_factory.point(lng, lat)
     unless self.endpoint_area_geom.nil?
@@ -514,7 +514,6 @@ class Service < ActiveRecord::Base
 
   def coverage_area_contains?(lat, lng)
 
-    return true
     mercator_factory = RGeo::Geographic.simple_mercator_factory
     test_point = mercator_factory.point(lng, lat)
     unless self.coverage_area_geom.nil?
