@@ -411,6 +411,15 @@ class Itinerary < ActiveRecord::Base
 
   ##################################
 
+  def origin
+    self.trip_part.origin
+  end
+
+  def destination
+    self.trip_part.destination
+  end
+
+
   protected
 
   #OTP is setting drive time and bicycle time as walk time.  This is a temporary work-around

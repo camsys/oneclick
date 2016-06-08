@@ -523,7 +523,7 @@ class BookingServices
 
         future_trips = es.get_future_orders customer_number, system, token
 
-        build_itinerary_hash_from_ecolane_hash future_trips
+        build_api_trips_hash_array_from_ecolane_hash future_trips
 
       else
         return []
@@ -555,7 +555,7 @@ class BookingServices
 
         past_trips = es.get_past_orders(customer_number, max_results, start_time, system, token)
 
-        build_itinerary_hash_from_ecolane_hash past_trips
+        build_api_trips_hash_array_from_ecolane_hash past_trips
 
       else
         return []
@@ -716,7 +716,7 @@ class BookingServices
 
   #Take the hash of itineraries returned from Ecolane's future/past trips call and convert them to the
   # Itinerary Hash format that the API needs to return
-  def build_itinerary_hash_from_ecolane_hash hashes
+  def build_api_trips_hash_array_from_ecolane_hash hashes
 
     trip_hashes = []
 
@@ -746,6 +746,28 @@ class BookingServices
     trip_hashes
 
   end
+
+  def build_api_trip_hash_from_non_paratransit_trip trip
+
+    itineraries = trip.selected_itineraries
+    trip_hash = {}
+
+    itineraries.each do |itinerary|
+      itinerary_hash = {}
+      itinerary_hash[:mode] = itinerary.mode.code
+      itinerary_hash[:negotiated_pu_time] = itinerary.start_time.iso8601
+      itinerary_hash[:negotiated_do_time] = itinerary.end_time.iso8601
+      itinerary_hash[:fare] = itinerary.cost.to_f
+      itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
+      itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
+      trip_hash[itinerary.trip_part.sequence] =  itinerary_hash
+    end
+
+    return trip_hash
+
+  end
+
+
 
   def google_place_from_ecolane_location location
 

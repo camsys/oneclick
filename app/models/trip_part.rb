@@ -589,4 +589,12 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
       selected_itinerary.save
     end
   end
+
+  def origin
+    return self.from_trip_place
+  end
+
+  def destination
+    return self.to_trip_place
+  end
 end

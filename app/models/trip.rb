@@ -35,6 +35,8 @@ class Trip < ActiveRecord::Base
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
   scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
+  scope :future, -> { joins(:itineraries).where('itineraries.start_time > ?', Time.now).uniq }
+  scope :future_not_paratransit, -> { joins(:itineraries).where('itineraries.mode_id <> ? AND selected = true AND itineraries.start_time > ?', Mode.paratransit.id, Time.now).uniq }
 
   #Constants
   QUICK = 'QUICK'

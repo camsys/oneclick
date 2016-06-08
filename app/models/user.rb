@@ -273,4 +273,22 @@ class User < ActiveRecord::Base
       .joins(:message).where('messages.from_date is ? or messages.from_date <= ?',nil,DateTime.now)
       .where('messages.to_date is ? or messages.to_date >= ?',nil,DateTime.now)
   end
+
+  def future_trips
+    bs = BookingServices.new
+
+    #Get Paratransit Trips that have Been Booked
+    # This gets all trips, even thouse that were not booked through 1-click
+    trips_array = bs.future_trips self
+
+    #Get all future NON-Paratransit Trips that have been booked/selected
+    self.trips.future_not_paratransit.each do |trip|
+      trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+    end
+
+    return trips_array
+    #Sort all of these trips by date
+    trips_array.sort_by{ |trip| trip[0][:negotiated_pu_time]}
+  end
+
 end
