@@ -36,7 +36,14 @@ module Api
       end
 
       def profile
-        hash = {first_name: @traveler.first_name, last_name: @traveler.last_name, email: @traveler.email}
+        hash = {first_name: @traveler.first_name, last_name: @traveler.last_name}
+
+        #Don't send an email address if it's just the default ecolane email
+        email = @traveler.email
+        if email.include? "@ecolane_user.com"
+          email = ""
+        end
+        hash[:email] =  email
 
         #Walking Speed
         walking_speed = @traveler.walking_speed
