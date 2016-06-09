@@ -280,6 +280,7 @@ class User < ActiveRecord::Base
     #Get Paratransit Trips that have Been Booked
     # This gets all trips, even thouse that were not booked through 1-click
     trips_array = bs.future_trips self
+    trips_array = bs.group_trips trips_array
 
     #Get all future NON-Paratransit Trips that have been booked/selected
     self.trips.future_not_paratransit.each do |trip|
