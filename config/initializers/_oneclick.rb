@@ -27,7 +27,7 @@ Oneclick::Application.configure do
   config.max_ui_duration = 2.hours
   config.min_ui_duration = 1.hours
   config.poi_is_loading = false
-  config.allows_booking = false
+  config.allows_booking = true
   config.restrict_results_registered_services = false #Only show results on the review page from services that the user is registered to book with (used at PA)
 
   config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
