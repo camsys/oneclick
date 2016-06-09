@@ -735,6 +735,16 @@ class BookingServices
       new_itinerary[:companions] = hash['companions']
       new_itinerary[:origin] = google_place_from_ecolane_location(hash['pickup']['location'])
       new_itinerary[:destination] = google_place_from_ecolane_location(hash['dropoff']['location'])
+      new_itinerary[:walk_time] = 0
+      new_itinerary[:walk_distance] = 0
+      new_itinerary[:transfers] = 0
+      new_itinerary[:json_legs]= nil
+
+      if hash['pickup']['negotiated'] and hash['dropoff']['negotiated']
+        new_itinerary[:duration] = Time.parse(hash['dropoff']['negotiated']) - Time.parse(hash['pickup']['negotiated'])
+        new_itinerary[:transit_time] = new_itinerary[:duration]
+      end
+
       trip_hash[0] = new_itinerary
       trip_hashes << trip_hash
 
@@ -757,6 +767,13 @@ class BookingServices
       itinerary_hash[:fare] = itinerary.cost.to_f
       itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
       itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
+      itinerary_hash[:duration] = itinerary.duration
+      itinerary_hash[:walk_time] =  itinerary.walk_time
+      itinerary_hash[:transit_time] = itinerary.transit_time
+      itinerary_hash[:wait_time] = itinerary.wait_time
+      itinerary_hash[:walk_distance] = itinerary.walk_distance
+      itinerary_hash[:transfers] = itinerary.transfers
+      itinerary_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
       trip_hash[itinerary.trip_part.sequence] =  itinerary_hash
     end
 
