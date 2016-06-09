@@ -295,7 +295,7 @@ class User < ActiveRecord::Base
 
     #Get Paratransit Trips that have Been Booked
     # This gets all trips, even thouse that were not booked through 1-click
-    trips_array = bs.past_trips(self, max_results, end_time.iso8601)
+    trips_array = bs.past_trips(self, max_results, end_time)
 
     #Get past NON-Paratransit Trips that have been booked/selected
     self.trips.during_not_paratransit(end_time).each do |trip|

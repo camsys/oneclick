@@ -194,6 +194,7 @@ class BookingServices
   # a user_service to link the service and the user.  This user_service contains all the information necessary to allow the user to book trips with the given service
   # This method returns a boolean
   def associate_user(service, user, external_user_id, external_user_password)
+
     case service.booking_profile
       when AGENCY[:ecolane]
         ecolane_profile = service.ecolane_profile
@@ -659,14 +660,10 @@ class BookingServices
 
   def get_top_purposes(purposes)
 
-    puts purposes.ai
     #Get a list of top purposes:  TODO expand this to include the passengers recent trips. Those are more likely than a global setting of top trip purposes.
     top_purposes = Oneclick::Application.config.top_ecolane_purposes
 
-    puts top_purposes.ai
     top_purposes = (top_purposes & purposes)[0 .. 3] #Find the intersection of top purposes and purposes for this person.  Take the top 4
-
-    puts top_purposes.ai
 
     #If there aren't at least 4, then add in more until we reach four.
     if top_purposes.count < 4

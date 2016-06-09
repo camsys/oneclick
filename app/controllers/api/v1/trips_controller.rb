@@ -80,7 +80,7 @@ module Api
 
         bs = BookingServices.new
         if @traveler
-          trips_hash = @traveler.past_results(end_time, max_results)
+          trips_hash = @traveler.past_trips(end_time, max_results)
         end
 
         respond_with trips_hash
