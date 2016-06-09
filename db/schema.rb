@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607105730) do
+ActiveRecord::Schema.define(version: 20160607105731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,8 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.datetime "updated_at"
   end
 
+  add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
+
   create_table "funding_sources", force: true do |t|
     t.string   "code",                           null: false
     t.integer  "index"
@@ -351,6 +353,8 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.datetime "updated_at"
   end
 
+  add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
+
   create_table "modes", force: true do |t|
     t.string  "name",                limit: 64,                 null: false
     t.boolean "active",                                         null: false
@@ -423,11 +427,10 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.string   "county",          limit: 128
-    t.string   "google_place_id"
     t.boolean  "old"
-    t.string   "stop_code"
     t.string   "street_number"
     t.string   "route"
+    t.string   "google_place_id"
     t.text     "types"
   end
 
@@ -599,6 +602,7 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.datetime "updated_at",               null: false
   end
 
+  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "satisfaction_surveys", force: true do |t|
@@ -800,6 +804,8 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.string   "booking_trip_purpose_desc"
   end
 
+  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
+
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
     t.integer  "sequence",                                                     null: false
@@ -870,10 +876,9 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.float    "walk_mph",                             default: 3.0
     t.integer  "num_itineraries",                      default: 3
     t.float    "max_bike_miles",                       default: 5.0
-    t.string   "desired_modes_raw"
   end
 
-  create_table "trips_desired_modes", id: false, force: true do |t|
+  create_table "trips_desired_modes", force: true do |t|
     t.integer "trip_id",         null: false
     t.integer "desired_mode_id", null: false
   end
@@ -980,7 +985,9 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.string   "disabled_comment"
   end
 
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64
@@ -1020,5 +1027,9 @@ ActiveRecord::Schema.define(version: 20160607105730) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
+  add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
+  add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
 
 end
