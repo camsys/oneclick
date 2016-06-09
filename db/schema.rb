@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601133118) do
+ActiveRecord::Schema.define(version: 20160607105730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -802,27 +802,28 @@ ActiveRecord::Schema.define(version: 20160601133118) do
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
-    t.integer  "sequence",                                              null: false
+    t.integer  "sequence",                                                     null: false
     t.integer  "place_id"
     t.integer  "poi_id"
     t.string   "raw_address"
-    t.decimal  "lat",                         precision: 15, scale: 10
-    t.decimal  "lon",                         precision: 15, scale: 10
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
-    t.string   "address1",        limit: 128
-    t.string   "address2",        limit: 128
-    t.string   "city",            limit: 128
-    t.string   "state",           limit: 64
-    t.string   "zip",             limit: 10
-    t.string   "county",          limit: 128
+    t.decimal  "lat",                                precision: 15, scale: 10
+    t.decimal  "lon",                                precision: 15, scale: 10
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
+    t.string   "address1",               limit: 128
+    t.string   "address2",               limit: 128
+    t.string   "city",                   limit: 128
+    t.string   "state",                  limit: 64
+    t.string   "zip",                    limit: 10
+    t.string   "county",                 limit: 128
     t.string   "result_types"
-    t.string   "name",            limit: 256
+    t.string   "name",                   limit: 256
     t.string   "street_number"
     t.string   "route"
     t.string   "google_place_id"
     t.string   "stop_code"
     t.text     "types"
+    t.text     "address_components_raw"
   end
 
   create_table "trip_purposes", force: true do |t|

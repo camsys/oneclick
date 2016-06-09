@@ -9,6 +9,7 @@ class TripPlace < GeocodedAddress
 
   validate :validator
   serialize :types
+  serialize :address_components_raw
 
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
@@ -171,29 +172,34 @@ class TripPlace < GeocodedAddress
     self.google_place_id = details[:place_id]
     self.stop_code = details[:stop_code]
     self.types = details[:types]
+    self.address_components_raw  = details
 
   end
 
   def build_place_details_hash
-    #Based on Google Place Details
-    {
-      address_components: self.address_components,
+    if self.address_components_raw.nil?
+      #Based on Google Place Details
+      {
+        address_components: self.address_components,
 
-      formatted_address: self.raw_address,
-      place_id: self.google_place_id,
-      geometry: {
-        location: {
-          lat: self.lat,
-          lng: self.lon,
-        }
-      },
+        formatted_address: self.raw_address,
+        place_id: self.google_place_id,
+        geometry: {
+          location: {
+            lat: self.lat,
+            lng: self.lon,
+          }
+        },
 
-      id: self.id,
-      name: self.name,
-      scope: "user",
-      stop_code: self.stop_code,
-      types: self.types
-    }
+        id: self.id,
+        name: self.name,
+        scope: "user",
+        stop_code: self.stop_code,
+        types: self.types
+      }
+    else
+      self.address_components_raw
+    end
   end
 
   def address_components
@@ -301,6 +307,8 @@ class TripPlace < GeocodedAddress
     self.raw = Rails.cache.read("TripPlace.raw.#{id}")
     Rails.logger.debug "Got #{self.raw}"
   end
+
+
 
   private
 
