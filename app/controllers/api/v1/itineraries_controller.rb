@@ -247,9 +247,21 @@ module Api
 
         results_array = []
         bookingcancellation_request.each do |bc|
-          itinerary = Itinerary.find(bc[:itinerary_id].to_i)
-          booking_confirmation = itinerary.booking_confirmation
-          result = itinerary.cancel
+
+          if bc[:itinerary_id]
+            itinerary = Itinerary.find(bc[:itinerary_id].to_i)
+            booking_confirmation = itinerary.booking_confirmation
+            result = itinerary.cancel
+          elsif bc[:booking_confirmation]
+            booking_confirmation = bc[:booking_confirmation]
+            itinerary = Itinerary.find_by(booking_confirmation: booking_confirmation)
+            if itinerary #This itinerary was booked through the 1-Click. Mark it as unselected and canceled
+              result = itinerary.cancel
+            else #This itinerary was NOT booked through 1-Click. Cancel it Anyway.
+              bs = BookingServices.new
+              result = bs.cancel_external bc[:booking_confirmation], @traveler
+            end
+          end
           results_array.append({trip_id: bc[:trip_id], itinerary_id: bc[:itinerary_id], success: result, confirmation_id: booking_confirmation})
         end
 
