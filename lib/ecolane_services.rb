@@ -698,6 +698,13 @@ class EcolaneServices
 
   end
 
+  def trip_belongs_to_user?(booking_confirmation, system, token, customer_number)
+    resp = fetch_single_order(booking_confirmation, system, token)
+    body = Hash.from_xml(resp.body)
+    customer_id_from_trip = body["order"]["customer_id"]
+    customer_id = get_customer_id(customer_number, system, token)
+    return customer_id_from_trip == customer_id
+  end
 
   ## Utility functions:
   #Ecolane has two unique identifiers customer_number and customer_id.

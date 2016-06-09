@@ -193,7 +193,7 @@ class BookingServices
   #Cancels a booked trips that was not made from 1-Click
   def cancel_external booking_confirmation, user
 
-    unless confirm_trip_belongs_to_user booking_confirmation, user
+    unless trip_belongs_to_user? booking_confirmation, user
       return false
     end
 
@@ -203,17 +203,21 @@ class BookingServices
 
     case service.booking_profile
       when AGENCY[:ecolane]
-        ecolane_profile = itinerary.service.ecolane_profile
+        ecolane_profile = service.ecolane_profile
         es = EcolaneServices.new
         result = es.cancel(booking_confirmation, ecolane_profile.system, ecolane_profile.token)
         return result
     end
   end
 
-  def confirm_trip_belongs_to_user booking_confirmation, user
-    return true
+  def trip_belongs_to_user? booking_confirmation, user
+    #This currently only works for Ecolane.  Ecolane users only have one service profile
+    user_service =  user.user_profile.user_services.first
+    service = user_service.service
+    ecolane_profile = service.ecolane_profile
+    es = EcolaneServices.new
+    es.trip_belongs_to_user?(booking_confirmation, ecolane_profile.system, ecolane_profile.token, user_service.external_user_id)
   end
-
 
   # Given a service, a user, and login credentials, test to see if the login credentials are valid, if they are create
   # a user_service to link the service and the user.  This user_service contains all the information necessary to allow the user to book trips with the given service
