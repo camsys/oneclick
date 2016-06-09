@@ -37,7 +37,7 @@ class Trip < ActiveRecord::Base
   scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
   scope :future, -> { joins(:itineraries).where('itineraries.start_time > ?', Time.now).uniq }
   scope :future_not_paratransit, -> { joins(:itineraries).where('itineraries.mode_id <> ? AND selected = true AND itineraries.start_time > ?', Mode.paratransit.id, Time.now).uniq }
-  scope :during_not_paratransit, -> (start_time = (Time.now - 365.days), end_time = Time.now) { joins(:itineraries).where('itineraries.mode_id <> ? AND selected = true AND itineraries.start_time > ? AND itineraries.start_time < ?', Mode.paratransit.id, start_time, end_time).uniq }
+  scope :during_not_paratransit, -> (end_time = Time.now) { joins(:itineraries).where('itineraries.mode_id <> ? AND selected = true AND itineraries.start_time > ? AND itineraries.start_time < ?', Mode.paratransit.id, Time.now-365.days, end_time).uniq }
 
   #Constants
   QUICK = 'QUICK'

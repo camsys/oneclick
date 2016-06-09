@@ -533,7 +533,7 @@ class BookingServices
 
   #Get All Future Trips and Convert them to a Hash to be returned by the API
   # TODO Update to do this for RidePilot and Trapeze
-  def past_trips user, max_results = 10, start_time = Time.now.iso8601, agency=AGENCY[:ecolane]
+  def past_trips user, max_results = 10, end_time = Time.now.iso8601, agency=AGENCY[:ecolane]
 
     case agency
       when AGENCY[:ecolane]
@@ -553,7 +553,7 @@ class BookingServices
 
         es = EcolaneServices.new
 
-        past_trips = es.get_past_orders(customer_number, max_results, start_time, system, token)
+        past_trips = es.get_past_orders(customer_number, max_results, end_time, system, token)
 
         build_api_trips_hash_array_from_ecolane_hash past_trips
 

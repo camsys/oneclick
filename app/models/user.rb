@@ -290,15 +290,15 @@ class User < ActiveRecord::Base
     trips_array.sort_by{ |trip| trip[0][:negotiated_pu_time]}
   end
 
-  def past_trips start_time = Time.now, max_results = 10
+  def past_trips end_time = Time.now, max_results = 10
     bs = BookingServices.new
 
     #Get Paratransit Trips that have Been Booked
     # This gets all trips, even thouse that were not booked through 1-click
-    trips_array = bs.past_trips(self, max_results, start_time.iso8601)
+    trips_array = bs.past_trips(self, max_results, end_time.iso8601)
 
-    #Get all future NON-Paratransit Trips that have been booked/selected
-    self.trips.during_not_paratransit(start_time =  Time.now - 365.days).each do |trip|
+    #Get past NON-Paratransit Trips that have been booked/selected
+    self.trips.during_not_paratransit(end_time).each do |trip|
       trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
     end
 
