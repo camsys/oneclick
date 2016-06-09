@@ -304,8 +304,9 @@ class BookingServices
     case service.booking_profile
       when AGENCY[:ecolane]
 
+       ecolane_profile = service.ecolane_profile
         es = EcolaneServices.new
-        purposes =  es.get_trip_purposes(es.get_customer_id(user_service.external_user_id, user_service.service.booking_system_id, user_service.service.booking_token), user_service.service.booking_system_id, user_service.service.booking_token, user_service.service.disallowed_purposes_array)
+        purposes =  es.get_trip_purposes(es.get_customer_id(user_service.external_user_id, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, user_service.service.disallowed_purposes_array)
 
         #This creates a hash for the purposes.  For Ecolane the description/name and id are the same.
         purposes_hash = {}
