@@ -554,7 +554,8 @@ class BookingServices
 
         es = EcolaneServices.new
 
-        past_trips = es.get_past_orders(customer_number, max_results, end_time, system, token)
+        #Why is max_results doubled?  Because, ecolane sends back round trips as two trips.
+        past_trips = es.get_past_orders(customer_number, max_results*2, end_time, system, token)
 
         build_api_trips_hash_array_from_ecolane_hash past_trips
 
@@ -781,8 +782,6 @@ class BookingServices
 
   end
 
-
-
   def google_place_from_ecolane_location location
 
     #Based on Google Place Details
@@ -830,6 +829,54 @@ class BookingServices
 
     return address_components
 
+  end
+
+  #Ecolane does not have a concept of roundtrips, 1-way trips should be grouped
+  def group_trips trips_array
+
+    new_array = []
+
+    skip = false
+    trips_array.each_cons(2) do |trip, next_trip|
+
+      #If this is already a round trip, keep moving.  It's already been added
+      if skip
+        skip = false
+        next
+      end
+
+      if trip.count > 1 or next_trip.count > 1
+        new_array << trip
+        next
+      end
+
+      #Are these trips on the same day?
+      unless trip[0][:negotiated_pu_time].to_date === next_trip[0][:negotiated_pu_time].to_date
+        new_array << trip
+        next
+      end
+
+      #Does these trips have inverted origins/destinations?
+      unless trip[0][:destination][:formatted_address] == next_trip[0][:origin][:formatted_address] and trip[0][:origin][:formatted_address] == next_trip[0][:destination][:formatted_address]
+        new_array << trip
+        next
+      end
+
+      #Ok these trips passed all the tests, combine them into one trip
+      skip = true #This says to skip the next trip, because it's already been handled here
+      new_trip = {0 => trip[0], 1 => next_trip[0]}
+      new_array << new_trip
+
+    end
+
+    # We need to handle the last trip
+    unless skip
+      new_array << trips_array.last
+    end
+
+    puts trips_array.ai
+    puts new_array.ai
+    return new_array
   end
 
   ####################################
