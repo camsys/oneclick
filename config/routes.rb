@@ -341,6 +341,7 @@ Oneclick::Application.routes.draw do
         collection do
           get 'ids'
           get 'ids_humanized'
+          get 'hours'
         end
       end
 
