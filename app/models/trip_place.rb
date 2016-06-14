@@ -174,6 +174,10 @@ class TripPlace < GeocodedAddress
     self.types = details[:types]
     self.address_components_raw  = details
 
+    if self.raw_address.nil?
+      self.raw_address = self.name
+    end
+
   end
 
   def build_place_details_hash
