@@ -4,12 +4,13 @@ class UserMailer < ActionMailer::Base
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
-  def user_trip_email(addresses, trip, subject, comments, current_user = nil)
+  def user_trip_email(addresses, trip, subject, comments, current_user=nil,from=@@from, trip_link)
     @trip = trip
     @comments = comments
-    @user = current_user
+    @user = current_user.nil? ? trip.user : current_user
+    @trip_link = trip_link
 
-    mail(to: addresses, subject: subject, from: @@from)
+    mail(to: addresses, subject: subject, from: from)
   end
 
   def provider_trip_email(emails, trip, subject, from, comments)

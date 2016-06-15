@@ -264,34 +264,44 @@ module Api
       #Itinerary email template is out of date.
       def email
         email_itineraries = params[:email_itineraries]
+        trip_link = params[:trip_link]  
 
         email_itineraries.each do |email_itinerary|
+
           email_address = email_itinerary[:email_address]
+          from_address = email_itinerary[:from_address]
+          
           itineraries = email_itinerary[:itineraries]
           trip_to_email = itineraries.first
           trip = Trip.find(trip_to_email[:trip_id].to_i)
-
-          if trip.scheduled_time > Time.now
+          if !email_itinerary[:subject].nil?
+            subject = email_itinerary[:subject]
+          elsif trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           else
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
-          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
+          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler, from_address, trip_link).deliver
         end
 
         render json: {result: 200}
 
       end
 
+      def map_status
+          statuses = Itinerary.where(id: params[:id].split(',')).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
+          render json: statuses
+      end
 
-      def request_create_maps (trip)
+      def request_create_maps
+        trip = Trip.find(params[:trip_id])
         itins = trip.selected_itineraries
         itins.each do |itin|
           print_url = create_map_user_trip_itinerary_url(trip.user.id.to_s, trip.id.to_s, itin.id.to_s)
           Rails.logger.info "print_url is #{print_url}"
           PrintMapWorker.perform_async(print_url, itin.id)
         end
-        return
+        render json: {result: 200}
       end
 
       def yes_or_no value

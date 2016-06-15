@@ -309,6 +309,8 @@ Oneclick::Application.routes.draw do
           post 'book'
           post 'cancel'
           post 'email'
+          post 'request_create_maps'
+          post 'map_status'
         end
       end
 

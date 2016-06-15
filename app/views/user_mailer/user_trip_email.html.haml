@@ -1,33 +1,41 @@
 = translate_helper(:user_trip_email_header).to_s
-
+%head
 - unless @comments.blank?
   %h3= translate_helper(:comments)
   %p= @comments
-
 %hr
 
-%table{style: "font-size:1.4em;"}
+%table.trip_header{style: "font-size:1.0em;"}
   %tr
     %td{style: "color:grey;"}
-      %strong
-        = translate_helper(:from) + ':  '
+      %strong.trip_header_detail
+        = translate_helper(:origin) + ':  '
     %td
-      %strong
+      %strong.trip_header_detail
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
-      %strong
-        =translate_helper(:to) + ':  '
+      %strong.trip_header_detail
+        =translate_helper(:destination) + ':  '
     %td
-      %strong
+      %strong.trip_header_detail
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
-      %strong
-        =translate_helper(:at_time)
+      %strong.trip_header_detail
+        =translate_helper(:date) + ': '
     %td
       %strong
         =@trip.trip_datetime.in_time_zone.strftime("%A, %B %-d")
+  -unless @trip_link.blank?  
+    %tr
+      %td{style: "color:grey; weight:strong;"}
+        %strong.trip_header_detail
+          ='Trip Link' + ':  '
+      %td
+        %a{href: @trip_link + @trip.id.to_s}
+          =@trip_link + @trip.id.to_s
+  
 
 - ItineraryDecorator.decorate_collection(@trip.itineraries.selected).each do |itinerary|
   - Rails.logger.info itinerary.ai

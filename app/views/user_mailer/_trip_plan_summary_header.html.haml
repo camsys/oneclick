@@ -1,35 +1,39 @@
 - i = itinerary
 - Rails.logger.info i.ai
 .row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
-  %table{style: "width: 100%; text-align: center;"}
-    %thead
-      %tr
-        %th.sr-only{:style => "text-align: left;"}= translate_helper(:mode)
-        %th= translate_helper(:fare)
-        %th= translate_helper(:trip_date)
-        %th= translate_helper(:trip_time)
-        %th= translate_helper(:walk_time)
-        %th= translate_helper(:transfers)
-    %tbody
-      %tr
-        %td{:width => '20%', :style => "text-align: left;"}
-          %img{:src => logo_url_helper(i)}
-          .sr-only= translate_helper(i.mode)
-        %td{:width => '15%'}
-          .itinerary_text
-            = i.cost_in_words
-        %td{:width => '15%'}
-          .itinerary_text
-            = i.date_in_words
-        %td{:width => '25%'}
-          .itinerary_text
-            = i.time_range_in_words
-          .itinerary_text_small{:style => "line-height: normal;"}
-            = i.duration_in_words
-        %td{:width => '15%'}
-          .itinerary_text
-            = i.walking_time
-        %td{:width => '10%'}
-          .itinerary_text
-            = i.transfers_in_words
+  %table.trip_summary_container{style: "width: 100%;"}
+    %tr
+      %td.trip_summary
+        
+        %img{:src => logo_url_helper(i)}
+        %span.sr-only= translate_helper(i.mode)
+        
+        %span.seperator= ' | ' 
+      
+        %span.label= 'Fare'  
+        %span=' : ' 
+        %span=i.cost_in_words
 
+        %span.seperator=' | '
+
+        %span.label= 'Time' 
+        %span=' : ' 
+        %span=i.time_range_in_words
+        
+        %span.seperator=' | '
+
+        %span.label= 'Duration' 
+        %span=' : ' 
+        %span.duration= i.duration_in_words 
+
+        %span.seperator=' | '
+        
+        %span.label= 'Walking'
+        %span=' : ' 
+        %span=i.walking_time
+
+        %span.seperator=' | '
+        
+        %span.label='Transfers'
+        %span=' : ' 
+        %span=i.transfers_in_words
