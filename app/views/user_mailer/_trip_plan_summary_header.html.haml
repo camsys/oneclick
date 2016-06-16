@@ -1,34 +1,34 @@
 - i = itinerary
 - Rails.logger.info i.ai
 .row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px; padding: 10px 0px;"}
-  %table.trip_summary_container{style: "width: 100%;"}
+  %table.trip_summary_container{style: "width: 100%; padding: 10px 0px;"}
     %tr
-      %td.trip_summary
-        
-        %img{:src => logo_url_helper(i)}
+      %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
+
+        %img{:src => logo_url_helper(i), style: "height: auto; width: auto; max-width: 20px; max-height: 20px; vertical-align: middle; padding-right: 10px;"}
         %span.sr-only= translate_helper(i.mode)
-        
-        %span.seperator= ' | ' 
-        %span.label= 'Fare'  
+
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | ' 
+        %span{style: "font-weight: bold;"}= 'Fare'  
         %span=' : ' 
         %span=i.cost_in_words
 
-        %span.seperator=' | '
-        %span.label= 'Time' 
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}= 'Time' 
         %span=' : ' 
         %span=i.time_range_in_words
         
-        %span.seperator=' | '
-        %span.label= 'Duration' 
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}= 'Duration' 
         %span=' : ' 
         %span.duration= i.duration_in_words 
 
-        %span.seperator=' | '
-        %span.label= 'Walking'
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}= 'Walking'
         %span=' : ' 
         %span=i.walking_time
 
-        %span.seperator=' | '
-        %span.label='Transfers'
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}='Transfers'
         %span=' : ' 
         %span=i.transfers_in_words

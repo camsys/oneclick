@@ -4,35 +4,35 @@
   %p= @comments
   %hr
 
-
-%table.trip_header{style: "font-size:1.0em;"}
+%table.trip_header{style: "font-size:1.0em; padding: 12px 0px; font-family: 'Helvetica Neue', Arial;"}
   %tr
-    %td{style: "color:grey;"}
+    %td{style: "color:grey; padding-right: 10px;"}
       %strong.trip_header_detail
         = translate_helper(:origin) + ':  '
-    %td
+    %td{style: "padding-right: 10px;"}
       %strong.trip_header_detail
         =@trip.from_place.name
   %tr
-    %td{style: "color:grey; weight:strong;"}
+    %td{style: "color:grey; weight:strong; padding-right: 10px;"}
       %strong.trip_header_detail
         =translate_helper(:destination) + ':  '
-    %td
+    %td{style: "padding-right: 10px;"}
       %strong.trip_header_detail
         =@trip.to_place.name
   %tr
-    %td{style: "color:grey;"}
+    %td{style: "color:grey; padding-right: 10px;"}
       %strong.trip_header_detail
         =translate_helper(:date) + ': '
-    %td
+    %td{style: "padding-right: 10px;"}
       %strong
         =@trip.trip_datetime.in_time_zone.strftime("%A, %B %-d")
+    
   -unless @trip_link.blank?  
     %tr
-      %td{style: "color:grey; weight:strong;"}
+      %td{style: "color:grey; weight:strong; padding-right: 10px;"}
         %strong.trip_header_detail
           ='Trip Link' + ':  '
-      %td
+      %td{style: "padding-right: 10px;"}
         %a{href: @trip_link + @trip.id.to_s}
           =@trip_link + @trip.id.to_s
 

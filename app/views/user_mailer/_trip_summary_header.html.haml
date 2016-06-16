@@ -1,10 +1,10 @@
 .row
   .col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px; padding: 10px 0px 0px 0px;"}
-    %table.trip_summary_container
+    %table.trip_summary_container{style: "padding: 10px 0px;"}
       %tr
-      %td.trip_summary
+      %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
 
-        %img{:src => logo_url_helper(@itinerary)}
+        %img{:src => logo_url_helper(@itinerary), style: "height: auto; width: auto; max-width: 20px; max-height: 20px; vertical-align: middle; padding-right: 10px;"}
         -if @itinerary.mode.code == 'mode_paratransit'
           %span=@itinerary.service.name + ' - ' + @itinerary.service.provider.name
         -else
@@ -12,8 +12,8 @@
 
 
         -if @itinerary.cost
-          %span.seperator= ' | ' 
-          %span.label= 'Fare'  
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | ' 
+          %span{style: "font-weight: bold;"}= 'Fare'  
           %span=' : '
           -if @itinerary.mode.code == 'mode_taxi'
             %span=number_to_currency(@itinerary.cost.round) + " " + translate_helper(:est)
@@ -24,34 +24,34 @@
               %span=translate_helper(:no_cost_for_service)
 
         -if itinerary.start_time
-          %span.seperator=' | '
-          %span.label= translate_helper(:depart_at)
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+          %span{style: "font-weight: bold;"}= translate_helper(:depart_at)
           %span=' : ' 
           %span=format_time(itinerary.start_time.in_time_zone)
 
         -if itinerary.end_time
-          %span.seperator=' | '
-          %span.label= translate_helper(:arrive_at)
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+          %span{style: "font-weight: bold;"}= translate_helper(:arrive_at)
           %span=' : ' 
           %span=format_time(itinerary.end_time.in_time_zone)
         
-        %span.seperator=' | '
-        %span.label= 'Duration' 
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}= 'Duration' 
         %span=' : ' 
         %span.duration= duration_to_words(@itinerary.duration) 
 
-        %span.seperator=' | '
-        %span.label= 'Walking'
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}= 'Walking'
         %span=' : ' 
         %span=duration_to_words(@itinerary.walk_time)
 
-        %span.seperator=' | '
-        %span.label='Transfers'
+        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+        %span{style: "font-weight: bold;"}='Transfers'
         %span=' : ' 
         %span=@itinerary.transfers.to_s
 
         -if itinerary.mode.code =='mode_rideshare'
-          %span.seperator=' | '
-          %span.label='Possible Rideshares'
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+          %span{style: "font-weight: bold;"}='Possible Rideshares'
           %span=' : ' 
           %span=translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)

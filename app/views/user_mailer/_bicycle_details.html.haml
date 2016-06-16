@@ -1,22 +1,23 @@
 %table
   %tr
-    %td.itinerary_icons
-      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/start.png"}
-    %td.itin_text_container
-      .itinerary_text
+    %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em;padding-right: 10px;"}
+      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/start.png", style: "height: auto; width: auto; max-width: 26px; max-height: 26px; vertical-align: top;"}
+      
+    %td.itin_text_container{style: "padding-left: 5px;"}{style: "padding-left: 5px;"}
+      .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:start) + itinerary.trip_part.from_trip_place.name
-      .itinerary_text_small
+      .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
         = format_time(itinerary.start_time.in_time_zone)
 
   - itinerary.get_legs.each do |leg|
     %tr
-      %td.itinerary_icons{style: "vertical-align:top;"}
+      %td.itinerary_icons{style: "vertical-align:top;text-align: center;line-height: normal;font-size: 2.25em;padding-right: 10px;"}
         - if leg.respond_to? :agency_id and not leg.agency_id.nil?
-          %img{:src => get_service_provider_icon(leg.agency_id, leg.mode)}
+          %img{:src => get_service_provider_icon(leg.agency_id, leg.mode), style: "height: auto; width: auto; max-width: 26px; max-height: 26px; vertical-align: top;"}
         - else
-          %img{:src => get_mode_icon(leg.mode)}
-      %td.itin_text_container
-        .itinerary_text
+          %img{:src => get_mode_icon(leg.mode), style: "height: auto; width: auto; max-width: 26px; max-height: 26px; vertical-align: top;"}
+      %td.itin_text_container{style: "padding-left: 5px;"}
+        .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
           %p= leg.trip_steps
           - if leg.mode == Leg::TripLeg::WALK
             - sidewalk_obstructions = query_sidewalk_feedback_near_one_walk_leg(leg)
@@ -30,17 +31,17 @@
                   - unless f.removed_at.nil?
                     = ', ' + translate_helper(:removed_at).downcase + ' ' + format_date(f.removed_at)
                   %br
-        .itinerary_text_small
+        .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
           = format_time(leg.start_time) + ' ' + translate_helper(:to) + ' ' + format_time(leg.end_time)
           - if leg.mode == Leg::TripLeg::WALK
             = ', ' + exact_distance_to_words(leg.distance)
   %tr
-    %td.itinerary_icons
-      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/stop.png"}
-    %td.itin_text_container
-      .itinerary_text
+    %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em;padding-right: 10px;"}
+      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/stop.png", style: "height: auto; width: auto; max-width: 26px; max-height: 26px; vertical-align: top;"}
+    %td.itin_text_container{style: "padding-left: 5px;"}
+      .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:arrive) + itinerary.trip_part.to_trip_place.name
-      .itinerary_text_small
+      .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
         = format_time(itinerary.end_time.in_time_zone)
 
 -if itinerary.map_image.url
