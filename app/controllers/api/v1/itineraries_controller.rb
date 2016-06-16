@@ -1,6 +1,7 @@
 module Api
   module V1
     class ItinerariesController < Api::V1::ApiController
+      include MapHelper
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
@@ -264,16 +265,16 @@ module Api
       #Itinerary email template is out of date.
       def email
         email_itineraries = params[:email_itineraries]
-        trip_link = params[:trip_link]  
+        trip_link = params[:trip_link].nil? ? nil : params[:trip_link]
 
         email_itineraries.each do |email_itinerary|
-
           email_address = email_itinerary[:email_address]
-          from_address = email_itinerary[:from_address]
+          from_address = email_itinerary[:from_address].nil? ? nil : email_itinerary[:from_address]
+          itineraries = email_itinerary[:itineraries].nil? ? nil : email_itinerary[:itineraries]
+          trip_to_email = email_itinerary[:trip_id]
+
+          trip = Trip.find(trip_to_email.to_i)
           
-          itineraries = email_itinerary[:itineraries]
-          trip_to_email = itineraries.first
-          trip = Trip.find(trip_to_email[:trip_id].to_i)
           if !email_itinerary[:subject].nil?
             subject = email_itinerary[:subject]
           elsif trip.scheduled_time > Time.now
@@ -281,7 +282,12 @@ module Api
           else
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
-          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler, from_address, trip_link).deliver
+
+          itinerary_ids = email_itinerary[:itinerary_ids]
+          
+          Itinerary.where(id: itinerary_ids).each do |itin|
+            UserMailer.user_itinerary_email([email_address], trip, itin, subject, '', @traveler, from_address, trip_link).deliver
+          end
         end
 
         render json: {result: 200}
@@ -289,19 +295,44 @@ module Api
       end
 
       def map_status
-          statuses = Itinerary.where(id: params[:id].split(',')).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
-          render json: statuses
+        itinerary_ids = params[:id]
+        statuses = Itinerary.where(id: itinerary_ids).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
+        render json: statuses
       end
 
       def request_create_maps
-        trip = Trip.find(params[:trip_id])
-        itins = trip.selected_itineraries
-        itins.each do |itin|
-          print_url = create_map_user_trip_itinerary_url(trip.user.id.to_s, trip.id.to_s, itin.id.to_s)
-          Rails.logger.info "print_url is #{print_url}"
-          PrintMapWorker.perform_async(print_url, itin.id)
+        
+        itinerary_ids = []
+        
+        if params[:trip_id].nil?
+          itinerary_ids = params[:itinerary_ids]
+        else
+          trip = Trip.find(params[:trip_id])
+          trip.selected_itineraries.each do |itin|
+            itinerary_ids.push(itin.id)
+          end
         end
+
+        itinerary_ids.each do |itin|
+          print_url = create_map_api_v1_itinerary_url(itin)
+          Rails.logger.info "print_url is #{print_url}"
+          PrintMapWorker.perform_async(print_url, itin)
+        end
+
         render json: {result: 200}
+      end
+
+      def create_map
+        @itinerary = Itinerary.find(params[:id])
+        @legs = @itinerary.get_legs
+        if @itinerary.is_mappable
+          @markers = create_itinerary_markers(@itinerary).to_json
+          @polylines = create_itinerary_polylines(@legs).to_json
+          @sidewalk_feedback_markers = create_itinerary_sidewalk_feedback_markers(@legs).to_json
+        end
+
+        @itinerary = ItineraryDecorator.decorate(@itinerary)
+        render "itineraries/create_map.html"
       end
 
       def yes_or_no value

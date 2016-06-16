@@ -1,6 +1,6 @@
 - i = itinerary
 - Rails.logger.info i.ai
-.row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px;"}
+.row.col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px; padding: 10px 0px;"}
   %table.trip_summary_container{style: "width: 100%;"}
     %tr
       %td.trip_summary
@@ -9,31 +9,26 @@
         %span.sr-only= translate_helper(i.mode)
         
         %span.seperator= ' | ' 
-      
         %span.label= 'Fare'  
         %span=' : ' 
         %span=i.cost_in_words
 
         %span.seperator=' | '
-
         %span.label= 'Time' 
         %span=' : ' 
         %span=i.time_range_in_words
         
         %span.seperator=' | '
-
         %span.label= 'Duration' 
         %span=' : ' 
         %span.duration= i.duration_in_words 
 
         %span.seperator=' | '
-        
         %span.label= 'Walking'
         %span=' : ' 
         %span=i.walking_time
 
         %span.seperator=' | '
-        
         %span.label='Transfers'
         %span=' : ' 
         %span=i.transfers_in_words

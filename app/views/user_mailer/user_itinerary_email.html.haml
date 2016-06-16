@@ -1,57 +1,48 @@
-= translate_helper(:user_itinerary_email_header).to_s
-
+%head
 - unless @comments.blank?
   %h3= translate_helper(:comments)
   %p= @comments
+  %hr
 
-%hr
 
-%h2
-  -if @itinerary.mode.code == 'mode_paratransit'
-    =@itinerary.service.name
-    %h3
-      =@itinerary.service.provider.name
-  -else
-    =get_trip_summary_title(@itinerary)
-%hr
-
-%table{style: "font-size:1.4em;"}
+%table.trip_header{style: "font-size:1.0em;"}
   %tr
     %td{style: "color:grey;"}
-      %strong
-        = translate_helper(:from) + ':  '
+      %strong.trip_header_detail
+        = translate_helper(:origin) + ':  '
     %td
-      %strong
+      %strong.trip_header_detail
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
-      %strong
-        =translate_helper(:to) + ':  '
+      %strong.trip_header_detail
+        =translate_helper(:destination) + ':  '
     %td
-      %strong
+      %strong.trip_header_detail
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
-      %strong
-        =translate_helper(:at_time)
+      %strong.trip_header_detail
+        =translate_helper(:date) + ': '
     %td
       %strong
-        =format_date(@trip.trip_datetime.in_time_zone)
+        =@trip.trip_datetime.in_time_zone.strftime("%A, %B %-d")
+  -unless @trip_link.blank?  
+    %tr
+      %td{style: "color:grey; weight:strong;"}
+        %strong.trip_header_detail
+          ='Trip Link' + ':  '
+      %td
+        %a{href: @trip_link + @trip.id.to_s}
+          =@trip_link + @trip.id.to_s
 
 
 
 -unless @itinerary.mode.code == 'mode_rideshare'
-  %hr
-  %h3
-    =translate_helper(:summary) + ":"
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
 
-%hr
-%h3
-  =translate_helper(:details) +":"
 
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
-%hr
-
-= translate_helper(:user_itinerary_email_footer).to_s
+%hr{style: "height:12px; background:#848484;"}
+= translate_helper(:user_trip_email_footer).to_s

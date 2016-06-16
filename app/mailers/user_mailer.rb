@@ -41,14 +41,15 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def user_itinerary_email(addresses, trip, itinerary, subject, comments, current_user = nil)
+  def user_itinerary_email(addresses, trip, itinerary, subject, comments, current_user = nil,from=@@from, trip_link)
     @trip = trip
     @itinerary = itinerary
     @legs = @itinerary.get_legs
     @comments = comments
     @user = current_user
+    @trip_link = trip_link
 
-    mail(to: addresses, subject: subject, from: @@from)
+    mail(to: addresses, subject: subject, from: from)
   end
 
   def buddy_request_email(to_email, from_traveler)

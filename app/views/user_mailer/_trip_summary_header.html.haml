@@ -1,48 +1,57 @@
 .row
-  .col-sm-12
-    %table.table
-      %ul
-        -if itinerary.is_walk
-          %h4
-            %li
-              = distance_to_words(itinerary.walk_distance)
-            %li
-              = duration_to_words(itinerary.walk_time)
-        - else
+  .col-sm-12{style: "background: white; margin: 0px 0px 5px 0px; border-radius: 5px; padding: 10px 0px 0px 0px;"}
+    %table.trip_summary_container
+      %tr
+      %td.trip_summary
 
-          -if itinerary.duration
-            %li
-              = duration_to_words(itinerary.duration) + " " + translate_helper(:est)
+        %img{:src => logo_url_helper(@itinerary)}
+        -if @itinerary.mode.code == 'mode_paratransit'
+          %span=@itinerary.service.name + ' - ' + @itinerary.service.provider.name
+        -else
+          %span=get_trip_summary_title(@itinerary)
 
-          -if itinerary.cost
-            -if itinerary.mode.code == 'mode_taxi'
-              %li
-                = number_to_currency(itinerary.cost.round) + " " + translate_helper(:est)
-            -else
-              -unless itinerary.cost == 0
-                %li
-                  = number_to_currency(itinerary.cost)
 
-              -else
-                %li
-                  = translate_helper(:no_cost_for_service)
+        -if @itinerary.cost
+          %span.seperator= ' | ' 
+          %span.label= 'Fare'  
+          %span=' : '
+          -if @itinerary.mode.code == 'mode_taxi'
+            %span=number_to_currency(@itinerary.cost.round) + " " + translate_helper(:est)
           -else
-            - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
-            -if cost_comments
-              %li
-                = cost_comments.html_safe
-          -if itinerary.transfers
-            %li
-              = translate_helper(:transfer,count: itinerary.transfers.to_s)
-          -if itinerary.start_time
-            %li
-              = translate_helper(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
-          -if itinerary.end_time
-            %li
-              = translate_helper(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
-          -if itinerary.walk_time
-            %li
-              = duration_to_words(itinerary.walk_time) + translate_helper(:walking)
-          -if itinerary.mode.code =='mode_rideshare'
-            %li
-              = translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)
+            -unless @itinerary.cost == 0
+              %span=number_to_currency(@itinerary.cost)
+            -else
+              %span=translate_helper(:no_cost_for_service)
+
+        -if itinerary.start_time
+          %span.seperator=' | '
+          %span.label= translate_helper(:depart_at)
+          %span=' : ' 
+          %span=format_time(itinerary.start_time.in_time_zone)
+
+        -if itinerary.end_time
+          %span.seperator=' | '
+          %span.label= translate_helper(:arrive_at)
+          %span=' : ' 
+          %span=format_time(itinerary.end_time.in_time_zone)
+        
+        %span.seperator=' | '
+        %span.label= 'Duration' 
+        %span=' : ' 
+        %span.duration= duration_to_words(@itinerary.duration) 
+
+        %span.seperator=' | '
+        %span.label= 'Walking'
+        %span=' : ' 
+        %span=duration_to_words(@itinerary.walk_time)
+
+        %span.seperator=' | '
+        %span.label='Transfers'
+        %span=' : ' 
+        %span=@itinerary.transfers.to_s
+
+        -if itinerary.mode.code =='mode_rideshare'
+          %span.seperator=' | '
+          %span.label='Possible Rideshares'
+          %span=' : ' 
+          %span=translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)

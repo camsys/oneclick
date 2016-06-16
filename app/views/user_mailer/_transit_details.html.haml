@@ -46,3 +46,8 @@
         = translate_helper(:arrive) + itinerary.trip_part.to_trip_place.name
       .itinerary_text_small
         = format_time(itinerary.end_time.in_time_zone)
+
+-if itinerary.map_image.url
+  %div{style: "width:100%;background: white; border-radius: 5px; padding-top: 10px;"}
+    %img{src: itinerary.map_image.url}
+

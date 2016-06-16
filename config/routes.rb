@@ -312,6 +312,10 @@ Oneclick::Application.routes.draw do
           post 'request_create_maps'
           post 'map_status'
         end
+
+        member do
+          get 'create_map'
+        end
       end
 
       resources :trips do
