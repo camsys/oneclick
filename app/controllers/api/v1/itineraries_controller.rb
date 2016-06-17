@@ -314,7 +314,7 @@ module Api
         end
 
         itinerary_ids.each do |itin|
-          print_url = create_map_api_v1_itinerary_url(itin)
+          print_url = @hostname + ':' + @port.to_s + create_map_api_v1_itinerary_path(itin)
           Rails.logger.info "print_url is #{print_url}"
           PrintMapWorker.perform_async(print_url, itin)
         end

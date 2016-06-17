@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :setup_actions
   before_filter :get_unread_messages
+  before_filter :get_host
+  before_filter :get_port
   before_action do |controller|
     @current_ability ||= Ability.new(get_traveler)
   end
@@ -40,6 +42,14 @@ class ApplicationController < ActionController::Base
     else
       current_user
     end
+  end
+
+  def get_host
+    @hostname = request.host || ''
+  end
+
+  def get_port
+    @port = request.port || '80'
   end
 
   def set_locale
