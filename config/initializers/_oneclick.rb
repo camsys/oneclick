@@ -85,9 +85,6 @@ Oneclick::Application.configure do
   config.rideshare_duration_factor = 1.5
   config.minimum_rideshare_duration = (1.5).hours
 
-  # Time Zone
-  config.time_zone = 'Eastern Time (US & Canada)'
-
   # Locales/Translations
   I18n.available_locales = [:en, :es] # default
 
