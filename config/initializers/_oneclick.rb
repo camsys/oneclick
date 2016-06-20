@@ -58,7 +58,7 @@ Oneclick::Application.configure do
   config.replace_long_walks = false
 
   #Logging
-  config.log_level = :info
+  config.log_level = 3
 
   # Maps
   config.default_zoom = nil
@@ -71,6 +71,8 @@ Oneclick::Application.configure do
 
   # Trip Plan Filter Presents
   config.default_max_duration = 120 #minutes
+
+
   config.default_max_transfers = 2
   config.default_max_fare = 50
   config.default_max_wait_time = 60 #minutes
