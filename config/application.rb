@@ -100,9 +100,7 @@ module Oneclick
 
     config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
-    # config.assets.precompile = ['foo']
-
-      config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
+    config.assets.paths << File.join(Rails.root, 'app', 'assets')
     config.assets.precompile += %w(
         application.css
         tadaaapickr.en.js
