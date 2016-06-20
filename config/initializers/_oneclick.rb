@@ -184,7 +184,7 @@ Oneclick::Application.configure do
 
   # Oneclick Back-end URL
   # (This is a temporary solution to deal with create_map proxy rendering issue)
-  config.oneclick_url = ENV['ONECLICK_URL']
+  config.oneclick_url = ENV['ONECLICK_URL'] || "http://localhost:3000"
 
 end
 
