@@ -77,6 +77,12 @@ module Api
         render :status => 404, json: {message: 'No Global Boundary'}
       end
 
+      def routes
+        tp = TripPlanner.new
+        render status: 200, json: tp.get_routes
+        return
+      end
+
     end
   end
 end

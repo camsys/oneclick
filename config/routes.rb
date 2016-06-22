@@ -337,6 +337,7 @@ Oneclick::Application.routes.draw do
           get 'search'
           post 'within_area'
           get 'boundary'
+          get 'routes'
         end
       end
 
