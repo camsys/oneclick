@@ -141,7 +141,7 @@ module Api
           Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
           my_itins.each do |itinerary|
-            i_hash = itinerary.as_json
+            i_hash = itinerary.as_json(except: 'legs')
             mode = itinerary.mode
             i_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
             i_hash[:segment_index] = itinerary.trip_part.sequence
