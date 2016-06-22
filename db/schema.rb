@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620141230) do
+ActiveRecord::Schema.define(version: 20160622145849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -802,6 +802,8 @@ ActiveRecord::Schema.define(version: 20160620141230) do
     t.text     "note_to_driver"
     t.integer  "booking_trip_purpose_id"
     t.string   "booking_trip_purpose_desc"
+    t.string   "preferred_routes"
+    t.string   "banned_routes"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
@@ -877,6 +879,7 @@ ActiveRecord::Schema.define(version: 20160620141230) do
     t.integer  "num_itineraries",                      default: 3
     t.float    "max_bike_miles",                       default: 5.0
     t.integer  "min_transfer_time"
+    t.string   "desired_modes_raw"
   end
 
   create_table "trips_desired_modes", force: true do |t|

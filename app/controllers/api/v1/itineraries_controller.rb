@@ -103,7 +103,7 @@ module Api
           unless banned_routes.blank?
             banned_routes_string = ""
             banned_routes.each do |banned_route|
-              banned_routes_string += banned_route.gsub(':', '_') + ','
+              banned_routes_string += banned_route['id'].split(':').first + '_' + banned_route['short_name'] + ','
             end
             tp.banned_routes = banned_routes_string.chop
           end
@@ -112,7 +112,7 @@ module Api
           unless preferred_routes.blank?
             preferred_routes_string = ""
             preferred_routes.each do |preferred_route|
-              preferred_routes_string += preferred_route.gsub(':', '_') + ','
+              preferred_routes_string += preferred_route['id'].split(':').first + '_' + preferred_route['short_name'] + ','
             end
             tp.preferred_routes = preferred_routes_string.chop
           end
