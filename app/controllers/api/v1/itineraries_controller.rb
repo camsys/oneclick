@@ -41,6 +41,8 @@ module Api
         max_walk_seconds = params[:max_walk_seconds] # Seconds
         walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
         min_transfer_time = params[:min_transfer_time]
+        banned_routes = params[:banned_routes]
+        preferred_routes = params[:preffered_routes]
 
         #Assign Meta Data
         trip = Trip.new
@@ -95,6 +97,24 @@ module Api
           else
             tp.from_trip_place = to_trip_place
             tp.to_trip_place = from_trip_place
+          end
+
+          #Set Banned Routes
+          unless banned_routes.blank?
+            banned_routes_string = ""
+            banned_routes.each do |banned_route|
+              banned_routes_string += banned_route.gsub(':', '_') + ','
+            end
+            tp.banned_routes = banned_routes_string.chop
+          end
+
+          #Set Preferred Routes
+          unless preferred_routes.blank?
+            preferred_routes_string = ""
+            preferred_routes.each do |preferred_route|
+              preferred_routes_string += preferred_route.gsub(':', '_') + ','
+            end
+            tp.preferred_routes = preferred_routes_string.chop
           end
 
           #Save Trip Part

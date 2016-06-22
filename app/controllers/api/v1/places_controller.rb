@@ -79,7 +79,7 @@ module Api
 
       def routes
         tp = TripPlanner.new
-        render status: 200, json: tp.get_routes
+        render status: 200, json: {routes: tp.get_routes}
         return
       end
 

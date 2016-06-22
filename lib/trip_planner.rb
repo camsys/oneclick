@@ -10,13 +10,13 @@ class TripPlanner
   
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, min_transfer_time=nil, try_count=Oneclick::Application.config.OTP_retry_count)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, min_transfer_time=nil, banned_routes=nil, preferred_routes=nil, try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
     result = nil
     response = nil
 
     while try <= try_count
-      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, max_bicycle_distance, optimize, num_itineraries, min_transfer_time)
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, max_bicycle_distance, optimize, num_itineraries, min_transfer_time, banned_routes, preferred_routes)
       if result
         break
       else
@@ -34,7 +34,7 @@ class TripPlanner
 
   end
 
-  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3, min_transfer_time=nil)
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3, min_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
@@ -49,7 +49,15 @@ class TripPlanner
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
     url_options += "&showIntermediateStops=" + Oneclick::Application.config.show_intermediate_stops.to_s
-    
+
+    if banned_routes
+      url_options += "&bannedRoutes=" + banned_routes
+    end
+
+    if preferred_routes
+      url_options += "&preferredRoutes=" + preferred_routes
+    end
+
     unless min_transfer_time.nil? 
       url_options += "&minTransferTime=" + min_transfer_time.to_s
     end
