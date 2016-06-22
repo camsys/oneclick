@@ -238,4 +238,11 @@ class TripPlanner
     return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
   end
 
+  def get_routes
+    routes_path = '/index/routes'
+    url = Oneclick::Application.config.open_trip_planner + routes_path
+    resp = Net::HTTP.get_response(URI.parse(url))
+    return JSON.parse(resp.body)
+  end
+
 end
