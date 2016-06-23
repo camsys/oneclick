@@ -291,7 +291,6 @@ module Api
 
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
-          from_address = email_itinerary[:from_address].nil? ? nil : email_itinerary[:from_address]
           itineraries = email_itinerary[:itineraries].nil? ? nil : email_itinerary[:itineraries]
           trip_to_email = email_itinerary[:trip_id]
 
@@ -308,7 +307,7 @@ module Api
           itinerary_ids = email_itinerary[:itinerary_ids]
           
           Itinerary.where(id: itinerary_ids).each do |itin|
-            UserMailer.user_itinerary_email([email_address], trip, itin, subject, '', @traveler, from_address, trip_link).deliver
+            UserMailer.user_itinerary_email([email_address], trip, itin, subject, '', @traveler).deliver
           end
         end
 

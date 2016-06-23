@@ -1,16 +1,16 @@
 class UserMailer < ActionMailer::Base
   # Default sender account set in application.yml
-  @@from = ENV["SYSTEM_SEND_FROM_ADDRESS"]
+  @@from = #Oneclick::Application.config.email_sender
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
-  def user_trip_email(addresses, trip, subject, comments, current_user=nil,from=@@from, trip_link)
+  def user_trip_email(addresses, trip, subject, comments, current_user=nil)
     @trip = trip
     @comments = comments
     @user = current_user.nil? ? trip.user : current_user
-    @trip_link = trip_link
+    @trip_link = Oneclick::Application.config.email_trip_planner_url
 
-    mail(to: addresses, subject: subject, from: from)
+    mail(to: addresses, subject: subject, from: @@from)
   end
 
   def provider_trip_email(emails, trip, subject, from, comments)
@@ -41,15 +41,15 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def user_itinerary_email(addresses, trip, itinerary, subject, comments, current_user = nil,from=@@from, trip_link)
+  def user_itinerary_email(addresses, trip, itinerary, subject, comments, current_user = nil)
     @trip = trip
     @itinerary = itinerary
     @legs = @itinerary.get_legs
     @comments = comments
     @user = current_user
-    @trip_link = trip_link
+    @trip_link = Oneclick::Application.config.email_trip_planner_url
 
-    mail(to: addresses, subject: subject, from: from)
+    mail(to: addresses, subject: subject, from: @@from)
   end
 
   def buddy_request_email(to_email, from_traveler)
