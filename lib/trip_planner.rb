@@ -273,4 +273,10 @@ class TripPlanner
     return JSON.parse(resp.body)
   end
 
+  def get_first_feed_id
+    path = '/index/feeds'
+    url = Oneclick::Application.config.open_trip_planner + path
+    resp = Net::HTTP.get_response(URI.parse(url))
+    return JSON.parse(resp.body).first
+  end
 end

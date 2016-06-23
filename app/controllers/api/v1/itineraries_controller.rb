@@ -99,11 +99,18 @@ module Api
             tp.to_trip_place = from_trip_place
           end
 
+          #If not feed ID is sent, assume the first feed id.  It's almost always 1
+          first_feed_id = TripPlanner.new.get_first_feed_id
+
           #Set Banned Routes
           unless banned_routes.blank?
             banned_routes_string = ""
             banned_routes.each do |banned_route|
-              banned_routes_string += banned_route['id'].split(':').first + '_' + banned_route['short_name'] + ','
+              if banned_route['id'].blank?
+                banned_routes_string +=  first_feed_id.to_s + '_' + banned_route['short_name'] + ','
+              else
+                banned_routes_string += banned_route['id'].split(':').first + '_' + banned_route['short_name'] + ','
+              end
             end
             tp.banned_routes = banned_routes_string.chop
           end
@@ -112,7 +119,12 @@ module Api
           unless preferred_routes.blank?
             preferred_routes_string = ""
             preferred_routes.each do |preferred_route|
-              preferred_routes_string += preferred_route['id'].split(':').first + '_' + preferred_route['short_name'] + ','
+              if preferred_route['id'].blank?
+                preferred_routes_string += first_feed_id.to_s + '_' + preferred_route['short_name'] + ','
+              else
+                preferred_routes_string += preferred_route['id'].split(':').first + '_' + preferred_route['short_name'] + ','
+              end
+
             end
             tp.preferred_routes = preferred_routes_string.chop
           end
