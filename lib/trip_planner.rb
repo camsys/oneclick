@@ -56,6 +56,7 @@ class TripPlanner
 
     if preferred_routes
       url_options += "&preferredRoutes=" + preferred_routes
+      url_options += "&otherThanPreferredRoutesPenalty=7200"#VERY High penalty for not using the preferred route
     end
 
     unless min_transfer_time.nil? 

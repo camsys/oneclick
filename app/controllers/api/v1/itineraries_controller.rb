@@ -42,7 +42,7 @@ module Api
         walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
         min_transfer_time = params[:min_transfer_time]
         banned_routes = params[:banned_routes]
-        preferred_routes = params[:preffered_routes]
+        preferred_routes = params[:preferred_routes]
 
         #Assign Meta Data
         trip = Trip.new
