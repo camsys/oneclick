@@ -1,10 +1,10 @@
 
 ActionMailer::Base.smtp_settings = {
-  :address              => ENV["SMTP_MAIL_ADDR"],
-  :port                 => ENV["SMTP_MAIL_PORT"],
-  :domain               => ENV["SMTP_MAIL_DOMAIN"],
-  :user_name            => ENV["SMTP_MAIL_USER_NAME"],
-  :password             => ENV["SMTP_MAIL_PASSWORD"],
+  :address              => Oneclick::Application.config.smtp_mail_addr,
+  :port                 => Oneclick::Application.config.smtp_mail_port,
+  :domain               => Oneclick::Application.config.smtp_mail_domain,
+  :user_name            => Oneclick::Application.config.smtp_mail_user_name,
+  :password             => Oneclick::Application.config.smtp_mail_password,
   :authentication       => 'plain',
   :enable_starttls_auto => 'true'
 }

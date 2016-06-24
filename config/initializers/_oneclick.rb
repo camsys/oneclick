@@ -45,13 +45,9 @@ Oneclick::Application.configure do
   config.allows_booking = false
   config.restrict_results_registered_services = false #Only show results on the review page from services that the user is registered to book with (used at PA)
 
-  config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
-  config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
+    config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
   config.show_legend = true   # the ability to see the legend on the review page
-
-  config.session_timeout       = ENV['SESSION_TIMEOUT']
-  config.session_alert_timeout = ENV['SESSION_ALERT_TIMEOUT']
 
   #Modes
   config.enable_rideshare = false
@@ -131,7 +127,6 @@ Oneclick::Application.configure do
   config.otp_transfer_penalty = "1800" #If an OTP Trip is set to optimize/minimize transfers then this value replaces the default transfer penalty
   config.transit_respects_ada = false
 
-  config.taxi_fare_finder_api_key = ENV['TAXI_FARE_FINDER_API_KEY']
   config.taxi_fare_finder_api_city = "Denver"
   config.name = '1-Click/RTD'
 
@@ -181,14 +176,31 @@ Oneclick::Application.configure do
   # I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
   config.translation_tag_locale_text = 'Tags'
 
+  ##########################################
+  # Secret Settings from Application.yml.  They can also be set in OneclickConfiguration
+  ##########################################
+
   # Oneclick Back-end URL
   # (This is a temporary solution to deal with create_map proxy rendering issue)
   config.oneclick_url = ENV['ONECLICK_URL'] || 'http://localhost:3000'
-
-  # Email Settings
   config.email_sender = ENV["SYSTEM_SEND_FROM_ADDRESS"] || '1-Click@camsys.com'
-  config.email_trip_planner_url = ENV['TRIP_PLANNER_URL']
 
+  # SMTP Mail Sender Account
+  config.smtp_mail_addr = ENV['SMTP_MAIL_ADDR']
+  config.smtp_mail_port = ENV['SMTP_MAIL_PORT']
+  config.smtp_mail_domain = ENV['SMTP_MAIL_DOMAIN']
+  config.smtp_mail_user_name = ENV['SMTP_MAIL_USER_NAME']
+  config.smtp_mail_password = ENV['SMTP_MAIL_PASSWORD']
+
+  # Mailer Settings
+  config.taxi_fare_finder_api_key = ENV['TAXI_FARE_FINDER_API_KEY']
+
+  #where to send emails for maintenance alerts
+  config.support_emails = ENV['SUPPORT_EMAILS']
+
+  ##########################################
+  # END SECRET SETTINGS
+  ##########################################
 
 end
 

@@ -1,0 +1,18 @@
+# PRIMARY: These values only appear here, and not in the database
+GOOGLE_GEOCODER_ACCOUNT:  "sample"
+GOOGLE_GEOCODER_KEY:      "sample"
+GOOGLE_GEOCODER_CHANNEL:  "sample"
+GOOGLE_GEOCODER_TIMEOUT:  5
+GOOGLE_PLACES_API_KEY:    "sample"
+
+# DEFAULTS: These values are stored as Oneclick::Application.config.XYZ
+# These values are simply defaults, stored here for convenience.
+SMTP_MAIL_ADDR:           "sample"
+SMTP_MAIL_PORT:           999
+SMTP_MAIL_DOMAIN:         "sample"
+SMTP_MAIL_USER_NAME:      "sample"
+SMTP_MAIL_PASSWORD:       "sample"
+SYSTEM_SEND_FROM_ADDRESS: "sample"
+TAXI_FARE_FINDER_API_KEY: "sample""
+SUPPORT_EMAILS:           "sample@email.com"
+
