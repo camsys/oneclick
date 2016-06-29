@@ -43,6 +43,7 @@ module Api
         min_transfer_time = params[:min_transfer_time]
         banned_routes = params[:banned_routes]
         preferred_routes = params[:preferred_routes]
+        source_tag = params[:source_tag]
 
         #Assign Meta Data
         trip = Trip.new
@@ -60,6 +61,7 @@ module Api
         trip.max_bike_miles = max_bike_miles
         trip.num_itineraries = (params[:num_itineraries] || 3).to_i
         trip.min_transfer_time = min_transfer_time
+        trip.source_tag = source_tag
         trip.save
 
         #Build the Trip Places
