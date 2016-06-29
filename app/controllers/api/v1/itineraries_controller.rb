@@ -305,8 +305,7 @@ module Api
 
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
-          itineraries = email_itinerary[:itineraries].nil? ? nil : email_itinerary[:itineraries]
-          trip_to_email = email_itinerary[:trip_id]
+          trip_to_email = (email_itinerary[:itineraries].first)[:trip_id]
 
           trip = Trip.find(trip_to_email.to_i)
           
