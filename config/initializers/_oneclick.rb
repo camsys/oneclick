@@ -183,6 +183,11 @@ Oneclick::Application.configure do
   # Oneclick Back-end URL
   # (This is a temporary solution to deal with create_map proxy rendering issue)
   config.oneclick_url = ENV['ONECLICK_URL'] || 'http://localhost:3000'
+
+  # Prefix for email trip planner url link
+  config.email_trip_planner_url = ENV['TRIP_PLANNER_URL'] || 'http://rtd-dev.camsys-apps/#/plan/'
+  
+  # From email address
   config.email_sender = ENV["SYSTEM_SEND_FROM_ADDRESS"] || '1-Click@camsys.com'
 
   # SMTP Mail Sender Account
