@@ -59,7 +59,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Paratransit',
     code: 'mode_paratransit',
     elig_dependent: true,
-    logo_url: '/assets/images/modes/paratransit.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/paratransit.png',
     visible: true
   },
   {
@@ -67,7 +67,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     active: 1,
     name: 'Taxi',
     code: 'mode_taxi',
-    logo_url: '/assets/images/modes/taxi.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/taxi.png',
     visible: true
   },
   {
@@ -75,7 +75,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     active: 0,
     name: 'Rideshare',
     code: 'mode_rideshare',
-    logo_url: '/assets/images/modes/rideshare.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/rideshare.png',
   },
   {
     klass: Mode,
@@ -83,14 +83,14 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Bike',
     code: 'mode_bicycle',
     otp_mode: "BICYCLE",
-    logo_url: '/assets/images/modes/bicycle.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtds/modes/bicycle.png',
   },
   {
     klass: Mode,
     active: 0,
     name: 'Bikeshare',
     code: 'mode_bikeshare',
-    logo_url: '/assets/images/modes/bicycle.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/bicycle.png',
   },
   {
     klass: Mode,
@@ -98,7 +98,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Drive',
     code: 'mode_car',
     otp_mode: "CAR",
-    logo_url: '/assets/images/modes/auto.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/auto.png',
   },
   {
     klass: Mode,
@@ -106,7 +106,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Walk',
     code: 'mode_walk',
     otp_mode: "WALK",
-    logo_url: '/assets/images/modes/walk.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/walk.png',
   },
   {
     klass: Mode,
@@ -114,7 +114,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'Bus', code: 'mode_bus',
     otp_mode: "BUSISH,WALK",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/transit.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/transit.png',
     visible: true
   },
   {
@@ -124,7 +124,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_rail',
     otp_mode: "TRAINISH,WALK",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/rail.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/rail.png',
     visible: true
   },
   {
@@ -134,7 +134,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_bike_park_transit',
     otp_mode: "BICYCLE_PARK,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/bicycle.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/bicycle.png',
   },
   {
     klass: Mode,
@@ -143,7 +143,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_car_transit',
     otp_mode: "CAR,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/transit.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/transit.png',
   },
   {
     klass: Mode,
@@ -152,7 +152,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_park_transit',
     otp_mode: "CAR_PARK,WALK,TRANSIT",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/transit.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/transit.png',
   },
   {
     klass: Mode,
@@ -161,14 +161,14 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     code: 'mode_bicycle_transit',
     otp_mode: "TRANSIT,BICYCLE",
     parent_id: transit_mode.id,
-    logo_url: '/assets/images/modes/bicycle.png',
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/bicycle.png',
   },
   {
     klass: Mode,
     active: 0,
     name: 'mode_ride_hailing_name',
     code: 'mode_ride_hailing',
-    logo_url: '/assets/images/modes/auto.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/auto.png'
   },
   {
     klass: Mode,
@@ -177,7 +177,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_ferry_name',
     code: 'mode_ferry',
     otp_mode: "FERRY",
-    logo_url: '/assets/images/modes/ferry.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/ferry.png'
   },
   {
     klass: Mode,
@@ -186,7 +186,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_cable_car_name',
     code: 'mode_cable_car',
     otp_mode: "CABLE_CAR",
-    logo_url: '/assets/images/modes/cable_car.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/cable_car.png'
   },
   {
     klass: Mode,
@@ -195,7 +195,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_gondola_name',
     code: 'mode_gondola',
     otp_mode: "GONDOLA",
-    logo_url: '/assets/images/modes/gondola.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/gondola.png'
   },
   {
     klass: Mode,
@@ -204,7 +204,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_funicular_name',
     code: 'mode_funicular',
     otp_mode: "FUNICULAR",
-    logo_url: '/assets/images/modes/funicular.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/funicular.png'
   },
   {
     klass: Mode,
@@ -213,7 +213,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_subway_name',
     code: 'mode_subway',
     otp_mode: "SUBWAY",
-    logo_url: '/assets/images/modes/subway.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/subway.png'
   },
   {
     klass: Mode,
@@ -222,7 +222,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
     name: 'mode_tram_name',
     code: 'mode_tram',
     otp_mode: "TRAM",
-    logo_url: '/assets/images/modes/tram.png'
+    logo_url: 'https://s3.amazonaws.com/oneclick-rtd/modes/tram.png'
   },
 
  { klass: DateOption, name: 'All', code: 'date_option_all',
