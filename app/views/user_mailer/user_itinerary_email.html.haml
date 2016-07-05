@@ -8,21 +8,21 @@
   %tr
     %td{style: "color:grey; padding-right: 10px;"}
       %strong.trip_header_detail
-        = translate_helper(:origin) + ':  '
+        = 'Origin: '
     %td{style: "padding-right: 10px;"}
       %strong.trip_header_detail
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong; padding-right: 10px;"}
       %strong.trip_header_detail
-        =translate_helper(:destination) + ':  '
+        ='Destination: '
     %td{style: "padding-right: 10px;"}
       %strong.trip_header_detail
         =@trip.to_place.name
   %tr
     %td{style: "color:grey; padding-right: 10px;"}
       %strong.trip_header_detail
-        =translate_helper(:date) + ': '
+        ='Date: '
     %td{style: "padding-right: 10px;"}
       %strong
         =@trip.trip_datetime.in_time_zone.strftime("%A, %B %-d")
