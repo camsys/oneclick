@@ -70,6 +70,14 @@ class OneclickGeocoder
     end
     [@errors.empty?, @errors, @results]
   end
+
+  def get_county(lat,lon)
+    result = reverse_geocode(lat,lon)
+    if result.first
+      return result.last.first[:county].sub(' County', '')
+    end
+    return nil
+  end
   
 protected
   

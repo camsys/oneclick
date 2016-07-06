@@ -2,6 +2,17 @@
 namespace :oneclick do
   namespace :one_offs do
 
+    desc "Assign Counties to All Trip Places"
+    task :add_counties_to_trip_places => :environment do
+      TripPlace.all.each do |trip_place|
+        if trip_place.county.blank?
+          trip_place.county = trip_place.get_county
+          trip_place.save
+        end
+      end
+    end
+
+
     desc "Associate Shapefile Boundaries with Services"
     task :add_boundaries => :environment do
       #Delete all polygon-based boundaries

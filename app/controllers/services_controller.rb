@@ -169,6 +169,13 @@ class ServicesController < ApplicationController
 
       par = service_params
 
+
+      # Update the service area by county name
+      county_coverage_array = params[:county_coverage_array]
+      county_endpoint_array = params[:county_endpoint_array]
+      @service.county_coverage_array = county_coverage_array.split(',').map(&:strip)
+      @service.county_endpoint_array = county_endpoint_array.split(',').map(&:strip)
+
       if @service.update_attributes(service_params)
 
         #hacking in the mode for now - have agreed with DE to revisit Mode issues soon after this release

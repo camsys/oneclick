@@ -296,6 +296,45 @@
   = render partial: 'admin/shared/show_comments', locals: {commentable: @service, can_view_private: can_manage_provider}
 
   - unless is_transit || is_ride_hailing
+    -unless @service.county_endpoint_array.nil? and @service.county_coverage_array.nil?
+      .row
+        .col-sm-12
+          .panel.panel-default
+            .panel-heading
+              .row.text-center
+                .col-sm-12
+                  %h3.panel-title
+                    ='Service Areas by County Name'
+                  ="Filter by county name."
+            .panel-body
+              .row
+                .col-sm-6
+                  .panel.panel-default
+                    .panel-heading
+                      %h4.panel-title
+                        = "Endpoint Counties"
+                    .panel-body
+                      -unless @service.county_endpoint_array.blank?
+                        -county_endpoint_string = ""
+                        -@service.county_endpoint_array.each do |county|
+                          -county_endpoint_string += county.to_s + ', '
+                        =county_endpoint_string.chop.chop
+                      -else
+                        ="No endpoints set by county name"
+                .col-sm-6
+                  .panel.panel-default
+                    .panel-heading
+                      %h4.panel-title
+                        = "Coverage Area Counties"
+                    .panel-body
+                      -unless @service.county_coverage_array.blank?
+                        -county_coverage_string = ""
+                        -@service.county_coverage_array.each do |county|
+                          -county_coverage_string += county.to_s + ', '
+                        =county_coverage_string.chop.chop
+                      -else
+                        ="No coverage areas set by county name"
+
     .row
       .col-sm-12
         .panel.panel-default
@@ -303,7 +342,7 @@
             .row.text-center
               .col-sm-12
                 %h3.panel-title
-                  = translate_helper(:coverage_areas)
+                  = "Service Areas by Boundary"
                   = add_tooltip("coverage_areas_help")
           .panel-body
             .row

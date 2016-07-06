@@ -365,6 +365,39 @@
 
   = render partial: 'admin/shared/edit_comments', locals: {f: f, commentable: @service}
 
+  .row#coverage-counties-panel
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row.text-center
+            .col-sm-12
+              %h3.panel-title
+                = "Service Areas by County Name"
+        .panel-body
+          .row
+            .col-sm-6
+              .panel.panel-default
+                .panel-heading
+                  %h4.panel-title
+                    = "Endpoint Counties"
+                .panel-body
+                  -endpoint_value = ""
+                  -unless @service.county_endpoint_array.nil?
+                    -@service.county_endpoint_array.each do |county|
+                      -endpoint_value += county.to_s + ', '
+                  %input{type: "text", value: endpoint_value.chop.chop, size: 50, name: 'county_endpoint_array'}
+            .col-sm-6
+              .panel.panel-default
+                .panel-heading
+                  %h4.panel-title
+                    = "Coverage Counties"
+                .panel-body
+                  -coverage_value = ""
+                  -unless @service.county_coverage_array.nil?
+                    -@service.county_coverage_array.each do |county|
+                      -coverage_value += county.to_s + ', '
+                  %input{type: "text", value: coverage_value.chop.chop, size: 50, name: 'county_coverage_array'}
+
   .row#coverage-areas-panel
     .col-sm-12
       .panel.panel-default
@@ -372,8 +405,9 @@
           .row.text-center
             .col-sm-12
               %h3.panel-title
-                = translate_helper(:coverage_areas)
+                = "Service Areas by Boundary"
                 = add_tooltip("coverage_areas_help")
+
         .panel-body
           .row
             .col-sm-12

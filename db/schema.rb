@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601133118) do
+ActiveRecord::Schema.define(version: 20160706213518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -702,6 +702,8 @@ ActiveRecord::Schema.define(version: 20160601133118) do
     t.string   "booking_token"
     t.text     "disallowed_purposes"
     t.integer  "booking_profile"
+    t.text     "county_endpoint_array"
+    t.text     "county_coverage_array"
   end
 
   create_table "services_users", id: false, force: true do |t|

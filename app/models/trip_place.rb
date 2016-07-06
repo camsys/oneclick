@@ -160,6 +160,8 @@ class TripPlace < GeocodedAddress
           self.city = component[:long_name]
         elsif 'postal_code'.in? types
           self.zip = component[:long_name]
+        elsif 'administrative_area_level_2'.in? types
+          self.county = component[:long_name].sub(' County', '')
         end
       end
     end
@@ -172,6 +174,18 @@ class TripPlace < GeocodedAddress
     self.stop_code = details[:stop_code]
     self.types = details[:types]
 
+    if self.county.blank?
+      self.county = get_county(self.lat, self.lon)
+    end
+
+  end
+
+  def get_county
+    if self.lat.nil? or self.lon.nil?
+      return nil
+    end
+    oneclick_geocoder = OneclickGeocoder.new
+    oneclick_geocoder.get_county(self.lat, self.lon)
   end
 
   def build_place_details_hash

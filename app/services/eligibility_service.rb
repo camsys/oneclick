@@ -259,6 +259,23 @@ class EligibilityService
       origin_point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
       destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
 
+      origin_county = trip_part.from_trip_place.county
+      destination_county = trip_part.to_trip_place.county
+
+      #Match Endpoint County Names
+      unless service.county_endpoint_array.blank?
+        unless origin_county.in? service.county_endpoint_array or destination_county.in? service.county_endpoint_array
+          next
+        end
+      end
+
+      #Match Coverage County Names
+      unless service.county_coverage_array.blank?
+        unless origin_county.in? service.county_coverage_array and destination_county.in? service.county_coverage_array
+          next
+        end
+      end
+
       #Match Endpoint Area
       unless service.endpoint_area_geom.nil?
         unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
@@ -311,9 +328,6 @@ class EligibilityService
           itinerary['date_mismatch'] = true
           Rails.logger.info 'date mismatch'
         else
-          # puts "%-30s %-30s %s" % [Time.zone, planned_trip.trip_datetime, planned_trip.trip_datetime.seconds_since_midnight]
-          # puts "%-30s %-30s %s" % [Time.zone, schedule.start_time, schedule.start_time.seconds_since_midnight]
-          # puts "%-30s %-30s %s" % [Time.zone, schedule.end_time, schedule.end_time.seconds_since_midnight]
           unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
             itinerary['match_score'] += 1
             itinerary['time_mismatch'] = true
