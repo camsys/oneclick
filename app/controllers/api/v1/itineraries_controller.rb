@@ -169,10 +169,6 @@ module Api
 
       def book
 
-        puts 'Viewing Booking Params'
-        puts params.ai
-
-
         booking_request = params[:booking_request]
         booked_itineraries = []
 

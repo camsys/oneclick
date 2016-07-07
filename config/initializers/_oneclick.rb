@@ -28,7 +28,7 @@ Oneclick::Application.configure do
   config.min_ui_duration = 1.hours
   config.poi_is_loading = false
   config.allows_booking = true
-  config.restrict_results_registered_services = false #Only show results on the review page from services that the user is registered to book with (used at PA)
+  config.restrict_results_registered_services = true #Only show results on the review page from services that the user is registered to book with (used at PA)
 
   config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
   config.google_radius_meters = 100000 #Used in the Autocomplete Geocoder to bias results
