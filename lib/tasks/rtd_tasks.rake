@@ -5,6 +5,7 @@ namespace :oneclick do
   task :load_new_landmarks => :environment do
 
     require 'open-uri'
+    include TripsSupport
 
     begin
       lm = Oneclick::Application.config.landmarks_file
@@ -19,7 +20,7 @@ namespace :oneclick do
     poi_type = PoiType.where(name: 'LANDMARK', active: true).first_or_create
     p = Poi.where(poi_type: poi_type).first
     if p
-      if p.updated_at > landmarks_file.last_modified
+      if p.updated_at < landmarks_file.last_modified
         puts lm.to_s + ' is an old file.'
         puts 'Landmarks were last updated at: ' + p.updated_at.to_s
         puts lm.to_s + ' was last update at ' + landmarks_file.last_modified.to_s
@@ -34,6 +35,7 @@ namespace :oneclick do
     Poi.where(poi_type: poi_type).update_all(old: true)
     line = 2 #Line 1 is the header, start with line 2 in the count
     og = OneclickGeocoder.new
+  
     CSV.foreach(landmarks_file, {:col_sep => ",", :headers => true}) do |row|
       begin
         poi_type_name = row[8]
@@ -57,36 +59,10 @@ namespace :oneclick do
               old: false,
           })
 
-          #Check to see if a Google Place exits and get the Google Place ID
           begin
-
-            #First try geocoding without the name/city/state/zip and NOT with the address
-            # This will let us identify Google Places instaed of addresses
-            geocoded = og.geocode(p.name.to_s + ', ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
-            if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
-              place_id = geocoded[2].first[:place_id]
-              p.google_place_id = place_id
-              p.save
-            else
-
-              #Second try throwing in the address
-              geocoded = og.geocode(p.name.to_s + ', ' + p.address1.to_s + ' ' + p.city.to_s + ', ' + p.state.to_s + ' ' + p.zip.to_s)
-              if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
-                place_id = geocoded[2].first[:place_id]
-                p.google_place_id = place_id
-                p.save
-              else
-
-               #If the other two attempts fail, just use the Lat,Lng
-               reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
-               if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
-                 place_id = reverse_geocoded[2].first[:place_id]
-                 p.google_place_id = place_id
-                 p.save
-               end
-              end
-            end
-          rescue
+            google_maps_geocode(p, og) unless google_place_geocode(p)
+          rescue Exception => e
+            puts e
             puts 'Error Geocoding ' + poi_name.to_s + ' on row ' + line.to_s + '. Continuing . . . '
           end
 
@@ -103,7 +79,9 @@ namespace :oneclick do
         failed = true
 
         #Email alert of failure
-        UserMailer.landmarks_failed_email(Oneclick::Application.config.support_emails.split(','), error_string, row_string).deliver!
+        unless Oneclick::Application.config.support_emails.nil?
+          UserMailer.landmarks_failed_email(Oneclick::Application.config.support_emails.split(','), error_string, row_string).deliver!
+        end
         break
       end
       line += 1
@@ -117,9 +95,63 @@ namespace :oneclick do
       non_geocoded_pois = Poi.where(poi_type: poi_type, google_place_id: nil)
 
       #Alert that the new landmarks file was successfuly updated
-      UserMailer.landmarks_succeeded_email(Oneclick::Application.config.support_emails.split(','), non_geocoded_pois).deliver!
+      unless Oneclick::Application.config.support_emails.nil?
+        UserMailer.landmarks_succeeded_email(Oneclick::Application.config.support_emails.split(','), non_geocoded_pois).deliver!
+      end
     end
 
+  end
+
+
+  def google_place_geocode(poi)
+    location_with_address = poi.address1.to_s + ' ' + poi.city.to_s + ', ' + poi.state.to_s + ' ' + poi.zip.to_s
+    lat_lon = poi.lat.to_s + ',' + poi.lon.to_s
+    
+    result = TripsSupport.google_place_search(poi.name.to_s,lat_lon)
+    if result.body['status'] != 'ZERO_RESULTS'
+      place_id = result.body['predictions'].first['place_id']
+      poi.google_place_id = place_id
+      poi.save
+    else
+      result = TripsSupport.google_place_search(location_with_address,lat_lon)
+      if result.body['status'] != 'ZERO_RESULTS'
+        place_id = result.body['predictions'].first['place_id']
+        poi.google_place_id = place_id
+        poi.save
+      else
+        return false
+      end
+    end
+  end
+
+  def google_maps_geocode(poi, og)
+    location_with_name = poi.name.to_s + ', ' + poi.city.to_s + ', ' + poi.state.to_s + ' ' + poi.zip.to_s
+    location_with_address_and_name = poi.name.to_s + ', ' + poi.address1.to_s + ' ' + poi.city.to_s + ', ' + poi.state.to_s + ' ' + poi.zip.to_s
+
+    geocoded = og.geocode(location_with_name)
+    if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
+      place_id = geocoded[2].first[:place_id]
+      poi.google_place_id = place_id
+      poi.save
+    else
+      #Second try throwing in the address
+      geocoded = og.geocode(location_with_address_and_name)
+      if geocoded[0] and geocoded[2].count > 0 #If there are no errors?
+        place_id = geocoded[2].first[:place_id]
+        poi.google_place_id = place_id
+        poi.save
+      else
+       #If the other two attempts fail, just use the Lat,Lng
+       reverse_geocoded = og.reverse_geocode(poi.lat, poi.lon)
+       if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
+         place_id = reverse_geocoded[2].first[:place_id]
+         poi.google_place_id = place_id
+         poi.save
+       else
+          puts "Unable to find a valid geocode entry for #{poi.name}"
+       end
+      end
+    end
   end
 
   desc "Load new Stops"

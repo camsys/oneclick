@@ -203,6 +203,8 @@ Oneclick::Application.configure do
   #where to send emails for maintenance alerts
   config.support_emails = ENV['SUPPORT_EMAILS']
 
+  config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
+
   ##########################################
   # END SECRET SETTINGS
   ##########################################
