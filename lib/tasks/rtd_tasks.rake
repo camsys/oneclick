@@ -20,7 +20,7 @@ namespace :oneclick do
     poi_type = PoiType.where(name: 'LANDMARK', active: true).first_or_create
     p = Poi.where(poi_type: poi_type).first
     if p
-      if p.updated_at < landmarks_file.last_modified
+      if p.updated_at > landmarks_file.last_modified
         puts lm.to_s + ' is an old file.'
         puts 'Landmarks were last updated at: ' + p.updated_at.to_s
         puts lm.to_s + ' was last update at ' + landmarks_file.last_modified.to_s
