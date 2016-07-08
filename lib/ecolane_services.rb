@@ -234,6 +234,10 @@ class EcolaneServices
     url_options = "/api/order/" + system + '/queryfunding'
     url = BASE_URL + url_options
     order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
+
+    puts 'DEREK THIS IS THE ORDER THAT WAS BUILT'
+    puts order.ai
+
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '2')
     order = order.to_s
