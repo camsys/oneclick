@@ -288,7 +288,7 @@ class User < ActiveRecord::Base
     end
 
     #Sort all of these trips by date
-    trips_array.sort_by{ |trip| trip[0][:negotiated_pu_time]}
+    trips_array.sort_by{ |trip| trip[0][:departure]}
   end
 
   def past_trips end_time = Time.now, max_results = 10
@@ -311,7 +311,7 @@ class User < ActiveRecord::Base
 
     #Sort all of these trips by date
     if trips_array.count > 0
-      trips_array = trips_array.sort_by{ |trip| trip[0][:negotiated_pu_time]}.reverse
+      trips_array = trips_array.sort_by{ |trip| trip[0][:departure]}.reverse
       return trips_array[0..max_results-1]
     else
       return []

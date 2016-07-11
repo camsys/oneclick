@@ -757,8 +757,8 @@ class BookingServices
       new_itinerary[:system] = hash['system']
       new_itinerary[:customer_id] = hash['customer_id']
       new_itinerary[:status] = hash['status']
-      new_itinerary[:negotiated_pu_time] = hash['pickup']['negotiated']
-      new_itinerary[:negotiated_do_time] = hash['dropoff']['negotiated']
+      new_itinerary[:departure] = hash['pickup']['negotiated']
+      new_itinerary[:arrival] = hash['dropoff']['negotiated']
       new_itinerary[:fare] = (hash['fare']['client_copay'].to_f)/100.0
       new_itinerary[:assistant] = hash['assistant']
       new_itinerary[:children] = hash['children']
@@ -792,8 +792,8 @@ class BookingServices
     itineraries.each do |itinerary|
       itinerary_hash = {}
       itinerary_hash[:mode] = itinerary.mode.code
-      itinerary_hash[:negotiated_pu_time] = itinerary.start_time.iso8601
-      itinerary_hash[:negotiated_do_time] = itinerary.end_time.iso8601
+      itinerary_hash[:departure] = itinerary.start_time.iso8601
+      itinerary_hash[:arrival] = itinerary.end_time.iso8601
       itinerary_hash[:fare] = itinerary.cost.to_f
       itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
       itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
@@ -888,7 +888,7 @@ class BookingServices
       end
 
       #Are these trips on the same day?
-      unless trip[0][:negotiated_pu_time].to_date === next_trip[0][:negotiated_pu_time].to_date
+      unless trip[0][:departure].to_date === next_trip[0][:departure].to_date
         new_array << trip
         next
       end
