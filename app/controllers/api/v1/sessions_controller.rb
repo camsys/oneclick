@@ -73,7 +73,7 @@ module Api
 
         #Last Trip
         last_trip = @traveler.trips.order('created_at').last
-        if last_trip
+        if last_trip and last_trip.origin and last_trip.destination
           last_origin = last_trip.origin.build_place_details_hash
           last_destination = last_trip.destination.build_place_details_hash
         else
