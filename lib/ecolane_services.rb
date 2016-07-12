@@ -125,7 +125,7 @@ class EcolaneServices
     url_options += "?start=" + Time.now.iso8601[0...-6]
     url = BASE_URL + url_options
     response = send_request(url, token)
-    unpack_future_orders(response)
+    unpack_orders(response)
   end
 
   def get_past_orders(customer_number, max_results, end_time, system, token)
@@ -140,10 +140,10 @@ class EcolaneServices
     puts url.ai
 
     response = send_request(url, token)
-    unpack_future_orders(response)
+    unpack_orders(response)
   end
 
-  def unpack_future_orders response
+  def unpack_orders response
 
     begin
       resp_code = response.code
@@ -157,9 +157,16 @@ class EcolaneServices
 
     body = Hash.from_xml(response.body)
 
+    orders = body['orders']
+
+    if orders.nil?
+      return []
+    end
+
+    #If orders is not nil, pull out the orders array
     orders = body['orders']['order']
 
-    #Ecolane will not return an array of only one object
+    #Ecolane will not return an array of only one object, so make it an array
     unless orders.is_a? Array
       orders = [orders]
     end
