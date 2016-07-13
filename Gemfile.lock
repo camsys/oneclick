@@ -422,9 +422,6 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    listen (3.0.6)
-      rb-fsevent (>= 0.9.3)
-      rb-inotify (>= 0.9.7)
     lorem-ipsum-me (0.1.0)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -691,7 +688,6 @@ DEPENDENCIES
   launchy
   leaflet-rails!
   letter_opener
-  listen
   lorem-ipsum-me
   mechanize
   mini_magick
