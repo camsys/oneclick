@@ -175,7 +175,7 @@ class TripPlace < GeocodedAddress
     self.types = details[:types]
 
     if self.county.blank?
-      self.county = get_county(self.lat, self.lon)
+      self.county = get_county
     end
 
   end
