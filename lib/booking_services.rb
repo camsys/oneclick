@@ -295,7 +295,7 @@ class BookingServices
   def get_purposes(user_service)
 
     if user_service.nil?
-      return {}
+      return {}                                                                                                                m
     end
 
     service = user_service.service

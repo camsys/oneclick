@@ -87,7 +87,7 @@ group :development do
   gem 'pry-byebug'
   gem 'html2haml'
   gem 'quiet_assets'
-  gem 'listen'
+  #gem 'listen'
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
