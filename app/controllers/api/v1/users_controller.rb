@@ -29,10 +29,17 @@ module Api
           end
         end
 
-        @traveler.save
-        hash = {result: true, message: "User updated."}
-        render json: hash and return
+        valid = @traveler.valid?
+    
+        if !valid
+          Rails.logger.error(@traveler.errors.messages)
+          hash = {result: false, message: "Unable to update user profile do the following error: #{@traveler.errors.messages}"}
+        else
+          @traveler.save
+          hash = {result: true, message: "User updated."}
+        end
 
+        render json: hash and return
       end
 
       def profile
