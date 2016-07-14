@@ -208,7 +208,6 @@ class TripPart < ActiveRecord::Base
             new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
             non_duplicate_itins = []
             new_itins.each do |itin|
-              puts itin.ai
               unless self.check_for_duplicates(itin, self.itineraries + itins)
                 non_duplicate_itins << itin
               end
@@ -301,6 +300,22 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
+    elsif !response['id'].blank?
+      itinerary = Itinerary.create(server_status: response['id'], server_message: response['msg'])
+
+      case mode_code.to_s
+        when 'mode_car'
+          itinerary.mode = Mode.car
+        when 'mode_bicycle'
+          itinerary.mode = Mode.bicycle
+        when 'mode_walk'
+          itinerary.mode = Mode.walk
+        else
+          itinerary.mode = Mode.transit
+      end
+
+      itins << itinerary
+
     end
 
     #Check to see special fare rules exist

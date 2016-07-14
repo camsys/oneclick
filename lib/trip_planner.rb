@@ -17,8 +17,11 @@ class TripPlanner
 
     while try <= try_count
       result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, max_bicycle_distance, optimize, num_itineraries, min_transfer_time, banned_routes, preferred_routes)
+
       if result
         break
+      elsif response['id'] == 406 #NO_TRANSIT_TIMES don't retry
+        return result, response
       else
         Rails.logger.info [from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance]
         Rails.logger.info response
