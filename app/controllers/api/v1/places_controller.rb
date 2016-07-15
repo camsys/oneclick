@@ -83,6 +83,14 @@ module Api
         return
       end
 
+      def synonyms
+        synonyms = OneclickConfiguration.find_by(code: 'synonyms')
+        unless synonyms.nil?
+          synonyms = synonyms.value
+        end
+        render status: 200, json: synonyms.as_json
+      end
+
     end
   end
 end
