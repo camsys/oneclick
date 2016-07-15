@@ -133,4 +133,18 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  def synonyms_failed_email(emails, message, row)
+    emails.each do |email|
+      @message = message
+      @row = row
+      mail(to: email, from: @@from, subject: 'Synonyms Upload Failed')
+    end
+  end
+
+  def synonyms_succeeded_email(emails)
+    emails.each do |email|
+      mail(to: email, from: @@from, subject: 'Synonyms Upload Succeeded')
+    end
+  end
+
 end

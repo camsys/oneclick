@@ -248,11 +248,89 @@ namespace :oneclick do
     end
   end
 
-  desc "Load Landmarks and Stops"
-  task :load_new_landmarks_and_stops => :environment do
+  desc "Update Synonyms for Shortcuts"
+  task :update_synonyms => :environment do
+    require 'open-uri'
+
+    begin
+      sm = Oneclick::Application.config.synonyms_file
+    rescue
+      puts 'No Synonyms File Specified.  Need to specify Oneclick::Application.config.synonyms_file'
+      next #Exit the rake task if not file is specified
+    end
+
+    puts 'Opening ' + sm.to_s
+    synonyms_file = open(sm)
+
+    #Check to see if this file is newer than the last time synonyms where updated
+    synonyms = OneclickConfiguration.find_by(code: 'synonyms')
+
+    if synonyms
+      if synonyms.updated_at > synonyms_file.last_modified
+        puts sm.to_s + ' is an old file.'
+        puts 'Synonyms were last updated at: ' + synonyms.updated_at.to_s
+        puts sm.to_s + ' was last update at ' + synonyms_file.last_modified.to_s
+        next
+      end
+    else
+      puts 'Creating a new synonyms configuration'
+      synonyms = OneclickConfiguration.new(code: 'synonyms')
+    end
+
+    puts 'Uploading New Synonyms'
+
+    #Pull out the synonyms info for each line
+    failed = false
+    line = 1
+    new_synonyms = {}
+    contents = CSV.parse synonyms_file
+    contents.each do |row|
+      unless line == 1 #Skip the first line
+        begin
+          new_synonyms[row[0]] = row[1]
+        rescue
+          #Found an error, back out all changes
+          error_string = 'Error found on line: ' + line.to_s
+          row_string = row
+          puts error_string
+          puts row
+          puts 'No Changes have been made to synonyms.'
+          failed = true
+          #Email alert of failure
+          unless Oneclick::Application.config.support_emails.nil?
+            UserMailer.synonyms_failed_email(Oneclick::Application.config.support_emails.split(','), error_string, row_string).deliver!
+          end
+          break
+        end
+      end
+      line += 1
+    end
+
+    unless failed
+      begin
+        #Save the new synonyms
+        synonyms.value = new_synonyms
+        synonyms.save
+      rescue
+        unless Oneclick::Application.config.support_emails.nil?
+          UserMailer.synonyms_failed_email(Oneclick::Application.config.support_emails.split(','), "Unable to save new synonyms.", "").deliver!
+        end
+        break
+      end
+      puts 'Done: Loaded ' + (line - 2).to_s + ' new Synonyms'
+      #Alert that the new synonyms file was successfuly updated
+      unless Oneclick::Application.config.support_emails.nil?
+        UserMailer.synonyms_succeeded_email(Oneclick::Application.config.support_emails.split(',')).deliver!
+      end
+    end
+  end
+
+  desc "Load Landmarks, Stops, and Synonyms"
+  task :load_landmarks_stops_and_synonyms => :environment do
     Rake::Task['oneclick:load_new_landmarks'].invoke
     Rake::Task['oneclick:load_new_stops'].invoke
     Rake::Task['oneclick:replace_intersections'].invoke
+    Rake::Task['oneclick:update_synonyms'].invoke
   end
 
 
