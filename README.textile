@@ -1,5 +1,3 @@
-!https://travis-ci.org/camsys/oneclick.png?branch=develop!:https://travis-ci.org/camsys/oneclick !https://coveralls.io/repos/camsys/oneclick/badge.png?branch=develop(Coverage Status)!:https://coveralls.io/r/camsys/oneclick?branch=develop
-
 h1. Oneclick
 
 This is the OneClick VTCLI project being developed by Cambridge Systematics for multiple clients.
