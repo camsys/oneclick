@@ -44,9 +44,12 @@ module Api
           if @traveler.user_profile.user_services.count > 0 #This user is registered with a service
 
             service = @traveler.user_profile.user_services.first.service
+            min_notice_days = (service.advanced_notice_minutes || 1440).to_i / 1440 #Minimum notice in days
+            max_notice_days = [(service.max_advanced_book_minutes || 20160).to_i / 1440, 21].min #Max advanced notice (up to 21 days)
+
             if service.schedules.count > 0 #This user's service has listed hours
 
-              (1..14).each do |n|
+              (min_notice_days..max_notice_days).each do |n|
                 schedule = service.schedules.where(day_of_week: (today + n).wday).first
                 if schedule
                   hours[(today + n).to_s] = {open: schedule.start_string_24_hour, close: schedule.end_string_24_hour}
@@ -55,7 +58,7 @@ module Api
 
             else #This user is registered with a service, but that service has not entered any hours
 
-              (1..14).each do |n|
+              (min_notice_days..max_notice_days).each do |n|
                 unless (today + n).saturday? or (today + n).sunday?
                   hours[(today + n).to_s] = {open: "08:00", close: "17:00"}
                 end
