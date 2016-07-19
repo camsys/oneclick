@@ -22,6 +22,15 @@ class Schedule < ActiveRecord::Base
   def end_string
     human_readable(end_seconds)
   end
+
+  def start_string_24_hour
+    human_readable_24_hour start_seconds
+  end
+
+  def end_string_24_hour
+    human_readable_24_hour end_seconds
+  end
+
   alias_method :end_time, :end_string
   
   def human_readable(seconds)
@@ -44,6 +53,17 @@ class Schedule < ActiveRecord::Base
     hour.to_s + ':' + minute.to_s + ' ' + ampm
 
   end
+
+  def human_readable_24_hour seconds
+
+    return '' if seconds.nil?
+    hour = seconds/3600
+    minute = (seconds - (hour*3600))/60
+    minute = "%.2d" % minute
+    hour.to_s + ':' + minute.to_s
+
+  end
+
 
   # Handle validation
   @start_time_valid = false      
