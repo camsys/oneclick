@@ -9,7 +9,7 @@ module Api
           external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
         end
 
-        hash = {service_ids: external_id_array}
+        hash = {service_ids: external_id_array.sort}
         respond_with hash
 
       end
@@ -22,7 +22,7 @@ module Api
           external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
         end
 
-        hash = {service_ids: external_id_array}
+        hash = {service_ids: external_id_array.sort}
         respond_with hash
 
       end
