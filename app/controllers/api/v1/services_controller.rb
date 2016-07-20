@@ -6,7 +6,7 @@ module Api
         external_id_array = []
 
         Service.paratransit.active.each do |service|
-          external_id_array += (service.county_endpoint_array || [] )
+          external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
         end
 
         hash = {service_ids: external_id_array}
@@ -19,7 +19,7 @@ module Api
         external_id_array = []
 
         Service.paratransit.active.each do |service|
-          external_id_array += (service.county_endpoint_array.map!(&:humanize) || [] )
+          external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
         end
 
         hash = {service_ids: external_id_array}
