@@ -726,7 +726,7 @@ class BookingServices
     token = service.ecolane_profile.token
     funding_sources = service.funding_sources.as_json
     sponsors = service.sponsors.order(:index).pluck(:code).as_json
-    trip_purpose = itinerary.trip_part.trip.trip_purpose_raw
+    trip_purpose = itinerary.trip_part.trip.trip_purpose_raw || service.ecolane_profile.default_trip_purpose
     customer_number = service.fare_user
     customer_id = es.get_customer_id(customer_number, system, token)
     assistant = itinerary.assistant
