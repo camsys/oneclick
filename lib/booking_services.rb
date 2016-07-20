@@ -614,9 +614,15 @@ class BookingServices
     Service.find_by(external_id: county_to_external_id(county).downcase.strip)
   end
 
-  def county_to_external_id(county)
-    mapping = Oneclick::Application.config.ecolane_county_mapping[county.downcase.strip.to_s]
-    return mapping.nil? ? county : mapping
+  def county_to_external_id county
+    Service.paratransit.active.each do |service|
+      counties = service.county_endpoint_array || []
+      counties.map!(&:downcase)
+      if county.downcase.in? counties
+        return service.external_id
+      end
+    end
+    return county
   end
 
   def get_or_create_ecolane_traveler(external_user_id, dob, service, first_name, last_name)
