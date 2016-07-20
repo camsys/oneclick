@@ -27,6 +27,20 @@ module Api
 
       end
 
+      def counties
+
+        external_ids = {}
+        Service.paratransit.active.each do |service|
+          counties = service.county_endpoint_array
+          counties.each do |county|
+            external_ids[county] = service.external_id
+          end
+        end
+
+        respond_with external_ids
+
+      end
+
       #Given a registered traveler.  Return the dates/hours that are allowed for booking
       def hours
 
