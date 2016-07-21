@@ -204,20 +204,26 @@ namespace :oneclick do
           service.county_coverage_array = ['Northumberland']
 
           #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
 
           #Sponsors
-          sponsor_array = [['MATP', 0],['AAA', 1]]
+          sponsor_array = [['MATP', 0],['NCAAA', 1]]
 
           #Dummy User
-          #service.fare_user = "7832"
+          service.fare_user = "1000004063"
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           #service.disallowed_purposes = 'special approved trips'
 
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
-          else
+          #Booking System Id
+          ecolane_profile.system = 'northumberland'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
+        else
           puts 'Cannot find service with external_id: ' +  external_id
           next
         end
@@ -241,7 +247,7 @@ namespace :oneclick do
         end
 
         #Confirm API Token is set
-        if service.booking_token.nil?
+        if service.ecolane_profile.token.nil?
           puts 'Be sure to setup a token for ' + service.name  + ' ' + external_id + ', service_id = ' + service.id.to_s
         end
 
