@@ -319,9 +319,12 @@ class EligibilityService
     eligible_itineraries = []
     wday = trip_part.trip_time.wday
     itineraries.each do |itinerary|
+
+      itinerary['date_mismatch'] = false
+      itinerary['time_mismatch'] = false
       service = itinerary['service']
       Rails.logger.info service.name
-      unless service.nil?
+      unless service.nil? or service.schedules.count == 0
         schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
         if schedule.nil?
           itinerary['match_score'] += 1
