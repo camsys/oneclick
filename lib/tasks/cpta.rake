@@ -1,6 +1,15 @@
 
 namespace :oneclick do
 
+  desc "Ecolane Help"
+  task ecolane_help: :environment do
+    puts "Don't forget to change external_id of york to rabbit"
+    puts "run rake oneclick:create_ecolane_services to create the services."
+    puts "After that, run rake oneclick:setup_ecolane_services to setup the ecolane funding sources/sponsors, test users, etc."
+    puts "After that you will need to manually add the tokens. A list of services that need tokens will be printed."
+    puts "FYI: It's ok to run any of these commands multiple times.  They are idempotent."
+  end
+
   desc "Create Ecolane Services"
   task create_ecolane_services: :environment do
     puts 'Creating the following services'
@@ -10,7 +19,8 @@ namespace :oneclick do
       {name: "Shared Ride", external_id: "cambria"},
       {name: "Shared Ride", external_id: "franklin"},
       {name: "Shared Ride", external_id: "dauphin"},
-      {name: "Shared Ride", external_id: "northumberland"}]
+      {name: "Shared Ride", external_id: "northumberland"},
+      {name: "Shared Ride", external_id: "unionsnyder"}]
 
     puts ecolane_services.ai
 
@@ -221,6 +231,33 @@ namespace :oneclick do
           #Booking System Id
           ecolane_profile.system = 'northumberland'
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
+        when 'unionsnyder'
+
+          #Counties
+          service.county_endpoint_array = ['Union', 'Snyder']
+          service.county_coverage_array = ['Union', 'Snyder']
+
+          #Funding Sources
+          funding_source_array = [['Lottery - US', 0, false, 'Riders 65 or older'], ['PwD-US', 1, false, "Riders with disabilities"], ['MATP - US', 2, false, "Medical Transportation"], ["Gen Public-US", 5, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['MATP - US', 0],['USAAA', 1]]
+
+          #Dummy User
+          service.fare_user = "1000004065"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          #service.disallowed_purposes = 'number1,number2'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'northumberland'
+          ecolane_profile.default_trip_purpose = 'Medical'
           ecolane_profile.save
 
         else
