@@ -386,6 +386,8 @@
                     -@service.county_endpoint_array.each do |county|
                       -endpoint_value += county.to_s + ', '
                   %input{type: "text", value: endpoint_value.chop.chop, size: 50, name: 'county_endpoint_array'}
+                  %br
+                  ="(List county names separated by commas e.g. Adams, York, Middlesex)"
             .col-sm-6
               .panel.panel-default
                 .panel-heading
@@ -397,6 +399,8 @@
                     -@service.county_coverage_array.each do |county|
                       -coverage_value += county.to_s + ', '
                   %input{type: "text", value: coverage_value.chop.chop, size: 50, name: 'county_coverage_array'}
+                  %br
+                  ="(List county names separated by commas e.g. Adams, York, Middlesex)"
 
   .row#coverage-areas-panel
     .col-sm-12
