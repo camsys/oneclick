@@ -60,7 +60,7 @@ module Api
 
       def future_trips
 
-        paratransit_trips_hash = {}
+        trips_hash = {}
 
         bs = BookingServices.new
         if @traveler

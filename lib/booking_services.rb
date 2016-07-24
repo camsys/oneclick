@@ -41,11 +41,11 @@ class BookingServices
         scheduled_time = itinerary.trip_part.scheduled_time
         from_trip_place = itinerary.trip_part.from_trip_place.as_json
         to_trip_place = itinerary.trip_part.to_trip_place.as_json
-        note_to_driver = itinerary.note_to_driver
-        assistant = itinerary.assistant
-        companions = itinerary.companions
-        children = itinerary.children
-        other_passengers = itinerary.other_passengers
+        note_to_driver = itinerary.ecolane_booking.note_to_driver
+        assistant = itinerary.ecolane_booking.assistant
+        companions = itinerary.ecolane_booking.companions
+        children = itinerary.ecolane_booking.children
+        other_passengers = itinerary.ecolane_booking.other_passengers
         customer_number = user_service.external_user_id
         system = service.ecolane_profile.system
         token = service.ecolane_profile.token
