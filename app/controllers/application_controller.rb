@@ -157,6 +157,7 @@ class ApplicationController < ActionController::Base
   end
 
   def create_guest_user
+
     random_string = create_random_string(16)
     u = User.new
     u.first_name = "Visitor"

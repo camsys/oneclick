@@ -188,6 +188,10 @@ module CsHelpers
     guest_user
   end
 
+  def api_guest_user
+    @cached_guest_user = User.find_by(email: "dedwards8@gmail.com")
+  end
+
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
   # may have to vary by environment
   def brand

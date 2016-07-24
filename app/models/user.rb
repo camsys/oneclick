@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
 
   scope :confirmed, -> {where('relationship_status_id = ?', RelationshipStatus::CONFIRMED)}
   scope :registered, -> {with_role(:registered_traveler)}
+  scope :visitor, -> {without_role(:registered_traveler)}
   # scope :buddyable, -> User.where.not(id: User.with_role(:anonymous_traveler).pluck(users: :id))
   scope :any_role, -> {joins(:roles)}
 
@@ -89,6 +90,7 @@ class User < ActiveRecord::Base
   validates :first_name, :presence => true
   validates :last_name, :presence => true
   validates :maximum_wait_time, :numericality => { :greater_than_or_equal_to => 0}, if: :maximum_wait_time?
+
 
   before_create :make_user_profile
 

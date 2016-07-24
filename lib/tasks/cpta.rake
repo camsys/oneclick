@@ -4,10 +4,27 @@ namespace :oneclick do
   desc "Ecolane Help"
   task ecolane_help: :environment do
     puts "Don't forget to change external_id of york to rabbit"
+    puts "run rake oneclick:create_api_guest to create the designated guest for api users (prevents thousands of new guests from being created"
     puts "run rake oneclick:create_ecolane_services to create the services."
     puts "After that, run rake oneclick:setup_ecolane_services to setup the ecolane funding sources/sponsors, test users, etc."
     puts "After that you will need to manually add the tokens. A list of services that need tokens will be printed."
     puts "FYI: It's ok to run any of these commands multiple times.  They are idempotent."
+  end
+
+  desc "Create API Guest User"
+  task create_api_guest: :environment do
+
+    user = User.find_or_create_by(api_guest: true) do |api_guest|
+      api_guest.first_name = "API"
+      api_guest.last_name = "Guest"
+      api_guest.email = "APIGuest@camsys.com"
+      new_password = SecureRandom.hex
+      api_guest.password = new_password
+      api_guest.password_confirmation = new_password
+    end
+
+    user.save
+
   end
 
   desc "Create Ecolane Services"
