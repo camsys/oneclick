@@ -50,7 +50,7 @@ module Api
         if @traveler.is_visitor? #Return a wide range of hours
 
           (0..21).each do |n|
-            hours[(today + n).to_s] = {open: "08:00", close: "20:00"}
+            hours[(today + n).to_s] = {open: "07:00", close: "22:00"}
           end
 
         else # This is not a guest, check to see if the traveler is registered with a service
