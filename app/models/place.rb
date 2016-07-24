@@ -115,7 +115,7 @@ class Place < GeocodedAddress
     {
         address_components: self.address_components,
 
-        formatted_address: self.raw_address,
+        formatted_address: self.raw_address || self.build_formatted_address,
         place_id: self.google_place_id,
         geometry: {
         location: {
@@ -129,6 +129,28 @@ class Place < GeocodedAddress
         stop_code: self.stop_code,
         types: self.types
     }
+  end
+
+  def build_formatted_address
+    address = ""
+    if self.address1
+      address += self.address1 + ', '
+    end
+
+    if self.city
+      address += self.city + ', '
+    end
+
+    if self.state
+      address += self.state + '  '
+    end
+
+    if self.zip
+      address += self.zip + '  '
+    end
+
+    return address.chop.chop
+
   end
 
   def address_components
