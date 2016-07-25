@@ -682,8 +682,6 @@ class BookingServices
       end
     end
 
-
-
     return user_service
 
   end
