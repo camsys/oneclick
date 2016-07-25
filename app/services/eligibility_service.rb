@@ -13,6 +13,8 @@ class EligibilityService
           all_services << us.service
         end
       end
+    elsif user_profile.user.api_guest?
+      all_services = service_from_trip_part trip_part
     else
       all_services = Service.paratransit.active
     end
@@ -421,6 +423,17 @@ class EligibilityService
     else
       TranslationEngine.translate_text(map.characteristic.name)
     end
+  end
+
+  #For guest api users, don't consider every service,  Only consider the service that covers their origin
+  def service_from_trip_part trip_part
+    county = trip_part.trip.origin.county
+    Service.paratransit.each do |service|
+      if county.in? service.county_endpoint_array
+        return [service]
+      end
+    end
+    return []
   end
 
 end
