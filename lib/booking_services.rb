@@ -774,6 +774,17 @@ class BookingServices
       new_itinerary[:transfers] = 0
       new_itinerary[:json_legs]= nil
 
+      if hash['pickup'].nil? || hash['pickup']['negotiated'].nil?
+        wait_start = nil
+        wait_end = nil
+      else
+        wait_start = (hash['pickup']['negotiated'].to_time - 15*60).iso8601
+        wait_end = (hash['pickup']['negotiated'].to_time + 15*60).iso8601
+      end
+
+      new_itinerary[:wait_start] =  wait_start
+      new_itinerary[:wait_end] = wait_end
+
       if hash['pickup']['negotiated'] and hash['dropoff']['negotiated']
         new_itinerary[:duration] = Time.parse(hash['dropoff']['negotiated']) - Time.parse(hash['pickup']['negotiated'])
         new_itinerary[:transit_time] = new_itinerary[:duration]
