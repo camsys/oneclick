@@ -554,7 +554,9 @@ class BookingServices
 
         future_trips = es.get_future_orders customer_number, system, token
 
-        build_api_trips_hash_array_from_ecolane_hash future_trips
+        future_trips_not_cancelled = future_trips.select {|trip| trip['status'] != 'canceled'}
+
+        build_api_trips_hash_array_from_ecolane_hash future_trips_not_cancelled
 
       else
         return []
