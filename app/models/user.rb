@@ -91,7 +91,6 @@ class User < ActiveRecord::Base
   validates :last_name, :presence => true
   validates :maximum_wait_time, :numericality => { :greater_than_or_equal_to => 0}, if: :maximum_wait_time?
 
-
   before_create :make_user_profile
 
   def self.agent_form_collection include_all=true, agency=:any
