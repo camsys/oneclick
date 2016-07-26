@@ -821,7 +821,9 @@ class BookingServices
       itinerary_hash[:wait_time] = itinerary.wait_time
       itinerary_hash[:walk_distance] = itinerary.walk_distance
       itinerary_hash[:transfers] = itinerary.transfers
-      itinerary_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
+      unless itinerary.legs.blank?
+        itinerary_hash[:json_legs] = (YAML.load(itinerary.legs || "")).as_json
+      end
       itinerary_hash[:status] = itinerary.selected ? "active" : "canceled"
       trip_hash[itinerary.trip_part.sequence] =  itinerary_hash
     end
