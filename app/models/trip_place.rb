@@ -164,6 +164,12 @@ class TripPlace < GeocodedAddress
           self.county = component[:long_name].sub(' County', '')
         end
       end
+
+      #If we didn't get a street address, combine the street number and route into a street address
+      if self.address1.nil?
+        self.address1 = self.street_number.to_s + ' ' + self.route.to_s
+      end
+
     end
 
     self.raw_address = details[:formatted_address]
