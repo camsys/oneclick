@@ -181,6 +181,10 @@ class User < ActiveRecord::Base
     has_role? :anonymous_traveler
   end
 
+  def is_api_guest?
+    self == User.find_by(api_guest: true)
+  end
+
   def is_registered?
     !is_visitor?
   end
