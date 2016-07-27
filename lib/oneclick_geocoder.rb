@@ -89,10 +89,10 @@ protected
         formatted_address = alt.formatted_address
         parsable_address = Indirizzo::Address.new(formatted_address)
         unless parsable_address.nil?
-          street_address = parsable_address.number + ' ' + parsable_address.street.first.titleize
-          formatted_address = street_address + ', ' + alt.city + ', ' + alt.state_code + ' ' + alt.postal_code
+          street_address = parsable_address.number.to_s + ' ' + parsable_address.street.first.to_s.titleize
+          formatted_address = street_address.to_s + ', ' + alt.city.to_s + ', ' + alt.state_code.to_s + ' ' + alt.postal_code.to_s
         end
-         
+
         @results << {
           :id => i,
           :name => formatted_address.split(",")[0],
