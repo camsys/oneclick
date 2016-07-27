@@ -429,7 +429,7 @@ class EligibilityService
   def service_from_trip_part trip_part
     county = trip_part.trip.origin.county || trip_part.trip.origin.get_county
     Service.paratransit.each do |service|
-      if county.in? service.county_endpoint_array
+      if county.in? service.county_endpoint_array || []
         return [service]
       end
     end
