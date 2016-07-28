@@ -780,8 +780,8 @@ class BookingServices
         wait_start = nil
         wait_end = nil
       else
-        wait_start = (hash['pickup']['negotiated'].to_time - 15*60).iso8601
-        wait_end = (hash['pickup']['negotiated'].to_time + 15*60).iso8601
+        wait_start = (hash['pickup']['negotiated'].to_time - 15*60).iso8601[0...-6]
+        wait_end = (hash['pickup']['negotiated'].to_time + 15*60).iso8601[0...-6]
       end
 
       new_itinerary[:wait_start] =  wait_start
