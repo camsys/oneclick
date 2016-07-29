@@ -165,15 +165,81 @@ module Api
 
         #Do the booking confirmations
         if booking_confirmations
-          puts ' here here here'
-          #subject = "Your Trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-          subject = "test"
-          UserMailer.ecolane_trip_email([email_address], subject, @traveler).deliver
+          trip_hash = []
+          bs = BookingServices.new
+          user_service = @traveler.user_profile.user_services.first
+
+          booking_confirmations.each do |booking_confirmation|
+
+            raw_trip = bs.get_trip_details(user_service, booking_confirmation)
+            trip = {}
+
+            #Formatted Date
+            date = raw_trip["order"]["pickup"]["date"]
+            if date.kind_of?(Array)
+              date = date.first
+            end
+            date = Date.strptime(date, "%Y-%m-%d")
+            trip[:date] = date.strftime("%A, %B %e")
+
+            #Times
+            pickup = raw_trip["order"]["pickup"]["negotiated"]
+            dropoff = raw_trip["order"]["dropoff"]["negotiated"]
+            pickup = DateTime.parse(pickup)
+            wait_start = pickup - 15.minutes
+            wait_end = pickup + 15.minutes
+            trip[:wait_start] = wait_start.strftime("%l:%M %P")
+            trip[:wait_end] = wait_end.strftime("%l:%M %P")
+
+            if dropoff
+              dropoff = DateTime.parse(dropoff)
+              days = (dropoff - wait_start).to_f
+              hours = (days*24.0).floor
+              minutes = (((days*24.0) - hours)*60.0).floor
+              if hours > 0
+                trip[:duration] = hours.to_s + " hours, " + minutes.to_s + " minutes"
+              else
+                trip[:duration] = minutes.to_s + " minutes"
+              end
+              trip[:dropoff] = dropoff.strftime("%l:%M %P")
+            else
+              trip[:duration] = ""
+              trip[:dropoff] =  ""
+            end
+
+            #Cost
+            cost = raw_trip["order"]["fare"]["client_copay"]
+            cost = cost.to_f/100.0
+            if cost > 0
+              trip[:cost] = sprintf "$%.2f", cost
+            else
+              trip[:cost] = "Free"
+            end
+
+            #Confirmation
+            trip[:confirmation] = raw_trip["order"]["id"]
+
+            #Origin
+            location = raw_trip["order"]["pickup"]["location"]
+            trip[:origin] = location["street_number"].to_s + ' ' + location["street"].to_s + ', ' + location["city"].to_s + ', '  + location["state"].to_s
+
+            #Destination
+            location = raw_trip["order"]["dropoff"]["location"]
+            trip[:destination] = location["street_number"].to_s + ' ' + location["street"].to_s + ', ' + location["city"].to_s + ', '  + location["state"].to_s
+
+
+
+            trip_hash << trip
+          end
+
+
+          subject = "Your trip on " + trip_hash.first[:date]
+          UserMailer.ecolane_trip_email([email_address], subject, @traveler, trip_hash).deliver
         #Do the trip_id if booking confirmations is empty
         elsif trip_id
           #Do the usual thing
           trip = Trip.find(trip_id.to_i)
-          subject = "Your Trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+          subject = "Your trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
 

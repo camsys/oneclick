@@ -12,8 +12,9 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def ecolane_trip_email(addresses, subject, traveler)
+  def ecolane_trip_email(addresses, subject, traveler, trip_hash)
     @user = traveler
+    @trip_hash = trip_hash
     mail(to: addresses, subject: subject, from: @@from)
   end
 
