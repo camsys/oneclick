@@ -595,6 +595,18 @@ class BookingServices
     end
   end
 
+  def get_trip_details user_service, booking_confirmation
+
+    service = user_service.service
+
+    case service.booking_profile
+    when AGENCY[:ecolane]
+      es = EcolaneServices.new
+      response = es.fetch_single_order(booking_confirmation, service.ecolane_profile.system, service.ecolane_profile.token)
+      Hash.from_xml(response.body)
+    end
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane

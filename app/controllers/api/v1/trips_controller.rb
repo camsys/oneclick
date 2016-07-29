@@ -156,6 +156,25 @@ module Api
       def index
         list
       end
+
+      #Itinerary email template is out of date.
+      def email
+        email_address = params[:email_address]
+        trip_id = params[:trip_id]
+        booking_confirmations = params[:booking_confirmation]
+
+        unless booking_confirmations.nil?
+          if trip.scheduled_time > Time.now
+            subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+          else
+            subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+          end
+          UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
+        end
+
+        render json: {result: 200}
+
+      end
     end
   end
 end
