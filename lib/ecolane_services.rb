@@ -391,8 +391,10 @@ class EcolaneServices
       if location['type'].downcase == 'home'
         return location
       end
-      if location['name'].downcase == 'home'
-        possible_home = location
+      if location['name']
+        if location['name'].downcase == 'home'
+          possible_home = location
+        end
       end
     end
 

@@ -820,6 +820,7 @@ class BookingServices
 
     itineraries.each do |itinerary|
       itinerary_hash = {}
+      itinerary_hash[:trip_id] = itinerary.trip_part.trip.id
       itinerary_hash[:id] = itinerary.id
       itinerary_hash[:mode] = itinerary.returned_mode_code || itinerary.mode.code
       itinerary_hash[:departure] = itinerary.start_time.iso8601
