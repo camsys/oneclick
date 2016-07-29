@@ -354,6 +354,7 @@ Oneclick::Application.routes.draw do
           get 'index'
           get 'future_trips'
           get 'past_trips'
+          post 'email'
         end
 
         member do

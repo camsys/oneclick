@@ -161,14 +161,19 @@ module Api
       def email
         email_address = params[:email_address]
         trip_id = params[:trip_id]
-        booking_confirmations = params[:booking_confirmation]
+        booking_confirmations = params[:booking_confirmations]
 
-        unless booking_confirmations.nil?
-          if trip.scheduled_time > Time.now
-            subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-          else
-            subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-          end
+        #Do the booking confirmations
+        if booking_confirmations
+          puts ' here here here'
+          #subject = "Your Trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+          subject = "test"
+          UserMailer.ecolane_trip_email([email_address], subject, @traveler).deliver
+        #Do the trip_id if booking confirmations is empty
+        elsif trip_id
+          #Do the usual thing
+          trip = Trip.find(trip_id.to_i)
+          subject = "Your Trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
         end
 
