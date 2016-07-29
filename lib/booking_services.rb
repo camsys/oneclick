@@ -809,7 +809,7 @@ class BookingServices
     itineraries.each do |itinerary|
       itinerary_hash = {}
       itinerary_hash[:id] = itinerary.id
-      itinerary_hash[:mode] = itinerary.mode.code
+      itinerary_hash[:mode] = itinerary.returned_mode_code || itinerary.mode.code
       itinerary_hash[:departure] = itinerary.start_time.iso8601
       itinerary_hash[:arrival] = itinerary.end_time.iso8601
       itinerary_hash[:fare] = itinerary.cost.to_f
