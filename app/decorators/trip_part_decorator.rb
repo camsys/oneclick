@@ -13,9 +13,7 @@ class TripPartDecorator < Draper::Decorator
   def description
     # "Outbound - 40 Courtland Street NE Atlanta, GA to Atlanta VA Medical Center"
     trip = object.trip
-    "%s - %s" % [
-      direction, description_without_direction
-    ]
+    "%s" % [description_without_direction]
   end
 
   def description_without_direction
