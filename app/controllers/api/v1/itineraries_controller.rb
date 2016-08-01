@@ -41,6 +41,7 @@ module Api
         max_walk_seconds = params[:max_walk_seconds] # Seconds
         walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
         min_transfer_time = params[:min_transfer_time]
+        max_transfer_time = params[:max_transfer_time]
         banned_routes = params[:banned_routes]
         preferred_routes = params[:preferred_routes]
         source_tag = params[:source_tag]
@@ -60,7 +61,8 @@ module Api
         trip.walk_mph = walk_mph
         trip.max_bike_miles = max_bike_miles
         trip.num_itineraries = (params[:num_itineraries] || 3).to_i
-        trip.min_transfer_time = min_transfer_time
+        trip.min_transfer_time = min_transfer_time.nil? ? nil : min_transfer_time.to_i
+        trip.max_transfer_time = max_transfer_time.nil? ? nil : max_transfer_time.to_i
         trip.source_tag = source_tag
         trip.save
 

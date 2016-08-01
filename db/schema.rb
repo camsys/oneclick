@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160629212302) do
+ActiveRecord::Schema.define(version: 20160801194009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -881,6 +881,7 @@ ActiveRecord::Schema.define(version: 20160629212302) do
     t.integer  "min_transfer_time"
     t.string   "desired_modes_raw"
     t.string   "source_tag"
+    t.integer  "max_transfer_time"
   end
 
   create_table "trips_desired_modes", force: true do |t|
