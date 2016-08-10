@@ -14,9 +14,9 @@
 ActiveRecord::Schema.define(version: 20160801194009) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "postgis"
-  enable_extension "postgis_topology"
+  #enable_extension "plpgsql"
+  #enable_extension "postgis"
+  #enable_extension "postgis_topology"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20160801194009) do
   create_table "boundaries", force: true do |t|
     t.integer "gid"
     t.string  "agency"
-    t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
+    #t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "characteristics", force: true do |t|
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.integer "gid"
     t.string  "name"
     t.string  "state"
-    t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
+    #t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "coverage_areas", force: true do |t|
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_id"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    #t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -242,10 +242,10 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string  "value"
     t.string  "coverage_type", limit: 128
     t.string  "polygon"
-    t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
+    #t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
   end
 
-  add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
+  #add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
 
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
@@ -1022,7 +1022,7 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string  "zipcode"
     t.string  "name"
     t.string  "state"
-    t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
+    #t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "zone_fares", force: true do |t|
