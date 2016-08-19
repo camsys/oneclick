@@ -24,7 +24,7 @@ gem 'devise'
 gem 'figaro'
 gem 'geocoder'
 gem 'haml-rails'
-#gem 'pg'
+gem 'pg'
 gem 'rolify'
 gem 'thin'
 gem 'puma'
@@ -76,7 +76,7 @@ gem 'uber-ruby', require: 'uber'
 group :production do
   #Needed for Oracle DB Connection
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.5.0'
-  #gem 'ruby-oci8'
+  gem 'ruby-oci8'
 end
 
 group :development do
