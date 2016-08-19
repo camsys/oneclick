@@ -103,6 +103,7 @@ GEM
       activesupport (= 4.0.3)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.4)
+    activerecord-oracle_enhanced-adapter (1.5.6)
     activerecord-postgis-adapter (1.1.0)
       activerecord (~> 4.0)
       rgeo-activerecord (~> 1.0.0)
@@ -649,6 +650,7 @@ DEPENDENCIES
   active_model_serializers (= 0.8.1)
   activemdb
   activemodel
+  activerecord-oracle_enhanced-adapter (~> 1.5.0)
   activerecord-postgis-adapter (= 1.1.0)
   ajax-datatables-rails (> 0.1.2)
   attr_encrypted
@@ -693,7 +695,6 @@ DEPENDENCIES
   mini_magick
   momentjs-rails (~> 2.5.0)
   newrelic_rpm
-  pg
   poltergeist
   polylines
   pry-byebug

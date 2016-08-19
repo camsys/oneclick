@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801194009) do
+ActiveRecord::Schema.define(version: 20160819195530) do
 
   # These are extensions that must be enabled in order to support this database
-  #enable_extension "plpgsql"
-  #enable_extension "postgis"
-  #enable_extension "postgis_topology"
+  enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -72,7 +71,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
   create_table "boundaries", force: true do |t|
     t.integer "gid"
     t.string  "agency"
-    #t.spatial "geom",   limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "characteristics", force: true do |t|
@@ -107,7 +105,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.integer "gid"
     t.string  "name"
     t.string  "state"
-    #t.spatial "geom",  limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "coverage_areas", force: true do |t|
@@ -161,39 +158,10 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_id"
-    #t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
-
-  add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
 
   create_table "feedback_issues", force: true do |t|
     t.string "name"
-  end
-
-  create_table "feedback_issues_feedback_types", id: false, force: true do |t|
-    t.integer "feedback_type_id",  null: false
-    t.integer "feedback_issue_id", null: false
-  end
-
-  create_table "feedback_issues_feedbacks", force: true do |t|
-    t.integer "feedback_id",       null: false
-    t.integer "feedback_issue_id", null: false
-    t.boolean "value"
-  end
-
-  create_table "feedback_ratings", force: true do |t|
-    t.string "name"
-  end
-
-  create_table "feedback_ratings_feedback_types", id: false, force: true do |t|
-    t.integer "feedback_type_id",   null: false
-    t.integer "feedback_rating_id", null: false
-  end
-
-  create_table "feedback_ratings_feedbacks", force: true do |t|
-    t.integer "feedback_id",        null: false
-    t.integer "feedback_rating_id", null: false
-    t.integer "value"
   end
 
   create_table "feedback_statuses", force: true do |t|
@@ -226,8 +194,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "updated_at"
   end
 
-  add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
-
   create_table "funding_sources", force: true do |t|
     t.string   "code",                           null: false
     t.integer  "index"
@@ -239,13 +205,10 @@ ActiveRecord::Schema.define(version: 20160801194009) do
   end
 
   create_table "geo_coverages", force: true do |t|
-    t.string  "value"
-    t.string  "coverage_type", limit: 128
-    t.string  "polygon"
-    #t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
+    t.string "value"
+    t.string "coverage_type", limit: 128
+    t.string "polygon"
   end
-
-  #add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
 
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
@@ -352,8 +315,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
 
   create_table "modes", force: true do |t|
     t.string  "name",                limit: 64,                 null: false
@@ -499,10 +460,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string   "value_type"
   end
 
-  add_index "reporting_filter_fields", ["reporting_filter_group_id"], :name => "index_reporting_filter_fields_on_reporting_filter_group_id"
-  add_index "reporting_filter_fields", ["reporting_filter_type_id"], :name => "index_reporting_filter_fields_on_reporting_filter_type_id"
-  add_index "reporting_filter_fields", ["reporting_lookup_table_id"], :name => "index_reporting_filter_fields_on_reporting_lookup_table_id"
-
   create_table "reporting_filter_groups", force: true do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -534,8 +491,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.integer  "numeric_precision"
   end
 
-  add_index "reporting_output_fields", ["reporting_report_id"], :name => "index_reporting_output_fields_on_reporting_report_id"
-
   create_table "reporting_reports", force: true do |t|
     t.string   "name",                             null: false
     t.string   "description"
@@ -548,17 +503,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.boolean  "is_agent"
     t.string   "primary_key",       default: "id", null: false
   end
-
-  create_table "reporting_specific_filter_groups", force: true do |t|
-    t.integer  "reporting_report_id"
-    t.integer  "reporting_filter_group_id"
-    t.integer  "sort_order",                default: 1, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "reporting_specific_filter_groups", ["reporting_filter_group_id"], :name => "index_of_filter_group_on_specific_filter_group"
-  add_index "reporting_specific_filter_groups", ["reporting_report_id"], :name => "index_of_report_on_specific_filter_group"
 
   create_table "reports", force: true do |t|
     t.string   "name",        limit: 64
@@ -602,7 +546,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "satisfaction_surveys", force: true do |t|
@@ -709,8 +652,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.integer "service_id", null: false
   end
 
-  add_index "services_users", ["service_id", "user_id"], :name => "index_services_users_on_service_id_and_user_id"
-
   create_table "sidewalk_obstructions", force: true do |t|
     t.integer  "user_id",                        null: false
     t.float    "lat",                            null: false
@@ -805,8 +746,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string   "preferred_routes"
     t.string   "banned_routes"
   end
-
-  add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
@@ -917,9 +856,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "read_at"
   end
 
-  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
-  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
-
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
     t.integer  "mode_id"
@@ -991,9 +927,7 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string   "disabled_comment"
   end
 
-  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "value_relationships", force: true do |t|
     t.string   "relationship", limit: 64
@@ -1022,7 +956,6 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.string  "zipcode"
     t.string  "name"
     t.string  "state"
-    #t.spatial "geom",    limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "zone_fares", force: true do |t|
@@ -1033,9 +966,5 @@ ActiveRecord::Schema.define(version: 20160801194009) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "zone_fares", ["fare_structure_id"], :name => "index_zone_fares_on_fare_structure_id"
-  add_index "zone_fares", ["from_zone_id"], :name => "index_zone_fares_on_from_zone_id"
-  add_index "zone_fares", ["to_zone_id"], :name => "index_zone_fares_on_to_zone_id"
 
 end
