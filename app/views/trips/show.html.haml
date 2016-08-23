@@ -1,6 +1,4 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:review)}"
-- content_for :head do
-  = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"
 
 - is_trip_cannot_modify = @trip && !@trip.can_modify ? true : false
 - cannot_modify_message = @trip.cant_modify_reason || '' if is_trip_cannot_modify
