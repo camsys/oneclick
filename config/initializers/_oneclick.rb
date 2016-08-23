@@ -369,9 +369,9 @@ Oneclick::Application.configure do
       config.enable_satisfaction_surveys = false
 
       #SSL
-      #unless Rails.env == 'development'
-      #  config.force_ssl = true
-      #end
+      unless Rails.env == 'development'
+        config.force_ssl = true
+      end
 
     else
     raise "Brand '#{config.brand}' not supported"
