@@ -44,8 +44,11 @@ module Api
         lat = origin[:location][:lat]
         lng = origin[:location][:lng]
 
+        og = OneclickGeocoder.new
+        county = og.get_county(lat,lng)
+
         Service.active.paratransit.each do |service |
-          if service.endpoint_contains?(lat,lng)
+          if service.count7_endpoint_contains?(county)
             render json: {result: true}
             return
           end
