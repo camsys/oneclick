@@ -516,6 +516,18 @@ class Service < ActiveRecord::Base
     return true
   end
 
+  def county_endpoint_contains? county
+    #Match Endpoint County Names
+    unless self.county_endpoint_array.blank?
+      unless county.in? self.county_endpoint_array
+        return false
+      end
+    end
+
+    return true
+
+  end
+
   def coverage_area_contains?(lat, lng)
 
     mercator_factory = RGeo::Geographic.simple_mercator_factory
