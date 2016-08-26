@@ -27,7 +27,7 @@ Oneclick::Application.configure do
   end
 
   #Only used if limit_gecoding = true
-  config.geocoding_limit = 100
+  config.geocoding_limit = 10000
 
   #Support email
   config.support_emails = 'dedwards@camsys.com' #where to send emails for maintenance alerts
@@ -156,7 +156,7 @@ Oneclick::Application.configure do
 
   config.address_cache_expire_seconds = 3600 # seconds to keep addresses returned from the geocoder in the cache
   config.return_trip_delay_mins = 120   # minutes needed at last trip place before scheduling the return trip
-  config.OTP_retry_count = 3            #How many times do we retry getting a response from OTP before giving up.
+  config.OTP_retry_count = 1            #How many times do we retry getting a response from OTP before giving up.
   config.user_guide_url = "https://s3.amazonaws.com/oneclick-bin/documentation/1-Click+Guide.pdf"
 
   #Special Fixed-Route Fare
