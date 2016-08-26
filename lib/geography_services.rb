@@ -37,5 +37,16 @@ class GeographyServices
     RGeo::GeoJSON.encode boundary_shape
   end
 
+  def county_from_google_place place
+    address_components = place[:address_components]
+    if address_components
+      address_components.each do |component|
+        if 'administrative_area_level_2'.in? component[:types]
+          return component[:long_name].sub(' County', '')
+        end
+      end
+    end
+    return nil
+  end
 
 end

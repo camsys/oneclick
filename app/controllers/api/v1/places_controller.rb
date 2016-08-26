@@ -40,15 +40,21 @@ module Api
       end
 
       def within_area
-        origin = params[:geometry]
-        lat = origin[:location][:lat]
-        lng = origin[:location][:lng]
 
-        og = OneclickGeocoder.new
-        county = og.get_county(lat,lng)
+        gs = GeographyServices.new
+        county = gs.county_from_google_place params
+
+        #No county sent, get county from the lat,lng
+        if county.blank?
+          origin = params[:geometry]
+          lat = origin[:location][:lat]
+          lng = origin[:location][:lng]
+          og = OneclickGeocoder.new
+          county = og.get_county(lat,lng)
+        end
 
         Service.active.paratransit.each do |service |
-          if service.count7_endpoint_contains?(county)
+          if service.county_endpoint_contains?(county)
             render json: {result: true}
             return
           end
