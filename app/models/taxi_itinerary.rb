@@ -25,7 +25,7 @@ class TaxiItinerary < Itinerary
 
     taxi_services.each do |taxi_service|
       taxi_service_match = taxi_service.is_valid_for_trip_area(from, to)
-      taxi_service_match = taxi_service.can_provide_user_accommodations(trip_user, taxi_service) if (trip_user.present? && taxi_service_match)
+      #taxi_service_match = taxi_service.can_provide_user_accommodations(trip_user, taxi_service) if (trip_user.present? && taxi_service_match)
 
       if (taxi_service_match)
         city = taxi_service.taxi_fare_finder_city
@@ -49,7 +49,7 @@ class TaxiItinerary < Itinerary
           new_itinerary.service = taxi_service
           new_itinerary.calculate_fare
           new_itinerary.server_status = 200
-
+          new_itinerary.wait_time = 900
           itineraries.push(new_itinerary)
         end
       end

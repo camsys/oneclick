@@ -30,7 +30,7 @@ module Api
       def plan
 
         #Unpack params
-        modes = params['modes'] || ['mode_transit', 'mode_paratransit']
+        modes = params['modes'] || ['mode_transit', 'mode_paratransit', 'mode_taxi']
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
         trip_token = params[:trip_token]
@@ -124,6 +124,8 @@ module Api
             i_hash[:bookable] = itinerary.is_bookable?
             if itinerary.service
               i_hash[:service_name] = itinerary.service.name
+              i_hash[:phone] = itinerary.service.phone
+              i_hash[:logo_url]= itinerary.service.logo_url
             else
               i_hash[:service_name] = ""
             end
