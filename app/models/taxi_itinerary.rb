@@ -30,10 +30,8 @@ class TaxiItinerary < Itinerary
       if (taxi_service_match)
         city = taxi_service.taxi_fare_finder_city
         if city.present?
-          puts "Calling TAXIRESTSERVICE"
-          results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, from, to)
+          results = TaxiRestService.call_out_to_taxi_fare_finder(city, api_key, [from.lat.to_f, from.lon.to_f], [to.lat.to_f, to.lon.to_f])
           if results.present?
-            puts results.to_s
             new_itinerary = TaxiItinerary.new(results)
             new_itinerary.trip_part = passed_trip_part
           end

@@ -5,22 +5,38 @@ class TaxiService < Service
    #taken from def eligible_by_location(trip_part, itineraries)
    #some day we may want to pass the whole object around and not just from/to
 
-   mercator_factory = RGeo::Geographic.simple_mercator_factory
+   factory = RGeo::Geographic.simple_mercator_factory
+
+
+   origin_point = factory.point(from.lon.to_f, from.lat.to_f)
+   destination_point = factory.point(to.lon.to_f,to.lat.to_f)
+
+   origin_county = from.county
+   destination_county = to.county
 
    service = self
 
-   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
-
-   origin_point = mercator_factory.point(from[1], from[0])
-   destination_point = mercator_factory.point(to[1], to[0])
-
-   unless service.endpoint_area_geom.nil?
-      return false unless service.endpoint_area_geom.geom.contains? origin_point
+   #Match Endpoint County Names
+   unless service.county_endpoint_array.blank?
+     return false unless origin_county.in? service.county_endpoint_array or destination_county.in? service.county_endpoint_array
    end
 
+   #Match Coverage County Names
+   unless service.county_coverage_array.blank?
+     return false unless origin_county.in? service.county_coverage_array and destination_county.in? service.county_coverage_array
+   end
+
+   #Match Endpoint Area
+   unless service.endpoint_area_geom.nil?
+     return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
+   end
+
+   #Match Coverage Area
    unless service.coverage_area_geom.nil?
      return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
    end
+
+   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
 
    return true
 

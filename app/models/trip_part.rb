@@ -184,7 +184,7 @@ class TripPart < ActiveRecord::Base
         # start with the non-OTP modes
       when Mode.taxi
         timed "taxi" do
-          taxi_itineraries = TaxiItinerary.get_taxi_itineraries(self, [from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, trip.user)
+          taxi_itineraries = TaxiItinerary.get_taxi_itineraries(self, from_trip_place, to_trip_place, trip_time, trip.user)
           itins << taxi_itineraries if taxi_itineraries.length > 0
           itins.flatten!
         end
@@ -208,7 +208,6 @@ class TripPart < ActiveRecord::Base
             new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
             non_duplicate_itins = []
             new_itins.each do |itin|
-              puts itin.ai
               unless self.check_for_duplicates(itin, self.itineraries + itins)
                 non_duplicate_itins << itin
               end
