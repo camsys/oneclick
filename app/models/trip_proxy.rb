@@ -15,8 +15,8 @@ class TripProxy < Proxy
   attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
   attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
 
-  validate :return_trip_date, :presence => true
-  validate :return_trip_time, :presence => true
+  validates :return_trip_date, :presence => true
+  validates :return_trip_time, :presence => true
   validates :outbound_trip_date, :presence => true
   validates :outbound_trip_time, :presence => true
 

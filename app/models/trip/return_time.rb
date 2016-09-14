@@ -7,8 +7,8 @@ module Trip::ReturnTime
     attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
 
     # ensure that a valid return time is set if a return trip is selected
-    validate :return_trip_date, :presence => true
-    validate :return_trip_time, :presence => true
+    validates :return_trip_date, :presence => true
+    validates :return_trip_time, :presence => true
     validate :validate_return_trip_time
 
     validate :validate_date

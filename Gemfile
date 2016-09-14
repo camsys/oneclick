@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.7'
 
-gem 'rails', '4.0.3'
+gem 'rails', '4.2.0'
 
 gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
@@ -54,7 +54,7 @@ gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
 gem 'ajax-datatables-rails', '> 0.1.2'
 gem 'active_attr'
 gem 'twitter-bootstrap-rails-confirm', git: 'https://github.com/bluerail/twitter-bootstrap-rails-confirm', branch: 'bootstrap3'
-gem 'activerecord-postgis-adapter', '= 1.1.0'
+gem 'activerecord-postgis-adapter'
 gem 'rgeo-activerecord'
 gem 'rgeo'
 gem 'rgeo-shapefile'
@@ -75,8 +75,8 @@ gem 'uber-ruby', require: 'uber'
 
 #group :production do
   #Needed for Oracle DB Connection
-  gem 'activerecord-oracle_enhanced-adapter', '~> 1.5.0'
-  gem 'ruby-oci8'
+  #gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.7'
+  #gem 'ruby-oci8'
 #end
 
 group :development do

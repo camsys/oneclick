@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
   validates :last_name, :presence => true
   validates :maximum_wait_time, :numericality => { :greater_than_or_equal_to => 0}, if: :maximum_wait_time?
 
-  before_create :make_user_profile
+  #before_create :make_user_profile
 
   def self.agent_form_collection include_all=true, agency=:any
     relation = with_role(:agent, agency).order(:first_name)
@@ -132,6 +132,7 @@ class User < ActiveRecord::Base
   end
 
   def requires_wheelchair_access?
+    return false
     wheelchair_accoms = user_profile.user_accommodations
         .includes(:accommodation).references(:accommodation)
         .where(
