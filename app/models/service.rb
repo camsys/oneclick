@@ -504,7 +504,7 @@ class Service < ActiveRecord::Base
     trip_time = trip_part.trip_time.seconds_since_midnight
     scheds = self.schedules.where(day_of_week: trip_wday)
     scheds.any? { |s| trip_time.between?(s.start_seconds,s.end_seconds) }
-  ends.is_v
+  end
 
   def can_provide_user_accommodations(user, service)
 
