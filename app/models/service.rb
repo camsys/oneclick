@@ -498,6 +498,14 @@ class Service < ActiveRecord::Base
 
   end
 
+  # Returns whether trip part falls within service schedule times
+  def is_valid_for_trip_schedule(trip_part)
+    trip_wday = trip_part.trip_time.wday
+    trip_time = trip_part.trip_time.seconds_since_midnight
+    scheds = self.schedules.where(day_of_week: trip_wday)
+    scheds.any? { |s| trip_time.between?(s.start_seconds,s.end_seconds) }
+  ends.is_v
+
   def can_provide_user_accommodations(user, service)
 
     user_accommodations_unmet_by_selected_service = UserAccommodation.where("user_profile_id = ? AND value = 'true' AND accommodation_id NOT IN (SELECT accommodation_id from service_accommodations where service_id = ?)", user.user_profile.id, service.id)
