@@ -38,7 +38,9 @@ namespace :oneclick do
       {name: "Shared Ride", external_id: "dauphin"},
       {name: "Shared Ride", external_id: "northumberland"},
       {name: "Shared Ride", external_id: "montour"},
-      {name: "Shared Ride", external_id: "unionsnyder"}]
+      {name: "Shared Ride", external_id: "unionsnyder"},
+      {name: "Shared Ride", external_id: "blair"}
+    ]
 
     puts ecolane_services.ai
 
@@ -305,7 +307,34 @@ namespace :oneclick do
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
+        when 'blair'
 
+          #Counties
+          service.county_endpoint_array = ['Blair']
+          service.county_coverage_array = ['Blair']
+
+          #Funding Sources
+          funding_source_array = [
+            ['Lottery', 0, false, 'Riders 65 or older']
+          ]
+
+          #Sponsors
+          sponsor_array = [['AAA', 0]]
+
+          #Dummy User
+          service.fare_user = "14411"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'blair'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
 
           else
           puts 'Cannot find service with external_id: ' +  external_id
