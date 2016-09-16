@@ -219,7 +219,7 @@ namespace :oneclick do
 
     #Catch any that didn't geocode due to timeout
     if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
-      ungeocoded= Poi.where(city: nil, poi_type: poi_type, old: false)
+      ungeocoded = Poi.where(city: nil, poi_type: poi_type, old: false)
       ungeocoded.each do |p|
         #Reverse Geocode the Lat Lng to fill in the City
         sleep(1)
@@ -233,12 +233,16 @@ namespace :oneclick do
       end
     end
 
+    ungeocoded = Poi.where(city: nil, poi_type: poi_type, old: false)
+
     unless failed
       Poi.where(poi_type: poi_type).is_old.delete_all
       Poi.where(poi_type: poi_type).update_all(old: false)
       puts 'Done: Loaded ' + Poi.where(poi_type: poi_type).count.to_s + ' new Stops'
-      UserMailer.stops_succeeded_email(Oneclick::Application.config.support_emails.split(',')).deliver!
+      UserMailer.stops_succeeded_email(Oneclick::Application.config.support_emails.split(','), ungeocoded).deliver!
     end
+
+    ungeocoded.destroy_all
 
   end
 

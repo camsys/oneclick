@@ -127,7 +127,8 @@ class UserMailer < ActionMailer::Base
     end
   end
 
-  def stops_succeeded_email(emails)
+  def stops_succeeded_email(emails, ungeocoded)
+    @ungeocoded = ungeocoded
     emails.each do |email|
       mail(to: email, from: @@from, subject: 'Stops Upload Succeeded')
     end
