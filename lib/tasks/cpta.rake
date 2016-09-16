@@ -39,7 +39,10 @@ namespace :oneclick do
       {name: "Shared Ride", external_id: "northumberland"},
       {name: "Shared Ride", external_id: "montour"},
       {name: "Shared Ride", external_id: "unionsnyder"},
-      {name: "Shared Ride", external_id: "blair"}
+      {name: "Shared Ride", external_id: "blair"},
+      {name: "Shared Ride", external_id: "monroe"},
+      {name: "Shared Ride", external_id: "carbon"},
+      {name: "Shared Ride", external_id: "lanta"}
     ]
 
     puts ecolane_services.ai
@@ -150,7 +153,6 @@ namespace :oneclick do
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
-
         when 'cambria'
 
           #Counties
@@ -178,7 +180,6 @@ namespace :oneclick do
           ecolane_profile.default_trip_purpose = 'Misc'
           ecolane_profile.save
 
-
         when 'franklin'
 
           #Counties
@@ -201,8 +202,6 @@ namespace :oneclick do
           ecolane_profile.system = 'franklin'
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
-
-
 
         when 'dauphin'
 
@@ -335,6 +334,91 @@ namespace :oneclick do
           ecolane_profile.system = 'blair'
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
+
+        when 'monroe'
+
+          #Counties
+          service.county_endpoint_array = ['Monroe']
+          service.county_coverage_array = ['Monroe']
+
+          #Funding Sources
+          funding_source_array = [
+            ["ADA", 0, false, "Eligible for ADA"],
+            ['PWD', 1, false, "Riders with disabilities"]
+          ]
+
+          #Sponsors
+          sponsor_array = []
+
+          #Dummy User
+          service.fare_user = "1"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'monroe'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
+        when 'carbon'
+
+          #Counties
+          service.county_endpoint_array = ['Carbon']
+          service.county_coverage_array = ['Carbon']
+
+          #Funding Sources
+          funding_source_array = [['Test', 0, false, 'Test Funding Source']]
+
+          #Sponsors
+          sponsor_array = []
+
+          #Dummy User
+          service.fare_user = "1864"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'carbon'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
+        when 'lanta'
+
+          #Counties
+          service.county_endpoint_array = ['Lehigh', 'Northampton']
+          service.county_coverage_array = ['Lehigh', 'Northampton']
+
+          #Funding Sources
+          funding_source_array = [['Test', 0, false, 'Test Funding Source']]
+
+          #Sponsors
+          sponsor_array = []
+
+          #Dummy User
+          service.fare_user = "10847"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'lanta'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
 
           else
           puts 'Cannot find service with external_id: ' +  external_id
