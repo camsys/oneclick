@@ -195,6 +195,7 @@ namespace :oneclick do
 
         if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
           #Reverse Geocode the Lat Lng to fill in the City
+          sleep(0.25)
           reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
           if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
             p.city = reverse_geocoded[2].first[:city]
@@ -214,6 +215,22 @@ namespace :oneclick do
       #  puts 'Error encountered loading stops from OpenTripPlanner at ' + Oneclick::Application.config.open_trip_planner.to_s
       #  break
       #end
+    end
+
+    #Catch any that didn't geocode due to timeout
+    if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
+      ungeocoded= Poi.where(city: nil, poi_type: poi_type, old: false)
+      ungeocoded.each do |p|
+        #Reverse Geocode the Lat Lng to fill in the City
+        sleep(1)
+        reverse_geocoded = og.reverse_geocode(p.lat, p.lon)
+        if reverse_geocoded[0] and reverse_geocoded[2].count > 0 #No errors?
+          p.city = reverse_geocoded[2].first[:city]
+          p.save
+        end
+        geocoded += 1
+        puts "Geocoding " + geocoded.to_s + " of " + stops.count.to_s
+      end
     end
 
     unless failed
