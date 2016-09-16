@@ -498,7 +498,7 @@ class Service < ActiveRecord::Base
 
   end
 
-  # Returns whether trip part falls within service schedule times
+  # Returns whether or not trip part falls within service schedule times
   def is_valid_for_trip_schedule(trip_part)
     trip_wday = trip_part.trip_time.wday
     trip_time = trip_part.trip_time.seconds_since_midnight
