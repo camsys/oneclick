@@ -167,11 +167,11 @@ class TrapezeServices
     Rails.logger.info result.ai
 
     begin
-      cancellation_number = result[:envelope][:body][:pass_cancel_trip_response][:pass_cancel_trip_result][:cancellation_number]
-      unless cancellation_number.nil?
-        return true
-      else
+      validation = result[:envelope][:body][:pass_cancel_trip_response][:validation]
+      if validation.nil?
         return false
+      else
+        return confirm_resultok validation
       end
     rescue
       return false
@@ -270,6 +270,17 @@ class TrapezeServices
   def pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password)
     client_info = pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
     client_info[:envelope][:body][:pass_get_client_info_response][:pass_get_client_info_result][:pass_client_funding_sources][:pass_client_funding_source]
+  end
+
+  #Pass a validation object and search through it to confirm that the RESULTOK was returned
+  def confirm_resultok(validation)
+    items = validation[:item]
+    items.each do |item|
+      if item[:code] == 'RESULTOK'
+        return true
+      end
+    end
+    return false
   end
 
 end
