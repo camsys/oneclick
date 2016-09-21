@@ -59,7 +59,6 @@ module Oneclick
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
     config.autoload_paths += %W(#{config.root}/lib)
-
     config.autoload_paths += %W(#{Rails.root}/app/reports)
     config.autoload_paths += %W(#{Rails.root}/app/services)
 
@@ -103,7 +102,7 @@ module Oneclick
 
     # config.assets.precompile = ['foo']
 
-    config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
+    config.assets.paths << File.join(Rails.root, 'assets-default')
     config.assets.precompile += %w(
         application.css
         tadaaapickr.en.js
