@@ -205,6 +205,8 @@ Oneclick::Application.configure do
 
   config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
 
+  config.otp_defaults_json = {"key1" => "value1", "key2" => "value2", "key3" => "value3"}
+
   ##########################################
   # END SECRET SETTINGS
   ##########################################

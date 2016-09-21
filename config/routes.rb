@@ -363,6 +363,10 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :defaults do
+        # index and create are default
+      end
+
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
