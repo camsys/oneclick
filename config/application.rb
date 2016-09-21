@@ -103,7 +103,7 @@ module Oneclick
 
     # config.assets.precompile = ['foo']
 
-    config.assets.paths << File.join(Rails.root, 'assets')
+    config.assets.paths << Rails.root.join('app', 'assets')
     config.assets.precompile += %w(
         application.css
         tadaaapickr.en.js
