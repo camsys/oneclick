@@ -48,7 +48,22 @@ class TaxiItinerary < Itinerary
           new_itinerary.calculate_fare
           new_itinerary.server_status = 200
           new_itinerary.wait_time = 900
+
+          #Add the estimated start_time and end_time for this itinerary
+          if passed_trip_part.is_depart
+            new_itinerary.start_time = passed_trip_part.scheduled_time + new_itinerary.wait_time
+            unless new_itinerary.duration.nil?
+              new_itinerary.end_time = passed_trip_part.scheduled_time + new_itinerary.duration + new_itinerary.wait_time
+            end
+          else
+            new_itinerary.end_time = passed_trip_part.scheduled_time
+            unless new_itinerary.duration.nil?
+              new_itinerary.start_time = passed_trip_part.scheduled_time - new_itinerary.duration
+            end
+          end
+
           itineraries.push(new_itinerary)
+
         end
       end
     end
