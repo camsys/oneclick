@@ -42,7 +42,7 @@ gem 'lorem-ipsum-me'
 gem 'faraday_middleware'
 gem 'twilio-ruby'
 gem 'rails_12factor', group: [:integration, :production, :qa, :staging]
-gem 'font-awesome-rails'
+gem 'font-awesome-sass'
 gem 'twitter-typeahead-rails', github: 'camsys/twitter-typeahead-rails'
 gem 'handlebars_assets'
 gem 'simple_token_authentication'
