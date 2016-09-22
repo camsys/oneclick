@@ -126,6 +126,7 @@ Oneclick::Application.configure do
   config.otp_walk_reluctance = "20" #If an OTP Trip is set to optmimize walkTime, then this walk_reluctance is used to discourage walking time
   config.otp_transfer_penalty = "1800" #If an OTP Trip is set to optimize/minimize transfers then this value replaces the default transfer penalty
   config.transit_respects_ada = false
+  config.gtfs_special_route_types = [21,22,23,24,25,26,33]
 
   config.taxi_fare_finder_api_city = "Denver"
   config.name = '1-Click/RTD'

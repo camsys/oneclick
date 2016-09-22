@@ -175,10 +175,13 @@ module Api
               i_hash[:discounts] = JSON.parse(itinerary.discounts)
             end
 
-            #Add Service Names to Legs
+
+            #Open up the legs returned by OTP and augment the information
             unless itinerary.legs.nil?
               yaml_legs = YAML.load(itinerary.legs)
+
               yaml_legs.each do |leg|
+                #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
                 unless leg['agencyId'].nil?
                   service = Service.where(external_id: leg['agencyId']).first
                   unless service.nil?
@@ -187,10 +190,26 @@ module Api
                     leg['serviceName'] = leg['agencyName'] || leg['agencyId']
                   end
                 end
+
+                #2 Check to see if this route_type is classified as a special route_type
+                begin
+                  specials = Oneclick::Application.config.gtfs_special_route_types
+                rescue Exception=>e
+                  specials = []
+                end
+                if leg['routeType'].nil?
+                  leg['specialService'] = false
+                else
+                  leg['specialService'] = leg['routeType'].in? specials
+                end
+
               end
               itinerary.legs = yaml_legs.to_yaml
               itinerary.save
             end
+
+
+
 
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
