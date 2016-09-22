@@ -94,7 +94,7 @@ module Oneclick
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    #config.assets.compile=true
+    config.assets.compile=false
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
     config.assets.initialize_on_precompile = false
     #config.serve_static_assets = true
@@ -104,6 +104,8 @@ module Oneclick
     # config.assets.precompile = ['foo']
 
 
+    config.assets.debug = true
+    config.serve_static_assets = true
     config.assets.paths << File.join(Rails.root, 'app', 'assets')
     #config.assets.paths << Rails.root.join('app', 'assets')
     config.assets.precompile += %w(
