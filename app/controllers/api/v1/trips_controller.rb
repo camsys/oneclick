@@ -243,7 +243,7 @@ module Api
           subject = "Your trip on " + trip_hash.first[:date]
           UserMailer.ecolane_trip_email([email_address], subject, @traveler, trip_hash).deliver
 
-        #Do the trip_id if booking confirmations & itinerary are both empty
+        #Do the trip_id if booking confirmations is empty
         elsif trip_id
           trip = Trip.find(trip_id.to_i)
           subject = "Your trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
