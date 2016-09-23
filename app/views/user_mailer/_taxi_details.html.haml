@@ -26,7 +26,17 @@
 
 -# UPDATED WITH RTD STYLING
 
-%table.transit_details{style: "padding: 16px 5px;"}
+%table.taxi_details{style: "padding: 16px 5px;"}
+  %tr
+    %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em; padding: 16px 10px;"}
+      -# %img{:src => @itinerary.service.logo_url, style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+      %img{:src => "http://localhost:3000" + itinerary.service.logo_url, style: "height: 52px; width: 52px; vertical-align: top;", height: "52p", width: "52"}
+    %td.itin_text_container{style: "padding-left: 5px;"}
+      %strong.itinerary_strong{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
+        %a{href: "tel: #{itinerary.service.phone}", style: "color: #4862c8;"}= "Call #{itinerary.service.name}"
+        = " to book your trip."
+      .itinerary_text_small_black{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
+        = "Their phone number is #{itinerary.service.phone}."
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em; padding: 16px 10px;"}
       %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/start.png", style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
@@ -35,6 +45,15 @@
         = translate_helper(:start) + itinerary.trip_part.from_trip_place.name
       .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
         = format_time(itinerary.trip_part.scheduled_time.in_time_zone - itinerary.duration)
+  %tr
+    %td.itinerary_icons{style: "vertical-align:top; text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
+      -# %img{:src => @itinerary.service.logo_url, style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+      %img{:src => "http://localhost:3000" + itinerary.service.logo_url, style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+    %td.itin_text_container{style: "padding: 16px 10px;"}
+      .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
+        = "Take #{@itinerary.service.name} to destination"
+      .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
+        = format_time(itinerary.trip_part.scheduled_time.in_time_zone - itinerary.duration) + ' ' + translate_helper(:to) + ' ' + format_time(itinerary.trip_part.scheduled_time.in_time_zone)
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
       %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/stop.png", style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
