@@ -30,6 +30,7 @@ Oneclick::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' } #use localhost when in development
 
   config.log_level = :debug
   config.logger = Logger.new(STDOUT)
