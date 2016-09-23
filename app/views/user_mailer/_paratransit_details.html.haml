@@ -24,7 +24,7 @@
   %tr
     %td.itinerary_icons{style: "vertical-align:top; text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
       -# %img{:src => @itinerary.service.logo_url, style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
-      %img{:src => "http://localhost:3000" + itinerary.service.logo_url, style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+      %img{:src => logo_url_helper(@itinerary), style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
     %td.itin_text_container{style: "padding: 16px 10px;"}
       .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = "Take #{@itinerary.service.name} to destination"
