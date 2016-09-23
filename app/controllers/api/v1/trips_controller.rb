@@ -167,7 +167,7 @@ module Api
       def email
         email_address = params[:email_address]
         trip_id = params[:trip_id]
-        itinerary_id = params[:itinerary_id]
+        # itinerary_id = params[:itinerary_id]
         booking_confirmations = params[:booking_confirmations]
 
         #Do the booking confirmations
@@ -247,13 +247,8 @@ module Api
         elsif trip_id
           trip = Trip.find(trip_id.to_i)
           subject = "Your trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-          # If itinerary id is passed, send a specific itinerary email
-          if itinerary_id
-            itinerary = Itinerary.find(itinerary_id.to_i)
-            UserMailer.user_itinerary_email([email_address], trip, itinerary, subject, '', @traveler).deliver
-          else
-            UserMailer.user_trip_email([email_address], trip, subject, '', @traveler).deliver
-          end
+          itinerary = trip.selected_itineraries[0] #send first of selected itineraries
+          UserMailer.user_itinerary_email([email_address], trip, itinerary, subject, '', @traveler).deliver
         end
 
         render json: {result: 200}
