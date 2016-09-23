@@ -4,7 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
-  upload_zipped_callnride_boundary: "Upload a zip file containing a .shp file projected with EPG:4326 (Web Mercator)"
+  upload_zipped_callnride_boundary: "Upload a zip file containing a .shp file projected with EPSG:4326 (Web Mercator)"
   set_callnride: "Set Call-N-Ride Boundary"
   other_name: "Other"
   refresh_materialized_views: "Update Report Data"
