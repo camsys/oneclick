@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
   enable_extension "plpgsql"
   enable_extension "postgis"
 
-  create_table "accommodations", force: true do |t|
+  create_table "accommodations", force: :cascade do |t|
     t.string  "name",                  limit: 64,                 null: false
     t.string  "note"
     t.string  "datatype",              limit: 25,                 null: false
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string  "logo_url"
   end
 
-  create_table "agencies", force: true do |t|
+  create_table "agencies", force: :cascade do |t|
     t.text    "name"
     t.string  "address",                limit: 100
     t.string  "city",                   limit: 100
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string  "disabled_comment"
   end
 
-  create_table "agency_user_relationships", force: true do |t|
+  create_table "agency_user_relationships", force: :cascade do |t|
     t.integer  "agency_id",                          null: false
     t.integer  "user_id",                            null: false
     t.integer  "relationship_status_id", default: 3, null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "creator",                            null: false
   end
 
-  create_table "booking_cut_off_times", force: true do |t|
+  create_table "booking_cut_off_times", force: :cascade do |t|
     t.integer  "service_id",                     null: false
     t.integer  "day_of_week",                    null: false
     t.boolean  "active",          default: true, null: false
@@ -68,12 +68,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "boundaries", force: true do |t|
+  create_table "boundaries", force: :cascade do |t|
     t.integer "gid"
     t.string  "agency"
   end
 
-  create_table "characteristics", force: true do |t|
+  create_table "characteristics", force: :cascade do |t|
     t.string  "name",                     limit: 64
     t.string  "note",                                                 null: false
     t.string  "datatype",                 limit: 25,                  null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string  "link_handler"
   end
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.text     "comment"
     t.string   "locale"
     t.string   "visibility",       default: "public"
@@ -101,18 +101,18 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "counties", force: true do |t|
+  create_table "counties", force: :cascade do |t|
     t.integer "gid"
     t.string  "name"
     t.string  "state"
   end
 
-  create_table "coverage_areas", force: true do |t|
+  create_table "coverage_areas", force: :cascade do |t|
     t.integer "service_id", null: false
     t.boolean "active",     null: false
   end
 
-  create_table "date_options", force: true do |t|
+  create_table "date_options", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
     t.string   "start_date"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "ecolane_bookings", force: true do |t|
+  create_table "ecolane_bookings", force: :cascade do |t|
     t.boolean  "assistant"
     t.integer  "children"
     t.integer  "companions"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "ecolane_profiles", force: true do |t|
+  create_table "ecolane_profiles", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "default_trip_purpose"
@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "token"
   end
 
-  create_table "fare_structures", force: true do |t|
+  create_table "fare_structures", force: :cascade do |t|
     t.integer "service_id",                                                 null: false
     t.string  "note",       limit: 254
     t.integer "fare_type",                                      default: 0
@@ -153,26 +153,26 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.text    "desc"
   end
 
-  create_table "fare_zones", force: true do |t|
+  create_table "fare_zones", force: :cascade do |t|
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_id"
   end
 
-  create_table "feedback_issues", force: true do |t|
+  create_table "feedback_issues", force: :cascade do |t|
     t.string "name"
   end
 
-  create_table "feedback_statuses", force: true do |t|
+  create_table "feedback_statuses", force: :cascade do |t|
     t.string "name"
   end
 
-  create_table "feedback_types", force: true do |t|
+  create_table "feedback_types", force: :cascade do |t|
     t.string "name"
   end
 
-  create_table "feedbacks", force: true do |t|
+  create_table "feedbacks", force: :cascade do |t|
     t.string   "user_email"
     t.integer  "user_id"
     t.integer  "trip_id"
@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "flat_fares", force: true do |t|
+  create_table "flat_fares", force: :cascade do |t|
     t.float    "one_way_rate"
     t.float    "round_trip_rate"
     t.integer  "fare_structure_id"
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "funding_sources", force: true do |t|
+  create_table "funding_sources", force: :cascade do |t|
     t.string   "code",                           null: false
     t.integer  "index"
     t.integer  "service_id",                     null: false
@@ -204,13 +204,13 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.boolean  "general_public", default: false
   end
 
-  create_table "geo_coverages", force: true do |t|
+  create_table "geo_coverages", force: :cascade do |t|
     t.string "value"
     t.string "coverage_type", limit: 128
     t.string "polygon"
   end
 
-  create_table "itineraries", force: true do |t|
+  create_table "itineraries", force: :cascade do |t|
     t.integer  "trip_part_id"
     t.integer  "mode_id"
     t.integer  "service_id"
@@ -260,7 +260,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "negotiated_pu_window_end"
   end
 
-  create_table "kiosk_locations", force: true do |t|
+  create_table "kiosk_locations", force: :cascade do |t|
     t.string   "name"
     t.integer  "address_type"
     t.string   "addr"
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "legs", force: true do |t|
+  create_table "legs", force: :cascade do |t|
     t.integer  "itinerary_id_id"
     t.integer  "leg_sequence"
     t.integer  "service_id_id"
@@ -279,7 +279,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "end_time"
     t.float    "leg_time"
     t.float    "leg_distance"
-    t.decimal  "cost",                            precision: 10, scale: 0
+    t.decimal  "cost",                            precision: 10
     t.string   "cost_comments"
     t.text     "otp_leg"
     t.string   "returned_mode_id",     limit: 50
@@ -291,13 +291,13 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "locales", force: true do |t|
-    t.string   "name"
+  create_table "locales", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "messages", force: true do |t|
+  create_table "messages", force: :cascade do |t|
     t.integer  "sender_id"
     t.text     "body"
     t.datetime "from_date"
@@ -306,9 +306,9 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
+  add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
-  create_table "mileage_fares", force: true do |t|
+  create_table "mileage_fares", force: :cascade do |t|
     t.float    "base_rate"
     t.float    "mileage_rate"
     t.integer  "fare_structure_id"
@@ -316,7 +316,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "modes", force: true do |t|
+  create_table "modes", force: :cascade do |t|
     t.string  "name",                limit: 64,                 null: false
     t.boolean "active",                                         null: false
     t.string  "code"
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.boolean "selected_by_default",            default: true
   end
 
-  create_table "multi_origin_dest_trips", force: true do |t|
+  create_table "multi_origin_dest_trips", force: :cascade do |t|
     t.integer  "user_id",       null: false
     t.text     "origin_places", null: false
     t.text     "dest_places",   null: false
@@ -337,7 +337,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "oneclick_configurations", force: true do |t|
+  create_table "oneclick_configurations", force: :cascade do |t|
     t.string   "code"
     t.text     "value"
     t.text     "description"
@@ -345,7 +345,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "places", force: true do |t|
+  create_table "places", force: :cascade do |t|
     t.integer  "user_id",                                    null: false
     t.integer  "creator_id"
     t.string   "name",            limit: 64,                 null: false
@@ -370,12 +370,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.text     "types"
   end
 
-  create_table "poi_types", force: true do |t|
+  create_table "poi_types", force: :cascade do |t|
     t.string  "name",   limit: 64, null: false
     t.boolean "active",            null: false
   end
 
-  create_table "pois", force: true do |t|
+  create_table "pois", force: :cascade do |t|
     t.integer  "poi_type_id",                                           null: false
     t.string   "name",            limit: 256,                           null: false
     t.string   "address1",        limit: 128
@@ -396,12 +396,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "stop_code"
   end
 
-  create_table "profile_types", force: true do |t|
+  create_table "profile_types", force: :cascade do |t|
     t.string "name",        limit: 64
     t.string "description", limit: 254
   end
 
-  create_table "properties", force: true do |t|
+  create_table "properties", force: :cascade do |t|
     t.string   "category",   limit: 64
     t.string   "name",       limit: 64
     t.string   "value"
@@ -410,7 +410,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at",            null: false
   end
 
-  create_table "providers", force: true do |t|
+  create_table "providers", force: :cascade do |t|
     t.text    "name",                                              null: false
     t.string  "external_id",            limit: 25
     t.boolean "active",                             default: true, null: false
@@ -433,7 +433,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string  "disabled_comment"
   end
 
-  create_table "ratings", force: true do |t|
+  create_table "ratings", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "rateable_id"
     t.string   "rateable_type"
@@ -444,12 +444,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "status",        default: "pending"
   end
 
-  create_table "relationship_statuses", force: true do |t|
+  create_table "relationship_statuses", force: :cascade do |t|
     t.string "name", limit: 64
     t.string "code"
   end
 
-  create_table "reporting_filter_fields", force: true do |t|
+  create_table "reporting_filter_fields", force: :cascade do |t|
     t.integer  "reporting_filter_group_id",             null: false
     t.integer  "reporting_filter_type_id",              null: false
     t.integer  "reporting_lookup_table_id"
@@ -461,19 +461,19 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "value_type"
   end
 
-  create_table "reporting_filter_groups", force: true do |t|
+  create_table "reporting_filter_groups", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "reporting_filter_types", force: true do |t|
+  create_table "reporting_filter_types", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "reporting_lookup_tables", force: true do |t|
+  create_table "reporting_lookup_tables", force: :cascade do |t|
     t.string   "name",                              null: false
     t.string   "display_field_name",                null: false
     t.datetime "created_at",                        null: false
@@ -482,7 +482,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "data_access_type"
   end
 
-  create_table "reporting_output_fields", force: true do |t|
+  create_table "reporting_output_fields", force: :cascade do |t|
     t.integer  "reporting_report_id", null: false
     t.string   "name",                null: false
     t.string   "title"
@@ -492,7 +492,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "numeric_precision"
   end
 
-  create_table "reporting_reports", force: true do |t|
+  create_table "reporting_reports", force: :cascade do |t|
     t.string   "name",                             null: false
     t.string   "description"
     t.string   "data_source",                      null: false
@@ -505,7 +505,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "primary_key",       default: "id", null: false
   end
 
-  create_table "reports", force: true do |t|
+  create_table "reports", force: :cascade do |t|
     t.string   "name",        limit: 64
     t.string   "description", limit: 254
     t.string   "view_name",   limit: 64
@@ -516,7 +516,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.boolean  "exportable",              default: false
   end
 
-  create_table "ridepilot_bookings", force: true do |t|
+  create_table "ridepilot_bookings", force: :cascade do |t|
     t.integer  "leg"
     t.integer  "guests"
     t.integer  "attendants"
@@ -530,7 +530,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "booking_status_name"
   end
 
-  create_table "ridepilot_profiles", force: true do |t|
+  create_table "ridepilot_profiles", force: :cascade do |t|
     t.string   "endpoint"
     t.string   "api_token"
     t.string   "provider_id"
@@ -539,7 +539,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "roles", force: true do |t|
+  create_table "roles", force: :cascade do |t|
     t.string   "name",          limit: 64
     t.integer  "resource_id"
     t.string   "resource_type", limit: 64
@@ -547,9 +547,9 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "roles", ["name"], :name => "index_roles_on_name"
+  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
-  create_table "satisfaction_surveys", force: true do |t|
+  create_table "satisfaction_surveys", force: :cascade do |t|
     t.integer  "trip_id",    null: false
     t.boolean  "satisfied",  null: false
     t.text     "comment"
@@ -558,7 +558,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.text     "reasoning"
   end
 
-  create_table "schedules", force: true do |t|
+  create_table "schedules", force: :cascade do |t|
     t.integer  "service_id",                   null: false
     t.integer  "day_of_week",                  null: false
     t.boolean  "active",        default: true, null: false
@@ -568,14 +568,14 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "end_seconds"
   end
 
-  create_table "service_accommodations", force: true do |t|
+  create_table "service_accommodations", force: :cascade do |t|
     t.integer "service_id",                            null: false
     t.integer "accommodation_id",                      null: false
     t.boolean "requires_verification", default: false, null: false
     t.boolean "active",                default: true,  null: false
   end
 
-  create_table "service_characteristics", force: true do |t|
+  create_table "service_characteristics", force: :cascade do |t|
     t.integer "service_id",                                       null: false
     t.integer "characteristic_id",                                null: false
     t.string  "value",                 limit: 64,                 null: false
@@ -585,27 +585,27 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer "group",                            default: 0,     null: false
   end
 
-  create_table "service_coverage_maps", force: true do |t|
+  create_table "service_coverage_maps", force: :cascade do |t|
     t.integer "service_id"
     t.integer "geo_coverage_id"
     t.string  "rule"
   end
 
-  create_table "service_trip_purpose_maps", force: true do |t|
+  create_table "service_trip_purpose_maps", force: :cascade do |t|
     t.integer "service_id",                     null: false
     t.integer "trip_purpose_id",                null: false
     t.boolean "active",          default: true, null: false
     t.integer "rel_code"
   end
 
-  create_table "service_types", force: true do |t|
+  create_table "service_types", force: :cascade do |t|
     t.string  "name",   limit: 64,                null: false
     t.string  "note"
     t.string  "code"
     t.boolean "active",            default: true
   end
 
-  create_table "services", force: true do |t|
+  create_table "services", force: :cascade do |t|
     t.text     "name",                                                     null: false
     t.integer  "provider_id",                                              null: false
     t.integer  "service_type_id",                                          null: false
@@ -648,12 +648,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "booking_profile"
   end
 
-  create_table "services_users", id: false, force: true do |t|
+  create_table "services_users", id: false, force: :cascade do |t|
     t.integer "user_id",    null: false
     t.integer "service_id", null: false
   end
 
-  create_table "sidewalk_obstructions", force: true do |t|
+  create_table "sidewalk_obstructions", force: :cascade do |t|
     t.integer  "user_id",                        null: false
     t.float    "lat",                            null: false
     t.float    "lon",                            null: false
@@ -664,7 +664,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "sponsors", force: true do |t|
+  create_table "sponsors", force: :cascade do |t|
     t.string   "code",       null: false
     t.integer  "index"
     t.integer  "service_id", null: false
@@ -672,13 +672,13 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "translation_keys", force: true do |t|
-    t.string   "name"
+  create_table "translation_keys", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "translations", force: true do |t|
+  create_table "translations", force: :cascade do |t|
     t.string   "key"
     t.text     "interpolations"
     t.boolean  "is_proc",            default: false
@@ -693,7 +693,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "translation_key_id"
   end
 
-  create_table "trapeze_bookings", force: true do |t|
+  create_table "trapeze_bookings", force: :cascade do |t|
     t.string   "passenger1_type"
     t.string   "passenger1_space_type"
     t.string   "passenger2_type"
@@ -708,7 +708,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "fare3_type_id"
   end
 
-  create_table "trapeze_profiles", force: true do |t|
+  create_table "trapeze_profiles", force: :cascade do |t|
     t.string   "endpoint"
     t.string   "username"
     t.string   "password"
@@ -720,13 +720,13 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "booking_offset_minutes", default: 0, null: false
   end
 
-  create_table "traveler_notes", force: true do |t|
+  create_table "traveler_notes", force: :cascade do |t|
     t.integer "user_id"
     t.integer "agency_id"
     t.text    "note"
   end
 
-  create_table "trip_parts", force: true do |t|
+  create_table "trip_parts", force: :cascade do |t|
     t.integer  "trip_id"
     t.integer  "from_trip_place_id"
     t.integer  "to_trip_place_id"
@@ -748,7 +748,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "banned_routes"
   end
 
-  create_table "trip_places", force: true do |t|
+  create_table "trip_places", force: :cascade do |t|
     t.integer  "trip_id"
     t.integer  "sequence",                                                     null: false
     t.integer  "place_id"
@@ -774,7 +774,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.text     "address_components_raw"
   end
 
-  create_table "trip_purposes", force: true do |t|
+  create_table "trip_purposes", force: :cascade do |t|
     t.string  "name",       limit: 64,                null: false
     t.string  "note"
     t.boolean "active",                default: true, null: false
@@ -782,13 +782,13 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string  "code"
   end
 
-  create_table "trip_statuses", force: true do |t|
+  create_table "trip_statuses", force: :cascade do |t|
     t.string  "name",   limit: 64
     t.boolean "active",            null: false
     t.string  "code"
   end
 
-  create_table "trips", force: true do |t|
+  create_table "trips", force: :cascade do |t|
     t.string   "name",                      limit: 64
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
@@ -824,12 +824,12 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "max_transfer_time"
   end
 
-  create_table "trips_desired_modes", force: true do |t|
+  create_table "trips_desired_modes", force: :cascade do |t|
     t.integer "trip_id",         null: false
     t.integer "desired_mode_id", null: false
   end
 
-  create_table "user_accommodations", force: true do |t|
+  create_table "user_accommodations", force: :cascade do |t|
     t.integer  "user_profile_id",                             null: false
     t.integer  "accommodation_id",                            null: false
     t.string   "value",            limit: 64,                 null: false
@@ -838,7 +838,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "verified_by_id"
   end
 
-  create_table "user_characteristics", force: true do |t|
+  create_table "user_characteristics", force: :cascade do |t|
     t.integer  "user_profile_id",                              null: false
     t.integer  "characteristic_id",                            null: false
     t.string   "value",             limit: 64,                 null: false
@@ -847,7 +847,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.integer  "verified_by_id"
   end
 
-  create_table "user_messages", force: true do |t|
+  create_table "user_messages", force: :cascade do |t|
     t.integer  "recipient_id"
     t.integer  "message_id"
     t.boolean  "read",              default: false
@@ -857,20 +857,20 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "read_at"
   end
 
-  create_table "user_mode_preferences", force: true do |t|
+  create_table "user_mode_preferences", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "mode_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_profiles", force: true do |t|
+  create_table "user_profiles", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_relationships", force: true do |t|
+  create_table "user_relationships", force: :cascade do |t|
     t.integer  "user_id",                null: false
     t.integer  "delegate_id",            null: false
     t.integer  "relationship_status_id", null: false
@@ -878,14 +878,14 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at",             null: false
   end
 
-  create_table "user_roles", force: true do |t|
+  create_table "user_roles", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_services", force: true do |t|
+  create_table "user_services", force: :cascade do |t|
     t.integer  "user_profile_id",                                         null: false
     t.integer  "service_id",                                              null: false
     t.string   "external_user_id",                                        null: false
@@ -897,7 +897,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "encrypted_user_password"
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "nickname",                    limit: 64
     t.string   "prefix",                      limit: 4
     t.string   "first_name",                  limit: 64,                 null: false
@@ -928,22 +928,22 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "disabled_comment"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
-  create_table "value_relationships", force: true do |t|
+  create_table "value_relationships", force: :cascade do |t|
     t.string   "relationship", limit: 64
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
 
-  create_table "walking_maximum_distances", force: true do |t|
+  create_table "walking_maximum_distances", force: :cascade do |t|
     t.float    "value",                      null: false
     t.boolean  "is_default", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "walking_speeds", force: true do |t|
+  create_table "walking_speeds", force: :cascade do |t|
     t.string   "code",                       null: false
     t.string   "name",                       null: false
     t.float    "value",                      null: false
@@ -952,14 +952,14 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.datetime "updated_at"
   end
 
-  create_table "zipcodes", force: true do |t|
+  create_table "zipcodes", force: :cascade do |t|
     t.integer "gid"
     t.string  "zipcode"
     t.string  "name"
     t.string  "state"
   end
 
-  create_table "zone_fares", force: true do |t|
+  create_table "zone_fares", force: :cascade do |t|
     t.integer  "from_zone_id"
     t.integer  "to_zone_id"
     t.integer  "fare_structure_id"
