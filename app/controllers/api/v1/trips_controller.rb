@@ -114,9 +114,15 @@ module Api
             itinerary_hash[:note] = itinerary.trip_part.note_to_driver
 
             if itinerary.service
-              itinerary_hash[:service_name] = itinerary.service.name
+              i_hash[:service_name] = itinerary.service.name
+              i_hash[:phone] = itinerary.service.phone
+              i_hash[:logo_url]= itinerary.service.logo_url
+              comment = itinerary.service.comments.where(locale: "en").first
+              if comment
+                i_hash[:comment] = comment.comment
+              end
             else
-              itinerary_hash[:service_name] = ""
+              i_hash[:service_name] = ""
             end
 
             if itinerary.discounts
