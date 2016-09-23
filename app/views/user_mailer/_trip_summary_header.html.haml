@@ -5,7 +5,8 @@
     %table.trip_summary_container{style: "padding: 10px 0px;"}
       %tr
       %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
-
+        -# logo_url_helper appears to only send back relative path, which doesn't work in local env't. May work in dev.
+        -# %img{:src => "http://localhost:3000"+logo_url_helper(@itinerary), style: "height: 20px; width: 20px;  vertical-align: middle; padding-right: 10px;", height: "20", width: "20"}
         %img{:src => logo_url_helper(@itinerary), style: "height: 20px; width: 20px;  vertical-align: middle; padding-right: 10px;", height: "20", width: "20"}
         -if @itinerary.mode.code == 'mode_paratransit'
           %span=@itinerary.service.name + ' - ' + @itinerary.service.provider.name
