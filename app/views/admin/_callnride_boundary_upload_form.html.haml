@@ -1,0 +1,19 @@
+= simple_form_for :oneclick_configuration, url: set_callnride_boundary_admin_oneclick_configurations_path, html: {class: 'form-horizontal', multipart: true, method: 'patch' }, authenticity_token: true, wrapper: :horizontal_form do |f|
+  .row#poi_upload_div
+    .col-sm-12
+      .panel.panel-default
+        .panel-heading
+          .row
+            .col-sm-12
+              %h3.panel-title
+                .btns.pull-right
+                  = f.submit translate_helper(:ok), class: 'btn action-button', role: 'button'
+                = translate_helper(:set_callnride)
+                = add_tooltip("set_callnride_help")
+        .panel-body
+          = f.error_notification message: print_messages(f)
+          %label
+            = translate_helper(:upload_zipped_callnride_boundary)
+          = f.input "file", required:true, :label => translate_helper(:upload_shapefile), :as => :file
+
+    

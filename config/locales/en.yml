@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  upload_zipped_callnride_boundary: "Upload a zip file containing a .shp file projected with EPG:4326 (Web Mercator)"
+  set_callnride: "Set Call-N-Ride Boundary"
   other_name: "Other"
   refresh_materialized_views: "Update Report Data"
   ridepilot: "RidePilot"
@@ -759,7 +761,7 @@ en:
   cap_returning_at: "Returning At"
   traveler_not_registered: "Traveler not registered to book trips with One-Click."
   outbound_error_occurred: "An error occurred when attempting to book your outbound trip."
-  return_error_occurred: "An error occurred when attempting to book your return trip."
+  return_error_occurred: "An error occurred when attempting to book your returcn trip."
   please_wait: "Please wait"
   book_a_trip: "Would you like to book this trip with"
   more_info_call: "For more information, call"

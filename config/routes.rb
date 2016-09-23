@@ -247,7 +247,13 @@ Oneclick::Application.routes.draw do
         resources :trip_parts
       end
       resources :translations
-      resources :oneclick_configurations
+      resources :oneclick_configurations do
+        collection do
+          patch 'set_callnride_boundary'
+        end
+      end
+
+
     end#admin
 
     resources :services do
