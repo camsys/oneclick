@@ -27,7 +27,7 @@ class Admin::OneclickConfigurationsController < Admin::BaseController
           uploader.store!(boundary_file)
           # PoiUploadWorker.perform_async(uploader.path) # need to start sidekiq locally: bundle exec sidekiq
           gs = GeographyServices.new
-          info_msgs << gs.store_callnride_boundary(uploader.path) # if local, then no need to call worker
+          info_msgs << gs.store_callnride_boundary(uploader.url) # if local, then no need to call worker
 
         rescue Exception => ex
           error_msgs << ex.message
