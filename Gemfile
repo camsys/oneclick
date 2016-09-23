@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.7'
 
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.1'
 
 gem 'sprockets', '2.11.0'
 # gem 'sass-rails', '~> 4.0.3'
@@ -75,7 +75,7 @@ gem 'uber-ruby', require: 'uber'
 
 #group :production do
   #Needed for Oracle DB Connection
-  gem 'activerecord-oracle_enhanced-adapter', '~> 1.5.0'
+  gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
   gem 'ruby-oci8'
 #end
 

@@ -11,7 +11,7 @@ class Place < GeocodedAddress
   # attr_accessible :name, :raw_address
   # attr_accessible :creator_id, :poi_id, :active, :home, :lat, :lon
   
-  scope :active, -> {where("places.active = true")}
+  scope :active, -> {where(active: true)}
   default_scope {order("name")}
   
   # Returns true if the user can delete this place from their My Places
