@@ -223,7 +223,7 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+        render json: {trip_id: trip.id, origin_in_callnride: trip.origin.within_callnride?, destination_in_callnride: trip.destination.within_callnride?, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 
       end
 
