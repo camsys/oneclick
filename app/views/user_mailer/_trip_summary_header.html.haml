@@ -47,10 +47,11 @@
         %span=' : '
         %span=duration_to_words(@itinerary.walk_time)
 
-        %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
-        %span{style: "font-weight: bold;"}='Transfers'
-        %span=' : '
-        %span=@itinerary.transfers.to_s
+        -if itinerary.transfers
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
+          %span{style: "font-weight: bold;"}='Transfers'
+          %span=' : '
+          %span=@itinerary.transfers.to_s
 
         -if itinerary.mode.code =='mode_rideshare'
           %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
