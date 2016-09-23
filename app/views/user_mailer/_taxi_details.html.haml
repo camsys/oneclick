@@ -1,31 +1,3 @@
--#  ORIGINAL CODE
-
--# %table.center
--#   %tr
--#     %td
--#       %strong
--#         =itinerary.service.name + " - "  + itinerary.service.phone
--# %br
--#
--# - if itinerary.service.public_comments
--#   .row
--#     .col-sm-12
--#       .well.well-sm.comments
--#         - itinerary.service.public_comments.each do |comment|
--#           = comment.comment.try(:html_safe)
--#           %br
--#
--# - if itinerary.service.fare_structures
--#   - itinerary.service.fare_structures.each do |fare|
--#     -if fare.comments.for_locale
--#       .row
--#         .col-sm-12
--#           .well.well-sm.comments
--#             = fare.comments.for_locale.comment.try(:html_safe)
-
-
--# UPDATED WITH RTD STYLING
-
 %table.taxi_details{style: "padding: 16px 5px;"}
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em; padding: 16px 10px;"}
