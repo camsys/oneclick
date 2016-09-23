@@ -777,6 +777,7 @@ class BookingServices
       new_itinerary[:status] = hash['status']
       new_itinerary[:departure] = hash['pickup']['negotiated']
       new_itinerary[:arrival] = hash['dropoff']['negotiated']
+      new_itinerary[:cost] = (hash['fare']['client_copay'].to_f)/100.0
       new_itinerary[:fare] = (hash['fare']['client_copay'].to_f)/100.0
       new_itinerary[:assistant] = hash['assistant']
       new_itinerary[:children] = hash['children']
@@ -826,6 +827,7 @@ class BookingServices
       itinerary_hash[:departure] = itinerary.start_time.iso8601
       itinerary_hash[:arrival] = itinerary.end_time.iso8601
       itinerary_hash[:fare] = itinerary.cost.to_f
+      itinerary_hash[:cost] = itinerary.cost.to_f
       itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
       itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
       itinerary_hash[:duration] = itinerary.duration
@@ -834,6 +836,21 @@ class BookingServices
       itinerary_hash[:wait_time] = itinerary.wait_time
       itinerary_hash[:walk_distance] = itinerary.walk_distance
       itinerary_hash[:transfers] = itinerary.transfers
+
+      if itinerary.service
+        itinerary_hash[:service_name] = itinerary.service.name
+        itinerary_hash[:phone] = itinerary.service.phone
+        itinerary_hash[:logo_url]= itinerary.service.logo_url
+        comment = itinerary.service.comments.where(locale: "en").first
+        if comment
+          itinerary_hash[:comment] = comment.comment
+        end
+      else
+        itinerary_hash[:service_name] = ""
+      end
+
+
+
       unless itinerary.legs.blank?
         itinerary_hash[:json_legs] = (YAML.load(itinerary.legs || "")).as_json
       end
