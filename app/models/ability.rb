@@ -17,6 +17,7 @@ class Ability
       cannot :rate, Trip # remove global permission to rate, sys admin will still be able to rate when it's their own trip
       can :settings, :util
       can :load_pois, :pois
+      can :update_callnride_boundary, :oneclick_configuration
       can :upload_application_logo, :util
       can :upload_favicon, :util
     else

@@ -54,7 +54,7 @@ Oneclick::Application.configure do
   config.replace_long_walks = false
 
   #Logging
-  config.log_level = 3
+  config.log_level = 1
 
   # Maps
   config.default_zoom = nil

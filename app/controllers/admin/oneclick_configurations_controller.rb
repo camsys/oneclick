@@ -15,24 +15,13 @@ class Admin::OneclickConfigurationsController < Admin::BaseController
     info_msgs = []
     error_msgs = []
 
-    if false #!can?(:load_pois, :pois)
+    if !can?(:update_callnride_boundary, :oneclick_configuration)
       error_msgs << TranslationEngine.translate_text(:not_authorized)
     else
       boundary_file = params[:oneclick_configuration][:file] if params[:oneclick_configuration]
-
       if !boundary_file.nil?
-
-        uploader = CallnrideBoundaryUploader.new
-        begin
-          uploader.store!(boundary_file)
-          # PoiUploadWorker.perform_async(uploader.path) # need to start sidekiq locally: bundle exec sidekiq
-          gs = GeographyServices.new
-          info_msgs << gs.store_callnride_boundary(uploader.url) # if local, then no need to call worker
-
-        rescue Exception => ex
-          error_msgs << ex.message
-        end
-
+        gs = GeographyServices.new
+        info_msgs << gs.store_callnride_boundary(boundary_file.tempfile.path) # if local, then no need to call worker
       else
         error_msgs << "Upload a zip file containing a shape file."
       end
