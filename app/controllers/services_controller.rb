@@ -208,7 +208,7 @@ class ServicesController < ApplicationController
             end
           end
         end
-                                                                                                                             lication.
+
         is_to_delete_coverage_shp = params[:service][:delete_coverages_shapefile]
         if (had_coverages && !has_coverages) || (!has_coverages && is_to_delete_coverage_shp)
           @service.destroy_coverage_geom
