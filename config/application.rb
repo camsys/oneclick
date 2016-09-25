@@ -93,19 +93,19 @@ module Oneclick
     # config.active_record.schema_format = :sql
 
     # Enable the asset pipeline
-    config.assets.enabled = true
-    config.assets.compile=false
+    #config.assets.enabled = true
+    #config.assets.compile = false
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
-    config.assets.initialize_on_precompile = false
-    config.serve_static_assets = true
+    #config.assets.initialize_on_precompile = false
+    #config.serve_static_assets = true
 
     config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
     # config.assets.precompile = ['foo']
 
-    config.assets.debug = true
-    config.assets.paths << File.join(Rails.root, 'app', 'assets')
-    #config.assets.paths << Rails.root.join('app', 'assets')
+    #config.assets.debug = true
+    #config.assets.paths << File.join(Rails.root, 'app', 'assets')
+    config.assets.paths << Rails.root.join('app', 'assets')
     config.assets.precompile += %w(
         application.css
         tadaaapickr.en.js
