@@ -2,7 +2,7 @@ class TaxiRestService
 
   def self.call_out_to_taxi_fare_finder(city, api_key, from, to)
 
-	base_url = "http://api.taxifarefinder.com/"
+	base_url = "https://api.taxifarefinder.com/"
 
   	entity = '&entity_handle=' + city
   	api_key = '?key=' + api_key
@@ -27,7 +27,7 @@ class TaxiRestService
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
       log_error_to_honeybadger("Service failure: taxi: fare status not OK",{fare: fare})
-      return 
+      return
     end
 
     #Get providers
