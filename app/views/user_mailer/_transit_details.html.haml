@@ -11,10 +11,7 @@
   - itinerary.get_legs.each do |leg|
     %tr
       %td.itinerary_icons{style: "vertical-align:top; text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
-        - if leg.respond_to? :agency_id and not leg.agency_id.nil?
-          %img{:src => get_service_provider_icon(leg.agency_id, leg.mode), style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
-        - else
-          %img{:src => get_mode_icon(leg.mode), style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+        %img{:src => get_mode_icon(leg.mode), style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
       %td.itin_text_container{style: "padding: 16px 10px;"}
         .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
           - if leg.mode == Leg::TripLeg::CAR || leg.mode == Leg::TripLeg::BICYCLE || leg.mode == Leg::TripLeg::WALK
