@@ -7,7 +7,7 @@ module Api
         end
 
         def create
-            oc = OneclickConfiguration.first_or_initialize(code: "otp_defaults_json")
+            oc = OneclickConfiguration.where(code: "otp_defaults_json").first_or_initialize
             oc.value = params["data"].to_json
             oc.save
             render json: {status: 200, message: "Success"}
