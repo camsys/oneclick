@@ -1,0 +1,24 @@
+@media screen and (max-width: 360px) {
+  /* line 3, /Users/dedwards/RubymineProjects/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #agencies .updated {
+    display: none;
+  }
+
+  /* line 8, /Users/dedwards/RubymineProjects/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .dataTables_filter input {
+    width: 11em;
+  }
+  /* line 11, /Users/dedwards/RubymineProjects/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .email {
+    display: none;
+  }
+  /* line 14, /Users/dedwards/RubymineProjects/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .action-button {
+    min-width: 0;
+  }
+}
+/* line 20, /Users/dedwards/RubymineProjects/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+#buddies_table .action-button {
+  margin-left: 0;
+  margin-right: 5px;
+}

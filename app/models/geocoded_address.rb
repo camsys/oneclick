@@ -38,5 +38,15 @@ class GeocodedAddress < ActiveRecord::Base
        [state, zip].join(' ')].reject{|s| s.blank?}.join(', ')
     end
   end
+
+  def within_callnride?
+    begin
+      factory = RGeo::Geographic.simple_mercator_factory
+      point = factory.point(self.lon.to_f, self.lat.to_f)
+      Oneclick::Application.config.callnride_boundary.contains? point
+    rescue
+      return false
+    end
+  end
   
 end

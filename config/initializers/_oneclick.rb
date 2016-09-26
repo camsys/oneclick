@@ -20,12 +20,7 @@ Oneclick::Application.configure do
 
   #Used by geocoding stops.  9000 new stops needing to be geocoded will approach the daily limit
   #This parameter tells us to only do the first 100 or so stops.
-  if Rails.env.production?
-    config.limit_geocoding = false
-  else
-    config.limit_geocoding = true
-  end
-
+  config.limit_geocoding = false
   #Only used if limit_gecoding = true
   config.geocoding_limit = 10000
 
@@ -54,7 +49,7 @@ Oneclick::Application.configure do
   config.replace_long_walks = false
 
   #Logging
-  config.log_level = 3
+  config.log_level = 1
 
   # Maps
   config.default_zoom = nil
