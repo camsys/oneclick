@@ -201,8 +201,41 @@ Oneclick::Application.configure do
 
   config.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY']
 
-  config.otp_internal_defaults_json = {"type" => "internal", "key1" => "value1", "key2" => "value2", "key3" => "value3"}
-  config.otp_external_defaults_json = {"type" => "external", "key1" => "value1", "key2" => "value2", "key3" => "value3"}
+  config.otp_internal_defaults_json = {
+    "transitOnlyMode" => "true",
+    "walkOnlyMode" => "true",
+    "bikeOnlyMode" => "false",
+    "parkAndRideMode" => "false",
+    "bikeTransitMode" => "false",
+    "maxWalkTime" => "15",
+    "maxWalkDistance" => "0.5",
+    "maxWalkPace" => "medium",
+    "maxBikeTime" => "15",
+    "maxBikeDistance" => "3.0",
+    "maxBikePace" => "medium",
+    "minTransferTime" => "5",
+    "maxTransferTime" => "30",
+    "allowDeparturesTime" => "5",
+    "defaultPosition" => "39.7392, -104.9903",
+    "priority" => "TIME",
+    "includeRoutes" => "",
+    "excludeRoutes" => "",
+    "defaultLayoverTime" => "30"
+  } 
+
+  config.otp_external_defaults_json = {
+    "mode" => "mode_transit",
+    "maxWalkTime" => "15",
+    "maxWalkDistance" => "0.5",
+    "maxWalkPace" => "medium",
+    "maxBikeTime" => "15",
+    "maxBikeDistance" => "3.0",
+    "maxBikePace" => "medium",
+    "minTransferTime" => "5",
+    "maxTransferTime" => "30",
+    "allowDeparturesTime" => "5",
+    "defaultPosition" => "39.7392, -104.9903"
+  } 
 
 
   ##########################################
