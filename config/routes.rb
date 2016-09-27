@@ -369,9 +369,7 @@ Oneclick::Application.routes.draw do
         end
       end
 
-      resources :defaults do
-        # index and create are default
-      end
+      resources :defaults, path: '/:type/defaults', constraints: { type: /internal|external/ }
 
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
