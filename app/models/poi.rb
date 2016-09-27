@@ -18,7 +18,7 @@ class Poi < GeocodedAddress
   scope :stops, -> {joins(:poi_type).where(poi_types: {name: ['STOP']})}
 
   def self.get_by_query_str(query_str, limit, has_address=false)
-    rel = Poi.arel_table[:name].matches(query_str)
+    rel = Poi.arel_table[:name].lower().matches(query_str)
     if has_address
       pois = Poi.has_address.where(rel).limit(limit)
     else

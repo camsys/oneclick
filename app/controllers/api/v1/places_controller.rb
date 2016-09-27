@@ -12,7 +12,7 @@ module Api
         count = 0
 
         if include_user_pois.to_bool
-          rel = Place.arel_table[:name].matches(search_string)
+          rel = Place.arel_table[:name].lower().matches(search_string)
           places = @traveler.places.active.where(rel)
           places.each do |place|
             locations.append(place.build_place_details_hash)
