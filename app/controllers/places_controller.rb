@@ -83,9 +83,9 @@ class PlacesController < PlaceSearchingController
         details = get_places_autocomplete_details(j['id'], j['reference'])
         puts details.ai
 
-        puts d.body.ai
+        puts details.body.ai
 
-        puts d.body['result']
+        puts details.body['result']
 
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
