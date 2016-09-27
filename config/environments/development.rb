@@ -9,7 +9,7 @@ Oneclick::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   # development settings
-  #config.serve_static_assets = true
+  config.serve_static_assets = true
   #config.assets.compress = false
   # config.assets.compile
   # config.assets.digest

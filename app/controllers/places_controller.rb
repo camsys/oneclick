@@ -59,6 +59,10 @@ class PlacesController < PlaceSearchingController
 
   def create
     p = params[:places_controller_places_proxy]
+
+    puts p
+
+    puts p.ai
     # if the address wasn't geocoded, just take whatever the traveler entered
     if p[:json].blank?
       Rails.logger.info "Not geocoded"
