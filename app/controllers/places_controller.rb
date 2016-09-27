@@ -62,15 +62,24 @@ class PlacesController < PlaceSearchingController
 
     puts p
 
+
+    puts p[:json]
     puts p.ai
     # if the address wasn't geocoded, just take whatever the traveler entered
     if p[:json].blank?
+
+      puts 'jSON IS BLANK'
       Rails.logger.info "Not geocoded"
       place = Place.create!({name: p[:place_name], user: @traveler, raw_address: p[:from_place]})
     else
+      puts 'JSON is NOT BLANK'
       j = JSON.parse(p[:json])
       if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
         Rails.logger.info "Was autocompleted, create or update as needed"
+        puts j.ai
+        puts j['id']
+        puts 'dere look here'
+
         details = get_places_autocomplete_details(j['id'], j['reference'])
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
