@@ -310,8 +310,8 @@ namespace :oneclick do
         when 'blair'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Blair']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Blair']
           service.county_coverage_array = ['Blair']
 
           #Funding Sources
@@ -340,8 +340,8 @@ namespace :oneclick do
         when 'monroe'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Monroe']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Monroe']
           service.county_coverage_array = ['Monroe']
 
           #Funding Sources
@@ -372,7 +372,7 @@ namespace :oneclick do
 
           #Counties
           service.county_endpoint_array = []
-          service.county_endpoint_array = ['Carbon']
+          # service.county_endpoint_array = ['Carbon']
           service.county_coverage_array = ['Carbon']
 
           #Funding Sources
@@ -399,8 +399,8 @@ namespace :oneclick do
         when 'lanta'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Lehigh', 'Northampton']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Lehigh', 'Northampton']
           service.county_coverage_array = ['Lehigh', 'Northampton']
 
           #Funding Sources
