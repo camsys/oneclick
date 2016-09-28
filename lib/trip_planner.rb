@@ -288,4 +288,12 @@ class TripPlanner
     resp = Net::HTTP.get_response(URI.parse(url))
     return JSON.parse(resp.body).first
   end
+
+  def get_stoptimes trip_id, agency_id=1
+    path = '/index/trips/' + agency_id.to_s + ':' + trip_id.to_s + '/stoptimes'
+    url = Oneclick::Application.config.open_trip_planner + path
+    resp = Net::HTTP.get_response(URI.parse(url))
+    return JSON.parse(resp.body)
+  end
+
 end
