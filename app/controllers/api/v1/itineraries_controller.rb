@@ -324,10 +324,13 @@ module Api
 
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
-          trip_to_email = email_itinerary[:trip_id]
-
-          trip = Trip.find(trip_to_email.to_i)
           
+          itinerary_ids = email_itinerary[:itinerary_ids]
+          itins = Itinerary.where(id: itinerary_ids)
+          
+          # for subject, get first trip
+          trip = itins.first.trip_part.trip
+
           if !email_itinerary[:subject].nil?
             subject = email_itinerary[:subject]
           elsif trip.scheduled_time > Time.now
@@ -336,11 +339,8 @@ module Api
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
 
-          itinerary_ids = email_itinerary[:itinerary_ids]
+          UserMailer.user_itinerary_email([email_address], itins, subject, '', @traveler).deliver
           
-          Itinerary.where(id: itinerary_ids).each do |itin|
-            UserMailer.user_itinerary_email([email_address], trip, itin, subject, '', @traveler).deliver
-          end
         end
 
         render json: {result: 200}

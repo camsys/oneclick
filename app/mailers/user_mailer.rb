@@ -43,10 +43,8 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def user_itinerary_email(addresses, trip, itinerary, subject, comments, current_user = nil)
-    @trip = trip
-    @itinerary = itinerary
-    @legs = @itinerary.get_legs
+  def user_itinerary_email(addresses, itineraries, subject, comments, current_user = nil)
+    @itineraries = itineraries
     @comments = comments
     @user = current_user
     @trip_link = @@trip_link

@@ -4,22 +4,22 @@
       %tr
       %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
 
-        %img{:src => logo_url_helper(@itinerary), style: "height: 20px; width: 20px;  vertical-align: middle; padding-right: 10px;", height: "20", width: "20"}
-        -if @itinerary.mode.code == 'mode_paratransit'
-          %span=@itinerary.service.name + ' - ' + @itinerary.service.provider.name
+        %img{:src => logo_url_helper(itinerary), style: "height: 20px; width: 20px;  vertical-align: middle; padding-right: 10px;", height: "20", width: "20"}
+        -if itinerary.mode.code == 'mode_paratransit'
+          %span=itinerary.service.name + ' - ' + itinerary.service.provider.name
         -else
-          %span=get_trip_summary_title(@itinerary)
+          %span=get_trip_summary_title(itinerary)
 
 
-        -if @itinerary.cost
+        -if itinerary.cost
           %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | ' 
           %span{style: "font-weight: bold;"}= 'Fare'  
           %span=' : '
-          -if @itinerary.mode.code == 'mode_taxi'
-            %span=number_to_currency(@itinerary.cost.round) + " " + translate_helper(:est)
+          -if itinerary.mode.code == 'mode_taxi'
+            %span=number_to_currency(itinerary.cost.round) + " " + translate_helper(:est)
           -else
-            -unless @itinerary.cost == 0
-              %span=number_to_currency(@itinerary.cost)
+            -unless itinerary.cost == 0
+              %span=number_to_currency(itinerary.cost)
             -else
               %span=translate_helper(:no_cost_for_service)
 
@@ -38,17 +38,17 @@
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
         %span{style: "font-weight: bold;"}= 'Duration' 
         %span=' : ' 
-        %span.duration= duration_to_words(@itinerary.duration) 
+        %span.duration= duration_to_words(itinerary.duration) 
 
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
         %span{style: "font-weight: bold;"}= 'Walking'
         %span=' : ' 
-        %span=duration_to_words(@itinerary.walk_time)
+        %span=duration_to_words(itinerary.walk_time)
 
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
         %span{style: "font-weight: bold;"}='Transfers'
         %span=' : ' 
-        %span=@itinerary.transfers.to_s
+        %span=itinerary.transfers.to_s
 
         -if itinerary.mode.code =='mode_rideshare'
           %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
