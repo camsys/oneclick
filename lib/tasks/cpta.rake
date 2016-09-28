@@ -372,7 +372,7 @@ namespace :oneclick do
 
           #Counties
           service.county_endpoint_array = []
-          # service.county_endpoint_array = ['Carbon']
+          service.county_endpoint_array = ['Carbon']
           service.county_coverage_array = ['Carbon']
 
           #Funding Sources
