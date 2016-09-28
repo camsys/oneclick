@@ -42,7 +42,8 @@ namespace :oneclick do
       {name: "Shared Ride", external_id: "blair"},
       {name: "Shared Ride", external_id: "monroe"},
       {name: "Shared Ride", external_id: "carbon"},
-      {name: "Shared Ride", external_id: "lanta"}
+      {name: "Shared Ride", external_id: "lanta"},
+      {name: "Shared Ride", external_id: "columbia"}
     ]
 
     puts ecolane_services.ai
@@ -309,7 +310,8 @@ namespace :oneclick do
         when 'blair'
 
           #Counties
-          service.county_endpoint_array = ['Blair']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Blair']
           service.county_coverage_array = ['Blair']
 
           #Funding Sources
@@ -338,7 +340,8 @@ namespace :oneclick do
         when 'monroe'
 
           #Counties
-          service.county_endpoint_array = ['Monroe']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Monroe']
           service.county_coverage_array = ['Monroe']
 
           #Funding Sources
@@ -368,7 +371,8 @@ namespace :oneclick do
         when 'carbon'
 
           #Counties
-          service.county_endpoint_array = ['Carbon']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Carbon']
           service.county_coverage_array = ['Carbon']
 
           #Funding Sources
@@ -395,7 +399,8 @@ namespace :oneclick do
         when 'lanta'
 
           #Counties
-          service.county_endpoint_array = ['Lehigh', 'Northampton']
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Lehigh', 'Northampton']
           service.county_coverage_array = ['Lehigh', 'Northampton']
 
           #Funding Sources
@@ -416,6 +421,34 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'lanta'
+          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.save
+
+        when 'columbia'
+
+          #Counties
+          service.county_endpoint_array = []
+          # service.county_endpoint_array = ['Columbia']
+          service.county_coverage_array = ['Columbia']
+
+          #Funding Sources
+          funding_source_array = [['Lottery - US', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"],["Gen Pub - MC", 3, true, "Full Fare"]]
+
+          #Sponsors
+          sponsor_array = [['MATP', 0],['CCAAA', 1],['NCAAA', 2],['USAAA', 3]]
+
+          #Dummy User
+          service.fare_user = "1000004436"
+
+          #Optional: Disallowed Trip Purposes
+          #this is a comma separated string with no spaces around the commas, and all lower-case
+          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+          #Booking System Id
+          ecolane_profile.system = 'northumberland'
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
