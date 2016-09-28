@@ -39,9 +39,9 @@
       .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
         = format_time(itinerary.trip_part.scheduled_time.in_time_zone)
 
--if itinerary.map_image.url
-  %div{style: "width:100%;background: white; border-radius: 5px; padding-top: 10px;"}
-    %img{src: itinerary.map_image.url}
+-# -if itinerary.map_image.url
+-#   %div{style: "width:100%;background: white; border-radius: 5px; padding-top: 10px;"}
+-#     %img{src: itinerary.map_image.url}
 
 
 -# .row
