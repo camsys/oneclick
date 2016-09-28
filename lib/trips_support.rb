@@ -118,13 +118,6 @@ module TripsSupport
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
 
-      # if is_from
-      #   #puts place_id
-      #   #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
-      #   place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
-      # else
-      #   place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
-      # end
       Rails.logger.info "in get_preselected_place"
       Rails.logger.info "#{is_from} #{place.ai}"
       return {
@@ -142,8 +135,6 @@ module TripsSupport
     when PLACES_AUTOCOMPLETE_TYPE
       result = get_places_autocomplete_details(place_id)
       place = result.body['result']
-      # puts "====== PLACES_AUTOCOMPLETE_TYPE ======"
-      # puts place
       {
         place_id:          false,
         name:              place['formatted_address'],

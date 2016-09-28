@@ -23,6 +23,7 @@ Oneclick::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.default_url_options = { :host => ENV['HOST'] }
 
   # Warning: Heroku uses env var LOG_LEVEL
   config.log_level = :info
