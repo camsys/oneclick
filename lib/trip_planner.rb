@@ -52,6 +52,7 @@ class TripPlanner
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
     url_options += "&showIntermediateStops=" + Oneclick::Application.config.show_intermediate_stops.to_s
+    url_options += "&showStopTimes=" + Oneclick::Application.config.show_stop_times.to_s
     url_options += "&showNextFromDeparture=true"
 
     if banned_routes
