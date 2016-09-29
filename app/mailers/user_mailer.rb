@@ -43,11 +43,11 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def user_itinerary_email(addresses, itineraries, subject, comments, current_user = nil)
+  def user_itinerary_email(addresses, itineraries, subject, comments, current_user = nil, trip_link=@@trip_link)
     @itineraries = itineraries
     @comments = comments
     @user = current_user
-    @trip_link = @@trip_link
+    @trip_link = trip_link
 
     mail(to: addresses, subject: subject, from: @@from)
   end

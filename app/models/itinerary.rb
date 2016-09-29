@@ -40,10 +40,11 @@ class Itinerary < ActiveRecord::Base
 
   #For booking purposes
   attr_accessor :segment_index
-  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status,
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
   # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
   # :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
+  attr_accessor :email_image_url
 
   # returns true if this itinerary failed to work
   def failed
@@ -96,7 +97,7 @@ class Itinerary < ActiveRecord::Base
 
   def self.is_bicycle?(legs)
     legs ||= []
-    
+
     modes = legs.collect{ |m| m.mode }.uniq
     unless Leg::TripLeg::BICYCLE.in? modes
       return false
@@ -147,7 +148,7 @@ class Itinerary < ActiveRecord::Base
     end
 
   end
-  
+
   # parses the legs and returns an array of TripLeg. If there are no legs then an
   # empty array is returned
   def get_legs(include_geometry = true)
@@ -166,7 +167,7 @@ class Itinerary < ActiveRecord::Base
     routes = get_legs.map(&:route)
     [mode.name] + routes
   end
-  
+
   def unhide
     self.hidden = false
     self.save()
@@ -189,7 +190,7 @@ class Itinerary < ActiveRecord::Base
   end
 
   def notes_count
-    [(missing_information ? 1 : 0), 
+    [(missing_information ? 1 : 0),
     (accommodation_mismatch ? 1 : 0),
     ((date_mismatch or time_mismatch or too_late or too_early) ? 1 : 0)].sum
   end

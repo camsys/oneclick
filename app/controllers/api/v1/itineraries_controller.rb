@@ -324,12 +324,18 @@ module Api
 
         email_itineraries.each do |email_itinerary|
           email_address = email_itinerary[:email_address]
-          
-          itinerary_ids = email_itinerary[:itinerary_ids]
-          itins = Itinerary.where(id: itinerary_ids)
-          
+
+          image_by_id = Hash[email_itinerary[:itineraries].collect { |x| [x[:id], x[:image_url]]}]
+          ids = image_by_id.keys
+
+          itineraries = Itinerary.where(id: ids)
+
+          itineraries.each do |itin|
+            itin.email_image_url = image_by_id[itin.id]
+          end
+
           # for subject, get first trip
-          trip = itins.first.trip_part.trip
+          trip = itineraries.first.trip_part.trip
 
           if !email_itinerary[:subject].nil?
             subject = email_itinerary[:subject]
@@ -339,8 +345,8 @@ module Api
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
 
-          UserMailer.user_itinerary_email([email_address], itins, subject, '', @traveler).deliver
-          
+          UserMailer.user_itinerary_email([email_address], itineraries, subject, '', @traveler, trip_link=nil).deliver
+
         end
 
         render json: {result: 200}
@@ -354,9 +360,9 @@ module Api
       end
 
       def request_create_maps
-        
+
         itinerary_ids = []
-        
+
         if params[:trip_id].nil?
           itinerary_ids = params[:itinerary_ids]
         else
