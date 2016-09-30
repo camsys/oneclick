@@ -5,7 +5,7 @@ Oneclick::Application.configure do
 
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
-  config.action_controller.asset_host = 'http://oneclick-pa-dev.herokuapp.com' # So assets point to correct location
+  config.action_controller.asset_host = ENV['HOST'] # So assets point to correct location
 
   # config.action_dispatch.best_standards_support
 
