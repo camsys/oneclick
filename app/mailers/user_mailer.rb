@@ -13,12 +13,9 @@ class UserMailer < ActionMailer::Base
       app_name: Oneclick::Application.config.name,
       trip_date: @trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
     )
-
-
-    # TranslationEngine.translate_text(:user_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : TranslationEngine.translate_text(:user_trip_email_subject)
-    # subject = "Your trip on " + @trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
     @itinerary = trip.selected_itineraries[0] #send first of selected itineraries
     @legs = @itinerary.get_legs
+    
     mail(to: addresses, subject: subject, from: @@from)
   end
 
