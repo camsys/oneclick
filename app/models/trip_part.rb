@@ -287,8 +287,13 @@ class TripPart < ActiveRecord::Base
     #TODO: Save errored results to an event log
     if result
       tp.convert_itineraries(response, mode_code).each do |itinerary|
-        serialized_itinerary = {}
 
+        #If the max_walk is an absolute and it's above the max walk time, then discard it
+        if Oneclick::Application.config.max_walk_seconds_is_constraint and itinerary['walk_time'].to_f > (trip.max_walk_seconds || Oneclick::Application.config.max_walk_seconds)
+          next
+        end
+
+        serialized_itinerary = {}
         itinerary.each do |k,v|
           if v.is_a? Array
             serialized_itinerary[k] = v.to_yaml
@@ -387,8 +392,8 @@ class TripPart < ActiveRecord::Base
           #TODO: Save errored results to an event log
           if result
             tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
-              serialized_itinerary = {}
 
+              serialized_itinerary = {}
               itinerary.each do |k,v|
                 if v.is_a? Array
                   serialized_itinerary[k] = v.to_yaml

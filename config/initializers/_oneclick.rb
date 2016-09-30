@@ -54,12 +54,14 @@ Oneclick::Application.configure do
   config.enable_sidewalk_obstruction = true
   config.sidewalk_feedback_query_buffer = 0.0001 #lat/lon degree
 
-  # Trip Plan Filter Presents
+  # Trip Plan Filter Presets
   config.default_max_duration = 120 #minutes
   config.default_max_transfers = 2
   config.default_max_fare = 50
   config.default_max_wait_time = 60 #minutes
   config.max_walk_seconds = 1200
+  config.max_walk_seconds_is_constraint = true #If a trip has someone walking longer than the max_walk_seconds don't present it.
+                                                #If this is false, max_walk is a preference and not a constraint
 
   # Paratransit Time Estimate Constants
   config.paratransit_duration_factor = 4.0
@@ -129,8 +131,6 @@ Oneclick::Application.configure do
 
   config.show_characteristic_logos = false
   config.user_radio_buttons = false
-
-  config.max_walk_seconds = 3600
   config.enable_satisfaction_surveys = false
 
   config.google_place_search = 'geocode'
