@@ -1,6 +1,3 @@
--# RTD STYLING
-
-
 %table.trip_summary_container{style: "padding: 10px 0px;"}
   %tr
   %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
@@ -54,54 +51,3 @@
       %span{style: "font-weight: bold;"}='Possible Rideshares'
       %span=' : '
       %span=translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)
-
--# ORIGINAL CODE
-
--# .row
--#   .col-sm-12
--#     %table.table
--#       %ul
--#         -if itinerary.is_walk
--#           %h4
--#             %li
--#               = distance_to_words(itinerary.walk_distance)
--#             %li
--#               = duration_to_words(itinerary.walk_time)
--#         - else
--#
--#           -if itinerary.duration
--#             %li
--#               = duration_to_words(itinerary.duration) + " " + translate_helper(:est)
--#
--#           -if itinerary.cost
--#             -if itinerary.mode.code == 'mode_taxi'
--#               %li
--#                 = number_to_currency(itinerary.cost.round) + " " + translate_helper(:est)
--#             -else
--#               -unless itinerary.cost == 0
--#                 %li
--#                   = number_to_currency(itinerary.cost)
--#
--#               -else
--#                 %li
--#                   = translate_helper(:no_cost_for_service)
--#           -else
--#             - cost_comments = FareHelper.new.get_itinerary_cost_comments(itinerary)
--#             -if cost_comments
--#               %li
--#                 = cost_comments.html_safe
--#           -if itinerary.transfers
--#             %li
--#               = translate_helper(:transfer,count: itinerary.transfers.to_s)
--#           -if itinerary.start_time
--#             %li
--#               = translate_helper(:depart_at) + ' ' + format_time(itinerary.start_time.in_time_zone)
--#           -if itinerary.end_time
--#             %li
--#               = translate_helper(:arrive_at) + ' ' + format_time(itinerary.end_time.in_time_zone)
--#           -if itinerary.walk_time
--#             %li
--#               = duration_to_words(itinerary.walk_time) + translate_helper(:walking)
--#           -if itinerary.mode.code =='mode_rideshare'
--#             %li
--#               = translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)
