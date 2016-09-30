@@ -5,6 +5,7 @@ Oneclick::Application.configure do
 
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
+  config.action_controller.asset_host = 'http://oneclick-pa-dev.herokuapp.com' # So assets point to correct location
 
   # config.action_dispatch.best_standards_support
 
@@ -23,11 +24,12 @@ Oneclick::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.asset_host = config.action_controller.asset_host # So that email images will show up
 
   # Warning: Heroku uses env var LOG_LEVEL
   config.log_level = :info
   # For Heroku; see https://devcenter.heroku.com/articles/logging#writing-to-your-log
   config.logger = Logger.new(STDOUT)
 
-  config.eager_load = true  
+  config.eager_load = true
 end
