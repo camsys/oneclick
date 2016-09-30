@@ -4,17 +4,18 @@ class UserMailer < ActionMailer::Base
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
-  def user_trip_email(addresses, trip, subject, comments, current_user = nil)
+  def user_trip_email(addresses, trip, comments, current_user = nil)
     @trip = trip
     @comments = comments
     @user = current_user
-
+    subject = "Your trip on " + @trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
     mail(to: addresses, subject: subject, from: @@from)
   end
 
-  def ecolane_trip_email(addresses, subject, traveler, trip_hash)
+  def ecolane_trip_email(addresses, traveler, trip_hash)
     @user = traveler
     @trip_hash = trip_hash
+    subject = "Your trip on " + @trip_hash.first[:date]
     mail(to: addresses, subject: subject, from: @@from)
   end
 
