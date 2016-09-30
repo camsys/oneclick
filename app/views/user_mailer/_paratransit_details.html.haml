@@ -15,7 +15,7 @@
           = itinerary.service.name
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em; padding: 16px 10px;"}
-      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/start.png", style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+      = image_tag("start_2.png", height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container{style: "padding-left: 5px;"}
       .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:start) + itinerary.trip_part.from_trip_place.name
@@ -32,7 +32,7 @@
         = format_time(itinerary.trip_part.scheduled_time.in_time_zone - itinerary.duration) + ' ' + translate_helper(:to) + ' ' + format_time(itinerary.trip_part.scheduled_time.in_time_zone)
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
-      %img{src: "https://s3.amazonaws.com/oneclick-rtd/images/stop.png", style: "height: 26px; width: 26px; vertical-align: top;", height: "26p", width: "26"}
+      = image_tag("stop_2.png", height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container{style: "padding: 16px 10px;"}
       .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:arrive) + itinerary.trip_part.to_trip_place.name
