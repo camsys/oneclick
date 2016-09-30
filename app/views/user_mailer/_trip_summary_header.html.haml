@@ -34,7 +34,7 @@
       %span=' : '
       %span.duration= duration_to_words(@itinerary.duration)
 
-    -if @itinerary.walk_time > 0
+    -if @itinerary.walk_time && @itinerary.walk_time > 0
       %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
       %span{style: "font-weight: bold;"}= 'Walking'
       %span=' : '
