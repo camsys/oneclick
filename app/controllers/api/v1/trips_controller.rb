@@ -163,7 +163,6 @@ module Api
         list
       end
 
-      #Itinerary email template is out of date.
       def email
         email_address = params[:email_address]
         trip_id = params[:trip_id]
@@ -180,6 +179,9 @@ module Api
           UserMailer.user_trip_email([email_address], trip, '', @traveler).deliver
         end
 
+        # Should probably add a case for if no params are passed.
+
+        # Also should improve the JSON response to handle successfully and failed email calls`
         render json: {result: 200}
 
       end
