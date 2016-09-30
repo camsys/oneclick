@@ -172,15 +172,12 @@ module Api
         #Do the booking confirmations
         if booking_confirmations
           trip_hash = process_booking_confirmations(booking_confirmations)
-          subject = "Your trip on " + trip_hash.first[:date]
-          UserMailer.ecolane_trip_email([email_address], subject, @traveler, trip_hash).deliver
+          UserMailer.ecolane_trip_email([email_address], @traveler, trip_hash).deliver
 
         #Do the trip_id if booking confirmations is empty
         elsif trip_id
           trip = Trip.find(trip_id.to_i)
-          subject = "Your trip on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-          itinerary = trip.selected_itineraries[0] #send first of selected itineraries
-          UserMailer.user_itinerary_email([email_address], trip, itinerary, subject, '', @traveler).deliver
+          UserMailer.user_trip_email([email_address], trip, '', @traveler).deliver
         end
 
         render json: {result: 200}
