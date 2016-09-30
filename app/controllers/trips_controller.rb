@@ -265,28 +265,9 @@ class TripsController < PlaceSearchingController
   def email
     email_address = params[:email][:email_addresses]
     comments = params[:email][:email_comments]
-    # trip_id = params[:trip_id]
-    # trip = Trip.find(trip_id.to_i)
+
     UserMailer.user_trip_email([email_address], @trip, comments, @traveler).deliver
 
-    # @print_map = true
-    # Rails.logger.info "Begin email"
-    # email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    # if user_signed_in? and params[:email][:send_email_to]
-    #   params[:email][:send_email_to].each do |email|
-    #     unless email == ""
-    #       email_addresses << email
-    #     end
-    #   end
-    # end
-    #
-    # email_addresses = email_addresses.uniq
-    # Rails.logger.info email_addresses.inspect
-    # from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    #
-    # subject = TranslationEngine.translate_text(:user_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : TranslationEngine.translate_text(:user_trip_email_subject)
-    # UserMailer.user_trip_email(email_addresses, @trip, subject,
-    #   params[:email][:email_comments], @traveler).deliver
     notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', email_address.split(/[ ,]+/).to_sentence)
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
