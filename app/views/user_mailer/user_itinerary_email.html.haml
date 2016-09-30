@@ -39,7 +39,7 @@
           =@trip_link + @trip.id.to_s
 
 
-
+%h2 TEST
 -unless @itinerary.mode.code == 'mode_rideshare'
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
 

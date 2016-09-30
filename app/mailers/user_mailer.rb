@@ -9,6 +9,8 @@ class UserMailer < ActionMailer::Base
     @comments = comments
     @user = current_user
     subject = "Your trip on " + @trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
+    @itinerary = trip.selected_itineraries[0] #send first of selected itineraries
+    @legs = @itinerary.get_legs
     mail(to: addresses, subject: subject, from: @@from)
   end
 
