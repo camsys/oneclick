@@ -102,7 +102,7 @@ module Oneclick
 
     # config.assets.precompile = ['foo']
 
-      config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
+    config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
     config.assets.precompile += %w(
         application.css
         tadaaapickr.en.js
@@ -132,4 +132,3 @@ def oneclick_available_locales
     %r{en}
   end
 end
-
