@@ -261,7 +261,7 @@ en:
   user_itinerary_email_subject: ''
   user_itinerary_email_header: ''
   user_itinerary_email_footer: ''
-  user_trip_email_subject: ''
+  user_trip_email_subject: "Your %{app_name} Trip on %{trip_date}"
   user_trip_email_header: ''
   user_trip_email_footer: ''
   agency_helping_email:   "An agency is now helping you plan trips."
@@ -1201,4 +1201,3 @@ en:
         password: 'Password'
         retype_your_password: 'Retype your password'
         remember_me: 'Remember me'
-
