@@ -323,7 +323,7 @@ module Api
         trip_link = params[:trip_link].nil? ? nil : params[:trip_link]
 
         email_itineraries.each do |email_itinerary|
-          email_address = email_itinerary[:email_address]
+          email_addresses = email_itinerary[:email_addresses]
 
           image_by_id = Hash[email_itinerary[:itineraries].collect { |x| [x[:id], x[:image_url]]}]
           ids = image_by_id.keys
@@ -345,7 +345,7 @@ module Api
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
 
-          UserMailer.user_itinerary_email([email_address], itineraries, subject, '', @traveler, trip_link=nil).deliver
+          UserMailer.user_itinerary_email(email_addresses, itineraries, subject, '', @traveler, trip_link=nil).deliver
 
         end
 
@@ -354,7 +354,7 @@ module Api
       end
 
       def map_status
-        itinerary_ids = params[:id]
+        itinerary_ids = params[:itinerary_ids]
         statuses = Itinerary.where(id: itinerary_ids).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
         render json: statuses
       end
