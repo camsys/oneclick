@@ -203,6 +203,23 @@ module Api
                   leg['specialService'] = leg['routeType'].in? specials
                 end
 
+                #3 Check to see if real-time is available for node stops
+                unless leg['intermediateStops'].blank?
+                  trip_time = tp.get_trip_time leg['tripId']
+                  unless trip_time.blank?
+                    stop_times = trip_time['stopTimes']
+                    leg['intermediateStops'].each do |stop|
+                      stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
+                      stop['realtimeArrival'] = stop_time['realtimeArrival']
+                      stop['realtimeDeparture'] = stop_time['realtimeDeparture']
+                      stop['arrivalDelay'] = stop_time['arrivalDelay']
+                      stop['departureDelay'] = stop_time['departureDelay']
+                      stop['realtime'] = stop_time['realtime']
+
+                    end
+                  end
+                end
+
               end
               itinerary.legs = yaml_legs.to_yaml
               itinerary.save

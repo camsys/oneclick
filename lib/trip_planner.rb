@@ -20,7 +20,7 @@ class TripPlanner
 
       if result
         break
-      elsif response['id'] == 406 #NO_TRANSIT_TIMES don't retry
+      elsif response['plan']['id'] == 406 #NO_TRANSIT_TIMES don't retry
         return result, response
       else
         Rails.logger.info [from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance]
@@ -109,7 +109,7 @@ class TripPlanner
     if result.has_key? 'error' and not result['error'].nil?
       return false, result['error']
     else
-      return true, result['plan']
+      return true, result
     end
 
   end
@@ -249,7 +249,7 @@ class TripPlanner
     tp = TripPlanner.new
     result, response = get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
-    itinerary = response['itineraries'].first
+    itinerary = response['plan']['itineraries'].first
     return [itinerary['duration'], itinerary['legs'].to_yaml]
   end
 
@@ -257,7 +257,7 @@ class TripPlanner
     tp = TripPlanner.new
     result, response = get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
-    itinerary = response['itineraries'].first
+    itinerary = response['plan']['itineraries'].first
     return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
   end
 
