@@ -1,0 +1,3 @@
+-unless itinerary.mode.code == 'mode_rideshare'
+  = render :partial => 'trip_summary_header', :locals => { :itinerary => itinerary }
+= render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
