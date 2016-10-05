@@ -342,14 +342,8 @@ module Api
         email_itineraries.each do |email_itinerary|
           email_addresses = email_itinerary[:email_addresses]
 
-          image_by_id = Hash[email_itinerary[:itineraries].collect { |x| [x[:id], x[:image_url]]}]
-          ids = image_by_id.keys
-
+          ids = email_itinerary[:itineraries].collect { |x| x[:id] }
           itineraries = Itinerary.where(id: ids)
-
-          itineraries.each do |itin|
-            itin.email_image_url = image_by_id[itin.id]
-          end
 
           # for subject, get first trip
           trip = itineraries.first.trip_part.trip

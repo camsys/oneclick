@@ -49,6 +49,10 @@ class UserMailer < ActionMailer::Base
     @user = current_user
     @trip_link = trip_link
 
+    itineraries.each do |itin|
+      attachments.inline[itin.id.to_s + '.png'] = File.read(itin.map_image.current_path)
+    end
+
     mail(to: addresses, subject: subject, from: @@from)
   end
 

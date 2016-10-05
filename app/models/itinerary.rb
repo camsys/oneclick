@@ -44,7 +44,6 @@ class Itinerary < ActiveRecord::Base
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
   # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
   # :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
-  attr_accessor :email_image_url
 
   # returns true if this itinerary failed to work
   def failed
