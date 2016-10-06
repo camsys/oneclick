@@ -60,7 +60,7 @@ Oneclick::Application.configure do
 
   # application logo upload related
   config.application_logo_format_list = %w(jpg jpeg gif png)
-  # config.application_logo_dimensions = [880, 100] # Not needed, since navbar constrains logo image size
+  config.application_logo_dimensions = [2000, 200]
 
   # poi loading
   config.poi_is_loading = false
