@@ -1,11 +1,13 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:plan_a_trip)}"
 - is_splash_available = TranslationEngine.show_translation_item?(:splash)
+- is_pre_splash_available = TranslationEngine.show_translation_item?(:pre_splash)
+- is_split_display = is_splash_available || is_pre_splash_available
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
 - is_trip_cannot_modify = (@trip && !@trip.can_modify) ? true : false
 - if is_repeat
   -is_trip_cannot_modify = false
-- if is_splash_available
+- if is_split_display
   - non_splash_css = 'col-sm-7 col-xs-12'
   - splash_css = 'col-sm-5 col-xs-12'
 .row
@@ -24,14 +26,7 @@
             }
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
-.row
-  - is_splash_available = TranslationEngine.show_translation_item?(:splash)
-  - non_splash_css = 'col-sm-12'
-  - splash_css = ''
-  - if is_splash_available
-    - non_splash_css = 'col-sm-7 col-xs-12'
-    - splash_css = 'col-sm-5 col-xs-12'
-  %div{class: non_splash_css}
+    %br.hidden-sm.hidden-md.hidden-lg.hidden-xl
     .col-sm-12
       - header_comment_key = session[:is_multi_od] ? :multi_od_trip_header_comment : :trip_header_comment
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
@@ -251,8 +246,12 @@
     .col-sm-12
       - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
-  - if is_splash_available
-    = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
+  - if is_split_display
+    %div{class: splash_css}
+      - if is_pre_splash_available
+        = render partial: 'shared/splash', locals: {splash_key: :pre_splash, title_key: :pre_splash_title, splash_div_class: splash_css}
+      - if is_splash_available
+        = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
 
 :javascript
   $(function() {
