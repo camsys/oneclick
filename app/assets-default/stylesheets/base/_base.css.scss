@@ -1,5 +1,5 @@
-$navbar-height-sm: 100px;
-$navbar-height-md: 200px;
+$navbar-height-sm: 60px;
+$navbar-height-md: 75px;
 
 html, body{
   height: 100%;
@@ -56,6 +56,7 @@ body, .btn, .form-control, .dropdown-menu{
     margin: 0;
     float: left;
   }
+  padding-bottom: 2px;
 }
 
 .panel-title > a {
@@ -82,10 +83,10 @@ body, .btn, .form-control, .dropdown-menu{
 
 #main {
   @media(max-width:$screen-sm-max){
-    padding-top: 60px;
+    padding-top: $navbar-height-sm + 12;
   }
   @media(min-width:$screen-md-min){
-    padding-top: 70px;
+    padding-top: $navbar-height-md + 12;
   }
 }
 
@@ -96,11 +97,12 @@ body, .btn, .form-control, .dropdown-menu{
   @media(min-width:$screen-md-min){
     line-height: $navbar-height-md;
   }
-  font-size: 40px;
+  font-size: 30px;
   color: $btn-primary-bg;
+  padding-left: 10px;
 }
 
-#userMenuNavbar {
+#userMenuNavbar ul {
   @media(max-width:$screen-sm-max){
     line-height: $navbar-height-sm;
   }

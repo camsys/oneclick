@@ -60,13 +60,13 @@ Oneclick::Application.configure do
 
   # application logo upload related
   config.application_logo_format_list = %w(jpg jpeg gif png)
-  config.application_logo_dimensions = [440, 50]
+  # config.application_logo_dimensions = [880, 100] # Not needed, since navbar constrains logo image size
 
   # poi loading
   config.poi_is_loading = false
 
   # favicon upload
-  config.favicon_format_list = %w(ico png) 
+  config.favicon_format_list = %w(ico png)
 
   # maximum how many services to be displayed
   config.max_number_of_specialized_services_to_show = nil # nil means no limitation
