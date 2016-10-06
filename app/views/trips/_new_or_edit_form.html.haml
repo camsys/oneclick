@@ -86,6 +86,7 @@
                     %div
                       %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
                       %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+                      = add_tooltip("#{mode[1]}_name_help", "", "")
                       %br
 
             = field_set_tag do
@@ -230,14 +231,14 @@
             "&outbound_arrive_depart=" + outboundArriveDepart;
 
             if (isRoundTrip == "true") {
-              completeUrl += 
+              completeUrl +=
               "&return_trip_date=" + returnDate +
               "&return_trip_time=" + returnTime +
               "&return_arrive_depart=" + returnArriveDepart;
             }
-            
+
             $('#trip-url').val(completeUrl);
-            
+
           });
 
     .col-sm-12
@@ -260,10 +261,10 @@
       }
     }
     init_place_picker(
-      ".plan-a-trip .place_picker", 
+      ".plan-a-trip .place_picker",
       bounds_hash
     );
-          
+
     var makeFullscreen = function(){
       var minMapHeight = 200;
       var newMainHeight = $(window).outerHeight(true);
