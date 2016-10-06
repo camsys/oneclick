@@ -83,6 +83,26 @@
                       %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
                       = add_tooltip("#{mode[1]}_name_help", "", "")
                       %br
+                  #transitModes
+                    -# = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+                    .form-group.check_boxes.optional.trip_proxy_modes
+                      - @transit_modes.each do |mode|
+                        #transit_modes_inputs
+                          %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
+                          %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+                          = add_tooltip("#{mode[1]}_name_help", "", "")
+                          %br
+
+                    :javascript
+                      $('#transitModes input[type="checkbox"]').change( function() {
+                        var checkedCount = $('#transitModes input:checked').length;
+                        if (checkedCount === 0) {
+                          $("#trip_proxy_modes_mode_transit").prop('checked', false);
+                        } else {
+                          $("#trip_proxy_modes_mode_transit").prop('checked', true);
+                        }
+                      });
+
 
             = field_set_tag do
               / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: translate_helper(:modes)
@@ -100,25 +120,25 @@
                 }
               });
 
-            #transitModes
-              -# = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
-              .form-group.check_boxes.optional.trip_proxy_modes
-                - @transit_modes.each do |mode|
-                  .col-xs-offset-4#transit_modes_inputs
-                    %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
-                    %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
-                    = add_tooltip("#{mode[1]}_name_help", "", "")
-                    %br
-
-              :javascript
-                $('#transitModes input[type="checkbox"]').change( function() {
-                  var checkedCount = $('#transitModes input:checked').length;
-                  if (checkedCount === 0) {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', false);
-                  } else {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', true);
-                  }
-                });
+            -# #transitModes
+            -#   -# = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+            -#   .form-group.check_boxes.optional.trip_proxy_modes
+            -#     - @transit_modes.each do |mode|
+            -#       .col-xs-offset-4#transit_modes_inputs
+            -#         %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
+            -#         %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+            -#         = add_tooltip("#{mode[1]}_name_help", "", "")
+            -#         %br
+            -#
+            -#   :javascript
+            -#     $('#transitModes input[type="checkbox"]').change( function() {
+            -#       var checkedCount = $('#transitModes input:checked').length;
+            -#       if (checkedCount === 0) {
+            -#         $("#trip_proxy_modes_mode_transit").prop('checked', false);
+            -#       } else {
+            -#         $("#trip_proxy_modes_mode_transit").prop('checked', true);
+            -#       }
+            -#     });
 
           -if I18n.locale == :tags
             = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
