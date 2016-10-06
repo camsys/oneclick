@@ -566,7 +566,8 @@ $legend-height: 20px;
 
 #is_round_trip_inputs > label,
 #modes_inputs > div > label,
-#eligibility_questions > label {
+#eligibility_questions > label,
+#transit_modes_inputs > label {
   margin: 0 15px 0 3px;
   font-weight: inherit;
 }
