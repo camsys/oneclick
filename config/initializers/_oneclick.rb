@@ -86,7 +86,7 @@ Oneclick::Application.configure do
 
   # application logo upload related
   config.application_logo_format_list = %w(jpg jpeg gif png)
-  config.application_logo_dimensions = [440, 50]
+  # config.application_logo_dimensions = [880, 100] # Not needed, since navbar constrains logo image size
   config.favicon_format_list = %w(ico png)
 
   # standard usage report related
