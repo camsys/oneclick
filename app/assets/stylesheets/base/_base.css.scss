@@ -1,3 +1,6 @@
+$navbar-height-sm: 100px;
+$navbar-height-md: 200px;
+
 html, body{
   height: 100%;
 }
@@ -69,10 +72,10 @@ body, .btn, .form-control, .dropdown-menu{
 
 #logo{
   @media(max-width:$screen-sm-max){
-    max-height: 50px;
+    max-height: $navbar-height-sm;
   }
   @media(min-width:$screen-md-min){
-    max-height: 60px;
+    max-height: $navbar-height-md;
   }
   cursor: pointer;
 }
@@ -88,20 +91,20 @@ body, .btn, .form-control, .dropdown-menu{
 
 #help i{
   @media(max-width:$screen-sm-max){
-    line-height: 50px;
+    line-height: $navbar-height-sm;
   }
   @media(min-width:$screen-md-min){
-    line-height: 60px;
+    line-height: $navbar-height-md;
   }
   font-size: 40px;
 }
 
 #userMenuNavbar {
   @media(max-width:$screen-sm-max){
-    line-height: 50px;
+    line-height: $navbar-height-sm;
   }
   @media(min-width:$screen-md-min){
-    line-height: 60px;
+    line-height: $navbar-height-md;
   }
 }
 
@@ -109,7 +112,7 @@ body, .btn, .form-control, .dropdown-menu{
   @media(max-width:$screen-sm-max){
     margin: 0;
     padding: 3px 5px;
-  } 
+  }
 }
 
 // These are the bootstrap original sizes
