@@ -22,6 +22,12 @@ class UserCharacteristicsProxy < UserProfileProxy
     characteristic = Characteristic.enabled.active.find_by_code(code)
     unless characteristic.nil?
       map = UserCharacteristic.where(characteristic: characteristic, user_profile: user.user_profile).first
+
+      unless map.nil? or map.fresh?
+        map.delete
+        map = nil
+      end
+
     else #if the code is an accommodation instead of a characteristic
       characteristic = Accommodation.enabled.active.where(code: code).first
       if characteristic.nil?

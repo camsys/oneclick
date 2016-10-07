@@ -1,11 +1,9 @@
 class UserCharacteristic < ActiveRecord::Base
   include EligibilityOperators
-  
+
   #associations
   belongs_to :user_profile
   belongs_to :characteristic, :class_name => "Characteristic", :foreign_key => "characteristic_id"
-
-  # attr_accessible :user_profile_id, :user_profile, :characteristic, :characteristic_id, :value
 
   def meets_requirement requirement
     c = characteristic
@@ -26,6 +24,15 @@ class UserCharacteristic < ActiveRecord::Base
 
     raise TypeError, "Don't know how to test char to req: #{self.ai} to #{requirement.ai} as #{c.datatype} == #{rc.datatype}"
 
+  end
+
+  #Some characteristics expire after a certain amount of time and need to be re-answered.
+  def fresh?
+    if self.characteristic.freshness_seconds.nil?
+      return true
+    else
+      return (Time.now - self.updated_at) < self.characteristic.freshness_seconds
+    end
   end
 
 end

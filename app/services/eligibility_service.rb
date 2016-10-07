@@ -32,6 +32,7 @@ class EligibilityService
   end
 
   def get_service_itinerary(service, user_profile, trip_part=nil, return_with=:itinerary)
+    user_profile.user.clear_stale_answers
     tp = TripPlanner.new
     min_match_score = Float::INFINITY
     itinerary = nil
