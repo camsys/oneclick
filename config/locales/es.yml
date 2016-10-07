@@ -183,7 +183,7 @@ es:
   user_itinerary_email_subject: ''
   user_itinerary_email_header: ''
   user_itinerary_email_footer: ''
-  user_trip_email_subject: ''
+  user_trip_email_subject: "Su viaje %{app_name} el %{trip_date}"
   user_trip_email_header: ''
   user_trip_email_footer: ''
   agency_helping_email:   ''
