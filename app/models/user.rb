@@ -323,4 +323,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def clear_stale_answers
+    self.user_characteristics.each do |user_characteristic|
+      unless user_characteristic.fresh?
+        user_characteristic.delete
+      end
+    end
+  end
+
 end

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!, :except => :associate_service
   load_and_authorize_resource except: [:edit, :assist, :associate_service]
+  before_filter :clear_stale_answers, :only => [:show, :edit]
 
   def index
     authorize! :index, User, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
@@ -255,6 +256,10 @@ private
       end
     end
     alert
+  end
+
+  def clear_stale_answers
+    @traveler.clear_stale_answers
   end
 
 end
