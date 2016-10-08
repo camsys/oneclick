@@ -110,6 +110,8 @@ Oneclick::Application.configure do
   config.map_bounds      = [[40.664559, -74.104039],[43.244470, -69.148697]]
   config.geocoder_bounds = [[40.664559, -74.104039],[43.244470, -69.148697]]
   config.default_zoom = 12
+  config.uber_lat = 42.358531
+  config.uber_lon = -71.061476
 
   #Open Trip Planner Configs
   config.open_trip_planner = "http://otp-ma.camsys-apps.com:8080/otp/routers/default"

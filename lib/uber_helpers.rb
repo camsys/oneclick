@@ -1,14 +1,14 @@
 class UberHelpers
   def self.available?
-    $uber && $uber_lat && $uber_lon
+    $uber
   end
 
-  def get_products
-    $uber.products(latitude: $uber_lat, longitude: $uber_lon)
+  def get_products lat, lon
+    $uber.products(latitude: lat, longitude: lon)
   end
 
-  def get_product_by_name(product_name)
-    products = get_products
+  def get_product_by_name(product_name, lat, lon)
+    products = get_products lat, lon
 
     products.find {|p| p.display_name.try(:casecmp, product_name) == 0}
   end

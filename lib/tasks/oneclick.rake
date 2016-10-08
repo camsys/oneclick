@@ -483,7 +483,7 @@ namespace :oneclick do
     # uberX Service
     uberx_service = Service.where(provider: provider, service_type: type, name: 'uberX').first_or_create
     #uberx_service.update_attribute :logo_url, 'uber/uberx.png'
-    uberx = UberHelpers.new.get_product_by_name('uberX') if UberHelpers.available?
+    uberx = UberHelpers.new.get_product_by_name('uberX', Oneclick::Application.config.uber_lat, Oneclick::Application.config.uber_lon) if UberHelpers.available?
     if uberx 
       uberx_service.external_id = uberx.product_id
       uberx_service.remote_logo_url = uberx.image
