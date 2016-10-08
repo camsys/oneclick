@@ -30,7 +30,7 @@ module Api
       def plan
 
         #Unpack params
-        modes = params['modes'] || ['mode_transit', 'mode_paratransit', 'mode_taxi']
+        modes = params['modes'] || ['mode_transit', 'mode_paratransit', 'mode_taxi', 'mode_ride_hailing']
         trip_parts = params[:itinerary_request]
         purpose = params[:trip_purpose]
         trip_token = params[:trip_token]
