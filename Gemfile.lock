@@ -72,7 +72,7 @@ GIT
       simple_form
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     Indirizzo (0.1.7)
     RedCloth (4.2.9)
