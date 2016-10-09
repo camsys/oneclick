@@ -490,4 +490,30 @@ namespace :oneclick do
       uberx_service.save
     end
   end
+
+  desc "Enable all counties in the state"
+  task create_counties_for_state: :environment do
+    state = Oneclick::Application.config.state
+    puts 'Enabling all counties in the state of ' + state.to_s
+
+    counties = County.where(state: state)
+    counties.each do |county|
+      gc = GeoCoverage.where(coverage_type: "county_name", value: county.name).first_or_create
+      gc.save
+    end
+
+  end
+
+  desc "Enable all zipcodes in the state"
+  task create_zipcodes_for_state: :environment do
+    state = Oneclick::Application.config.state
+    puts 'Enabling all zipcodes in the state of ' + state.to_s
+
+    zipcodes = Zipcode.where(state: state)
+    zipcodes.each do |zipcode|
+      gc = GeoCoverage.where(coverage_type: "zipcode", value: zipcode.zipcode).first_or_create
+      gc.save
+    end
+  end
+
 end

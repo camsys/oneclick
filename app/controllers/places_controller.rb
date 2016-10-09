@@ -59,6 +59,7 @@ class PlacesController < PlaceSearchingController
 
   def create
     p = params[:places_controller_places_proxy]
+
     # if the address wasn't geocoded, just take whatever the traveler entered
     if p[:json].blank?
       Rails.logger.info "Not geocoded"
@@ -67,7 +68,9 @@ class PlacesController < PlaceSearchingController
       j = JSON.parse(p[:json])
       if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
         Rails.logger.info "Was autocompleted, create or update as needed"
+
         details = get_places_autocomplete_details(j['id'], j['reference'])
+
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
 

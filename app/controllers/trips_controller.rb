@@ -521,6 +521,7 @@ class TripsController < PlaceSearchingController
     session[:is_multi_od] = false
     session[:multi_od_trip_id] = nil
     session[:multi_od_trip_edited] = false
+    @traveler.clear_stale_answers
 
     new_trip
 
