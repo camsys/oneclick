@@ -12,7 +12,7 @@ Oneclick::Application.configure do
   config.serve_static_assets = true
 
   config.assets.compress = true
-  config.assets.compile = false
+  config.assets.compile = true
   config.assets.digest = true
   # config.assets.debug
 
