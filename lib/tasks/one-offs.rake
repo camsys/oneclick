@@ -72,6 +72,52 @@ namespace :oneclick do
       end
     end
 
+    # Checks if new transit_submode_code translations exist, and creates
+    # them if they don't, copying over data from the old mode_code tags.
+    # Task is idempotent, may be run multiple times with no additional effect.
+    task update_transit_mode_tags: :environment do
+      puts "Updating Transit Mode Tags..."
+
+      # List of transit submodes to iterate through
+      transit_submodes = Mode.transit.submodes.map {|m| m.name }
+
+      # Iterate through mode codes and create new translation keys as needed
+      transit_submodes.each do |m|
+        puts "Updating mode codes for #{m}..."
+
+        # Find the old mode translation_key, and a new one if it exists
+        old_key = TranslationKey.find_by(name: m)
+        new_key = TranslationKey.find_or_create_by!(name: "transit_sub#{m}")
+
+        # As long as an old key exists, identify and copy over old translations
+        unless old_key.nil?
+          old_translations = Translation.where(translation_key_id: old_key.id)
+
+          # For each existing old translation, check if a new one exists.
+          # If not, create one and copy over the old translation's content.
+          old_translations.each do |t|
+            new_translation = Translation.where(translation_key_id: new_key.id, locale_id: t.locale_id)[0]
+            if new_translation.nil?
+              puts "No translation exists for #{t.key} in #{t.locale.name}. Creating a new translation..."
+
+              # Create a new translation and copy over content from old one.
+              new_translation = Translation.new
+              new_translation.translation_key_id = new_key.id
+	          	new_translation.locale_id = t.locale_id
+	          	new_translation.value = t.value
+	          	new_translation.is_list = false
+	          	new_translation.save!
+              puts "New Translation Created: ", new_translation.ai
+            else
+              puts "New translation already exists for #{t.key} in #{t.locale.name}. Skipping..."
+            end
+          end
+        else
+          puts "No Translation Key Exists for #{m}."
+        end
+      end
+
+    end
 
   end
 
