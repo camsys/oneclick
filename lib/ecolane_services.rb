@@ -406,12 +406,14 @@ class EcolaneServices
 
     service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
+    booking_system = service.ecolane_profile.nil? ? nil : service.ecolane_profile.system.to_s
+
     if user_service
       u = user_service.user_profile.user
 
     else
       new_user = true
-      u = User.where(email: external_user_id.gsub(" ","_") + '_' + service.booking_system_id.to_s + '@ecolane_user.com').first_or_create
+      u = User.where(email: external_user_id.gsub(" ","_") + '_' + booking_system + '@ecolane_user.com').first_or_create
       u.first_name = first_name
       u.last_name = last_name
       u.password = dob

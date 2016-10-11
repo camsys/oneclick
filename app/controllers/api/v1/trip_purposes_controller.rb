@@ -42,7 +42,7 @@ module Api
 
           default_trip_purpose = nil
           if service
-            unless service.booking_system_id.nil?
+            unless service.ecolane_profile.nil? && service.ecolane_profile.system.nil?
               trip_purposes = bs.get_dummy_trip_purposes(service)
             end
 
