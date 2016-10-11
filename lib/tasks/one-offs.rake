@@ -109,7 +109,7 @@ namespace :oneclick do
           old_translations.each do |t|
             new_translation = Translation.where(translation_key_id: new_key.id, locale_id: t.locale_id)[0]
             if new_translation.nil?
-              puts "No translation exists for #{t.key} in #{t.locale.name}. Creating a new translation..."
+              puts "No translation exists for #{new_key.name} in #{t.locale.name}. Creating a new translation..."
 
               # Create a new translation and copy over content from old one.
               new_translation = Translation.new
@@ -120,7 +120,7 @@ namespace :oneclick do
 	          	new_translation.save!
               puts "New Translation Created: ", new_translation.ai
             else
-              puts "New translation already exists for #{t.key} in #{t.locale.name}. Skipping..."
+              puts "New translation already exists for #{new_key.name} in #{t.locale.name}. Skipping..."
             end
           end
         else
