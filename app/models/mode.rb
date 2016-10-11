@@ -82,7 +82,8 @@ class Mode < ActiveRecord::Base
     if transit.visible
       non_transit_modes << [TranslationEngine.translate_text(transit.name).html_safe, transit.code]
       transit_modes = transit_submodes.where(visible: true).sort{|a, b| TranslationEngine.translate_text(a.name) <=> TranslationEngine.translate_text(b.name)}.collect do |t|
-        [TranslationEngine.translate_text(t.name).html_safe, t.code]
+        # Serialize transit sub-modes like "transit_submode_rail_name", to avoid tag overlap
+        [TranslationEngine.translate_text("transit_sub" + t.name).html_safe, t.code]
       end
     else
       transit_modes = []
