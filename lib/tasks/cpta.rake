@@ -310,20 +310,30 @@ namespace :oneclick do
         when 'blair'
 
           #Counties
-          service.county_endpoint_array = []
-          # service.county_endpoint_array = ['Blair']
+          service.county_endpoint_array = ['Blair']
           service.county_coverage_array = ['Blair']
 
           #Funding Sources
           funding_source_array = [
-            ['Lottery', 0, false, 'Riders 65 or older']
+            ['Lottery', 0, false, 'Riders 65 or older'],
+            ['PwD', 1, false, "Riders with disabilities"],
+            ['MATP', 2, false, "Medical Transportation"],
+            ['Amtran', 3, false, "Eligible for ADA"],
+            ['MHMR', 4, false, "Riders under 65"],
+            ['PDA Waiver', 5, false, "Eligible for Medicaid"],
+            ['Gen Pub', 6, true, "Full Fare"]
           ]
 
           #Sponsors
-          sponsor_array = [['AAA', 0]]
+          sponsor_array = [
+            ['AAA', 0], ['Greystone', 1], ['Blair Rec Com', 2], ['ACNC', 3],
+            ['Health South', 4], ['Valley View', 5], ['FGP', 6], ['MATP', 7],
+            ['MHMR', 8], ['Amber Terrace', 9], ['PDA Waiver', 10],
+            ['Senior LIFE', 11], ['SCP', 12]
+          ]
 
           #Dummy User
-          service.fare_user = "14411"
+          service.fare_user = "18226"
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
