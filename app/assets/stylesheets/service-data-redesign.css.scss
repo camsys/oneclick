@@ -37,7 +37,7 @@
     border-radius: 10px;
     color: gray;
     min-width: 100px;
-    padding: 10px;
+    padding: 6px 12px;
 
     &:hover {
       background-color: limegreen;
@@ -52,4 +52,8 @@
 
 button#provider-logo-upload-btn {
   margin-right: 10px;
+}
+
+textarea#provider_name {
+  height: 28pt;
 }
