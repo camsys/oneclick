@@ -213,6 +213,8 @@ en:
   provider_name: "Provider name"
   provider: "Provider"
   provider_info: "Provider Information"
+  provider_info_help: "Enter information to create or edit a service provider."
+  services_info_help: "Add services to this provider."
   provided_by: "Provided by"
   select_provider: "Select Provider"
   back_to_providers: "Back to providers"
