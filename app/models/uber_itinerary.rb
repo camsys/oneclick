@@ -35,6 +35,7 @@ class UberItinerary < RideHailingItinerary
   end
 
   def parse_uber_estimation(estimation)
+
     return if !estimation
     self.server_status = 200
     
@@ -44,6 +45,7 @@ class UberItinerary < RideHailingItinerary
     self.cost_comments = estimation.estimate
     self.wait_time = $uber_waiting_time
     self.duration_estimated = true
+    self.product_id = estimation.product_id
 
     base_time = trip_part.trip_time
     if trip_part.is_depart

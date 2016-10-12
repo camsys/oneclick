@@ -112,6 +112,7 @@ module Api
             itinerary_hash[:companions] = itinerary.trip_part.companions
             itinerary_hash[:other_passengers] = itinerary.trip_part.other_passengers
             itinerary_hash[:note] = itinerary.trip_part.note_to_driver
+            itinerary_hash[:product_id] = itinerary.product_id #Used for Uber
 
             if itinerary.service
               i_hash[:service_name] = itinerary.service.name

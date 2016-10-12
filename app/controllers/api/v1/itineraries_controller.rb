@@ -122,6 +122,7 @@ module Api
             i_hash[:end_location] = itinerary.trip_part.trip.destination.build_place_details_hash
             i_hash[:prebooking_questions] = itinerary.prebooking_questions
             i_hash[:bookable] = itinerary.is_bookable?
+            i_hash[:product_id] = itinerary.product_id #Used for Uber
             if itinerary.service
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
