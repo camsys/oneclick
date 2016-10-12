@@ -15,9 +15,8 @@
             = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
             .col-sm-9
               %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
-              -unless @provider.logo_url.nil?
-                %img.logo-display-img{src: @provider.logo_url}
-              -else
+              %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
+              -if @provider.logo_url.nil?
                 %span.subtle-text jpg, gif, png
           = f.input :admin_user, label: translate_helper(:admin_user),
             placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
@@ -32,5 +31,11 @@
     $('#provider-logo-upload-btn').on("click", function(e) {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
       $('#provider-logo-upload-real').click();
+    });
+
+    // Display logo before upload
+    $('#provider-logo-upload-real').change(function(e) {
+      console.log("Change to Provider Logo Upload");
+      $('#logo-upload-img').attr("src", URL.createObjectURL(event.target.files[0]));
     });
   });
