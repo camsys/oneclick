@@ -67,8 +67,6 @@ class Admin::ProvidersController < ApplicationController
   def create
     # before_filter
     # @provider = Provider.new(admin_provider_params)
-    puts "CREATING PROVIDER"
-
     respond_to do |format|
       if @provider.save
         format.html { redirect_to [:admin, @provider], notice: 'Provider was successfully created.' } #TODO Internationalize
@@ -99,6 +97,7 @@ class Admin::ProvidersController < ApplicationController
   # PUT /admin/providers/1
   # PUT /admin/providers/1.json
   def update
+    puts "UPDATING PROVIDER", params[:provider]
 
     # special case because need to update rolify
     staff_ids = params[:provider][:staff_ids].split(',').reject(&:blank?)
@@ -110,6 +109,7 @@ class Admin::ProvidersController < ApplicationController
       if @provider.update_attributes(admin_provider_params)
         # internal_contact is a special case
         @provider.internal_contact = User.find_by_id(params[:provider][:internal_contact])
+        @provider.admin_user = params[:provider][:admin_user]
 
         if params[:provider][:logo]
           @provider.logo = params[:provider][:logo]
