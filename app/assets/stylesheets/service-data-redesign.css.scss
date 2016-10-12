@@ -32,11 +32,11 @@
     resize: none;
   }
 
-  .btn.btn-upload {
+  .btn.btn-svc-data {
     border: 1px solid green;
     border-radius: 10px;
     color: gray;
-    margin-right: 10px;
+    min-width: 100px;
     padding: 10px;
 
     &:hover {
@@ -48,4 +48,8 @@
   .subtle-text {
     color: silver;
   }
+}
+
+button#provider-logo-upload-btn {
+  margin-right: 10px;
 }
