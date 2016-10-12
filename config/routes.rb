@@ -246,6 +246,10 @@ Oneclick::Application.routes.draw do
         resources :trips, only: [:index, :show]
         member do
           patch 'undelete'
+          get 'edit2'
+        end
+        collection do
+          get 'new2'
         end
         resources :trip_parts
       end

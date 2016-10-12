@@ -48,11 +48,26 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  # Service Data Maintenance Redesign
+  # GET /admin/providers/new2
+  # GET /admin/providers/new2.json
+  def new2
+    puts "NEW2 PROVIDER", @provider.ai
+    # before_filter
+    @provider = Provider.new # Remove this line once this is a real method
+    setup_comments(@provider)
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @provider }
+    end
+  end
+
   # POST /admin/providers
   # POST /admin/providers.json
   def create
     # before_filter
     # @provider = Provider.new(admin_provider_params)
+    puts "CREATING PROVIDER"
 
     respond_to do |format|
       if @provider.save
@@ -67,6 +82,14 @@ class Admin::ProvidersController < ApplicationController
 
   # GET /admin/providers/1/edit
   def edit
+    # assume only one internal contact for now
+    @contact = @provider.users.with_role(:internal_contact, @provider).first
+    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
+    setup_comments(@provider)
+  end
+
+  # GET /admin/providers/1/edit2
+  def edit2
     # assume only one internal contact for now
     @contact = @provider.users.with_role(:internal_contact, @provider).first
     @staff = @provider.users.with_role(:provider_staff, @provider).uniq
