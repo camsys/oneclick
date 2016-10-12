@@ -337,7 +337,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          service.disallowed_purposes = 'ada,no charge bss,trust,lexington for matp'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
