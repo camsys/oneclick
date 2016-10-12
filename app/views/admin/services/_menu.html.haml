@@ -1,0 +1,48 @@
+.row
+  .col-sm-12
+    .panel.panel-servicedata
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:services)
+          = add_tooltip("services_info_help", "fa fa-question-circle", nil)
+      .panel-body
+        = f.input :internal_contact, collection: ["Paratransit", "Fixed Route Transit", "Taxi"], class: "form-control",
+          selected: (@contact.id if @contact) , include_blank: "Select a service type", label: "Add a Service"
+
+.row
+  .col-sm-12
+    %ul.nav.nav-tabs
+      - @services.each do |service|
+        %li{role: 'presentation'}
+          %a= service.name
+
+-# %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_services_table
+-#   %thead
+-#     %tr
+-#       %th= translate_helper(:id)
+-#       %th= translate_helper(:name)
+-#       %th= translate_helper(:provider)
+-#       %th= translate_helper(:phone)
+-#       %th= translate_helper(:email)
+-#       %th= translate_helper(:service_id)
+-#       %th= translate_helper(:type)
+-#       %th#status= translate_helper(:status)
+-#   %tbody
+-#     - @services.each do |service|
+-#       %tr
+-#         %td
+-#           = service.id
+-#         %td
+-#           =link_to service.name, service_path(service.id)
+-#         %td
+-#           - if can? :show, Provider
+-#             =link_to service.provider.name, admin_provider_path(service.provider.id)
+-#           - else
+-#             = service.provider.name
+-#         %td= service.phone
+-#         %td= service.email
+-#         %td= service.external_id
+-#         %td= translate_helper(service.service_type.name)
+-#         %td
+-#           - if service.active == false
+-#             = translate_helper(:inactive)
