@@ -28,5 +28,9 @@
 
 :javascript
   $(document).ready(function() {
-
+    // Handle logo upload via proxy button
+    $('#provider-logo-upload-btn').on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      $('#provider-logo-upload-real').click();
+    });
   });
