@@ -90,7 +90,7 @@
                         #transit_modes_inputs
                           %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
                           %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
-                          = add_tooltip("#{mode[1]}_name_help", "", "")
+                          = add_tooltip("transit_sub#{mode[1]}_name_help", "", "")
                           %br
 
                     :javascript
