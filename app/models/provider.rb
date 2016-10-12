@@ -58,6 +58,24 @@ class Provider < ActiveRecord::Base
     end
   end
 
+  # Admin User virtual attribute
+  def admin_user
+    users.with_role( :admin, self).first
+  end
+
+  def admin_user= user_email
+    former = admin_user
+    user = User.where(email: user_email)[0]
+    if !former.nil? && (user != former)
+      former.remove_role :admin, self
+    end
+    if !user.nil?
+      users << user
+      user.add_role :admin, self
+      self.save
+    end
+  end
+
   def get_attr(attribute_sym)
     return [attribute_sym, self.send(attribute_sym)]
   end
