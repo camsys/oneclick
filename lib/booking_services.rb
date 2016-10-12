@@ -836,6 +836,7 @@ class BookingServices
       itinerary_hash[:wait_time] = itinerary.wait_time
       itinerary_hash[:walk_distance] = itinerary.walk_distance
       itinerary_hash[:transfers] = itinerary.transfers
+      itinerary_hash[:product_id] = itinerary.product_id
 
       if itinerary.service
         itinerary_hash[:service_name] = itinerary.service.name
