@@ -19,7 +19,7 @@
 @import 'base/oneclick-base-lib';
 @import "bootstrap-sprockets";
 @import "bootstrap";
-//@import "bootstrap/theme";
+// @import "bootstrap/theme";
 @import "breadcrumb-arrow-button";
 
 @import "includes/bootstrap-accessibility";
@@ -45,3 +45,6 @@
 @import 'dataTables/bootstrap/3/jquery.dataTables.bootstrap';
 @import 'ui_lib_override';
 @import 'leaflet';
+
+// Temporary CSS file for service data redesign
+@import 'service-data-redesign'

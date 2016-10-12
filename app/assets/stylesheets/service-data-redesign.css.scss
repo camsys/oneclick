@@ -1,0 +1,51 @@
+// Panels for provider and service forms
+.panel.panel-servicedata {
+  box-shadow: none;
+  margin: 20px 0;
+
+  .panel-heading {
+    padding: 10px 0;
+  }
+
+  .panel-body {
+    border: 1px solid gainsboro;
+    padding: 30px 30px 10px;
+  }
+
+  .panel.panel-subpanel {
+    box-shadow: none;
+
+    .panel-body {
+      border: none;
+      padding: 10px 0;
+    }
+  }
+
+  label {
+    font-weight: normal;
+    font-size: $font-size-base;
+  }
+
+  .form-control {
+    border-radius: 0;
+    box-shadow: none;
+    resize: none;
+  }
+
+  .btn.btn-upload {
+    border: 1px solid green;
+    border-radius: 10px;
+    color: gray;
+    margin-right: 10px;
+    padding: 10px;
+
+    &:hover {
+      background-color: limegreen;
+      color: white;
+    }
+  }
+
+  .subtle-text {
+    color: silver;
+  }
+}
