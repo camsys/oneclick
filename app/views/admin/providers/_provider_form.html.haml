@@ -14,16 +14,16 @@
           .form-group.file.optional.provider_logo
             = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
             .col-sm-9
-              %button.btn.btn-default.btn-upload#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload" : "Replace Image"
+              %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
               -unless @provider.logo_url.nil?
                 %img.logo-display-img{src: @provider.logo_url}
               -else
                 %span.subtle-text jpg, gif, png
                 -# = f.input :remove_logo, label: translate_helper(:remove_logo), :as => :boolean, input_html: {checked: false}
-          = f.input :admin_user, label: translate_helper(:admin_user), input_html: {value: @provider.admin_user.email}
+          = f.input :admin_user, label: translate_helper(:admin_user), placeholder: translate_helper(:admin_user_placeholder_text), input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
           %input{:name => "provider[staff_ids]", :type => 'hidden'}
           .pull-right
-            = f.button :submit, translate_helper(:save), class: "btn action-button"
+            = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data"
             -# %button.btn.btn-link.collapsed#more-provider-details-btn{data: {toggle: 'collapse', target: '#provider-details'}, type: 'button'}
             -#   Add more provider details
           -# .row.collapse#provider-details
