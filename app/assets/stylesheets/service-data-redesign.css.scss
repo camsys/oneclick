@@ -30,6 +30,10 @@
     border-radius: 0;
     box-shadow: none;
     resize: none;
+
+    &:read-only {
+      border-color: transparent;
+    }
   }
 
   .btn.btn-svc-data {
