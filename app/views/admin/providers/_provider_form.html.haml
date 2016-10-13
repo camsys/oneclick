@@ -1,5 +1,5 @@
 -# Form for creating or editing a provider
-= simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form'},
+= simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form', remote: true},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
   .row
@@ -23,7 +23,8 @@
             input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
           %input{:name => "provider[staff_ids]", :type => 'hidden'}
           .pull-right
-            = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data"
+            = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
+            -# .btn.btn-link#edit-provider-form-btn edit
 
 :javascript
   $(document).ready(function() {
@@ -33,9 +34,29 @@
       $('#provider-logo-upload-real').click();
     });
 
-    // Display logo before upload
+    // Preview logo before upload
     $('#provider-logo-upload-real').change(function(e) {
-      console.log("Change to Provider Logo Upload");
       $('#logo-upload-img').attr("src", URL.createObjectURL(event.target.files[0]));
     });
+
+    /*
+    // On Save Button click, make all inputs readonly and hide upload button
+    $('#save-provider-form-btn').on("click", function(e) {
+      console.log("Provider Form Save Button Clicked", e);
+      $('#provider-data-form :input.form-control').attr("readonly", "readonly");
+      $('#provider-logo-upload-btn').addClass("hidden");
+      $(this).addClass("hidden");
+      $('#edit-provider-form-btn').removeClass("hidden");
+    });
+
+    // On Edit Button click, make all inputs editable and display upload button
+    $('#edit-provider-form-btn').on("click", function(e) {
+      console.log("Provider Form Edit Button Clicked", e);
+      $('#provider-data-form :input.form-control').attr("readonly", null);
+      $('#provider-logo-upload-btn').removeClass("hidden");
+      $(this).addClass("hidden");
+      $('#save-provider-form-btn').removeClass("hidden");
+    });
+
+    */
   });
