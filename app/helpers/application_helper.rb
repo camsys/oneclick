@@ -369,7 +369,6 @@ module ApplicationHelper
     parts
   end
 
-
   def add_tooltip(key, classes="fa fa-question-circle fa-2x pull-right", styles="margin-top:-4px;")
     if TranslationEngine.translation_exists?(key)
       html = "<i class=\"#{classes} label-help\" style=\"#{styles}\" title data-original-title=\""
