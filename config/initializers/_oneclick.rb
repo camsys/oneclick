@@ -222,7 +222,8 @@ Oneclick::Application.configure do
     "includeRoutes" => "",
     "excludeRoutes" => "",
     "defaultLayoverTime" => "45",
-    "showRealtime" => "true"
+    "showRealtime" => "true",
+    "routesToShow" => "3"
   }
 
   config.otp_external_defaults_json = {
@@ -237,7 +238,8 @@ Oneclick::Application.configure do
     "maxTransferTime" => "30",
     "showRealtime" => "true",
     "allowDeparturesTime" => "5",
-    "defaultPosition" => "39.7392, -104.9903"
+    "defaultPosition" => "39.7392, -104.9903",
+    "routesToShow" => "3"
   }
 
 
