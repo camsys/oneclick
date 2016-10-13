@@ -350,21 +350,24 @@ namespace :oneclick do
         when 'monroe'
 
           #Counties
-          service.county_endpoint_array = []
-          # service.county_endpoint_array = ['Monroe']
+          service.county_endpoint_array = ['Monroe']
           service.county_coverage_array = ['Monroe']
 
           #Funding Sources
           funding_source_array = [
-            ["ADA", 0, false, "Eligible for ADA"],
-            ['PWD', 1, false, "Riders with disabilities"]
+            ['Lottery', 0, false, 'Riders 65 or older'],
+            ['PwD', 1, false, "Riders with disabilities"],
+            ['MATP', 2, false, "Medical Transportation"],
+            ['MATPO', 3, false, "Medical Transportation"],
+            ["ADA", 4, false, "Eligible for ADA"],
+            ['Gen Pub', 6, true, "Full Fare"]
           ]
 
           #Sponsors
-          sponsor_array = []
+          sponsor_array = [["AAA",0]]
 
           #Dummy User
-          service.fare_user = "1"
+          service.fare_user = "12152"
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
