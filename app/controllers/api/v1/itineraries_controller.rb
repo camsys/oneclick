@@ -220,6 +220,11 @@ module Api
                   end
                 end
 
+                #4 If a location is a ParkNRide Denote it
+                if leg['mode'] == 'CAR' and itinerary.returned_mode_code == Mode.park_transit.code
+                  leg['to']['parkAndRide'] = true
+                end
+
               end
               itinerary.legs = yaml_legs.to_yaml
               itinerary.save

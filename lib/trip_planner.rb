@@ -124,11 +124,15 @@ class TripPlanner
   def convert_itineraries(plan, mode_code='mode_transit')
     match_score = -0.3
     match_score_incr = 0.1
+    returned_mode_code = nil
     plan['itineraries'].collect do |itinerary|
       trip_itinerary = {}
 
       returned_mode_code = mode_code
       case mode_code.to_s
+        when 'mode_park_transit_name'
+          trip_itinerary['mode'] = Mode.park_transit
+          returned_mode_code = Mode.park_transit.code
         when 'mode_car'
           trip_itinerary['mode'] = Mode.car
         when 'mode_bicycle'
