@@ -27,23 +27,6 @@
 :javascript
   $(document).ready(function() {
 
-    // Form Read-Only Helper Function
-    var toggleFormReadOnly = function(formId, hiddenElements) {
-
-      // Set read only variable to opposite of form's data-readonly property, and toggle that property.
-      var readonly = !$(formId).data('readonly');
-      console.log("Read only is now ", readonly);
-      $(formId).data('readonly', readonly);
-
-      // Set all form inputs to readonly value.
-      $(formId + ' :input.form-control').attr("readonly", readonly);
-
-      // Toggle hidden on any elements to hide.
-      for (var i = 0; i < hiddenElements.length; i++) {
-        $(hiddenElements[i]).toggleClass('hidden');
-      }
-    }
-
     // Handle logo upload via proxy button
     $('#provider-logo-upload-btn').on("click", function(e) {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;

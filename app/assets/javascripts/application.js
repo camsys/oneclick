@@ -89,7 +89,7 @@ function toggleAriaLabelPrevNext(input) {
             $(this).children().removeAttr('aria-label');
         }
       }
-    });    
+    });
 }
 
 function addHelperTooltip(label_id, tooltip_str) {
@@ -181,9 +181,9 @@ function init_place_picker(dom_selector, query_bounds, query_restrictions) {
   saved_places.initialize()
 
   var autocomplete_service_config = {};
-  if (query_bounds) 
+  if (query_bounds)
     autocomplete_service_config.bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(query_bounds.xmin,query_bounds.ymin), 
+      new google.maps.LatLng(query_bounds.xmin,query_bounds.ymin),
       new google.maps.LatLng(query_bounds.xmax,query_bounds.ymax));
   if (query_restrictions)
     autocomplete_service_config.componentRestrictions = query_restrictions;
@@ -228,6 +228,25 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
       $('#fare-panel').insertAfter('#trip-purposes-panel');
       hideFromTaxi.show();
       $('#fare-panel .panel-default').css('height', $('#eligibility-panel .panel-default').css('height'));
-    } 
+    }
+  }
+}
+
+// Form Read-Only Helper Function
+// formId is a jQuery selector string identifying the target form
+// hiddenElements is an array of selectors for elements, hidden and non, where class 'hidden' should be toggled
+function toggleFormReadOnly(formId, hiddenElements) {
+
+  // Set read only variable to opposite of form's data-readonly property, and toggle that property.
+  var readonly = !$(formId).data('readonly');
+  console.log("Read only is now ", readonly);
+  $(formId).data('readonly', readonly);
+
+  // Set all form inputs to readonly value.
+  $(formId + ' :input.form-control').attr("readonly", readonly);
+
+  // Toggle hidden on any elements to hide.
+  for (var i = 0; i < hiddenElements.length; i++) {
+    $(hiddenElements[i]).toggleClass('hidden');
   }
 }
