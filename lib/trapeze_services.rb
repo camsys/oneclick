@@ -103,7 +103,7 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, offset_minutes, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
-    pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no].upcase, on_street: origin[:on_street].upcase, city: origin[:city].upcase, state: origin[:state].upcase, zip_code: origin[:zip_code].upcase, lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       pu_leg_hash = {req_time: [request_start_seconds_past_midnight + (offset_minutes*60), 86399].min, request_address: pu_address_hash}
     else
@@ -111,7 +111,7 @@ class TrapezeServices
     end
 
 
-    do_address_hash = {address_mode: 'ZZ', street_no: destination[:street_no], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    do_address_hash = {address_mode: 'ZZ', street_no: destination[:street_no].upcase, on_street: destination[:on_street].upcase, city: destination[:city].upcase, state: destination[:state].upcase, zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       do_leg_hash = {request_address: do_address_hash}
     else
