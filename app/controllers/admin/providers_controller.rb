@@ -131,14 +131,14 @@ class Admin::ProvidersController < ApplicationController
   end
 
   def update2
-    puts "UPDATING NEW SERVICEDATA", params[:provider].ai
+    puts "UPDATING NEW SERVICEDATA", params.ai
 
     respond_to do |format|
       if @provider.update_attributes(admin_provider_params)
-        format.html { render partial: "provider_form", locals: { provider: @provider, readonly: true } }
+        format.html { render partial: "provider_form", locals: { provider: @provider } }
         format.json { render json: @provider }
       else
-        format.html { render action: "edit" }
+        format.html { render action: "edit2" }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end
     end

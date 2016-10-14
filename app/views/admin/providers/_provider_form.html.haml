@@ -4,6 +4,7 @@
         method: 'put',
         remote: true,
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
+        authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
   = f.input :name, label: translate_helper(:provider_name)
@@ -62,24 +63,4 @@
       console.log("AJAX Error", arguments);
     });
 
-    /*
-    // On Save Button click, make all inputs readonly and hide upload button
-    $('#save-provider-form-btn').on("click", function(e) {
-      console.log("Provider Form Save Button Clicked", e);
-      $('#provider-data-form :input.form-control').attr("readonly", "readonly");
-      $('#provider-logo-upload-btn').addClass("hidden");
-      $(this).addClass("hidden");
-      $('#edit-provider-form-btn').removeClass("hidden");
-    });
-
-    // On Edit Button click, make all inputs editable and display upload button
-    $('#edit-provider-form-btn').on("click", function(e) {
-      console.log("Provider Form Edit Button Clicked", e);
-      $('#provider-data-form :input.form-control').attr("readonly", null);
-      $('#provider-logo-upload-btn').removeClass("hidden");
-      $(this).addClass("hidden");
-      $('#save-provider-form-btn').removeClass("hidden");
-    });
-
-    */
   });
