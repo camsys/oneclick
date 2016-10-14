@@ -3,34 +3,47 @@
         url: update2_admin_provider_path,
         method: 'put',
         remote: true,
-        html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form'},
+        html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
-  = f.input :name, label: translate_helper(:provider_name), readonly: readonly
+  = f.input :name, label: translate_helper(:provider_name)
   .form-group.file.optional.provider_logo
     = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
     .col-sm-9
-      -unless readonly
-        %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
       %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
       -if @provider.logo_url.nil?
         %span.subtle-text jpg, gif, png
   = f.input :admin_user, label: translate_helper(:admin_user),
     placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
-    input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email},
-    readonly: readonly
+    input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
   %input{:name => "provider[staff_ids]", :type => 'hidden'}
   .pull-right
-    -unless readonly
-      = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
-    -else
-      .btn.btn-link#edit-provider-form-btn edit
-    %h4
-      = readonly
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
+    .btn.btn-link#edit-provider-form-btn.hidden edit
+
 
 
 :javascript
   $(document).ready(function() {
+
+    // Form Read-Only Helper Function
+    var toggleFormReadOnly = function(formId, hiddenElements) {
+
+      // Set read only variable to opposite of form's data-readonly property, and toggle that property.
+      var readonly = !$(formId).data('readonly');
+      console.log("Read only is now ", readonly);
+      $(formId).data('readonly', readonly);
+
+      // Set all form inputs to readonly value.
+      $(formId + ' :input.form-control').attr("readonly", readonly);
+
+      // Toggle hidden on any elements to hide.
+      for (var i = 0; i < hiddenElements.length; i++) {
+        $(hiddenElements[i]).toggleClass('hidden');
+      }
+    }
+
     // Handle logo upload via proxy button
     $('#provider-logo-upload-btn').on("click", function(e) {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
@@ -42,6 +55,12 @@
       $('#logo-upload-img').attr("src", URL.createObjectURL(event.target.files[0]));
     });
 
+    // Edit Button handler
+    $('#edit-provider-form-btn').on("click", function(e) {
+      e.preventDefault();
+      toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
+    });
+
     // Handle Form submit
     $('#provider-data-form')
     .on("ajax:beforeSend", function(evt,xhr,settings) {
@@ -51,6 +70,7 @@
       console.log("AJAX Success!", arguments);
       // On success, refresh just the provider form partial
       $('#provider-data-form').replaceWith(xhr.responseText);
+      toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
     })
     .on("ajax:complete", function(evt, xhr, status) {
       console.log("AJAX Complete", arguments);
