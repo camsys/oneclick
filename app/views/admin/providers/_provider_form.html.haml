@@ -6,29 +6,28 @@
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form'},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
-  .row
-    .col-sm-12
-      .panel.panel-servicedata
-        .panel-heading
-          %h4.panel-title
-            = translate_helper(:provider)
-            = add_tooltip("provider_info_help", "fa fa-question-circle", nil)
-        .panel-body
-          = f.input :name, label: translate_helper(:provider_name)
-          .form-group.file.optional.provider_logo
-            = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
-            .col-sm-9
-              %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
-              %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
-              -if @provider.logo_url.nil?
-                %span.subtle-text jpg, gif, png
-          = f.input :admin_user, label: translate_helper(:admin_user),
-            placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
-            input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
-          %input{:name => "provider[staff_ids]", :type => 'hidden'}
-          .pull-right
-            = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
-            -# .btn.btn-link#edit-provider-form-btn edit
+  = f.input :name, label: translate_helper(:provider_name), readonly: readonly
+  .form-group.file.optional.provider_logo
+    = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
+    .col-sm-9
+      -unless readonly
+        %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
+      -if @provider.logo_url.nil?
+        %span.subtle-text jpg, gif, png
+  = f.input :admin_user, label: translate_helper(:admin_user),
+    placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
+    input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email},
+    readonly: readonly
+  %input{:name => "provider[staff_ids]", :type => 'hidden'}
+  .pull-right
+    -unless readonly
+      = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
+    -else
+      .btn.btn-link#edit-provider-form-btn edit
+    %h4
+      = readonly
+
 
 :javascript
   $(document).ready(function() {

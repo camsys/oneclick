@@ -135,7 +135,7 @@ class Admin::ProvidersController < ApplicationController
 
     respond_to do |format|
       if @provider.update_attributes(admin_provider_params)
-        format.html { render partial: "provider_form" }
+        format.html { render partial: "provider_form", locals: { provider: @provider, readonly: true } }
         format.json { render json: @provider }
       else
         format.html { render action: "edit" }
