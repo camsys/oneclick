@@ -351,14 +351,13 @@ namespace :oneclick do
 
           #Counties
           service.county_endpoint_array = ['Monroe']
-          service.county_coverage_array = ['Monroe']
+          service.county_coverage_array = ['Monroe', 'Carbon']
 
           #Funding Sources
           funding_source_array = [
             ['Lottery', 0, false, 'Riders 65 or older'],
             ['PwD', 1, false, "Riders with disabilities"],
             ['MATP', 2, false, "Medical Transportation"],
-            ['MATPO', 3, false, "Medical Transportation"],
             ["ADA", 4, false, "Eligible for ADA"],
             ['Gen Pub', 6, true, "Full Fare"]
           ]
