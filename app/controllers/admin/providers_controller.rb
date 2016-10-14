@@ -97,7 +97,7 @@ class Admin::ProvidersController < ApplicationController
   # PUT /admin/providers/1
   # PUT /admin/providers/1.json
   def update
-    puts "UPDATING PROVIDER", params[:provider]
+    puts "UPDATING PROVIDER", params[:provider].ai
 
     # special case because need to update rolify
     staff_ids = params[:provider][:staff_ids].split(',').reject(&:blank?)
@@ -130,6 +130,20 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  def update2
+    puts "UPDATING NEW SERVICEDATA", params[:provider].ai
+
+    respond_to do |format|
+      if @provider.update_attributes(admin_provider_params)
+        format.html { render partial: "provider_form" }
+        format.json { render json: @provider }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @provider.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /admin/providers/1
   # DELETE /admin/providers/1.json
   def destroy
@@ -143,6 +157,7 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  # POST
   def undelete
     @provider = Provider.find(params[:id])
     @provider.update_attributes(active: true)

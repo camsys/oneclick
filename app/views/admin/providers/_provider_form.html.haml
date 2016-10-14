@@ -1,5 +1,9 @@
 -# Form for creating or editing a provider
-= simple_form_for [:admin, @provider], html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form', remote: true},
+= simple_form_for [:admin, @provider],
+        url: update2_admin_provider_path,
+        method: 'put',
+        remote: true,
+        html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form'},
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
   .row
@@ -37,6 +41,23 @@
     // Preview logo before upload
     $('#provider-logo-upload-real').change(function(e) {
       $('#logo-upload-img').attr("src", URL.createObjectURL(event.target.files[0]));
+    });
+
+    // Handle Form submit
+    $('#provider-data-form')
+    .on("ajax:beforeSend", function(evt,xhr,settings) {
+      console.log("Before AJAX Send", arguments);
+    })
+    .on("ajax:success", function(evt, data, status, xhr) {
+      console.log("AJAX Success!", arguments);
+      // On success, refresh just the provider form partial
+      $('#provider-data-form').replaceWith(xhr.responseText);
+    })
+    .on("ajax:complete", function(evt, xhr, status) {
+      console.log("AJAX Complete", arguments);
+    })
+    .on("ajax:error", function(evt, xhr, status, error){
+      console.log("AJAX Error", arguments);
     });
 
     /*

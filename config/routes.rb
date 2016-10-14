@@ -247,6 +247,7 @@ Oneclick::Application.routes.draw do
         member do
           patch 'undelete'
           get 'edit2'
+          put 'update2'
         end
         collection do
           get 'new2'
