@@ -1,1 +1,1 @@
-Oneclick::Application.config.version = 'gtc1.8.0'
+Oneclick::Application.config.version = 'v1.8.0gtc'
