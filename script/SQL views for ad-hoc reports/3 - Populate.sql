@@ -5,6 +5,7 @@ DELETE FROM reporting_filter_groups;
 DELETE FROM reporting_reports;
 DELETE FROM reporting_filter_types;
 
+/* Filter Types */
 
 INSERT INTO reporting_filter_types(id, name, created_at, updated_at)
     VALUES (1,'eq','2015-04-13 17:28:37.384943','2015-04-13 17:28:37.384943');
@@ -70,49 +71,60 @@ INSERT INTO reporting_filter_types(id, name, created_at, updated_at)
     VALUES (31,'multi_select','2015-04-13 17:28:38.931624','2015-04-13 17:28:38.931624');
 
 
+/* Lookup Tables */
 
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (1,'v_Service_Types','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (1,'v_Service_Types','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
     VALUES (2,'providers','name','2015-01-01 00:00:00','2015-04-17 14:36:10.112449','id','provider');
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (3,'v_Characteristics','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (3,'v_Characteristics','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (4,'v_Accommodations','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (4,'v_Accommodations','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (5,'v_Trip_Purposes','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (5,'v_Trip_Purposes','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (6,'v_Trip_Statuses','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (6,'v_Trip_Statuses','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (7,'v_Modes','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (7,'v_Modes','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
     VALUES (8,'services','name','2015-01-01 00:00:00','2015-04-17 16:19:29.127294','id','service');
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
-    VALUES (9,'boolean_lookup','name','2015-01-01 00:00:00','2015-01-01 00:00:00','id','');
+    VALUES (9,'v_Boolean','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
     VALUES (10,'agencies','name','2015-01-01 00:00:00','2015-01-01 00:00:00','id','agency');
+INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
+    VALUES (11,'v_Feedback_Types','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
+INSERT INTO reporting_lookup_tables(id, name, display_field_name, created_at, updated_at, id_field_name, data_access_type)
+    VALUES (12,'v_Feedback_Statuses','_en','2015-01-01 00:00:00','2015-01-01 00:00:00','id',NULL);
 
 
+/* Reports */
 
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (1,'Services','Defined Services','v_Services','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,TRUE,FALSE,FALSE,'Service_ID');
+    VALUES (1,'Services','Defined Services','v_Services','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,TRUE,FALSE,FALSE,'service_id');
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (2,'Users','All Users','v_Users','2015-04-13 19:43:49.036979','2015-04-13 20:21:41.785259',TRUE,FALSE,FALSE,FALSE,'User_ID');
+    VALUES (2,'Users','All Users','v_Users','2015-04-13 19:43:49.036979','2015-04-13 20:21:41.785259',TRUE,FALSE,FALSE,FALSE,'user_id');
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (3,'Trip-Travelers','Trip Travelers','v_Trips_Users','2015-01-01 00:00:00','2015-04-15 16:15:21.475268',TRUE,FALSE,TRUE,TRUE,'Trip_ID');
+    VALUES (3,'Trip - Travelers','Trip Travelers','v_Trips_Users','2015-01-01 00:00:00','2015-04-15 16:15:21.475268',TRUE,FALSE,TRUE,TRUE,'trip_id');
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (4,'Itineraries-Travelers','Itineraries displayed to Travelers ','v_Itineraries_Users','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,TRUE,TRUE,TRUE,'Itinerary_ID');
+    VALUES (4,'Trip - Travelers (By Itinerary)','Itineraries displayed to Travelers ','v_Itineraries_Users','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,TRUE,TRUE,TRUE,'itinerary_id');
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (5,'Trip Parts-Travelers','Trip Parts Travelers','v_Trip_Parts_Users','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,TRUE,TRUE,'id');
+    VALUES (5,'Trip - Travelers (By Direction)','Trip Parts Travelers','v_Trip_Parts_Users','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,TRUE,TRUE,'trip_part_id');
 INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
-    VALUES (7,'Trip Surveys','Trip Surveys','v_Trip_Surveys','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,FALSE,FALSE,'id');
+    VALUES (6,'Providers','Providers','v_Providers','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,TRUE,TRUE,'provider_id');
+INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
+    VALUES (7,'Agencies','Agencies','v_Agencies','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,TRUE,TRUE,'agency_id');
+INSERT INTO reporting_reports(id, name, description, data_source, created_at, updated_at, is_sys_admin, is_provider_staff, is_agency_admin, is_agent, primary_key)
+    VALUES (8,'Feedback','Feedback','v_Feedback_Trips_Users','2015-01-01 00:00:00','2015-01-01 00:00:00',TRUE,FALSE,FALSE,FALSE,'feedback_id');
 
 
+/* Filter Groups */
 
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
-    VALUES (1,'Provider and Services','2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (1,'Services','2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
-    VALUES (2,'Eligibility and Accommodations','2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (2,'Traveler Eligibility','2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
     VALUES (3,'Travelers','2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
@@ -120,96 +132,128 @@ INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
     VALUES (5,'Itineraries','2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
-    VALUES (6,'Trip Parts','2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (6,'Providers','2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
     VALUES (7,'Agencies','2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
+    VALUES (8,'Traveler Accommodations','2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
+    VALUES (9,'Trip Desired Modes','2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
+    VALUES (10,'Traveler Desired Modes','2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_filter_groups(id, name, created_at, updated_at)
+    VALUES (11,'Feedback','2015-01-01 00:00:00','2015-01-01 00:00:00');
 
 
-
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (1,1,31,1,'Service_Type_ID','Service Types','2015-01-01 00:00:00','2015-01-01 00:00:00',2,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (2,1,31,2,'provider_id','Provider','2105-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (3,3,11,NULL,'first_name','First Name','2015-01-01 00:00:00','2015-01-01 00:00:00',2,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (4,3,11,NULL,'last_name','Last Name','2015-01-01 00:00:00','2015-01-01 00:00:00',3,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (5,3,11,NULL,'email','Email Address','2015-01-01 00:00:00','2015-01-01 00:00:00',4,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (6,3,29,NULL,'User_ID','User ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (7,1,31,8,'Service_ID','Service','2015-01-01 00:00:00','2015-04-14 21:46:49.488477',3,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (8,5,29,NULL,'Itinerary_ID','Itinerary ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (10,4,29,NULL,'Trip_ID','Trip ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (11,4,11,NULL,'From_Address','From Address','2015-01-01 00:00:00','2015-01-01 00:00:00',5,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (12,4,11,NULL,'To_Address','To Address','2015-01-01 00:00:00','2015-01-01 00:00:00',6,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (13,4,31,5,'Trip_Purpose_ID','Trip Purpose','2015-01-01 00:00:00','2015-01-01 00:00:00',7,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (14,5,11,NULL,'From_Address','From Address','2015-01-01 00:00:00','2015-01-01 00:00:00',6,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (15,5,11,NULL,'To_Address','To Address','2015-01-01 00:00:00','2015-01-01 00:00:00',7,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (16,5,30,9,'is_return_trip','Is Return Trip?','2015-01-01 00:00:00','2015-01-01 00:00:00',8,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (17,4,29,NULL,'Creation_DateTime','Creation Date','2015-01-01 00:00:00','2015-01-01 00:00:00',2,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (18,4,29,NULL,'Requested_Date','Requested Date','2015-01-01 00:00:00','2015-01-01 00:00:00',3,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (19,4,29,NULL,'Requested_Time','Requested Time (HH:MM)','2015-01-01 00:00:00','2015-04-15 21:39:08.794507',4,'time');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (20,5,29,NULL,'Creation_DateTime','Creation Date','2015-01-01 00:00:00','2015-01-01 00:00:00',3,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (21,5,29,NULL,'Requested_Date','Requested Date','2015-01-01 00:00:00','2015-01-01 00:00:00',4,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (22,5,29,NULL,'Requested_Time','Requested Time (HH:MM)','2015-01-01 00:00:00','2015-01-01 00:00:00',5,'time');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (24,3,29,NULL,'user_age_name','Age (##)','2015-01-01 00:00:00','2015-01-01 00:00:00',5,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (25,5,30,9,'selected','Itinerary Selected?','2015-01-01 00:00:00','2015-01-01 00:00:00',10,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (26,6,29,NULL,'Trip_ID','Trip ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (27,5,29,NULL,'Trip_ID','Trip ID','2015-01-01 00:00:00','2015-01-01 00:00:00',2,'');
-INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
-    VALUES (28,7,31,10,'agency_id','Agency','2015-01-01 00:00:00','2015-01-01 00:00:00',1,'');
-
-
-
+/* Reporting Specific Filter Groups */
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (1,3,4,1,'2015-04-14 21:29:39.247797','2015-04-14 21:41:09.669575');
+    VALUES (1,3,4,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (2,3,3,2,'2015-04-14 21:29:39.27586','2015-04-14 21:29:39.27586');
+    VALUES (2,3,9,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (3,4,5,1,'2015-04-14 21:29:39.27935','2015-04-14 21:29:39.27935');
+    VALUES (3,4,5,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (4,4,3,2,'2015-04-14 21:29:39.287619','2015-04-14 21:29:39.287619');
+    VALUES (4,4,3,4,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (5,4,1,3,'2015-04-14 21:29:39.295299','2015-04-14 21:29:39.295299');
+    VALUES (5,4,1,5,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
     VALUES (6,5,4,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (7,5,3,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (7,5,9,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
     VALUES (8,2,3,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
     VALUES (9,1,1,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (10,6,4,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (12,3,3,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (11,6,3,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (13,4,7,6,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (12,3,7,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (14,5,3,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (13,4,7,4,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (15,2,2,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (15,5,7,5,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (16,2,8,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (16,7,3,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (17,3,2,4,'2015-01-01 00:00:00','2015-01-01 00:00:00');
 INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
-    VALUES (17,7,4,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+    VALUES (18,3,8,5,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (19,4,2,7,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (20,4,8,8,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (21,5,2,4,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (22,5,8,5,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (23,3,7,7,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (24,5,7,6,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (25,4,4,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (26,4,9,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (27,6,6,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (28,7,7,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (29,8,11,1,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (30,8,4,2,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+INSERT INTO reporting_specific_filter_groups(id, reporting_report_id, reporting_filter_group_id, sort_order, created_at, updated_at)
+    VALUES (31,8,3,3,'2015-01-01 00:00:00','2015-01-01 00:00:00');
+
+
+
+/* Reporting Filter Fields */
+
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (1,1,31,1,'service_type_id','Service Types','2015-01-01 00:00:00','2015-01-01 00:00:00',2,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (2,1,31,2,'service_provider_id','Provider','2105-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (3,3,11,NULL,'first_name','First Name','2015-01-01 00:00:00','2015-01-01 00:00:00',2,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (4,3,11,NULL,'last_name','Last Name','2015-01-01 00:00:00','2015-01-01 00:00:00',3,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (5,3,11,NULL,'email','Email Address','2015-01-01 00:00:00','2015-01-01 00:00:00',4,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (6,3,29,NULL,'user_id','User ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (7,1,31,8,'service_id','Service','2015-01-01 00:00:00','2015-04-14 21:46:49.488477',3,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (8,5,29,NULL,'itinerary_id','Itinerary ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (10,4,29,NULL,'trip_id','Trip ID','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (11,4,11,NULL,'trip_from_address','From Address','2015-01-01 00:00:00','2015-01-01 00:00:00',5,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (12,4,11,NULL,'trip_to_address','To Address','2015-01-01 00:00:00','2015-01-01 00:00:00',6,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (13,4,31,5,'trip_purpose_id','Trip Purpose','2015-01-01 00:00:00','2015-01-01 00:00:00',7,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (17,4,29,NULL,'trip_creation_datetime','Creation Date','2015-01-01 00:00:00','2015-01-01 00:00:00',2,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (18,4,29,NULL,'trip_requested_date','Requested Date','2015-01-01 00:00:00','2015-01-01 00:00:00',3,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (19,4,29,NULL,'trip_requested_time','Requested Time (HH:MM)','2015-01-01 00:00:00','2015-04-15 21:39:08.794507',4,'time');
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (24,3,29,NULL,'user_age','Age (##)','2015-01-01 00:00:00','2015-01-01 00:00:00',5,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (25,5,30,9,'itinerary_selected','Itinerary Selected?','2015-01-01 00:00:00','2015-01-01 00:00:00',10,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (28,7,31,10,'agency_id','Agency','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (29,1,30,9,'service_active','Is Active?','2015-01-01 00:00:00','2015-01-01 00:00:00',4,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (30,6,31,2,'provider_id','Provider','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (31,11,11,NULL,'feedback_user_email','Email','2015-01-01 00:00:00','2015-01-01 00:00:00',1,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (32,11,31,11,'feedback_type_id','Feedback Type','2015-01-01 00:00:00','2015-01-01 00:00:00',2,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (33,11,31,12,'feedback_status_id','Feedback Status','2015-01-01 00:00:00','2015-01-01 00:00:00',3,NULL);
+INSERT INTO reporting_filter_fields(id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+    VALUES (34,11,11,NULL,'feedback_comment','Comment','2015-01-01 00:00:00','2015-01-01 00:00:00',4,NULL);
