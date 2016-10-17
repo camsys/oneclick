@@ -111,7 +111,7 @@ class TrapezeServices
     end
 
 
-    do_address_hash = {address_mode: 'ZZ', street_no: (destination[:street_no] || "").upcase, on_street: (destination[:on_street] || "").upcase, city: (destination[:city] || "").upcase, state: (destination[:state] "").upcase, zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    do_address_hash = {address_mode: 'ZZ', street_no: (destination[:street_no] || "").upcase, on_street: (destination[:on_street] || "").upcase, city: (destination[:city] || "").upcase, state: (destination[:state] || "").upcase, zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       do_leg_hash = {request_address: do_address_hash}
     else
