@@ -284,8 +284,12 @@ class TripPart < ActiveRecord::Base
     end
 
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes)
-    self.otp_response = response
-    self.save
+
+    #If this is a transit trip, save the response
+    if mode_code.to_s == "mode_transit_name"
+      self.otp_response = response
+      self.save
+    end
 
     #TODO: Save errored results to an event log
     if result
@@ -403,8 +407,6 @@ class TripPart < ActiveRecord::Base
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
                                                       'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.max_transfer_time, self.banned_routes, self.preferred_routes)
 
-          self.otp_response = response
-          self.save
           #TODO: Save errored results to an event log
           if result
             tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
@@ -460,8 +462,6 @@ class TripPart < ActiveRecord::Base
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
                                                       'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries, self.min_transfer_time, self.max_transfer_time)
 
-          self.otp_response = response
-          self.save
           #TODO: Save errored results to an event log
           if result
             tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
