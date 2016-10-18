@@ -138,6 +138,7 @@ class TrapezeServices
     funding_source_array.each do |funding_source|
       trip_hash[:excluded_validation_checks] = funding_source[:excluded_validation_checks]
       trip_hash[:funding_source_id] = funding_source[:funding_source_id]
+      trip_hash[:fare_type_id] = funding_source[:fare_type_id]
       Rails.logger.info trip_hash.ai
 
       result = client.call(:pass_create_trip, message: trip_hash, cookies: auth_cookies)
