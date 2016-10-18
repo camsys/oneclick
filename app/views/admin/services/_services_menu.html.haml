@@ -9,39 +9,55 @@
           = add_tooltip("services_info_help", "fa fa-question-circle", nil)
       .panel-body.form-horizontal
         .form-group.select
-          %label.select.control-label.col-sm-3 Add as service
+          %label.select.control-label.col-sm-3 Add a service
           .col-sm-9
             %select.select.form-control#select-new-service-type
-              %option{value: nil} Select a service type
+              %option{value: ''} Select a service type
               - mode_list.each do |m|
                 %option{value: m}= translate_helper("mode_#{m}_name".to_sym)
 .row
   .col-md-8.col-sm-10.col-xs-12.center
-    %ul.nav.nav-tabs{role: "tablist"}
-      - mode_list.each do |m|
-        %li{role: 'presentation'}
-          %a{href: "#new-#{m}-service", "aria-controls" => "#new-#{m}-service", role: "tab", "data-toggle" => "tab"}
-            = translate_helper("mode_#{m}_name".to_sym)
-      -# - @provider.services.each_with_index do |s, i|
-      -#   %li{role: 'presentation'}
-      -#     %a{href: "#service-#{s.id}", "aria-controls" => "service-#{s.id}", role: "tab", "data-toggle" => "tab", class: ("active" if i == 0)}
-      -#       = s.name
--#     .tab-content
--#       -# - @provider.services.each_with_index do |s, i|
--#       -#   .tab-pane{role: 'tabpanel', id: "service-#{s.id}", class: ("active" if i == 0)}
--#       -#     %h3= s.name
--#       -#     %p= s.url
+    .panel.panel-servicedata
+      %ul.nav.nav-tabs{role: "tablist"}
+        - @provider.services.each_with_index do |s, i|
+          %li{role: 'presentation', class: ("active" if i == 0)}
+            %a{href: "#service-#{s.id}", "aria-controls" => "service-#{s.id}", role: "tab", "data-toggle" => "tab", class: "service-tab-link"}
+              = s.name
+        - mode_list.each do |m|
+          %li{role: 'presentation', id: "new-#{m}-service-tab", class: "hidden new-service-tab"}
+            %a{ href: "#new-#{m}-service",
+                "aria-controls" => "#new-#{m}-service",
+                role: "tab",
+                "data-toggle" => "tab"}
+              = translate_helper(:new_service)
+      .tab-content
+        - @provider.services.each_with_index do |s, i|
+          .tab-pane.panel-body{role: 'tabpanel', id: "service-#{s.id}", class: "#{"active" if i == 0}"}
+            = render partial: "admin/services/service_form_mode_#{s.service_type.code}", locals: {service: s}
+        - mode_list.each do |m|
+          .tab-pane.panel-body{role: 'tabpanel', id: "new-#{m}-service", class: "new-service-tab-pane"}
+            = render partial: "admin/services/service_form_mode_#{m}", locals: {service: nil}
 
-      = render partial: 'admin/services/service_form_mode_paratransit'
-      = render partial: 'admin/services/service_form_mode_transit'
-      = render partial: 'admin/services/service_form_mode_taxi'
 
 :javascript
   $(document).ready(function() {
 
     // Render appropriate service partials on menu select
     $('#select-new-service-type').change(function(e) {
-      console.log("Service Selection Changed", this.value);
+      var mode = this.value;
+
+      // Make appropriate mode tab visible and active
+      $(".new-service-tab").addClass("hidden");
+
+      if(mode) {
+        $(`#new-${mode}-service-tab`).removeClass("hidden");
+        $(`#new-${mode}-service-tab > a`).click();
+      } else {
+        $(".new-service-tab-pane").addClass("hidden");
+        if($(".service-tab-link")) {
+          $(".service-tab-link")[0].click();
+        }
+      }
     });
 
   });

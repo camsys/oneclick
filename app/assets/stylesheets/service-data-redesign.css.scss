@@ -12,6 +12,10 @@
     padding: 30px 30px 10px;
   }
 
+  .panel-body.tab-pane {
+    border-top: none;
+  }
+
   .panel.panel-subpanel {
     box-shadow: none;
 
@@ -58,7 +62,7 @@ button#provider-logo-upload-btn {
   margin-right: 10px;
 }
 
-textarea#provider_name {
+textarea.form-control.text {
   height: 28pt;
 }
 
