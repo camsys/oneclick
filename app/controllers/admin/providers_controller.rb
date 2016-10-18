@@ -131,13 +131,22 @@ class Admin::ProvidersController < ApplicationController
   end
 
   def update2
-    puts "UPDATING NEW SERVICEDATA", params.ai
+    puts "UPDATING NEW SERVICEDATA", params.ai, request.format
 
     respond_to do |format|
+      @provider.admin_user = params[:provider][:admin_user]
+
+      if params[:provider][:logo]
+        @provider.logo = params[:provider][:logo]
+        @provider.save
+      end
+
       if @provider.update_attributes(admin_provider_params)
+        puts "SENDING SUCCESS RESPONSE"
         format.html { render partial: "provider_form", locals: { provider: @provider } }
-        format.json { render json: @provider }
+        format.json { head :no_content }
       else
+        puts "SENDING FAILURE RESPONSE"
         format.html { render action: "edit2" }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end

@@ -4,6 +4,7 @@
         method: 'put',
         remote: true,
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
+        data: {type: :html},
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
@@ -45,22 +46,18 @@
       toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
     });
 
+    // Prevent double form submit on save click
+    $('#save-provider-form-btn').on("click", function(e) {
+      e.preventDefault();
+      $('#provider-data-form').submit();
+    })
+
     // Handle Form submit
     $('#provider-data-form')
-    .on("ajax:beforeSend", function(evt,xhr,settings) {
-      console.log("Before AJAX Send", arguments);
-    })
     .on("ajax:success", function(evt, data, status, xhr) {
-      console.log("AJAX Success!", arguments);
       // On success, refresh just the provider form partial
       $('#provider-data-form').replaceWith(xhr.responseText);
       toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
-    })
-    .on("ajax:complete", function(evt, xhr, status) {
-      console.log("AJAX Complete", arguments);
-    })
-    .on("ajax:error", function(evt, xhr, status, error){
-      console.log("AJAX Error", arguments);
     });
 
   });

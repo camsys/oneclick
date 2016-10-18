@@ -239,7 +239,6 @@ function toggleFormReadOnly(formId, hiddenElements) {
 
   // Set read only variable to opposite of form's data-readonly property, and toggle that property.
   var readonly = !$(formId).data('readonly');
-  console.log("Read only is now ", readonly);
   $(formId).data('readonly', readonly);
 
   // Set all form inputs to readonly value.
