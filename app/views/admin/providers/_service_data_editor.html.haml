@@ -5,16 +5,22 @@
     %h2 Transportation Services
 .row
   .col-md-8.col-sm-10.col-xs-12.center
-    .row
-      .col-sm-12
-        .panel.panel-servicedata
-          .panel-heading
-            %h4.panel-title
-              = translate_helper(:provider)
-              = add_tooltip("provider_info_help", "fa fa-question-circle", nil)
-          .panel-body
-            = render partial: 'provider_form'
-            -# = render partial: 'admin/services/services_form'
+    .panel.panel-servicedata
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:provider)
+          = add_tooltip("provider_info_help", "fa fa-question-circle", nil)
+      .panel-body
+        = render partial: 'provider_form'
+.row
+  .col-md-8.col-sm-10.col-xs-12.center
+    .panel.panel-servicedata
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:services)
+          = add_tooltip("services_info_help", "fa fa-question-circle", nil)
+      .panel-body
+        = render partial: 'admin/services/services_menu'
 
 
 :javascript
