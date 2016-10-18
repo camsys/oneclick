@@ -1,4 +1,4 @@
-#----------------------------------------------------------------------------
+i#----------------------------------------------------------------------------
 # Ignore these files when commiting to a git repository.
 #
 # See http://help.github.com/ignore-files/ for more about ignoring files.
@@ -97,3 +97,5 @@ app/assets/stylesheets/default/.#application.css.scss
 app/reports/.#system_usage_report.rb
 
 public/uploads/
+
+cpta_sample_data.rake
