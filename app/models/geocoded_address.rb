@@ -43,9 +43,14 @@ class GeocodedAddress < ActiveRecord::Base
     begin
       factory = RGeo::Geographic.simple_mercator_factory
       point = factory.point(self.lon.to_f, self.lat.to_f)
-      Oneclick::Application.config.callnride_boundary.contains? point
+      Oneclick::Application.config.callnride_boundary.each do |boundary|
+        if boundary[:geometry].contains? point
+          return true, boundary[:name]
+        end
+      end
+      return false, nil
     rescue
-      return false
+      return false, nil
     end
   end
   

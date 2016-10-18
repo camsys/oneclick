@@ -245,7 +245,10 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, origin_in_callnride: trip.origin.within_callnride?, destination_in_callnride: trip.destination.within_callnride?, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+        origin_in_callnride, origin_callnride = trip.origin.within_callnride?
+        destination_in_callnride, destination_callnride = trip.destination.within_callnride?
+
+        render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 
       end
 

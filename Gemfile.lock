@@ -73,7 +73,7 @@ GIT
       simple_form
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     CFPropertyList (2.3.3)
     Indirizzo (0.1.7)
