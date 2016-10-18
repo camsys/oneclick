@@ -6,6 +6,7 @@ class TripPart < ActiveRecord::Base
   belongs_to :to_trip_place,    :class_name => "TripPlace", :foreign_key => "to_trip_place_id"
 
   has_many :itineraries
+  serialize :otp_response
 
   # Ordering of trip parts within a trip. 0 based
   # attr_accessible :sequence
@@ -284,9 +285,15 @@ class TripPart < ActiveRecord::Base
 
     result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes)
 
+    #If this is a transit trip, save the response
+    if mode_code.to_s == "mode_transit_name"
+      self.otp_response = response
+      self.save
+    end
+
     #TODO: Save errored results to an event log
     if result
-      tp.convert_itineraries(response, mode_code).each do |itinerary|
+      tp.convert_itineraries(response['plan'], mode_code).each do |itinerary|
         serialized_itinerary = {}
 
         itinerary.each do |k,v|
@@ -300,8 +307,8 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
-    elsif !response['id'].blank?
-      itinerary = Itinerary.create(server_status: response['id'], server_message: response['msg'])
+    elsif !response['plan']['id'].blank?
+      itinerary = Itinerary.create(server_status: response['plan']['id'], server_message: response['plan']['msg'])
 
       case mode_code.to_s
         when 'mode_car'
@@ -402,7 +409,7 @@ class TripPart < ActiveRecord::Base
 
           #TODO: Save errored results to an event log
           if result
-            tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
+            tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
               serialized_itinerary = {}
 
               itinerary.each do |k,v|
@@ -457,7 +464,7 @@ class TripPart < ActiveRecord::Base
 
           #TODO: Save errored results to an event log
           if result
-            tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
+            tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
               serialized_itinerary = {}
 
               itinerary.each do |k,v|
@@ -603,5 +610,14 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
       selected_itinerary.selected = false
       selected_itinerary.save
     end
+  end
+
+  #Get the list of stops for this trip with realtime info
+  def get_trip_time trip_id
+    if self.otp_response.nil? or self.otp_response['tripTimes'].nil?
+      return nil
+    end
+    trip_times = self.otp_response['tripTimes']
+    return trip_times.detect{|hash| hash['tripId'] == trip_id}
   end
 end

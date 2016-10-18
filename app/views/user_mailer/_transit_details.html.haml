@@ -44,7 +44,6 @@
       .itinerary_text_small{style: "font-family: 'Helvetica Neue', Arial; font-size: 0.87em; color: #4862c8; text-align: left; vertical-align: top; padding-top: 8px; padding-left: 8px;"}
         = format_time(itinerary.end_time.in_time_zone)
 
--image_url = (itinerary.map_image.url || itinerary.email_image_url)
--if image_url
+-if attachments[itinerary.id.to_s + '.png']
   %div{style: "width:100%;background: white; border-radius: 5px; padding-top: 10px;"}
-    %img{src: image_url}
+    =image_tag attachments[itinerary.id.to_s + '.png'].url

@@ -183,7 +183,7 @@ Oneclick::Application.configure do
 
   # Prefix for email trip planner url link
   config.email_trip_planner_url = ENV['TRIP_PLANNER_URL'] || 'http://rtd-dev.camsys-apps/#/plan/'
-  
+
   # From email address
   config.email_sender = ENV["SYSTEM_SEND_FROM_ADDRESS"] || '1-Click@camsys.com'
 
@@ -213,7 +213,7 @@ Oneclick::Application.configure do
     "maxWalkPace" => "medium",
     "maxBikeTime" => "15",
     "maxBikeDistance" => "3.0",
-    "maxBikePace" => "medium",
+    "maxBikePace" => "fast",
     "minTransferTime" => "5",
     "maxTransferTime" => "30",
     "allowDeparturesTime" => "5",
@@ -221,8 +221,10 @@ Oneclick::Application.configure do
     "priority" => "TIME",
     "includeRoutes" => "",
     "excludeRoutes" => "",
-    "defaultLayoverTime" => "30"
-  } 
+    "defaultLayoverTime" => "45",
+    "showRealtime" => "true",
+    "routesToShow" => "3"
+  }
 
   config.otp_external_defaults_json = {
     "mode" => "mode_transit",
@@ -232,11 +234,13 @@ Oneclick::Application.configure do
     "maxBikeTime" => "15",
     "maxBikeDistance" => "3.0",
     "maxBikePace" => "medium",
-    "minTransferTime" => "5",
+    "minTransferTime" => "10",
     "maxTransferTime" => "30",
+    "showRealtime" => "true",
     "allowDeparturesTime" => "5",
-    "defaultPosition" => "39.7392, -104.9903"
-  } 
+    "defaultPosition" => "39.7392, -104.9903",
+    "routesToShow" => "3"
+  }
 
 
   ##########################################

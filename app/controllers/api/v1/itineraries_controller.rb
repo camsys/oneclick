@@ -203,6 +203,28 @@ module Api
                   leg['specialService'] = leg['routeType'].in? specials
                 end
 
+                #3 Check to see if real-time is available for node stops
+                unless leg['intermediateStops'].blank?
+                  trip_time = tp.get_trip_time leg['tripId']
+                  unless trip_time.blank?
+                    stop_times = trip_time['stopTimes']
+                    leg['intermediateStops'].each do |stop|
+                      stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
+                      stop['realtimeArrival'] = stop_time['realtimeArrival']
+                      stop['realtimeDeparture'] = stop_time['realtimeDeparture']
+                      stop['arrivalDelay'] = stop_time['arrivalDelay']
+                      stop['departureDelay'] = stop_time['departureDelay']
+                      stop['realtime'] = stop_time['realtime']
+
+                    end
+                  end
+                end
+
+                #4 If a location is a ParkNRide Denote it
+                if leg['mode'] == 'CAR' and itinerary.returned_mode_code == Mode.park_transit.code
+                  leg['to']['parkAndRide'] = true
+                end
+
               end
               itinerary.legs = yaml_legs.to_yaml
               itinerary.save
@@ -323,16 +345,10 @@ module Api
         trip_link = params[:trip_link].nil? ? nil : params[:trip_link]
 
         email_itineraries.each do |email_itinerary|
-          email_address = email_itinerary[:email_address]
+          email_addresses = email_itinerary[:email_addresses]
 
-          image_by_id = Hash[email_itinerary[:itineraries].collect { |x| [x[:id], x[:image_url]]}]
-          ids = image_by_id.keys
-
+          ids = email_itinerary[:itineraries].collect { |x| x[:id] }
           itineraries = Itinerary.where(id: ids)
-
-          itineraries.each do |itin|
-            itin.email_image_url = image_by_id[itin.id]
-          end
 
           # for subject, get first trip
           trip = itineraries.first.trip_part.trip
@@ -345,7 +361,7 @@ module Api
             subject = "Your Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
           end
 
-          UserMailer.user_itinerary_email([email_address], itineraries, subject, '', @traveler, trip_link=nil).deliver
+          UserMailer.user_itinerary_email(email_addresses, itineraries, subject, '', @traveler, trip_link=nil).deliver
 
         end
 
@@ -354,7 +370,7 @@ module Api
       end
 
       def map_status
-        itinerary_ids = params[:id]
+        itinerary_ids = params[:itinerary_ids]
         statuses = Itinerary.where(id: itinerary_ids).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
         render json: statuses
       end

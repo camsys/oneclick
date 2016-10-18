@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
   # Default sender account set in application.yml
+  include ItineraryHelper
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
@@ -48,6 +49,10 @@ class UserMailer < ActionMailer::Base
     @comments = comments
     @user = current_user
     @trip_link = trip_link
+
+    itineraries.each do |itin|
+      attachments.inline[itin.id.to_s + '.png'] = create_static_map(itin)
+    end
 
     mail(to: addresses, subject: subject, from: @@from)
   end

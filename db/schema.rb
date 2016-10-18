@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912133226) do
+ActiveRecord::Schema.define(version: 20161003183600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -746,6 +746,7 @@ ActiveRecord::Schema.define(version: 20160912133226) do
     t.string   "booking_trip_purpose_desc"
     t.string   "preferred_routes"
     t.string   "banned_routes"
+    t.text     "otp_response"
   end
 
   create_table "trip_places", force: :cascade do |t|
