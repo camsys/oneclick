@@ -1,4 +1,4 @@
-- content_for :title, "#{translate_helper(:site_title)} - " + (current_page?(action: 'new') ? "#{translate_helper(:new_provider)}" : "#{translate_helper(:edit)} #{@provider.name}")
+- content_for :title, "#{translate_helper(:site_title)} - " + (current_page?(action: 'new2') ? "#{translate_helper(:new_provider)}" : "#{translate_helper(:edit)} #{@provider.name}")
 
 .row.info-header
   .col-sm-12
@@ -12,15 +12,8 @@
           = add_tooltip("provider_info_help", "fa fa-question-circle", nil)
       .panel-body
         = render partial: 'provider_form'
-.row
-  .col-md-8.col-sm-10.col-xs-12.center
-    .panel.panel-servicedata
-      .panel-heading
-        %h4.panel-title
-          = translate_helper(:services)
-          = add_tooltip("services_info_help", "fa fa-question-circle", nil)
-      .panel-body
-        = render partial: 'admin/services/services_menu'
+-unless current_page?(action: 'new2') # Only show services menu if in edit mode
+  = render partial: 'admin/services/services_menu'
 
 
 :javascript

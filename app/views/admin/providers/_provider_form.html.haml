@@ -1,8 +1,8 @@
 -# Form for creating or editing a provider
 = simple_form_for [:admin, @provider],
-        url: update2_admin_provider_path,
+        url: current_page?(action: 'new2') ? create2_admin_providers_path : update2_admin_provider_path,
         method: 'put',
-        remote: true,
+        remote: !current_page?(action: 'new2'),
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
         data: {type: :html},
         authenticity_token: true,
@@ -23,8 +23,6 @@
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
     .btn.btn-link#edit-provider-form-btn.hidden edit
-
-
 
 :javascript
   $(document).ready(function() {

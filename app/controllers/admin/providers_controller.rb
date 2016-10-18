@@ -78,6 +78,22 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  def create2
+    puts "NEW PROVIDER CREATE", params[:provider].ai
+    @provider = Provider.new(admin_provider_params)
+    respond_to do |format|
+      if @provider.save
+        puts "SENDING SUCCESS RESPONSE"
+        format.html { redirect_to edit2_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
+        format.json { head :no_content }
+      else
+        puts "SENDING FAILURE RESPONSE"
+        format.html { render action: "new" }
+        format.json { render json: @provider.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /admin/providers/1/edit
   def edit
     # assume only one internal contact for now
