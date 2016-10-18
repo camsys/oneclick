@@ -251,6 +251,7 @@ Oneclick::Application.routes.draw do
         end
         collection do
           get 'new2'
+          put 'create2'
         end
         resources :trip_parts
       end
