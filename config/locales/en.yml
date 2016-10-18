@@ -306,6 +306,7 @@ en:
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'
   admin_user_placeholder_text: 'Enter an email address'
+  new_service: 'New %{mode} Service'
 
   # application logo upload
   not_authorized: 'You are not authorized.'

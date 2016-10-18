@@ -31,7 +31,7 @@
     box-shadow: none;
     resize: none;
 
-    &:read-only {
+    &:read-only:not(select) {
       border-color: transparent;
     }
   }
