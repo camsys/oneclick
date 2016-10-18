@@ -303,6 +303,10 @@ en:
   restore_provider: 'Restore provider'
   confirm_restore_message: 'Are you sure you want to restore'
 
+  # Admin Provider/Service Data Form
+  admin_user: 'Admin User'
+  admin_user_placeholder_text: 'Enter an email address'
+
   # application logo upload
   not_authorized: 'You are not authorized.'
   failed_to_update_application_logo: 'There was an error in updating application logo. Please try again.'
