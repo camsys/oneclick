@@ -24,7 +24,6 @@ Oneclick::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.default_url_options = { :host => ENV['HOST'] }
   config.action_mailer.asset_host = config.action_controller.asset_host # So that email images will show up
 
   # Warning: Heroku uses env var LOG_LEVEL
