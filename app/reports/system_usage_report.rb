@@ -4,7 +4,7 @@ class SystemUsageReport < AbstractReport
   
   def initialize(attributes = {})
     @totals_cols = []
-    @totals_class_names = ['Service', 'Provider', 'Agency', 'KioskLocation']
+    @totals_class_names = ['Service', 'Provider', 'Agency']
     @totals_class_names.each do |name|
       @totals_cols << "#{name}_total".to_sym
     end

@@ -1149,6 +1149,7 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                     if (tripPlanDiv.find('.single-plan-select').length === 0) {
                         tripPlanDiv.find('.select-column').append(getSelectButtonHtml()).click(function() {
                             selectItineraryByClickingSelectButton(this);
+                            moveToPlan(this);
                         });
                     }
                 } else {
