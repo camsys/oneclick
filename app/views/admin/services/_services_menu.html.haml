@@ -1,34 +1,35 @@
 - mode_list = ['paratransit', 'transit', 'taxi']
 
-.row
-  .col-md-8.col-sm-10.col-xs-12.center
-    .panel.panel-servicedata
-      .panel-heading
-        %h4.panel-title
-          = translate_helper(:services)
-          = add_tooltip("services_info_help", "fa fa-question-circle", nil)
-      .panel-body.form-horizontal
-        .form-group.select
-          %label.select.control-label.col-sm-3 Add a service
-          .col-sm-9
-            %select.select.form-control#select-new-service-type
-              %option{value: ''} Select a service type
-              - mode_list.each do |m|
-                %option{value: m}= translate_helper("mode_#{m}_name".to_sym)
-.row
-  .col-md-8.col-sm-10.col-xs-12.center
-    .panel.panel-servicedata
-      %ul.nav.nav-tabs{role: "tablist"}
-        - @provider.services.each_with_index do |s, i|
-          = render partial: "admin/services/service_tab", locals: {new_service: false, service: s, active: i == 0}
-        - mode_list.each do |m|
-          = render partial: "admin/services/service_tab", locals: {new_service: true, mode: m, active: false}
-      .tab-content#services-tab-content
-        - @provider.services.each_with_index do |s, i|
-          = render partial: "admin/services/service_tab_content", locals: {new_service: false, service: s, active: i == 0}
-        - mode_list.each do |m|
-          = render partial: "admin/services/service_tab_content", locals: {new_service: true, mode: m, active: false}
-
+#services-menu
+  .row
+    .col-md-8.col-sm-10.col-xs-12.center
+      .panel.panel-servicedata
+        .panel-heading
+          %h4.panel-title
+            = translate_helper(:services)
+            = add_tooltip("services_info_help", "fa fa-question-circle", nil)
+        .panel-body.form-horizontal
+          .form-group.select
+            %label.select.control-label.col-sm-3 Add a service
+            .col-sm-9
+              %select.select.form-control#select-new-service-type
+                %option{value: ''} Select a service type
+                - mode_list.each do |m|
+                  %option{value: m}= translate_helper("mode_#{m}_name".to_sym)
+  .row
+    .col-md-8.col-sm-10.col-xs-12.center
+      .panel.panel-servicedata
+        %ul.nav.nav-tabs{role: "tablist"}
+          - @provider.services.each_with_index do |s, i|
+            = render partial: "admin/services/service_tab", locals: {new_service: false, service: s, active: i == @provider.services.length - 1}
+          - mode_list.each do |m|
+            = render partial: "admin/services/service_tab", locals: {new_service: true, mode: m, active: false}
+        .tab-content#services-tab-content
+          - @provider.services.each_with_index do |s, i|
+            = render partial: "admin/services/service_tab_content", locals: {new_service: false, service: s, active: i == @provider.services.length - 1}
+          - mode_list.each do |m|
+            = render partial: "admin/services/service_tab_content", locals: {new_service: true, mode: m, active: false}
+    = render partial: "admin/providers/test_partial"
 
 :javascript
   $(document).ready(function() {
@@ -55,11 +56,7 @@
     $('.new-service-tab-pane > form')
     .on("ajax:success", function(evt, data, status, xhr) {
       console.log("Service Created Successfully", arguments);
-      // Insert New Service Partial Into the Tab Content List
-      $('#services-tab-content').append(data);
-
-      // Insert New Service Tab Partial into the Tab List
-      $('.panel-servicedata > ul').append('<%= render partial: "admin/services/service_tab", locals: {new_service: false, service: @service, active: true} %>')
+      $('#services-menu').replaceWith(data);
     });
 
   });

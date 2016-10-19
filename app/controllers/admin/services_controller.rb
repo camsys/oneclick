@@ -32,7 +32,7 @@ class Admin::ServicesController < Admin::BaseController
         #   update_fare
         # end
         # @service.build_polygons
-        format.html { render partial: "admin/services/service_tab_content", locals: {new_service: false, service: @service, active: true} }
+        format.html {render partial: 'admin/services/services_menu'}
       else
         puts "SERVICE NOT SAVED"
         # set_aux_instance_variables
