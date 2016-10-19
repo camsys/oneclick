@@ -1,0 +1,11 @@
+-unless new_service
+  %li{role: 'presentation', class: ("active" if i == 0)}
+    %a{href: "#service-#{svc.id}", "aria-controls" => "service-#{svc.id}", role: "tab", "data-toggle" => "tab", class: "service-tab-link"}
+      = svc.name
+-else
+  %li{role: 'presentation', id: "new-#{m}-service-tab", class: "hidden new-service-tab"}
+    %a{ href: "#new-#{m}-service",
+        "aria-controls" => "#new-#{m}-service",
+        role: "tab",
+        "data-toggle" => "tab"}
+      = translate_helper(:new_service)
