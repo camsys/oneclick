@@ -1,9 +1,11 @@
+-# Takes a boolean new_service, a boolean active, and then either a service svc, or a mode mode.
+
 %li{  id: new_service ? "new-#{mode}-service-tab" : "service-#{svc.id}-tab",
       role: 'presentation',
-      class: (active ? "active" : "") + " service-tab " + (new_service ? "new-service-tab hidden" : "")}
+      class: (active ? "active" : "") + " service-tab " + (new_service ? "new-service-tab hidden" : "") }
   %a{   href: new_service ? "#new-#{mode}-service" : "#service-#{svc.id}",
         "aria-controls" => new_service ? "#new-#{mode}-service" : "service-#{svc.id}",
         role: "tab",
         "data-toggle" => "tab",
-        class: "service-tab-link"}
+        class: "service-tab-link" }
     = new_service ? translate_helper(:new_service) : svc.name
