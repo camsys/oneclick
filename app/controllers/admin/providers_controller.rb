@@ -83,11 +83,7 @@ class Admin::ProvidersController < ApplicationController
     @provider = Provider.new(admin_provider_params)
     respond_to do |format|
       @provider.admin_user = params[:provider][:admin_user]
-
-      if params[:provider][:logo]
-        @provider.logo = params[:provider][:logo]
-        @provider.save
-      end
+      @provider.logo = params[:provider][:logo] if params[:provider][:logo]
 
       if @provider.save
         puts "SENDING SUCCESS RESPONSE"
@@ -158,11 +154,7 @@ class Admin::ProvidersController < ApplicationController
 
     respond_to do |format|
       @provider.admin_user = params[:provider][:admin_user]
-
-      if params[:provider][:logo]
-        @provider.logo = params[:provider][:logo]
-        @provider.save
-      end
+      @provider.logo = params[:provider][:logo] if params[:provider][:logo]
 
       if @provider.update_attributes(admin_provider_params)
         puts "SENDING SUCCESS RESPONSE"
