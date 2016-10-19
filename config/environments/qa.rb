@@ -3,17 +3,17 @@ Oneclick::Application.configure do
 
   config.cache_classes = true
 
-  config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = true
+  config.consider_all_requests_local       = false
+  config.action_controller.perform_caching = false
   config.action_controller.asset_host = ENV['HOST'] # So assets point to correct location
 
   # config.action_dispatch.best_standards_support
 
   config.serve_static_assets = true
 
-  config.assets.compress = true
-  config.assets.compile = true
-  config.assets.digest = true
+  #config.assets.compress = true
+  #config.assets.compile = true
+  #config.assets.digest = true
   # config.assets.debug
 
   config.i18n.fallbacks = false
