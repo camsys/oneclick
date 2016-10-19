@@ -20,23 +20,14 @@
     .panel.panel-servicedata
       %ul.nav.nav-tabs{role: "tablist"}
         - @provider.services.each_with_index do |s, i|
-          %li{role: 'presentation', class: ("active" if i == 0)}
-            %a{href: "#service-#{s.id}", "aria-controls" => "service-#{s.id}", role: "tab", "data-toggle" => "tab", class: "service-tab-link"}
-              = s.name
+          = render partial: "admin/services/service_tab", locals: {new_service: false, service: s, active: i == 0}
         - mode_list.each do |m|
-          %li{role: 'presentation', id: "new-#{m}-service-tab", class: "hidden new-service-tab"}
-            %a{ href: "#new-#{m}-service",
-                "aria-controls" => "#new-#{m}-service",
-                role: "tab",
-                "data-toggle" => "tab"}
-              = translate_helper(:new_service)
-      .tab-content
+          = render partial: "admin/services/service_tab", locals: {new_service: true, mode: m, active: false}
+      .tab-content#services-tab-content
         - @provider.services.each_with_index do |s, i|
-          .tab-pane.panel-body{role: 'tabpanel', id: "service-#{s.id}", class: "#{"active" if i == 0}"}
-            = render partial: "admin/services/service_form_mode_#{s.service_type.code}", locals: {service: s}
+          = render partial: "admin/services/service_tab_content", locals: {new_service: false, service: s, active: i == 0}
         - mode_list.each do |m|
-          .tab-pane.panel-body{role: 'tabpanel', id: "new-#{m}-service", class: "new-service-tab-pane"}
-            = render partial: "admin/services/service_form_mode_#{m}", locals: {service: nil}
+          = render partial: "admin/services/service_tab_content", locals: {new_service: true, mode: m, active: false}
 
 
 :javascript
@@ -58,6 +49,17 @@
           $(".service-tab-link")[0].click();
         }
       }
+    });
+
+    // Handle New Service Creation
+    $('.new-service-tab-pane > form')
+    .on("ajax:success", function(evt, data, status, xhr) {
+      console.log("Service Created Successfully", arguments);
+      // Insert New Service Partial Into the Tab Content List
+      $('#services-tab-content').append(data);
+
+      // Insert New Service Tab Partial into the Tab List
+      $('.panel-servicedata > ul').append('<%= render partial: "admin/services/service_tab", locals: {new_service: false, service: @service, active: true} %>')
     });
 
   });

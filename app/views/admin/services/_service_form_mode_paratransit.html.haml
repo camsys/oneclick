@@ -3,6 +3,7 @@
 
 -# Forms for creating or editing a service
 = simple_form_for service || :service,
+        url: admin_provider_services_path(@provider),
         remote: true,
         html: { class: 'form-horizontal', multipart: true, id: "service-data-form-#{service_id}" },
         data: {type: :html},
