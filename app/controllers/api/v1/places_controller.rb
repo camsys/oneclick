@@ -91,6 +91,14 @@ module Api
         render status: 200, json: synonyms.as_json
       end
 
+      def blacklist
+        blacklist = OneclickConfiguration.find_by(code: 'blacklisted_places')
+        unless blacklist.nil?
+          blacklist = blacklist.value
+        end
+        render status: 200, json: blacklist.as_json
+      end
+
     end
   end
 end
