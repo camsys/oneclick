@@ -82,6 +82,13 @@ class Admin::ProvidersController < ApplicationController
     puts "NEW PROVIDER CREATE", params[:provider].ai
     @provider = Provider.new(admin_provider_params)
     respond_to do |format|
+      @provider.admin_user = params[:provider][:admin_user]
+
+      if params[:provider][:logo]
+        @provider.logo = params[:provider][:logo]
+        @provider.save
+      end
+
       if @provider.save
         puts "SENDING SUCCESS RESPONSE"
         format.html { redirect_to edit2_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
