@@ -1,5 +1,5 @@
-﻿--DROP TABLE day_of_week;
-/*
+/* DROP TABLE day_of_week; */
+
 CREATE TABLE day_of_week
 (
   id serial NOT NULL,
@@ -21,9 +21,8 @@ INSERT INTO day_of_week(id, name, note) VALUES (5, 'friday_name', 'friday_note')
 INSERT INTO day_of_week(id, name, note) VALUES (6, 'saturday_name', 'saturday_note');
 
 
-*/
 
---DROP TABLE boolean_lookup;
+/* DROP TABLE boolean_lookup; */
 
 CREATE TABLE boolean_lookup
 (

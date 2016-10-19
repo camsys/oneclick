@@ -3,43 +3,49 @@ DROP MATERIALIZED VIEW IF EXISTS "v_Itineraries_Users";
 DROP MATERIALIZED VIEW IF EXISTS "v_Trips_Users";
 DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Parts_Users";
 
+
 /* Stage 5: */
-DROP MATERIALIZED VIEW IF EXISTS "v_Itineraries";
-DROP MATERIALIZED VIEW IF EXISTS "v_Services";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trips";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Parts";
-DROP MATERIALIZED VIEW IF EXISTS "v_Users";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Itineraries";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Services";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trips";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Parts";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Users";
+
 
 /* Stage 4: Deployment Specific*/
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Accommodations";
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Characteristics";
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Trip_Purposes";
-DROP MATERIALIZED VIEW IF EXISTS "v_Users_Accommodations";
-DROP MATERIALIZED VIEW IF EXISTS "v_Users_Characteristics";
-DROP MATERIALIZED VIEW IF EXISTS "v_Users_Desired_Modes";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Accommodations";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Characteristics";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Trip_Purposes";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Users_Accommodations";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Users_Characteristics";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Users_Desired_Modes";
+
 
 /* Stage 3: Generic */
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Schedule_Start";
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Schedule_End";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Places_From";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Places_To";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Places_MinSequence";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Places_MaxSequence";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Schedule_Start";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Schedule_End";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Places_From";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Places_To";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Places_MinSequence";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Places_MaxSequence";
+
 
 /* Stage 2: Language Tables */
-DROP MATERIALIZED VIEW IF EXISTS "v_Accommodations";
-DROP MATERIALIZED VIEW IF EXISTS "v_Boolean";
-DROP MATERIALIZED VIEW IF EXISTS "v_Characteristics";
-DROP MATERIALIZED VIEW IF EXISTS "v_Modes";
-DROP MATERIALIZED VIEW IF EXISTS "v_Service_Types";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Purposes";
-DROP MATERIALIZED VIEW IF EXISTS "v_Trip_Statuses";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Accommodations";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Boolean";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Characteristics";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Modes";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Service_Types";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Purposes";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Trip_Statuses";
 
 /* Stage 1: Base Tables */
-DROP MATERIALIZED VIEW IF EXISTS "v_Ratings_Trip";
-DROP MATERIALIZED VIEW IF EXISTS "v_Translations_Locale";
-DROP MATERIALIZED VIEW IF EXISTS "v_Translations";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Ratings_Trip";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Translations_Locale";
+DROP MATERIALIZED VIEW IF EXISTS  "v_Translations";
 
+
+/* Stage 1: Base Tables */
 
 -- View: "v_Translations"
 
@@ -322,55 +328,80 @@ WITH DATA;
 /* Stage 4: Deployment Specific*/
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------ */
-/* UTA                                                                                                                                        */
+/* ARC                                                                                                                                        */
 /* ------------------------------------------------------------------------------------------------------------------------------------------ */
 
 -- View: "v_Service_Accommodations"
 
 CREATE MATERIALIZED VIEW "v_Service_Accommodations" AS 
   SELECT ct.service_id AS "SA_ID",
+    ct._companion_allowed_name AS "service_companion_allowed_name",
     ct._curb_to_curb_name AS "service_curb_to_curb_name",
+    ct._door_to_door_name AS "service_door_to_door_name",
+    ct._driver_assistance_available_name AS "service_driver_assistance_available_name",
     ct._folding_wheelchair_accessible_name AS "service_folding_wheelchair_accessible_name",
-    ct._motorized_wheelchair_accessible_name AS "service_motorized_wheelchair_accessible_name"
-  FROM crosstab ('SELECT service_accommodations.service_id, accommodations.name, true As value FROM public.service_accommodations, public.accommodations WHERE accommodations.id = service_accommodations.accommodation_id ORDER BY 1,2'::text, 
-                 $$VALUES ('curb_to_curb_name'),
-                          ('folding_wheelchair_accessible_name'),
-                          ('motorized_wheelchair_accessible_name') $$) 
-  ct (service_id integer,
-      _curb_to_curb_name boolean,
-      _folding_wheelchair_accessible_name boolean,
-      _motorized_wheelchair_accessible_name boolean)
+    ct._lift_equipped_name AS "service_lift_equipped_name",
+    ct._motorized_wheelchair_accessible_name AS "service_motorized_wheelchair_accessible_name",
+    ct._stretcher_accessible_name AS "service_stretcher_accessible_name"
+  FROM crosstab('SELECT service_accommodations.service_id, accommodations.name, true As value 
+		 FROM public.service_accommodations, public.accommodations
+		 WHERE accommodations.id = service_accommodations.accommodation_id Order By 1, 2'::text,
+		 $$VALUES ('companion_allowed_name'), 
+			  ('curb_to_curb_name'), 
+			  ('door_to_door_name'), 
+			  ('driver_assistance_available_name'), 
+			  ('folding_wheelchair_accessible_name'), 
+			  ('lift_equipped_name'), 
+			  ('motorized_wheelchair_accessible_name'), 
+			  ('stretcher_accessible_name') $$)
+  ct(service_id integer, 
+     _companion_allowed_name boolean, 
+     _curb_to_curb_name boolean, 
+     _door_to_door_name boolean, 
+     _driver_assistance_available_name boolean, 
+     _folding_wheelchair_accessible_name boolean, 
+     _lift_equipped_name boolean, 
+     _motorized_wheelchair_accessible_name boolean, 
+     _stretcher_accessible_name boolean)
 WITH DATA;
 
 
 -- View: "v_Service_Characteristics"
 
 CREATE MATERIALIZED VIEW "v_Service_Characteristics" AS 
-  SELECT 
+SELECT 
     ct.service_id AS "SC_ID",
     ct._ada_eligible_name,
     ct._age_name,
     ct._date_of_birth_name,
     ct._disabled_name,
-    ct._matp_name,
+    ct._low_income_name,
+    ct._nemt_eligible_name,
+    ct._no_trans_name,
     ct._veteran_name,
     ct._walk_distance_name
-  FROM crosstab ('SELECT service_characteristics.service_id, characteristics.name, service_characteristics.value FROM public.service_characteristics, public.characteristics WHERE characteristics.id = service_characteristics.characteristic_id ORDER BY 1,2'::text, 
-                 $$VALUES ('ada_eligible_name'),
-                          ('age_name'),
-                          ('date_of_birth_name'),
-                          ('disabled_name'),
-                          ('matp_name'),
-                          ('veteran_name'),
-                          ('walk_distance_name') $$) 
-  ct (service_id integer,
-      _ada_eligible_name text,
-      _age_name text,
-      _date_of_birth_name text,
-      _disabled_name text,
-      _matp_name text,
-      _veteran_name text,
-      _walk_distance_name text)
+   FROM crosstab('SELECT service_characteristics.service_id, characteristics.name, service_characteristics.value
+		 FROM public.service_characteristics, public.characteristics
+		 WHERE characteristics.id = service_characteristics.characteristic_id Order By 1, 2'::text,
+		 $$VALUES ('ada_eligible_name'::text), 
+			  ('age_name'::text), 
+			  ('date_of_birth_name'::text), 
+			  ('disabled_name'::text), 
+			  ('low_income_name'::text), 
+			  ('nemt_eligible_name'::text), 
+			  ('no_trans_name'::text), 
+			  ('veteran_name'::text), 
+			  ('walk_distance_name'::text)$$) 
+ AS  ct(service_id integer, 
+	_ada_eligible_name text, 
+	_age_name text, 
+	_date_of_birth_name text, 
+	_disabled_name text, 
+	_low_income_name text, 
+	_nemt_eligible_name text, 
+	_no_trans_name text, 
+	_veteran_name text, 
+	_walk_distance_name text)
 WITH DATA;
 
 
@@ -378,70 +409,37 @@ WITH DATA;
 
 CREATE MATERIALIZED VIEW "v_Service_Trip_Purposes" AS 
   SELECT ct.service_id AS "STP_ID",
-    ct._adult_day_care_name AS "service_adult_day_care_name",
-    ct._after_school_program_name AS "service_after_school_program_name",
-    ct._cancer_treatment_name AS "service_cancer_treatment_name",
+    ct._cancer_name AS "service_cancer_name",
     ct._dialysis_name AS "service_dialysis_name",
-    ct._education_name AS "service_education_name",
-    ct._general_purpose_name AS "service_general_purpose_name",
+    ct._general_name AS "service_general_name",
     ct._grocery_name AS "service_grocery_name",
     ct._medical_name AS "service_medical_name",
-    ct._methadone_name AS "service_methadone_name",
-    ct._other_name AS "service_other_name",
-    ct._personal_errand_name AS "service_personal_errand_name",
-    ct._pharmacy_name AS "service_pharmacy_name",
-    ct._recreation_name AS "service_recreation_name",
-    ct._senior_center_group_trip AS "service_senior_center_group_trip",
-    ct._senior_center_name AS "service_senior_center_name",
-    ct._shopping_name AS "service_shopping_name",
-    ct._social_service_name AS "service_social_service_name",
-    ct._training_employment_name AS "service_training_employment_name",
-    ct._visit_lebanon_va_medical_center_name AS "service_visit_lebanon_va_medical_center_name",
-    ct._volunteer_name AS "service_volunteer_name",
+    ct._personal_name AS "service_personal_name",
+    ct._senior_name AS "service_senior_name",
+    ct._training_name AS "service_training_name",
     ct._work_name AS "service_work_name"
-  FROM crosstab ('SELECT service_trip_purpose_maps.service_id, trip_purposes.name, true as value FROM public.service_trip_purpose_maps, public.trip_purposes WHERE trip_purposes.id = service_trip_purpose_maps.trip_purpose_id ORDER BY 1,2'::text, 
-                 $$VALUES ('adult_day_care_name'),
-                 ('after_school_program_name'),
-                 ('cancer_treatment_name'),
-                 ('dialysis_name'),
-                 ('education_name'),
-                 ('general_purpose_name'),
-                 ('grocery_name'),
-                 ('medical_name'),
-                 ('methadone_name'),
-                 ('other_name'),
-                 ('personal_errand_name'),
-                 ('pharmacy_name'),
-                 ('recreation_name'),
-                 ('senior_center_group_trip'),
-                 ('senior_center_name'),
-                 ('shopping_name'),
-                 ('social_service_name'),
-                 ('training_employment_name'),
-                 ('visit_lebanon_va_medical_center_name'),
-                 ('volunteer_name'),('work_name') $$) 
-  ct (service_id integer,
-      _adult_day_care_name boolean,
-      _after_school_program_name boolean,
-      _cancer_treatment_name boolean,
-      _dialysis_name boolean,
-      _education_name boolean,
-      _general_purpose_name boolean,
-      _grocery_name boolean,
-      _medical_name boolean,
-      _methadone_name boolean,
-      _other_name boolean,
-      _personal_errand_name boolean,
-      _pharmacy_name boolean,
-      _recreation_name boolean,
-      _senior_center_group_trip boolean,
-      _senior_center_name boolean,
-      _shopping_name boolean,
-      _social_service_name boolean,
-      _training_employment_name boolean,
-      _visit_lebanon_va_medical_center_name boolean,
-      _volunteer_name boolean,
-      _work_name boolean )
+  FROM crosstab('SELECT service_trip_purpose_maps.service_id, trip_purposes.name, true as value
+		 FROM public.service_trip_purpose_maps, public.trip_purposes
+		 WHERE trip_purposes.id = service_trip_purpose_maps.trip_purpose_id order by 1,2'::text,
+		 $$VALUES ('cancer_name'), 
+			  ('dialysis_name'), 
+			  ('general_name'),  
+			  ('grocery_name'), 
+			  ('medical_name'), 
+			  ('personal_name'), 
+			  ('senior_name'), 
+			  ('training_name'), 
+			  ('work_name') $$) 
+  ct(service_id integer, 
+     _cancer_name boolean, 
+     _dialysis_name boolean, 
+     _general_name boolean, 
+     _grocery_name boolean, 
+     _medical_name boolean, 
+     _personal_name boolean, 
+     _senior_name boolean, 
+     _training_name boolean, 
+     _work_name boolean)
 WITH DATA;
 
 
@@ -449,17 +447,34 @@ WITH DATA;
 
 CREATE MATERIALIZED VIEW "v_Users_Accommodations" AS 
   SELECT ct.user_profile_id AS "UA_ID",
-    ct._curb_to_curb_name AS "user_curb_to_curb_name",
-    ct._folding_wheelchair_accessible_name AS "user_folding_wheelchair_accessible_name",
-    ct._motorized_wheelchair_accessible_name AS "user_motorized_wheelchair_accessible_name"
-  FROM crosstab ('SELECT user_accommodations.user_profile_id, accommodations.name, user_accommodations.value FROM public.accommodations, public.user_accommodations WHERE accommodations.id = user_accommodations.accommodation_id ORDER BY 1,2'::text, 
-                 $$VALUES ('curb_to_curb_name'),
-                 ('folding_wheelchair_accessible_name'),
-                 ('motorized_wheelchair_accessible_name') $$) 
-  ct (user_profile_id integer,
-      _curb_to_curb_name text,
-      _folding_wheelchair_accessible_name text,
-      _motorized_wheelchair_accessible_name text )
+    cast(ct._companion_allowed_name AS boolean) AS "user_companion_allowed_name",
+    cast(ct._curb_to_curb_name AS boolean) AS "user_curb_to_curb_name",
+    cast(ct._door_to_door_name AS boolean) AS "user_door_to_door_name",
+    cast(ct._driver_assistance_available_name AS boolean) AS "user_driver_assistance_available_name",
+    cast(ct._folding_wheelchair_accessible_name AS boolean) AS "user_folding_wheelchair_accessible_name",
+    cast(ct._lift_equipped_name AS boolean) AS "user_lift_equipped_name",
+    cast(ct._motorized_wheelchair_accessible_name AS boolean) AS "user_motorized_wheelchair_accessible_name",
+    cast(ct._stretcher_accessible_name AS boolean) AS "user_stretcher_accessible_name"
+   FROM crosstab('SELECT user_accommodations.user_profile_id, accommodations.name, user_accommodations.value
+		  FROM public.accommodations, public.user_accommodations
+		  WHERE accommodations.id = user_accommodations.accommodation_id Order by 1, 2'::text,
+		  $$VALUES ('companion_allowed_name'::text), 
+			   ('curb_to_curb_name'::text), 
+			   ('door_to_door_name'::text),
+			   ('driver_assistance_available_name'::text), 
+			   ('folding_wheelchair_accessible_name'::text), 
+			   ('lift_equipped_name'::text),
+			   ('motorized_wheelchair_accessible_name'::text), 
+			   ('stretcher_accessible_name'::text) $$) 
+   ct(user_profile_id integer, 
+      _companion_allowed_name text, 
+      _curb_to_curb_name text, 
+      _door_to_door_name text, 
+      _driver_assistance_available_name text, 
+      _folding_wheelchair_accessible_name text, 
+      _lift_equipped_name text, 
+      _motorized_wheelchair_accessible_name text, 
+      _stretcher_accessible_name text)
 WITH DATA;
 
 
@@ -467,29 +482,37 @@ WITH DATA;
 
 CREATE MATERIALIZED VIEW "v_Users_Characteristics" AS 
   SELECT ct.user_profile_id AS "UC_ID",
-    ct._ada_eligible_name AS "user_ada_eligible_name",
-    ct._age_name AS "user_age_name",
+    cast(ct._ada_eligible_name AS boolean) AS "user_ada_eligible_name",
+    cast(ct._age_name AS integer) AS "user_age_name",
     ct._date_of_birth_name AS "user_date_of_birth_name",
-    ct._disabled_name AS "user_disabled_name",
-    ct._matp_name AS "user_matp_name",
-    ct._veteran_name AS "user_veteran_name",
-    ct._walk_distance_name AS "user_walk_distance_name"
-  FROM crosstab ('SELECT user_characteristics.user_profile_id, characteristics.name, user_characteristics.value FROM public.characteristics, public.user_characteristics WHERE characteristics.id = user_characteristics.characteristic_id ORDER BY 1,2'::text, 
-                 $$VALUES ('ada_eligible_name'),
-                          ('age_name'),
-                          ('date_of_birth_name'),
-                          ('disabled_name'),
-                          ('matp_name'),
-                          ('veteran_name'),
-                          ('walk_distance_name') $$) 
-  ct (user_profile_id integer,
-      _ada_eligible_name text,
-      _age_name text,
-      _date_of_birth_name text,
-      _disabled_name text,
-      _matp_name text,
-      _veteran_name text,
-      _walk_distance_name text )
+    cast(ct._disabled_name AS boolean) AS "user_disabled_name",
+    cast(ct._low_income_name AS boolean) AS "user_low_income_name",
+    cast(ct._nemt_eligible_name AS boolean) AS "user_nemt_eligible_name",
+    cast(ct._no_trans_name AS boolean) AS "user_no_trans_name",
+    cast(ct._veteran_name AS boolean) AS "user_veteran_name",
+    cast(ct._walk_distance_name AS boolean) AS "user_walk_distance_name"
+  FROM crosstab('SELECT user_characteristics.user_profile_id, characteristics.name, user_characteristics.value
+		 FROM public.characteristics, public.user_characteristics
+		 WHERE characteristics.id = user_characteristics.characteristic_id Order by 1, 2'::text,
+		 $$VALUES ('ada_eligible_name'::text),
+			  ('age_name'::text), 
+			  ('date_of_birth_name'::text), 
+			  ('disabled_name'::text), 
+			  ('low_income_name'::text), 
+			  ('nemt_eligible_name'::text), 
+			  ('no_trans_name'::text), 
+			  ('veteran_name'::text),
+			  ('walk_distance_name'::text) $$)                       
+  ct(user_profile_id integer, 
+     _ada_eligible_name text, 
+     _age_name text, 
+     _date_of_birth_name text, 
+     _disabled_name text, 
+     _low_income_name text, 
+     _nemt_eligible_name text, 
+     _no_trans_name text, 
+     _veteran_name text, 
+     _walk_distance_name text)
 WITH DATA;
 
 
@@ -497,17 +520,37 @@ WITH DATA;
 
 CREATE MATERIALIZED VIEW "v_Users_Desired_Modes" AS 
   SELECT ct.user_id AS "UDM_ID",
+    ct._mode_bicycle_name AS "user_mode_bicycle_name",
     ct._mode_bus_name AS "user_mode_bus_name",
+    ct._mode_car_name AS "user_mode_car_name",
     ct._mode_paratransit_name AS "user_mode_paratransit_name",
-    ct._mode_taxi_name AS "user_mode_taxi_name"
-  FROM crosstab ('SELECT user_mode_preferences.user_id, modes.name, (user_mode_preferences.mode_id > 0) As "Mode_Desired" FROM public.modes, public.user_mode_preferences WHERE modes.id = user_mode_preferences.mode_id AND modes.visible = true ORDER BY 1,2'::text, 
-                 $$VALUES ('mode_bus_name'),
-                          ('mode_paratransit_name'),
-                          ('mode_taxi_name') $$) 
-  ct (user_id integer,
-      _mode_bus_name boolean,
-      _mode_paratransit_name boolean,
-      _mode_taxi_name boolean )
+    ct._mode_rail_name AS "user_mode_rail_name",
+    ct._mode_rideshare_name AS "user_mode_rideshare_name",
+    ct._mode_taxi_name AS "user_mode_taxi_name",
+    ct._mode_transit_name AS "user_mode_transit_name",
+    ct._mode_walk_name AS "user_mode_walk_name"
+  FROM crosstab('SELECT user_mode_preferences.user_id, modes.name, (user_mode_preferences.mode_id > 0) As "Mode_Desired"
+		 FROM public.modes, public.user_mode_preferences
+		 WHERE modes.id = user_mode_preferences.mode_id Order By 1, 2'::text,
+		 $$VALUES ('mode_bicycle_name'), 
+			  ('mode_bus_name'),
+			  ('mode_car_name'),
+			  ('mode_paratransit_name'),
+			  ('mode_rail_name'),
+			  ('mode_rideshare_name'),
+			  ('mode_taxi_name'),
+			  ('mode_transit_name'),
+			  ('mode_walk_name') $$)
+  ct(user_id integer,
+     _mode_bicycle_name boolean, 
+     _mode_bus_name boolean, 
+     _mode_car_name boolean, 
+     _mode_paratransit_name boolean, 
+     _mode_rail_name boolean, 
+     _mode_rideshare_name boolean, 
+     _mode_taxi_name boolean, 
+     _mode_transit_name boolean, 
+     _mode_walk_name boolean)
 WITH DATA;
 
 
@@ -621,7 +664,8 @@ WITH DATA;
 -- View: "v_Trips"
 
 CREATE MATERIALIZED VIEW "v_Trips" AS 
-  SELECT trips.id AS "Trip_ID",
+  SELECT 
+    trips.id AS "Trip_ID",
     trips.user_id,
     date_trunc('second', trips.updated_at) As "Creation_DateTime",
     date_trunc('day', trips.scheduled_date) As "Requested_Date",
@@ -700,7 +744,8 @@ WITH DATA;
 -- View: "v_Users"
 
 CREATE MATERIALIZED VIEW "v_Users" AS 
-  SELECT users.id AS "User_ID",
+  SELECT 
+    users.id AS "User_ID",
     users.title,
     users.prefix,
     users.first_name,
@@ -724,6 +769,7 @@ CREATE MATERIALIZED VIEW "v_Users" AS
     LEFT JOIN "v_Users_Desired_Modes" ON "v_Users_Desired_Modes"."UDM_ID" = users.id
     LEFT JOIN walking_speeds ON walking_speeds.id = users.walking_speed_id
     LEFT JOIN walking_maximum_distances ON walking_maximum_distances.id = users.walking_maximum_distance_id
+  WHERE users.id not in (SELECT user_id FROM trips) OR users.sign_in_count > 0
 WITH DATA;
 
 
@@ -762,9 +808,62 @@ FROM
   LEFT JOIN public."v_Services" ON "v_Services"."Service_ID" = "v_Itineraries"."IS_ID"
 WITH DATA;
 
+CREATE UNIQUE INDEX "v_Itineraries_Users_Itinerary_ID_index" ON "v_Itineraries_Users" ("Itinerary_ID");
+
 
 --Refresh
 Select RefreshAllMaterializedViews();
+
+-- Update Reporting tables
+
+DELETE FROM reporting_filter_fields WHERE reporting_filter_group_id = 2 OR reporting_filter_group_id = 8;
+
+INSERT INTO reporting_filter_fields (id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+SELECT
+  ID+1000 As "id",
+  8 As "reporting_filter_group_id",
+  CASE
+    WHEN datatype = 'date' THEN 29
+    WHEN datatype = 'bool' THEN 30
+    WHEN datatype = 'integer' THEN 29
+    WHEN datatype = 'double' THEN 29
+    ELSE 11
+  END As "reporting_filter_type_id",
+  CASE
+    WHEN datatype = 'bool' THEN 9
+  END AS "report_lookup_table_id",
+  'user_' || name As "name",
+  _en As "title",
+  now() as "created_at",
+  now() as "updated_at",
+  row_number() OVER () as "sort_order",
+  '' as "value_type"
+from "v_Accommodations"
+where "v_Accommodations".active = true;
+
+INSERT INTO reporting_filter_fields (id, reporting_filter_group_id, reporting_filter_type_id, reporting_lookup_table_id, name, title, created_at, updated_at, sort_order, value_type)
+SELECT
+  ID+2000 As "id",
+  2 As "reporting_filter_group_id",
+  CASE
+    WHEN datatype = 'date' THEN 29
+    WHEN datatype = 'bool' THEN 30
+    WHEN datatype = 'integer' THEN 29
+    WHEN datatype = 'double' THEN 29
+    ELSE 11
+  END As "reporting_filter_type_id",
+  CASE
+    WHEN datatype = 'bool' THEN 9
+  END AS "report_lookup_table_id",
+  'user_' || name As "name",
+  _en As "title",
+  now() as "created_at",
+  now() as "updated_at",
+  row_number() OVER () AS "sort_order",
+  '' as "value_type"
+from "v_Characteristics"
+where "v_Characteristics".for_traveler = TRUE AND "v_Characteristics".active = true;
+
 
 /*
 --Stage 1: Base Tables
