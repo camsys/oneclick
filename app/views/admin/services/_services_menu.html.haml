@@ -29,7 +29,6 @@
             = render partial: "admin/services/service_tab_content", locals: {new_service: false, service: s, active: i == @provider.services.length - 1}
           - mode_list.each do |m|
             = render partial: "admin/services/service_tab_content", locals: {new_service: true, mode: m, active: false}
-    = render partial: "admin/providers/test_partial"
 
 :javascript
   $(document).ready(function() {
@@ -56,6 +55,8 @@
     $('.new-service-tab-pane > form')
     .on("ajax:success", function(evt, data, status, xhr) {
       console.log("Service Created Successfully", arguments);
+
+      // Refresh this partial
       $('#services-menu').replaceWith(data);
     });
 
