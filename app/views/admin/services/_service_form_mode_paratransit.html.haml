@@ -6,18 +6,18 @@
         url: admin_provider_services_path(@provider),
         remote: true,
         html: { class: 'form-horizontal', multipart: true, id: "service-data-form-#{service_id}" },
-        data: {type: :html},
+        data: {type: :html, "service-id" => service_id},
         authenticity_token: true,
         wrapper: :horizontal_form do |f1|
   = f1.error_notification message: print_messages(f1)
   = f1.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
   .form-group.file.optional.service_logo
-    = f1.input :logo, input_html: { id: "service-logo-upload-real-#{service_id}", class: "hidden"}, :as => :file, wrapper: false
+    = f1.input :logo, input_html: { "data-service-id" => service_id, class: "hidden service-logo-upload-real"}, :as => :file, wrapper: false
     .col-sm-9
-      %button.btn.btn-default.btn-svc-data= service_logo_url.nil? ? "Upload Logo" : "Replace Image"
-      %img.logo-display-img{src: service_logo_url}
+      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn{ "data-service-id" => service_id }= service_logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %img.logo-display-img.logo-upload-img{ "data-service-id" => service_id, src: service_logo_url}
       -if service_logo_url.nil?
         %span.subtle-text jpg, gif, png
   .pull-right
-    = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-service-form-btn-#{service_id}"
+    = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id
     .btn.btn-link.hidden edit

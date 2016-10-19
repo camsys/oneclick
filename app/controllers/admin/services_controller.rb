@@ -26,6 +26,8 @@ class Admin::ServicesController < Admin::BaseController
     respond_to do |format|
       puts "RESPONDING TO CREATE REQUEST", format.ai
 
+      @service.logo = params[:service][:logo] if params[:service][:logo]
+
       if @service.save
         puts "SERVICE SAVED"
         # if @service.is_paratransit?
