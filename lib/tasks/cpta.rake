@@ -335,6 +335,9 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "18226"
 
+          #CHANGE TO TRUE WHEN THIS GOES LIVE
+          service.active = false
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           service.disallowed_purposes = 'ada,no charge bss,trust,lexington for matp'
@@ -368,6 +371,9 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "12152"
 
+          #CHANGE TO TRUE WHEN THIS GOES LIVE
+          service.active = false
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
@@ -395,6 +401,9 @@ namespace :oneclick do
 
           #Dummy User
           service.fare_user = "1864"
+
+          #CHANGE TO TRUE WHEN THIS GOES LIVE
+          service.active = false
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
@@ -424,6 +433,10 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "10847"
 
+
+          #CHANGE TO TRUE WHEN THIS GOES LIVE
+          service.active = false
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
@@ -451,6 +464,9 @@ namespace :oneclick do
 
           #Dummy User
           service.fare_user = "1000004436"
+
+          #CHANGE TO TRUE WHEN THIS GOES LIVE
+          service.active = false
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
