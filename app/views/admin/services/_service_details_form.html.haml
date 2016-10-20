@@ -1,0 +1,47 @@
+- service_id = service.nil? ? "new-#{mode}" : service.id
+- service_logo_url = service.nil? ? nil : service.logo_url
+
+-# Forms for creating or editing a service
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal', multipart: true, id: "service-data-form-#{service_id}" },
+        data: {type: :html, "service-id" => service_id},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f1|
+  = f1.error_notification message: print_messages(f1)
+  = f1.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
+  .form-group.file.optional.service_logo
+    = f1.input :logo, input_html: { "data-service-id" => service_id, class: "hidden service-logo-upload-real"}, :as => :file, wrapper: false
+    .col-sm-9
+      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn{ "data-service-id" => service_id }= service_logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %img.logo-display-img.logo-upload-img{ "data-service-id" => service_id, src: service_logo_url}
+      -if service_logo_url.nil?
+        %span.subtle-text jpg, gif, png
+  .pull-right
+    = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id
+    .btn.btn-link.hidden edit
+
+:javascript
+  $(document).ready(function() {
+    // Set JS serviceId variable to ruby service_id variable via (ruby) string interpolation
+    var serviceId = "#{service_id}";
+
+    // Handle logo upload via proxy button
+    $(`.service-logo-upload-btn[data-service-id=${serviceId}]`).on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      $(`.service-logo-upload-real[data-service-id=${serviceId}]`).click();
+    });
+
+    // Preview logo before upload
+    $(`.service-logo-upload-real[data-service-id=${serviceId}]`).change(function(e) {
+      $(`.logo-upload-img[data-service-id=${serviceId}]`).attr("src", URL.createObjectURL(event.target.files[0]));
+    });
+
+    // Prevent double form submit on save click
+    $(`.save-service-form-btn[data-service-id=${serviceId}]`).on("click", function(e) {
+      e.preventDefault();
+      $(`form[data-service-id=${serviceId}]`).submit();
+    });
+
+  });

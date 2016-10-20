@@ -11,39 +11,45 @@ class Admin::ServicesController < Admin::BaseController
     puts "CREATE NEW SERVICE", params.ai
     # already done by load_service
     # @service = Service.new(service_params)
-    #
+
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
     @service.service_type = ServiceType.find(1)
-    # @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
-
-    # #hacking in the mode for now - have agreed with DE to revisit Mode issues soon after this release
-    # if @service.service_type.present? && @service.service_type.code == "taxi"
-    #   taxi_mode = Mode.find_by_code("mode_taxi")
-    #   @service.mode_id = taxi_mode.id
-    # end
 
     respond_to do |format|
-      puts "RESPONDING TO CREATE REQUEST", format.ai
+      puts "RESPONDING TO CREATE REQUEST", request.format.html?
 
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
       if @service.save
         puts "SERVICE SAVED"
-        # if @service.is_paratransit?
-        #   update_fare
-        # end
-        # @service.build_polygons
-        format.html {render partial: 'admin/services/services_menu'}
+        format.html { render partial: 'admin/services/services_menu' }
+        format.json { head :no_content }
       else
         puts "SERVICE NOT SAVED"
-        # set_aux_instance_variables
-        # set_up_default_schedules
-        # @contact = @provider.users.with_role(:internal_contact, @provider).first
-        # @service.fare_structures.build
 
         # format.html { render partial: 'service_form_mode_paratransit', notice: 'Service not added.' }
         format.json { render json: @service.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH /admin/providers/:provider_id/services/:id
+  def update
+    puts "UPDATING SERVICE", params.ai
+    @service = Service.find(params[:id])
+    @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
+    puts @service.ai
+
+    respond_to do |format|
+      @service.logo = params[:service][:logo] if params[:service][:logo]
+
+      if @service.update_attributes(service_params)
+        puts "SERVICE UPDATED"
+        format.html { render partial: "admin/services/service_tab_content", locals: {new_service: false, service: @service, active: true} }
+        format.json { head :no_content }
+      else
+        puts "SERVICE UPDATE FAILED"
       end
     end
   end

@@ -51,31 +51,19 @@
       }
     });
 
-    // Prevent double form submit on save click
-    $('.save-service-form-btn').on("click", function(e) {
-      e.preventDefault();
-      var serviceId = $(this).data("service-id");
-      $(`form[data-service-id=${serviceId}]`).submit();
-    })
-
     // Handle New Service Creation
     $('.new-service-tab-pane > form')
     .on("ajax:success", function(evt, data, status, xhr) {
       console.log("Service Created Successfully", arguments);
-      $('#services-menu').replaceWith(data); // Refresh this partial
+      $('#services-menu').replaceWith(xhr.responseText); // Refresh this partial
     });
 
-    // Handle logo upload via proxy button
-    $('.service-logo-upload-btn').on("click", function(e) {
-      e.preventDefault ? e.preventDefault() : e.returnValue = false;
-      var serviceId = $(this).data("service-id");
-      $(`.service-logo-upload-real[data-service-id=${serviceId}]`).click();
-    });
-
-    // Preview logo before upload
-    $('.service-logo-upload-real').change(function(e) {
-      var serviceId = $(this).data("service-id");
-      $(`.logo-upload-img[data-service-id=${serviceId}]`).attr("src", URL.createObjectURL(event.target.files[0]));
+    // Handle Service Update
+    $('.service-tab-pane > form')
+    .on("ajax:success", function(evt, data, status, xhr) {
+      console.log("Service Updated Successfully", arguments);
+      $(this).parent().replaceWith(xhr.responseText);
+      //
     });
 
   });

@@ -4,5 +4,5 @@
 
 .tab-pane.panel-body{role: 'tabpanel',
       id: (new_service ? "new-#{mode}-service-tab-content" : "service-#{service.id}-tab-content"),
-      class: (active ? "active" : "") + " " + (new_service ? "new-service-tab-pane" : "")}
-  = render partial: "admin/services/service_form_mode_#{mode}", locals: {new_service: new_service, service: service}
+      class: (active ? "active" : "") + " " + (new_service ? "new-service-tab-pane" : "service-tab-pane")}
+  = render partial: "admin/services/service_details_form", locals: {new_service: new_service, service: service, mode: mode}
