@@ -1,11 +1,11 @@
-- service_id = service.nil? ? "new-#{mode}" : service.id
+- service_id = new_service ? "new-#{mode}" : service.id
 - service_logo_url = service.nil? ? nil : service.logo_url
 
 -# Forms for creating or editing a service
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'form-horizontal', multipart: true, id: "service-data-form-#{service_id}" },
+        html: { class: 'form-horizontal service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id},
         authenticity_token: true,
         wrapper: :horizontal_form do |f1|
@@ -20,12 +20,19 @@
         %span.subtle-text jpg, gif, png
   .pull-right
     = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id
-    .btn.btn-link.hidden edit
+    .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
 
 :javascript
   $(document).ready(function() {
-    // Set JS serviceId variable to ruby service_id variable via (ruby) string interpolation
+    // Set JS variables via (ruby) string interpolation
     var serviceId = "#{service_id}";
+    var newService = ("#{new_service}" === "true");
+    var thisForm = {
+      formId: `.service-details-form[data-service-id=${serviceId}]`,
+      hiddenElements: [`.edit-service-form-btn[data-service-id=${serviceId}]`],
+      visibleElements: [ `.service-logo-upload-btn[data-service-id=${serviceId}]`,
+                        `.save-service-form-btn[data-service-id=${serviceId}]`]
+    };
 
     // Handle logo upload via proxy button
     $(`.service-logo-upload-btn[data-service-id=${serviceId}]`).on("click", function(e) {
@@ -41,7 +48,29 @@
     // Prevent double form submit on save click
     $(`.save-service-form-btn[data-service-id=${serviceId}]`).on("click", function(e) {
       e.preventDefault();
-      $(`form[data-service-id=${serviceId}]`).submit();
+      $(`.service-details-form[data-service-id=${serviceId}]`).submit();
+    });
+
+    // Handle Service Update or Create
+    $(`.service-details-form[data-service-id=${serviceId}]`)
+    .on("ajax:success", function(evt, data, status, xhr) {
+      console.log($(this), serviceId, newService);
+      if(newService) {
+        console.log("Service Created Successfully", arguments);
+        $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
+      } else {
+        console.log("Service Updated Successfully", arguments);
+        $(this).parent().replaceWith(xhr.responseText);
+        // Make Form Read-Only
+        setFormReadOnly(thisForm, true);
+      }
+    });
+
+    // Edit Button handler
+    $(`.edit-service-form-btn[data-service-id=${serviceId}]`).on("click", function(e) {
+      e.preventDefault();
+      // Make Form Read-Only
+      setFormReadOnly(thisForm, false);
     });
 
   });

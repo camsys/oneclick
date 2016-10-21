@@ -26,6 +26,11 @@
 
 :javascript
   $(document).ready(function() {
+    var thisForm = {
+      formId: '#provider-data-form',
+      visibleElements: ['#provider-logo-upload-btn', '#save-provider-form-btn'],
+      hiddenElements: ['#edit-provider-form-btn']
+    };
 
     // Handle logo upload via proxy button
     $('#provider-logo-upload-btn').on("click", function(e) {
@@ -41,7 +46,7 @@
     // Edit Button handler
     $('#edit-provider-form-btn').on("click", function(e) {
       e.preventDefault();
-      toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
+      setFormReadOnly(thisForm, false);
     });
 
     // Prevent double form submit on save click
@@ -55,7 +60,7 @@
     .on("ajax:success", function(evt, data, status, xhr) {
       // On success, refresh just the provider form partial
       $('#provider-data-form').replaceWith(xhr.responseText);
-      toggleFormReadOnly('#provider-data-form', ['#provider-logo-upload-btn', '#save-provider-form-btn', '#edit-provider-form-btn']);
+      setFormReadOnly(thisForm, true);
     });
 
   });
