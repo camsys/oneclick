@@ -366,6 +366,34 @@ class Service < ActiveRecord::Base
     alert_msg
   end
 
+  # Returns the service area polylines for use in map display_color
+  def get_polylines
+    polylines = []
+
+    ['coverage_area', 'endpoint_area'].each do |rule|
+      case rule
+        when 'coverage_area'
+          geometry = self.coverage_area_geom.try(:geom)
+          color = 'red'
+          id = 1
+        when 'endpoint_area'
+          geometry = self.endpoint_area_geom.try(:geom)
+          color = 'green'
+          id = 0
+      end
+
+      unless geometry.nil?
+        polylines << {
+           "id" => id,
+           "geom" => self.wkt_to_array(rule),
+           "options" =>  {"color" => color, "width" => "2"}
+        }
+      end
+    end
+
+    polylines.to_json || nil
+  end
+
   def polygon_from_attribute scm
     #RGeo::Feature.cast(merged, :type => york.geom.geometry_type)
     state = Oneclick::Application.config.state
