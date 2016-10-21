@@ -22,6 +22,11 @@
     = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id
     .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
 
+-unless new_service
+  = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => service.get_polylines,
+  :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
+  :style => "height:500px;" })
+
 :javascript
   $(document).ready(function() {
     // Set JS variables via (ruby) string interpolation
