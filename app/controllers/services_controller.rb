@@ -32,30 +32,7 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
 
-    polylines = []
-
-    ['coverage_area', 'endpoint_area'].each do |rule|
-      case rule
-        when 'coverage_area'
-          geometry = @service.coverage_area_geom.try(:geom)
-          color = 'red'
-          id = 1
-        when 'endpoint_area'
-          geometry = @service.endpoint_area_geom.try(:geom)
-          color = 'green'
-          id = 0
-      end
-
-      unless geometry.nil?
-        polylines << {
-           "id" => id,
-           "geom" => @service.wkt_to_array(rule),
-           "options" =>  {"color" => color, "width" => "2"}
-        }
-      end
-    end
-
-    @polylines = polylines.to_json || nil
+    @polylines = @service.get_polylines
 
     @eh = EligibilityService.new
     respond_to do |format|
@@ -189,7 +166,7 @@ class ServicesController < ApplicationController
 
         # update endpoint and coverage area geometry
         has_endpoints = !@service.endpoints.empty?
-        has_coverages = !@service.coverages.empty? 
+        has_coverages = !@service.coverages.empty?
 
         #binding.pry
 
@@ -457,10 +434,10 @@ protected
         fare_params = {
           rate: fare_attrs[:rate].to_f
         }
-        
+
         fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
       end
-      
+
       if fs.mileage_fare
         fs.mileage_fare.delete
         fs.mileage_fare = nil
