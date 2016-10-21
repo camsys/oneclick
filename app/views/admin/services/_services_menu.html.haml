@@ -51,19 +51,4 @@
       }
     });
 
-    // Handle New Service Creation
-    $('.new-service-tab-pane > form')
-    .on("ajax:success", function(evt, data, status, xhr) {
-      console.log("Service Created Successfully", arguments);
-      $('#services-menu').replaceWith(xhr.responseText); // Refresh this partial
-    });
-
-    // Handle Service Update
-    $('.service-tab-pane > form')
-    .on("ajax:success", function(evt, data, status, xhr) {
-      console.log("Service Updated Successfully", arguments);
-      $(this).parent().replaceWith(xhr.responseText);
-      //
-    });
-
   });

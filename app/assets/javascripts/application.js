@@ -236,6 +236,7 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
 // formId is a jQuery selector string identifying the target form
 // hiddenElements is an array of selectors for elements, hidden and non, where class 'hidden' should be toggled
 function toggleFormReadOnly(formId, hiddenElements) {
+  console.log("Toggling Form Read Only for: ", formId, hiddenElements);
 
   // Set read only variable to opposite of form's data-readonly property, and toggle that property.
   var readonly = !$(formId).data('readonly');
@@ -247,5 +248,28 @@ function toggleFormReadOnly(formId, hiddenElements) {
   // Toggle hidden on any elements to hide.
   for (var i = 0; i < hiddenElements.length; i++) {
     $(hiddenElements[i]).toggleClass('hidden');
+  }
+}
+
+// Form Read-Only Helper Function
+// takes a form object with a formId arrays of visible and hidden elements
+// sets form to read-only or editable based on boolean value passed
+function setFormReadOnly(form, readOnly) {
+  console.log("Setting read only for ", form, " to ", readOnly);
+
+  // Set read only variable to readOnly boolean
+  $(form.formId).data('readonly', readOnly);
+
+  // Set all form inputs to readonly value.
+  $(form.formId + ' :input.form-control').attr("readonly", readOnly);
+
+  // Hide visible elements and show hidden ones, or vice versa
+  for (var i = 0; i < form.visibleElements.length; i++) {
+    var element = $(form.visibleElements[i]);
+    readOnly ? element.addClass('hidden') : element.removeClass('hidden');
+  }
+  for (var i = 0; i < form.hiddenElements.length; i++) {
+    var element = $(form.hiddenElements[i]);
+    readOnly ? element.removeClass('hidden') : element.addClass('hidden');
   }
 }
