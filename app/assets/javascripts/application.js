@@ -265,11 +265,59 @@ function setFormReadOnly(form, readOnly) {
 
   // Hide visible elements and show hidden ones, or vice versa
   for (var i = 0; i < form.visibleElements.length; i++) {
-    var element = $(form.visibleElements[i]);
+    var element = $(form.formId + " " + form.visibleElements[i]);
     readOnly ? element.addClass('hidden') : element.removeClass('hidden');
   }
   for (var i = 0; i < form.hiddenElements.length; i++) {
-    var element = $(form.hiddenElements[i]);
+    var element = $(form.formId + " " + form.hiddenElements[i]);
     readOnly ? element.removeClass('hidden') : element.addClass('hidden');
   }
+}
+
+// Set up Service Form Click Handlers
+function setupServiceForm(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
+  var formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
+  console.log("Setting Up Form", formId);
+
+  var thisForm = {
+    formId: formId,
+    hiddenElements: ['.edit-service-form-btn'].concat(hiddenElements),
+    visibleElements: [ '.save-service-form-btn'].concat(visibleElements),
+
+    // Helper function for selecting elements within the form
+    $: function(selector) {
+      return $(formId + " " + selector);
+    }
+
+  };
+
+  // Prevent double form submit on save click
+  $(formId + ' .save-service-form-btn').on("click", function(e) {
+    e.preventDefault();
+    $(formId).submit();
+  });
+
+  // Edit Button handler
+  $(formId + ' .edit-service-form-btn').on("click", function(e) {
+    e.preventDefault();
+    // Make Form Read-Only
+    setFormReadOnly(thisForm, false);
+  });
+
+  // Handle Service Update or Create
+  $(formId)
+  .on("ajax:success", function(evt, data, status, xhr) {
+    console.log($(this));
+    if(newService) {
+      console.log("Service Created Successfully", arguments);
+      $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
+    } else {
+      console.log("Service Updated Successfully", arguments);
+      $(this).parent().replaceWith(xhr.responseText);
+      // Make Form Read-Only
+      setFormReadOnly(thisForm, true);
+    }
+  });
+
+  return thisForm;
 }
