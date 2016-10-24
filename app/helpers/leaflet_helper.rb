@@ -116,7 +116,6 @@ module LeafletHelper
     # set the map bounds
     js << "m.setMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
     js << "m.cacheMapBounds(#{MAP_BOUNDS[0][0]},#{MAP_BOUNDS[0][1]},#{MAP_BOUNDS[1][0]},#{MAP_BOUNDS[1][1]});"
-    js << "console.log('m is...', m, #{mapid});"
     js << "m.showMap();" unless options[:do_not_show_map]
     js << "m.LMmap.setZoom(#{options[:zoom]});" if options[:zoom].present?
     js * ("\n")
