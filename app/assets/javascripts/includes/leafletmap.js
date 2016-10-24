@@ -21,10 +21,10 @@ CsLeaflet.Leaflet = {
      * Add a set of markers to the map. Markers are defined as an array of json hashes. Each
      * JSON hash has values latitude, longitude, iconClass, popupText, open
      */
-    LMmarkers: new Array(),
-    LMcircles: new Array(),
-    LMpolylines: new Array(),
-    LMmultipolygons: new Array(),
+    LMmarkers: null,
+    LMcircles: null,
+    LMpolylines: null,
+    LMmultipolygons: null,
     LMmap: null,
     LMbounds: null,
     LMcacheBounds: null,
@@ -57,6 +57,11 @@ CsLeaflet.Leaflet = {
 
         this.LMmap = L.map(mapId, { zoomControl: false, scrollWheelZoom: options.scroll_wheel_zoom, zoomAnimation: options.zoom_animation});
         this.addZoomControl();
+        this.LMmarkers = new Array();
+        this.LMcircles = new Array();
+        this.LMpolylines = new Array();
+        this.LMmultipolygons = new Array();
+
 
         //alert(options.tile_provider);
         //alert(options.min_zoom);
@@ -907,6 +912,5 @@ CsLeaflet.Leaflet = {
             }
         });
     }
-
-
+    
 }
