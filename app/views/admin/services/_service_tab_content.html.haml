@@ -14,8 +14,23 @@
               form_index: 0 }
 
   -unless new_service
-    = render partial: "admin/services/form_parts/paratransit_part1",
-      locals: { new_service: new_service,
-                service: service,
-                service_id: service_id,
-                form_index: 1 }
+    %h4= mode
+    -case mode
+    -when "paratransit"
+      = render partial: "admin/services/form_parts/paratransit_part1",
+        locals: { new_service: new_service,
+                  service: service,
+                  service_id: service_id,
+                  form_index: 1 }
+      = render partial: "admin/services/form_parts/paratransit_part2",
+        locals: { new_service: new_service,
+                  service: service,
+                  service_id: service_id,
+                  form_index: 2 }
+      = render partial: "admin/services/form_parts/paratransit_part3",
+        locals: { new_service: new_service,
+                  service: service,
+                  service_id: service_id,
+                  form_index: 3 }
+    -else
+      %h4 SOME OTHER MODE TEMPLATE STUFF

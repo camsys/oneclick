@@ -6,22 +6,14 @@
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
-  -endpoint_value = ""
-  -unless service.county_endpoint_array.nil?
-    -service.county_endpoint_array.each do |county|
-      -endpoint_value += county.to_s + ', '
   = f.input :county_endpoint_array,
       label: "Primary Service Location",
       placeholder: "List county names separated by commas",
-      input_html: { value: endpoint_value.chop.chop }
-  -endpoint_value = ""
-  -unless service.county_endpoint_array.nil?
-    -service.county_endpoint_array.each do |county|
-      -endpoint_value += county.to_s + ', '
-  = f.input :county_endpoint_array,
-      label: "Primary Service Location",
+      input_html: { value: service.county_endpoint_array ? service.county_endpoint_array.join(', ') : "" }
+  = f.input :county_coverage_array,
+      label: "Secondary Locations Covered",
       placeholder: "List county names separated by commas",
-      input_html: { value: endpoint_value.chop.chop }
+      input_html: { value: service.county_coverage_array ? service.county_coverage_array.join(', ') : "" }
 
   = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
     :multipolygons => service.get_polylines,
@@ -31,9 +23,9 @@
     :style => "height:500px;",
     :do_not_show_map => true })
   .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id, "data-form-id" => 2
-    .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
-    .btn.btn-link.show-map-btn{ "data-service-id" => service_id } refresh map
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
+    .btn.btn-link.hidden.edit-service-form-btn edit
+    .btn.btn-link.show-map-btn refresh map
 
 :javascript
   $(document).ready(function() {
