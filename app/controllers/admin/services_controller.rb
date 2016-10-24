@@ -44,8 +44,14 @@ class Admin::ServicesController < Admin::BaseController
     respond_to do |format|
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
+      # Update the service area by county name
+      county_coverage_array = params[:service][:county_coverage_array]
+      county_endpoint_array = params[:service][:county_endpoint_array]
+      @service.county_coverage_array = county_coverage_array.split(',').map(&:strip) if params[:service][:county_coverage_array]
+      @service.county_endpoint_array = county_endpoint_array.split(',').map(&:strip) if params[:service][:county_endpoint_array]
+
       if @service.update_attributes(service_params)
-        puts "SERVICE UPDATED"
+        puts "SERVICE UPDATED", @service.ai
         format.html { render partial: "admin/services/service_tab_content", locals: {new_service: false, service: @service, active: true} }
         format.json { head :no_content }
       else

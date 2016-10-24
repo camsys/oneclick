@@ -6,7 +6,7 @@
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
         html: { class: 'form-horizontal service-details-form', multipart: true },
-        data: {type: :html, "service-id" => service_id},
+        data: {type: :html, "service-id" => service_id, "form-id" => 1 },
         authenticity_token: true,
         wrapper: :horizontal_form do |f1|
   = f1.error_notification message: print_messages(f1)
@@ -19,13 +19,38 @@
       -if service_logo_url.nil?
         %span.subtle-text jpg, gif, png
   .pull-right
-    = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id
+    = f1.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id, "data-form-id" => 1
     .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
 
 -unless new_service
-  = LeafletMap({ :mapid => "lmap_" + "endpoint_area", :multipolygons => service.get_polylines,
-  :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15,
-  :style => "height:500px;" })
+  = simple_form_for service || :service,
+          url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+          remote: true,
+          html: { class: 'form-horizontal service-details-form', multipart: true },
+          data: {type: :html, "service-id" => service_id, "form-id" => 2},
+          authenticity_token: true,
+          wrapper: :horizontal_form do |f2|
+    = f2.error_notification message: print_messages(f2)
+    -endpoint_value = ""
+    -unless service.county_endpoint_array.nil?
+      -service.county_endpoint_array.each do |county|
+        -endpoint_value += county.to_s + ', '
+    = f2.input :county_endpoint_array,
+        label: "Endpoint Counties",
+        placeholder: "List county names separated by commas",
+        input_html: { value: endpoint_value.chop.chop }
+
+    = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
+      :multipolygons => service.get_polylines,
+      :tile_provider => 'GOOGLEMAP',
+      :min_zoom => 3,
+      :max_zoom => 15,
+      :style => "height:500px;",
+      :do_not_show_map => true })
+    .pull-right
+      = f2.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id, "data-form-id" => 2
+      .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
+      .btn.btn-link.show-map-btn{ "data-service-id" => service_id } refresh map
 
 :javascript
   $(document).ready(function() {
@@ -38,6 +63,14 @@
       visibleElements: [ `.service-logo-upload-btn[data-service-id=${serviceId}]`,
                         `.save-service-form-btn[data-service-id=${serviceId}]`]
     };
+    var theMap = newService ? null : CsMaps[`lmap_service_area_${serviceId}`];
+    console.log("Showing Map", theMap);
+
+    // Show Map Button for Test
+    $(`.show-map-btn[data-service-id=${serviceId}]`).on("click", function(e) {
+      console.log("Refresh map button clicked");
+      if(theMap) {theMap.showMap()};
+    });
 
     // Handle logo upload via proxy button
     $(`.service-logo-upload-btn[data-service-id=${serviceId}]`).on("click", function(e) {
@@ -57,7 +90,7 @@
     });
 
     // Handle Service Update or Create
-    $(`.service-details-form[data-service-id=${serviceId}]`)
+    $(`.service-details-form[data-service-id=${serviceId}][data-form-id=1]`)
     .on("ajax:success", function(evt, data, status, xhr) {
       console.log($(this), serviceId, newService);
       if(newService) {
@@ -69,6 +102,16 @@
         // Make Form Read-Only
         setFormReadOnly(thisForm, true);
       }
+    });
+
+    // Handle Service Update Form 2
+    $(`.service-details-form[data-service-id=${serviceId}][data-form-id=2]`)
+    .on("ajax:success", function(evt, data, status, xhr) {
+      console.log($(this), serviceId, newService);
+      console.log("Service Form 2 Updated Successfully", arguments);
+      $(this).parent().replaceWith(xhr.responseText);
+      // Make Form Read-Only
+      setFormReadOnly(thisForm, true);
     });
 
     // Edit Button handler
