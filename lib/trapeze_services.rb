@@ -223,16 +223,24 @@ class TrapezeServices
     end
 
     funding_sources = funding_sources.sort_by{ |fs| fs[:sequence] }
+
+    #First load any ADA Funding Sources
     funding_sources.each do |funding_source|
-      Rails.logger.info funding_source.ai
       if funding_source[:funding_source_name].in? ada_funding_sources
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: 1}
-      else
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: ignore_polygon, fare_type_id: 14}
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: Oneclick::Application.config.ada_fare_type}
       end
     end
 
+    #Second load any non-ADA Funding Sources
+    funding_sources.each do |funding_source|
+      unless funding_source[:funding_source_name].in? ada_funding_sources
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: ignore_polygon, fare_type_id: Oneclick::Application.config.non_ada_fare_type}
+      end
+    end
+
+    Rails.logger.info funding_source_array.ai
     funding_source_array
+
   end
 
 

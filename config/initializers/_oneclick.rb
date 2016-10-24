@@ -218,6 +218,8 @@ Oneclick::Application.configure do
     config.ada_funding_sources = ['ADA']
     config.ignore_polygon_id = 18
     config.check_polygon_id = 0
+    config.ada_fare_type = 1
+    config.non_ada_fare_type = 14
     config.allows_booking = true
     config.host = 'transportal.net'
     config.ui_logo = 'jta/logo.png'
