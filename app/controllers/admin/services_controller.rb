@@ -14,7 +14,6 @@ class Admin::ServicesController < Admin::BaseController
 
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
-    @service.service_type = ServiceType.find(1)
 
     respond_to do |format|
       puts "RESPONDING TO CREATE REQUEST", request.format.html?

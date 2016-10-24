@@ -10,6 +10,8 @@
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
   = f.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
+  -if new_service # Hidden Input Sets Mode
+    %input.hidden#service_service_type_id{value: ServiceType.where(code: mode)[0].id, name: "service[service_type_id]", type: "text"}
   .form-group.file.optional.service_logo
     = f.input :logo, input_html: { class: "hidden service-logo-upload-real" }, :as => :file, wrapper: false
     .col-sm-9
