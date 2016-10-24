@@ -1,0 +1,51 @@
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  -endpoint_value = ""
+  -unless service.county_endpoint_array.nil?
+    -service.county_endpoint_array.each do |county|
+      -endpoint_value += county.to_s + ', '
+  = f.input :county_endpoint_array,
+      label: "Primary Service Location",
+      placeholder: "List county names separated by commas",
+      input_html: { value: endpoint_value.chop.chop }
+  -endpoint_value = ""
+  -unless service.county_endpoint_array.nil?
+    -service.county_endpoint_array.each do |county|
+      -endpoint_value += county.to_s + ', '
+  = f.input :county_endpoint_array,
+      label: "Primary Service Location",
+      placeholder: "List county names separated by commas",
+      input_html: { value: endpoint_value.chop.chop }
+
+  = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
+    :multipolygons => service.get_polylines,
+    :tile_provider => 'GOOGLEMAP',
+    :min_zoom => 3,
+    :max_zoom => 15,
+    :style => "height:500px;",
+    :do_not_show_map => true })
+  .pull-right
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn", "data-service-id" => service_id, "data-form-id" => 2
+    .btn.btn-link.hidden.edit-service-form-btn{ "data-service-id" => service_id } edit
+    .btn.btn-link.show-map-btn{ "data-service-id" => service_id } refresh map
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = setupServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+    var theMap = CsMaps['lmap_service_area_#{service_id}'];
+
+    // Show Map Button for Test
+    form.$('.show-map-btn').on("click", function(e) {
+      console.log("Refresh map button clicked");
+      if(theMap) {theMap.showMap()};
+    });
+
+  });

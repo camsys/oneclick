@@ -1,0 +1,41 @@
+- service_logo_url = service.nil? ? nil : service.logo_url
+
+-# Forms for creating or editing a service
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index },
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  = f.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
+  .form-group.file.optional.service_logo
+    = f.input :logo, input_html: { class: "hidden service-logo-upload-real" }, :as => :file, wrapper: false
+    .col-sm-9
+      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn= service_logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %img.logo-display-img.logo-upload-img{ src: service_logo_url}
+      -if service_logo_url.nil?
+        %span.subtle-text jpg, gif, png
+  .pull-right
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
+    .btn.btn-link.hidden.edit-service-form-btn edit
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = setupServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-logo-upload-btn']);
+
+    // Handle logo upload via proxy button
+    form.$(".service-logo-upload-btn").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      form.$(".service-logo-upload-real").click();
+    });
+
+    // Preview logo before upload
+    form.$(".service-logo-upload-real").change(function(e) {
+      form.$(".logo-upload-img").attr("src", URL.createObjectURL(event.target.files[0]));
+    });
+
+  });
