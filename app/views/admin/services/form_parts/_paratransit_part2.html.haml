@@ -1,0 +1,21 @@
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  %h4 SERVICE HOURS AND CUTOFF TIMES
+
+  .pull-right
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
+    .btn.btn-link.hidden.edit-service-form-btn edit
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = setupServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+  });
