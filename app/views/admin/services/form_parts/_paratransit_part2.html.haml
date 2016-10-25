@@ -9,33 +9,11 @@
   %h4 SERVICE HOURS AND CUTOFF TIMES
   .service-schedule-container
     - service.schedules.each do |sched|
-      .row.service-schedule-row{"data-schedule-id" => sched.id}
-        = f.input :schedules,
-          input_html: {name: input_name(f, :schedules, :id), value: sched.id},
-          wrapper_html: {class: "hidden"},
-          label: false
-        = f.input :schedules,
-          collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: sched.day_of_week,
-          input_html: {name: input_name(f, :schedules, :day_of_week), value: sched.day_of_week},
-          wrapper_html: {class: "col-sm-3"},
-          label: false
-        = f.input :schedules,
-          collection: Rails.application.config.times_of_day, selected: sched.start_time,
-          input_html: {name: input_name(f, :schedules, :start_time), value: sched.start_time},
-          wrapper_html: {class: "col-sm-3"},
-          label: false
-        = f.input :schedules,
-          collection: Rails.application.config.times_of_day, selected: sched.end_time,
-          input_html: {name: input_name(f, :schedules, :end_time), value: sched.end_time},
-          wrapper_html: {class: "col-sm-3"},
-          label: false
-        = f.input :schedules,
-          input_html: {name: input_name(f, :schedules, :_destroy), value: false, class: "input-schedule-destroy"},
-          wrapper_html: {class: "hidden"},
-          label: false
-        .btn.btn-link.delete-schedule-btn.col-sm-3 delete
-    .btn.btn-default.btn-svc-data.add-schedule-btn.col-sm-3 Add Hours
-
+      = render partial: "admin/services/form_parts/schedule_row",
+        locals: {f:f, sched:sched}
+    - (1..14).each do |i|
+      = render partial: "admin/services/form_parts/schedule_row",
+        locals: {f:f, wrapper_classes: "faded#{" hidden" unless i == 1}", sched:Schedule.new(day_of_week: service.schedules.empty? ? (i % 7) : (service.schedules.last.day_of_week + i) % 7, start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time, end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
@@ -49,9 +27,22 @@
 
     // Delete Schedule Button Handler - Hide Row and Set Destroy to TRUE
     form.$('.delete-schedule-btn').on("click", function(e) {
-      var schedId = $(this).closest('.service-schedule-row').data("schedule-id");
-      form.$(`.service-schedule-row[data-schedule-id=${schedId}]`).addClass("hidden");
-      form.$(`.service-schedule-row[data-schedule-id=${schedId}] .input-schedule-destroy`).attr("value", true);
+      console.log("Delete Schedule Button Clicked", $(this));
+      $(this).closest(".service-schedule-row").addClass("hidden"); // Hide this row
+      $(this).siblings().find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
+      // var schedId = $(this).closest('.service-schedule-row').data("schedule-id");
+      // form.$(`.service-schedule-row[data-schedule-id=${schedId}]`).addClass("hidden");
+      // form.$(`.service-schedule-row[data-schedule-id=${schedId}] .input-schedule-destroy`).attr("value", true);
+    });
+
+    // Add Hours Button Handler shows and prepares next schedule row
+    form.$('.add-schedule-btn').on("click", function(e) {
+      console.log("Add Schedule Button Clicked", $(this));
+      $(this).closest(".service-schedule-row").removeClass("faded"); // Unfade the parent row element
+      $(this).addClass("hidden"); // Hide the add hours button
+      $(this).siblings().find(".input-schedule-destroy").attr("value", false); // Set destroy value to false for this element
+      $(this).siblings(".delete-schedule-btn").removeClass("hidden"); // Unhide delete button
+      $(this).closest(".service-schedule-row").next().removeClass("hidden"); // Unhide next row
     });
 
   });
