@@ -49,6 +49,11 @@ class Admin::ServicesController < Admin::BaseController
       @service.county_coverage_array = county_coverage_array.split(',').map(&:strip) if params[:service][:county_coverage_array]
       @service.county_endpoint_array = county_endpoint_array.split(',').map(&:strip) if params[:service][:county_endpoint_array]
 
+      puts "ADDING COUNTY GEOMETRIES"
+      county_endpoint_geoms = County.where(name: @service.county_endpoint_array, state: Oneclick::Application.config.state)
+      county_coverage_geoms = County.where(name: @service.county_coverage_array, state: Oneclick::Application.config.state)
+      
+
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
         format.html { render partial: "admin/services/service_tab_content", locals: {new_service: false, service: @service, active: true} }
