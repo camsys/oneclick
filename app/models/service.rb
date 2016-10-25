@@ -18,7 +18,7 @@ class Service < ActiveRecord::Base
   belongs_to :service_type
   belongs_to :mode
   has_many :fare_structures
-  has_many :schedules
+  has_many :schedules, -> { order(day_of_week: :asc) }
   has_many :booking_cut_off_times
   has_many :service_accommodations
   has_many :service_characteristics
