@@ -1,0 +1,29 @@
+- wrapper_classes = "" if local_assigns[:wrapper_classes].nil?
+
+.row.service-schedule-row{"data-schedule-id" => sched.id || "new-schedule", class: wrapper_classes}
+  -unless sched.id.nil?
+    = f.input :schedules,
+      input_html: {name: input_name(f, :schedules, :id), value: sched.id},
+      wrapper_html: {class: "hidden"},
+      label: false
+  = f.input :schedules,
+    collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: sched.day_of_week,
+    input_html: {name: input_name(f, :schedules, :day_of_week)},
+    wrapper_html: {class: "col-sm-3"},
+    label: false
+  = f.input :schedules,
+    collection: Rails.application.config.times_of_day, selected: sched.start_time,
+    input_html: {name: input_name(f, :schedules, :start_time)},
+    wrapper_html: {class: "col-sm-3"},
+    label: false
+  = f.input :schedules,
+    collection: Rails.application.config.times_of_day, selected: sched.end_time,
+    input_html: {name: input_name(f, :schedules, :end_time)},
+    wrapper_html: {class: "col-sm-3"},
+    label: false
+  = f.input :schedules,
+    input_html: {name: input_name(f, :schedules, :_destroy), value: sched.id.nil?, class: "input-schedule-destroy"},
+    wrapper_html: {class: "hidden"},
+    label: false
+  .btn.btn-link.delete-schedule-btn.col-sm-3{class:("hidden" if sched.id.nil?)} delete
+  .btn.btn-default.btn-svc-data.add-schedule-btn.col-sm-3{class:("hidden" unless sched.id.nil?)} Add Hours
