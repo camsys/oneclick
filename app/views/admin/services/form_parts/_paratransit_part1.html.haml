@@ -1,10 +1,10 @@
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'form-horizontal service-details-form', multipart: true },
+        html: { class: 'service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},
         authenticity_token: true,
-        wrapper: :horizontal_form do |f|
+        wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
   = f.input :county_endpoint_array,
       label: "Primary Service Location",
@@ -14,7 +14,6 @@
       label: "Secondary Locations Covered",
       placeholder: "List county names separated by commas",
       input_html: { value: service.county_coverage_array ? service.county_coverage_array.join(', ') : "" }
-
   = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
     :multipolygons => service.get_polylines,
     :tile_provider => 'GOOGLEMAP',
