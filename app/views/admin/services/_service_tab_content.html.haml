@@ -14,7 +14,6 @@
               form_index: 0 }
 
   -unless new_service
-    %h4= mode
     -case mode
     -when "paratransit"
       = render partial: "admin/services/form_parts/paratransit_part1",

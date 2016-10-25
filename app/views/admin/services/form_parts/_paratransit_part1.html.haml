@@ -1,7 +1,7 @@
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'service-details-form', multipart: true },
+        html: { class: 'form-vertical service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},
         authenticity_token: true,
         wrapper: :vertical_form do |f|
