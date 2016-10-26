@@ -236,10 +236,12 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
 var ServiceForm = function(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
   this.formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
   console.log("Setting Up Form", this);
-  this.newService = newService;
   this.hiddenElements = ['.edit-service-form-btn'].concat(hiddenElements);
   this.visibleElements = ['.save-service-form-btn'].concat(visibleElements);
   var thisForm = this;
+
+  // Set Form as ReadOnly by default
+  thisForm.setReadOnly(!newService);
 
   // Prevent double form submit on save click
   this.$('.save-service-form-btn').on("click", function(e) {
@@ -277,7 +279,7 @@ ServiceForm.prototype.$ = function(selector="") {
 ServiceForm.prototype.setReadOnly = function(readOnly=true) {
 
   // Set all form controls to disabled, except the edit button.
-  this.$(':input:not(.edit-service-form-btn)').attr("disabled", readOnly);
+  this.$(':input,.btn:not(.edit-service-form-btn)').attr("disabled", readOnly);
 
   // Hide visible elements and show hidden ones, or vice versa
   for (var i = 0; i < this.visibleElements.length; i++) {
