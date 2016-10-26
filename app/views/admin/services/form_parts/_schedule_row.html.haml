@@ -1,6 +1,6 @@
 - wrapper_classes = "" if local_assigns[:wrapper_classes].nil?
 
-.row.service-schedule-row{"data-schedule-id" => sched.id || "new-schedule", class: wrapper_classes}
+.row.service-details-row{"data-schedule-id" => sched.id || "new-schedule", class: wrapper_classes}
   -unless sched.id.nil?
     = f.input :schedules,
       input_html: {name: input_name(f, :schedules, :id), value: sched.id},
