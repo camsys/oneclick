@@ -15,7 +15,8 @@
     -when "paratransit"
       = render partial: "admin/services/form_parts/paratransit_part1",
         locals: { new_service: new_service,
-                  service: service}
+                  service: service,
+                  active: active}
       = render partial: "admin/services/form_parts/paratransit_part2",
         locals: { new_service: new_service,
                   service: service }
