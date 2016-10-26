@@ -4,6 +4,7 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  unit_number: "Apartment or Unit Number"
   :refresh_materialized_views: "Update Report Data"
   :ridepilot: "RidePilot"
   :ecolane: "Ecolane"

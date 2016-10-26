@@ -2,6 +2,13 @@
 -return_passenger_types = @trip.return_part.get_passenger_types
 
 =simple_form_for @trip.return_part, url: user_trip_trip_part_path(trip_id: @trip.id),  html: { id: 'return_confirmation_form', class: 'form-horizontal' } do |f|
+
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:unit_number)
+    = f.input :unit, :label => false, :as => :string, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'return_unit'}
+
+
   .row
     %label.col-sm-4.text-right
       =translate_helper(:confirm_trip_purpose)
