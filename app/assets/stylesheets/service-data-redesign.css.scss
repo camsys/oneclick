@@ -95,3 +95,10 @@ textarea.form-control.text {
 
 .service-details-row {
 }
+
+.btn-activate-service-toggle-group {
+  background-color: blue;
+  input.btn-activate-service-toggle[type="radio"]:checked {
+    border-color: red;
+  }
+}
