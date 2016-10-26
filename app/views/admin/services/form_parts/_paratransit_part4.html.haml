@@ -1,3 +1,7 @@
+- this_path = "admin/services/form_parts/paratransit_part4"
+- form_index = 4
+- service_id = new_service ? "new-#{mode}" : service.id
+
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
@@ -6,6 +10,10 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
   %h4 FARE AND BOOKING
 
   .pull-right

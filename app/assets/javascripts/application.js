@@ -263,7 +263,7 @@ var ServiceForm = function(serviceId, formIndex, newService=false, visibleElemen
       $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
     } else {
       console.log("Service Updated Successfully", arguments);
-      $(this).parent().replaceWith(xhr.responseText);
+      $(this).replaceWith(xhr.responseText);
       // Make Form Read-Only
       thisForm.setReadOnly(true);
     }

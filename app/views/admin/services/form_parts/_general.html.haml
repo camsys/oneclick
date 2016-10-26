@@ -1,4 +1,7 @@
 - service_logo_url = service.nil? ? nil : service.logo_url
+- this_path = "admin/services/form_parts/general"
+- form_index = 0
+- service_id = new_service ? "new-#{mode}" : service.id
 
 -# Forms for creating or editing a service
 = simple_form_for service || :service,
@@ -9,6 +12,10 @@
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
   = f.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
   -if new_service # Hidden Input Sets Mode
     %input.hidden#service_service_type_id{value: ServiceType.where(code: mode)[0].id, name: "service[service_type_id]", type: "text"}

@@ -52,11 +52,11 @@ class Admin::ServicesController < Admin::BaseController
       puts "ADDING COUNTY GEOMETRIES"
       county_endpoint_geoms = County.where(name: @service.county_endpoint_array, state: Oneclick::Application.config.state)
       county_coverage_geoms = County.where(name: @service.county_coverage_array, state: Oneclick::Application.config.state)
-      
+
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
-        format.html { render partial: "admin/services/service_tab_content", locals: {new_service: false, service: @service, active: true} }
+        format.html { render partial: params[:service_details_partial], locals: {new_service: false, service: @service, active: true} }
         format.json { head :no_content }
       else
         puts "SERVICE UPDATE FAILED"
@@ -84,7 +84,7 @@ class Admin::ServicesController < Admin::BaseController
                                     :booking_service_code, :advanced_notice_minutes,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
-                                    :service_window, :time_factor, :provider_id, :service_type_id,
+                                    :service_window, :time_factor, :provider_id, :service_type_id, :service_details_partial,
                                     :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :disabled_comment, :booking_profile,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
