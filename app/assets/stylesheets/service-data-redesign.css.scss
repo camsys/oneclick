@@ -72,10 +72,13 @@ textarea.form-control.text {
 }
 
 .service-details-form {
-  // margin: 10px 0 60px;
-  padding: 0 0 80px;
   margin: 0 0 40px;
-  border-bottom: 1px solid gainsboro;
+  padding: 0 0 20px;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid gainsboro;
+    padding: 0 0 80px;
+  }
 }
 
 .form-vertical label.control-label {
