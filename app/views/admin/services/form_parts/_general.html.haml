@@ -27,7 +27,7 @@
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = setupServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-logo-upload-btn']);
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-logo-upload-btn']);
 
     // Handle logo upload via proxy button
     form.$(".service-logo-upload-btn").on("click", function(e) {
