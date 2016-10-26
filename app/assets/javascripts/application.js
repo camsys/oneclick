@@ -241,9 +241,6 @@ var ServiceForm = function(serviceId, formIndex, newService=false, visibleElemen
   this.visibleElements = ['.save-service-form-btn'].concat(visibleElements);
   var thisForm = this;
 
-  // Set form to Read Only
-  this.setReadOnly(true);
-
   // Prevent double form submit on save click
   this.$('.save-service-form-btn').on("click", function(e) {
     e.preventDefault();
@@ -279,15 +276,8 @@ ServiceForm.prototype.$ = function(selector="") {
 // Helper function for enabling or disabling form
 ServiceForm.prototype.setReadOnly = function(readOnly=true) {
 
-  // Set all form inputs to readonly value.
-  this.$(':input.form-control').attr("disabled", readOnly);
-
-  // Set all form selects disabled value.
-  this.$('select').attr("disabled", readOnly);
-
-  // Disable all buttons.
-  this.$('button:not(.edit-service-form-btn)').attr("disabled", readOnly);
-  this.$('.btn:not(.edit-service-form-btn)').attr("disabled", readOnly);
+  // Set all form controls to disabled, except the edit button.
+  this.$(':input:not(.edit-service-form-btn)').attr("disabled", readOnly);
 
   // Hide visible elements and show hidden ones, or vice versa
   for (var i = 0; i < this.visibleElements.length; i++) {
