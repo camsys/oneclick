@@ -6,7 +6,7 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
-  .service-schedule-container
+  .service-details-container
     %label.control-label Service Hours
     - service.schedules.each do |sched|
       = render partial: "admin/services/form_parts/schedule_row",
@@ -17,7 +17,7 @@
           sched: Schedule.new(day_of_week: service.schedules.empty? ? ((i - 1) % 7) : (service.schedules.last.day_of_week + i) % 7,
             start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time,
             end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
-  .service-bct-container
+  .service-details-container
     %label.control-label Advance Notice Cut-off Times
     .row.form-group.form-horizontal.select
       .select.control-label.col-xs-9 Riders must book by this time the day before a ride:
@@ -27,7 +27,7 @@
           {class: "select form-control service-bct-master-select"})
     - if service.booking_cut_off_times.empty?
       - (0..6).each do |dow|
-        .row.service-bct-row.hidden
+        .row.service-details-row.hidden
           = f.input :booking_cut_off_times,
             collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: dow,
             input_html: {name: input_name(f, :booking_cut_off_times, :day_of_week)},
@@ -44,7 +44,7 @@
             label: false
     - else
       - service.booking_cut_off_times.each do |bct|
-        .row.service-bct-row.hidden
+        .row.service-details-row.hidden
           = f.input :booking_cut_off_times,
             input_html: {name: input_name(f, :booking_cut_off_times, :id), value: bct.id},
             wrapper_html: {class: "col-xs-2"},
@@ -78,23 +78,23 @@
     // Delete Schedule Button Handler - Hide Row and Set Destroy to TRUE
     form.$('.delete-schedule-btn').on("click", function(e) {
       console.log("Delete Schedule Button Clicked", $(this));
-      $(this).closest(".service-schedule-row").addClass("hidden"); // Hide this row
+      $(this).closest(".service-details-row").addClass("hidden"); // Hide this row
       $(this).siblings().find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
     });
 
     // Add Hours Button Handler shows and prepares next schedule row
     form.$('.add-schedule-btn').on("click", function(e) {
       console.log("Add Schedule Button Clicked", $(this));
-      $(this).closest(".service-schedule-row").removeClass("faded"); // Unfade the parent row element
+      $(this).closest(".service-details-row").removeClass("faded"); // Unfade the parent row element
       $(this).addClass("hidden"); // Hide the add hours button
       $(this).siblings().find(".input-schedule-destroy").attr("value", false); // Set destroy value to false for this element
       $(this).siblings(".delete-schedule-btn").removeClass("hidden"); // Unhide delete button
-      $(this).closest(".service-schedule-row").next().removeClass("hidden"); // Unhide next row
+      $(this).closest(".service-details-row").next().removeClass("hidden"); // Unhide next row
     });
 
     // Handler for Booking Cutoff Times Selector sets all hidden BCT fields to its value
     form.$('.service-bct-master-select').change(function(e) {
-      $(this).closest(".service-bct-container").find(`.cutoff-time-select option[value="${$(this).val()}"]`).attr("selected", true);
+      $(this).closest(".service-details-container").find(`.cutoff-time-select option[value="${$(this).val()}"]`).attr("selected", true);
     });
 
   });
