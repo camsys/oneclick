@@ -1,7 +1,6 @@
 -# Takes a boolean new_service, a boolean active, and then either a service service, or a mode mode.
 - mode = new_service ? mode : service.service_type.code
 - service = new_service ? nil : service
-- service_id = new_service ? "new-#{mode}" : service.id
 
 .tab-pane.panel-body{role: 'tabpanel',
       id: (new_service ? "new-#{mode}-service-tab-content" : "service-#{service.id}-tab-content"),
@@ -9,32 +8,22 @@
   = render partial: "admin/services/form_parts/general",
     locals: { new_service: new_service,
               service: service,
-              mode: mode,
-              service_id: service_id,
-              form_index: 0 }
+              mode: mode }
 
   -unless new_service
     -case mode
     -when "paratransit"
       = render partial: "admin/services/form_parts/paratransit_part1",
         locals: { new_service: new_service,
-                  service: service,
-                  service_id: service_id,
-                  form_index: 1 }
+                  service: service}
       = render partial: "admin/services/form_parts/paratransit_part2",
         locals: { new_service: new_service,
-                  service: service,
-                  service_id: service_id,
-                  form_index: 2 }
+                  service: service }
       = render partial: "admin/services/form_parts/paratransit_part3",
         locals: { new_service: new_service,
-                  service: service,
-                  service_id: service_id,
-                  form_index: 3 }
+                  service: service }
       = render partial: "admin/services/form_parts/paratransit_part4",
         locals: { new_service: new_service,
-                  service: service,
-                  service_id: service_id,
-                  form_index: 4 }
+                  service: service }
     -else
       %h4 SOME OTHER MODE TEMPLATE STUFF
