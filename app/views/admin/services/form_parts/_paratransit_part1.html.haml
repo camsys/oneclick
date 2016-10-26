@@ -1,5 +1,6 @@
 - this_path = "admin/services/form_parts/paratransit_part1"
 - form_index = 1
+- active = local_assigns[:active].nil? ? false : active
 - service_id = new_service ? "new-#{mode}" : service.id
 
 = simple_form_for service || :service,
@@ -41,9 +42,13 @@
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
     var theMap = CsMaps['lmap_service_area_#{service_id}'];
 
-    // Show Map Button for Test
-    form.$('.show-map-btn').on("click", function(e) {
-      console.log("Refresh map button clicked");
+    // Show Map on Load if Active
+    if("#{active}" === "true") {
+      if(theMap) {theMap.showMap()};
+    };
+
+    // Show Map on Tab Shown Event
+    $('a[data-toggle="tab"][data-service-id="#{service_id}"]').on('shown.bs.tab', function (e) {
       if(theMap) {theMap.showMap()};
     });
 
