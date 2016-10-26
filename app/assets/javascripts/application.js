@@ -232,24 +232,73 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
   }
 }
 
-// Form Read-Only Helper Function
-// formId is a jQuery selector string identifying the target form
-// hiddenElements is an array of selectors for elements, hidden and non, where class 'hidden' should be toggled
-function toggleFormReadOnly(formId, hiddenElements) {
-  console.log("Toggling Form Read Only for: ", formId, hiddenElements);
+// Service Form Class acts as helper for service details
+var ServiceForm = function(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
+  this.formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
+  console.log("Setting Up Form", this);
+  this.newService = newService;
+  this.hiddenElements = ['.edit-service-form-btn'].concat(hiddenElements);
+  this.visibleElements = ['.save-service-form-btn'].concat(visibleElements);
+  var thisForm = this;
 
-  // Set read only variable to opposite of form's data-readonly property, and toggle that property.
-  var readonly = !$(formId).data('readonly');
-  $(formId).data('readonly', readonly);
+  // Set form to Read Only
+  this.setReadOnly(true);
+
+  // Prevent double form submit on save click
+  this.$('.save-service-form-btn').on("click", function(e) {
+    e.preventDefault();
+    $(this).closest('.service-details-form').submit();
+  });
+
+  // Edit Button handler, make form not read-only
+  this.$('.edit-service-form-btn').on("click", function(e) {
+    e.preventDefault();
+    thisForm.setReadOnly(false);
+  });
+
+  // Handle Service Update or Create
+  this.$().on("ajax:success", function(evt, data, status, xhr) {
+    if(thisForm.newService) {
+      console.log("Service Created Successfully", arguments);
+      $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
+    } else {
+      console.log("Service Updated Successfully", arguments);
+      $(this).parent().replaceWith(xhr.responseText);
+      // Make Form Read-Only
+      thisForm.setReadOnly(true);
+    }
+  });
+
+};
+
+// Helper function for selecting elements within the form
+ServiceForm.prototype.$ = function(selector="") {
+  return $(this.formId + " " + selector);
+};
+
+// Helper function for enabling or disabling form
+ServiceForm.prototype.setReadOnly = function(readOnly=true) {
 
   // Set all form inputs to readonly value.
-  $(formId + ' :input.form-control').attr("readonly", readonly);
+  this.$(':input.form-control').attr("disabled", readOnly);
 
-  // Toggle hidden on any elements to hide.
-  for (var i = 0; i < hiddenElements.length; i++) {
-    $(hiddenElements[i]).toggleClass('hidden');
+  // Set all form selects disabled value.
+  this.$('select').attr("disabled", readOnly);
+
+  // Disable all buttons.
+  this.$('button:not(.edit-service-form-btn)').attr("disabled", readOnly);
+  this.$('.btn:not(.edit-service-form-btn)').attr("disabled", readOnly);
+
+  // Hide visible elements and show hidden ones, or vice versa
+  for (var i = 0; i < this.visibleElements.length; i++) {
+    var element = this.$(this.visibleElements[i]);
+    readOnly ? element.addClass('hidden') : element.removeClass('hidden');
   }
-}
+  for (var i = 0; i < this.hiddenElements.length; i++) {
+    var element = this.$(this.hiddenElements[i]);
+    readOnly ? element.removeClass('hidden') : element.addClass('hidden');
+  }
+};
 
 // Form Read-Only Helper Function
 // takes a form object with a formId arrays of visible and hidden elements
@@ -257,11 +306,11 @@ function toggleFormReadOnly(formId, hiddenElements) {
 function setFormReadOnly(form, readOnly) {
   console.log("Setting read only for ", form, " to ", readOnly);
 
-  // Set read only variable to readOnly boolean
-  $(form.formId).data('readonly', readOnly);
-
   // Set all form inputs to readonly value.
-  $(form.formId + ' :input.form-control').attr("readonly", readOnly);
+  $(form.formId + ' :input.form-control').attr("disabled", readOnly);
+
+  // Set all form selects disabled value.
+  $(form.formId + ' select').attr("disabled", readOnly);
 
   // Hide visible elements and show hidden ones, or vice versa
   for (var i = 0; i < form.visibleElements.length; i++) {
@@ -272,52 +321,4 @@ function setFormReadOnly(form, readOnly) {
     var element = $(form.formId + " " + form.hiddenElements[i]);
     readOnly ? element.removeClass('hidden') : element.addClass('hidden');
   }
-}
-
-// Set up Service Form Click Handlers
-function setupServiceForm(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
-  var formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
-  console.log("Setting Up Form", formId);
-
-  var thisForm = {
-    formId: formId,
-    hiddenElements: ['.edit-service-form-btn'].concat(hiddenElements),
-    visibleElements: [ '.save-service-form-btn'].concat(visibleElements),
-
-    // Helper function for selecting elements within the form
-    $: function(selector) {
-      return $(formId + " " + selector);
-    }
-
-  };
-
-  // Prevent double form submit on save click
-  $(formId + ' .save-service-form-btn').on("click", function(e) {
-    e.preventDefault();
-    $(formId).submit();
-  });
-
-  // Edit Button handler
-  $(formId + ' .edit-service-form-btn').on("click", function(e) {
-    e.preventDefault();
-    // Make Form Read-Only
-    setFormReadOnly(thisForm, false);
-  });
-
-  // Handle Service Update or Create
-  $(formId)
-  .on("ajax:success", function(evt, data, status, xhr) {
-    console.log($(this));
-    if(newService) {
-      console.log("Service Created Successfully", arguments);
-      $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
-    } else {
-      console.log("Service Updated Successfully", arguments);
-      $(this).parent().replaceWith(xhr.responseText);
-      // Make Form Read-Only
-      setFormReadOnly(thisForm, true);
-    }
-  });
-
-  return thisForm;
 }
