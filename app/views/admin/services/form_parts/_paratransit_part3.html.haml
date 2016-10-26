@@ -6,7 +6,58 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
-  %h4 ELIGIBILITY & ACCOMMODATIONS
+  .service-svc-chars-container
+    %label.control-label Rider Eligibility
+    .row.service-svc-chars-row.faded
+      .form-group.select.optional.col-xs-6
+        = select_tag(:characteristic_id,
+          options_for_select(Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}),
+          {class: "select form-control service-svc-chars-master-select"})
+      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3 Add Eligibility Rule
+    - service.service_characteristics.each do |char|
+      .row.service-svc-chars-row
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :id), value: char.id},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}, selected: char.characteristic_id,
+          input_html: {name: input_name(f, :service_characteristics, :characteristic_id), class: "select-svc-chars-char-id"},
+          wrapper_html: {class: "col-xs-6"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :value), value: char.value},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :active), value: char.active},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :_destroy), value: false, class: "input-svc-chars-destroy"},
+          wrapper_html: {class: "hidden"},
+          label: false
+        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
+    - Characteristic.enabled.length.times do
+      .row.service-svc-chars-row.hidden
+        = f.input :service_characteristics,
+          collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]},
+          input_html: {name: input_name(f, :service_characteristics, :characteristic_id), value: 0, class: "select-svc-chars-char-id"},
+          wrapper_html: {class: "col-xs-6"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :value), value: true},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :active), value: true},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :_destroy), value: true, class: "input-svc-chars-destroy"},
+          wrapper_html: {class: "hidden"},
+          label: false
+        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
@@ -17,5 +68,22 @@
 
     // Setup form, setting parameters via (ruby) string interpolation
     var form = setupServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+    // Handler for New Service Characteristic Selector
+    form.$(".add-svc-char-btn").on("click", function(e) {
+      // On click, change value of next service char form, set its destroy value to false, and unhide it.
+      var charId = $(this).closest(".service-svc-chars-row").find(".service-svc-chars-master-select").val();
+      var nextNewSvcCharsForm = $(this).closest(".service-svc-chars-container").find(".input-svc-chars-destroy[value=true]").first().closest(".service-svc-chars-row");
+      nextNewSvcCharsForm.find(`.select-svc-chars-char-id option[value=${charId}]`).attr("selected", true);
+      nextNewSvcCharsForm.find(".input-svc-chars-destroy").attr("value", false);
+      nextNewSvcCharsForm.removeClass("hidden");
+    });
+
+    // Delete Service Characteristic Handler - Hide Row and Set Destroy to TRUE
+    form.$('.delete-svc-char-btn').on("click", function(e) {
+      console.log("Delete Service Characteristic Button Clicked", $(this));
+      $(this).closest(".service-svc-chars-row").addClass("hidden"); // Hide this row
+      $(this).siblings().find(".input-svc-chars-destroy").attr("value", true); // Set destroy value to true for this element
+    });
 
   });
