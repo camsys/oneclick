@@ -81,7 +81,7 @@ class Admin::ServicesController < Admin::BaseController
 
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,
-                                    :booking_service_code, :advanced_notice_minutes,
+                                    :booking_service_code, :advanced_notice_minutes, :active,
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id, :service_details_partial,

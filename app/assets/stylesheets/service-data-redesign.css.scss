@@ -9,7 +9,7 @@
 
   .panel-body {
     border: 1px solid gainsboro;
-    padding: 30px 30px 10px;
+    padding: 60px 60px 10px;
   }
 
   .panel-body.tab-pane {
@@ -47,7 +47,7 @@
 
 .btn.btn-svc-data {
   border: 1px solid green;
-  border-radius: 10px;
+  border-radius: 6px;
   color: gray;
   // min-width: 100px;
   padding: 6px 12px;
@@ -124,6 +124,7 @@ textarea.form-control.text {
   label:first-child .service-toggle-btn {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right-width: 0;
   }
 
   label:last-child .service-toggle-btn {

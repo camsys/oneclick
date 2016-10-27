@@ -1,0 +1,37 @@
+- this_path = "admin/services/form_parts/activate_service_form"
+- form_index = 100
+- mode = new_service ? mode : service.service_type.code
+- service = new_service ? nil : service
+- service_id = new_service ? "new-#{mode}" : service.id
+
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service.id),
+        remote: true,
+        html: { class: 'form-horizontal activate-service-form', multipart: true },
+        data: {type: :html, "service-id" => service.id, "form-index" => form_index },
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  .form-group
+    %label.col-sm-8.control-label Make this service visible to the public?
+    .btn-activate-service-toggle-group.col-sm-4
+      %label.service-toggle-btn-wrapper
+        %input{name: "service[active]", type: "radio", class: "btn-activate-service-toggle", value: "true", checked: service.active}
+        .btn.btn-svc-data.service-toggle-btn Yes
+      %label.service-toggle-btn-wrapper
+        %input{name: "service[active]", type: "radio", class: "btn-activate-service-toggle", value: "false", checked: !service.active}
+        .btn.btn-svc-data.service-toggle-btn No
+
+:javascript
+  $(document).ready(function() {
+    var serviceId = "#{service_id}";
+
+    $(`.activate-service-form[data-service-id=${serviceId}] input`).change(function(e) {
+      $(`.activate-service-form[data-service-id=${serviceId}]`).submit();
+    });
+
+  });

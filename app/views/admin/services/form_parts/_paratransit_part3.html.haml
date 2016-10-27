@@ -21,7 +21,7 @@
         = select_tag(:characteristic_id,
           options_for_select(Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}),
           {class: "select form-control service-svc-chars-master-select"})
-      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3 Add Eligibility Rule
+      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3 Add Rule
     - service.service_characteristics.each do |char|
       .row.service-details-row
         = f.input :service_characteristics,
