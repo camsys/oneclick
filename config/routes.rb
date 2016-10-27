@@ -399,6 +399,13 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :translations do
+        collection do
+          post 'find'
+          get  'all'
+        end
+      end
+
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
