@@ -49,7 +49,7 @@
   border: 1px solid green;
   border-radius: 10px;
   color: gray;
-  min-width: 100px;
+  // min-width: 100px;
   padding: 6px 12px;
 
   &:hover {
@@ -121,7 +121,18 @@ textarea.form-control.text {
     background-color: rgba(#428bca, 0);
   }
 
+  label:first-child .service-toggle-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  label:last-child .service-toggle-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
   :checked + .service-toggle-btn {
-    background-color: rgba(#428bca, 1);
+    background-color: limegreen;
+    color: white;
   }
 }
