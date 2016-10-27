@@ -278,9 +278,11 @@ ServiceForm.prototype.$ = function(selector="") {
 
 // Helper function for enabling or disabling form
 ServiceForm.prototype.setReadOnly = function(readOnly=true) {
+  console.log("Setting Form ReadOnly", this.formId);
 
   // Set all form controls to disabled, except the edit button.
-  this.$(':input,.btn:not(.edit-service-form-btn)').attr("disabled", readOnly);
+  this.$(':input').attr("disabled", readOnly);
+  this.$('.btn:not(.edit-service-form-btn)').attr("disabled", readOnly);
 
   // Hide visible elements and show hidden ones, or vice versa
   for (var i = 0; i < this.visibleElements.length; i++) {
