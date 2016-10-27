@@ -23,7 +23,7 @@ module Api
       def all
         dictionaries = {}
 
-        if params[:locale]
+        if params[:lang]
           locale = Locale.find_by_name(params[:locale])
           dictionary = {} #Translation.where(locale: locale).each {|t| {t.key => t.value}}
           Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value }
