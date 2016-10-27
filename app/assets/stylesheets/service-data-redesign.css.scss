@@ -40,21 +40,21 @@
     }
   }
 
-  .btn.btn-svc-data {
-    border: 1px solid green;
-    border-radius: 10px;
-    color: gray;
-    min-width: 100px;
-    padding: 6px 12px;
-
-    &:hover {
-      background-color: limegreen;
-      color: white;
-    }
-  }
-
   .subtle-text {
     color: silver;
+  }
+}
+
+.btn.btn-svc-data {
+  border: 1px solid green;
+  border-radius: 10px;
+  color: gray;
+  min-width: 100px;
+  padding: 6px 12px;
+
+  &:hover {
+    background-color: limegreen;
+    color: white;
   }
 }
 
@@ -97,8 +97,31 @@ textarea.form-control.text {
 }
 
 .btn-activate-service-toggle-group {
-  background-color: blue;
-  input.btn-activate-service-toggle[type="radio"]:checked {
-    border-color: red;
+  label {
+    float: left;
+    width: 60px;
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  label input[type=radio] {
+    opacity: 0;
+  }
+
+  label .service-toggle-btn {
+    // padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // line-height: 40px;
+    text-align: center;
+    background-color: rgba(#428bca, 0);
+  }
+
+  :checked + .service-toggle-btn {
+    background-color: rgba(#428bca, 1);
   }
 }
