@@ -25,5 +25,6 @@
     input_html: {name: input_name(f, :schedules, :_destroy), value: sched.id.nil?, class: "input-schedule-destroy"},
     wrapper_html: {class: "hidden"},
     label: false
-  .btn.btn-link.delete-schedule-btn.col-xs-2{class:("hidden" if sched.id.nil?)} delete
-  .btn.btn-default.btn-svc-data.add-schedule-btn.col-xs-2{class:("hidden" unless sched.id.nil?)} Add Hours
+  .col-xs-3
+    .btn.btn-link.delete-schedule-btn{class:("hidden" if sched.id.nil?)} delete
+    .btn.btn-default.btn-svc-data.add-schedule-btn{class:("hidden" unless sched.id.nil?)} Add Hours
