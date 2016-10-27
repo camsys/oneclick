@@ -27,7 +27,7 @@ module Api
           locale = Locale.find_by_name(params[:locale])
           dictionary = {} #Translation.where(locale: locale).each {|t| {t.key => t.value}}
           Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value }
-          dictionaries[locale.name] = dictionary
+          dictionaries = dictionary
         else
           Locale.all.each do |locale|
             dictionary = {} #Translation.where(locale: locale).map {|t| {t.key => t.value}}
