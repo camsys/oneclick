@@ -167,6 +167,10 @@ Oneclick::Application.configure do
   # I18n.available_locales << :tags # when this locale is enabled, display translation_tags instead of translated text
   config.translation_tag_locale_text = 'Tags'
 
+  # Config Variables for Building Service Area Polygons
+  config.coverage_area_tables = ["County", "Zipcode"]  # Coverage Area Tables to include when building polygons
+  config.states = [config.state]
+
 end
 
 
