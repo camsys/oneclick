@@ -4,6 +4,32 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  origin_placeholder: "Starting Address"
+  destination_placeholder: "Destination Address"
+  welcome_message: "Find Your Ride"
+  login: "Login"
+  ok_button: "OK"
+  select_button: "Select"
+  customize_your_trip: "Customize Your Trip"
+  walking_time: "Walking Time"
+  about: "About"
+  next_steps: "Next Steps"
+  more_information: "More Information"
+  directions: "Directions"
+  departing: "Departing"
+  arriving: "Arriving"
+  go_back_button: "Go Back"
+  email_button: "Email"
+  book_button: "Book"
+  print_button: "Print"
+  return_trip_question: "Do you want to plan a return trip to "
+  return_trip_time_question: "When do you want to return to "
+  no_button: "No"
+  yes_button: "Yes"
+  plural_translate_options: "There are %s transit options for your return trip."
+  singular_transit_options: "There is 1 transit option for your return trip."
+
+
   other_name: "Other"
   refresh_materialized_views: "Update Report Data"
   ridepilot: "RidePilot"
@@ -102,6 +128,7 @@ en:
   test_translation: "here is some test text"
   relationship_status_confirmed_name: "Confirmed"
   site_title: "1-Click"
+  title: "1-Click"
 
   only_agency_can_see: "Only %{agency} staff can see this note."
   traveler_notes: "Traveler Notes"
