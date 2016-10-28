@@ -372,7 +372,7 @@ namespace :oneclick do
           service.fare_user = "12152"
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
-          service.active = false
+          service.active = true
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
@@ -466,7 +466,7 @@ namespace :oneclick do
           service.fare_user = "1000004436"
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
-          service.active = false
+          service.active = true
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
