@@ -43,16 +43,9 @@ class Admin::ServicesController < Admin::BaseController
     respond_to do |format|
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
-      # Update the service area by county name
-      county_coverage_array = params[:service][:county_coverage_array]
-      county_endpoint_array = params[:service][:county_endpoint_array]
-      @service.county_coverage_array = county_coverage_array.split(',').map(&:strip) if params[:service][:county_coverage_array]
-      @service.county_endpoint_array = county_endpoint_array.split(',').map(&:strip) if params[:service][:county_endpoint_array]
-
-      puts "ADDING COUNTY GEOMETRIES"
-      county_endpoint_geoms = County.where(name: @service.county_endpoint_array, state: Oneclick::Application.config.state)
-      county_coverage_geoms = County.where(name: @service.county_coverage_array, state: Oneclick::Application.config.state)
-
+      # Update Coverage Area Maps based on text input
+      @service.build_coverage_area(params[:service][:primary_coverage_recipe], "primary_coverage")
+      @service.build_coverage_area(params[:service][:secondary_coverage_recipe], "secondary_coverage")
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
