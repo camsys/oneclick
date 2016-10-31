@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031125619) do
+ActiveRecord::Schema.define(version: 20161031140512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,13 @@ ActiveRecord::Schema.define(version: 20161031125619) do
   create_table "coverage_areas", force: true do |t|
     t.integer "service_id", null: false
     t.boolean "active",     null: false
+  end
+
+  create_table "coverage_zones", force: true do |t|
+    t.string   "recipe"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "date_options", force: true do |t|
@@ -707,9 +714,17 @@ ActiveRecord::Schema.define(version: 20161031125619) do
     t.integer  "booking_profile"
     t.text     "county_endpoint_array"
     t.text     "county_coverage_array"
+<<<<<<< HEAD
     t.integer  "fleet_size"
     t.integer  "trip_volume"
+=======
+    t.integer  "primary_coverage_id"
+    t.integer  "secondary_coverage_id"
+>>>>>>> Add CoverageZone Model to Schema
   end
+
+  add_index "services", ["primary_coverage_id"], :name => "index_services_on_primary_coverage_id"
+  add_index "services", ["secondary_coverage_id"], :name => "index_services_on_secondary_coverage_id"
 
   create_table "services_users", id: false, force: true do |t|
     t.integer "user_id",    null: false
