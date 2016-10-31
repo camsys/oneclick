@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031140512) do
+ActiveRecord::Schema.define(version: 20161031165355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -714,13 +714,8 @@ ActiveRecord::Schema.define(version: 20161031140512) do
     t.integer  "booking_profile"
     t.text     "county_endpoint_array"
     t.text     "county_coverage_array"
-<<<<<<< HEAD
-    t.integer  "fleet_size"
-    t.integer  "trip_volume"
-=======
     t.integer  "primary_coverage_id"
     t.integer  "secondary_coverage_id"
->>>>>>> Add CoverageZone Model to Schema
   end
 
   add_index "services", ["primary_coverage_id"], :name => "index_services_on_primary_coverage_id"
