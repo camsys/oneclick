@@ -666,6 +666,36 @@ class Service < ActiveRecord::Base
     end.join(", ")
   end
 
+  # Creates a coverage area out of a recipe
+  def build_coverage_area(recipe, coverage_area_type="primary_coverage")
+    parsed_recipe = self.parse_coverage_recipe(recipe)
+    geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
+    self.update_attribute(coverage_area_type, CoverageZone.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geoms.reduce { |combined_area, geom| combined_area.union(geom) }))
+  end
+
+  # Returns the coverage area polygons for display in Leaflet
+  def coverage_area_polygons
+    polylines = []
+
+    if self.primary_coverage.try(:geom)
+      polylines << {
+           id: 1,
+           geom: self.primary_coverage.to_array,
+           options:  {color: 'red', width: 2}
+        }
+    end
+
+    if self.secondary_coverage.try(:geom)
+      polylines << {
+           id: 1,
+           geom: self.secondary_coverage.to_array,
+           options:  {color: 'green', width: 2}
+        }
+    end
+
+    polylines.to_json || nil
+  end
+
   #### End Booking Methods
 
   private
