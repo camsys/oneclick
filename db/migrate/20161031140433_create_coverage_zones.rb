@@ -1,6 +1,6 @@
-class CreateCoveragesAgain < ActiveRecord::Migration
+class CreateCoverageZones < ActiveRecord::Migration
   def change
-    create_table :coverages do |t|
+    create_table :coverage_zones do |t|
       t.string :recipe
       t.spatial :geom
 
