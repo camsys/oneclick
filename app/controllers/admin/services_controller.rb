@@ -44,8 +44,8 @@ class Admin::ServicesController < Admin::BaseController
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
       # Update Coverage Area Maps based on text input
-      @service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(params[:service][:primary_coverage_recipe])) if params[:service][:primary_coverage]
-      @service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])) if params[:service][:secondary_coverage]
+      @service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(params[:service][:primary_coverage_recipe])) if params[:service][:primary_coverage_recipe]
+      @service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])) if params[:service][:secondary_coverage_recipe]
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
