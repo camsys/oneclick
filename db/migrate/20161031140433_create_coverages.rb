@@ -1,4 +1,4 @@
-class CreateCoverages < ActiveRecord::Migration
+class CreateCoveragesAgain < ActiveRecord::Migration
   def change
     create_table :coverages do |t|
       t.string :recipe
