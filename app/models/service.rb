@@ -58,8 +58,8 @@ class Service < ActiveRecord::Base
   has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
 
   # New Coverage Area Models
-  belongs_to :primary_coverage, class_name: "CoverageArea"
-  belongs_to :secondary_coverage, class_name: "CoverageArea"
+  belongs_to :primary_coverage, class_name: "Coverage"
+  belongs_to :secondary_coverage, class_name: "Coverage"
 
   has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
 
