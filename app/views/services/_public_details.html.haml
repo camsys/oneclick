@@ -24,6 +24,10 @@
       -if service.service_type and service.service_type.name
         %p
           =translate_helper(:service_type).to_s + ": " + translate_helper(service.service_type.name.downcase.to_sym)
+      %p
+        =translate_helper(:fleet_size).to_s + ': ' + (service.fleet_size.nil? ? translate_helper(:not_listed) : service.fleet_size.to_s)
+      %p
+        =translate_helper(:daily_trips).to_s + ': ' + (service.trip_volume.nil? ? translate_helper(:not_listed) : service.trip_volume.to_s)
       -if service.external_id.present?
         %p
           =translate_helper(:service_id).to_s + ": " + service.external_id.to_s

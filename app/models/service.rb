@@ -88,6 +88,11 @@ class Service < ActiveRecord::Base
     is_service_type('paratransit')
   end
 
+  def is_demand_responsive?
+    service_type && (service_type.code.in? ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"])
+  end
+
+
   def is_ride_hailing?
     service_type && ['uber_x'].index(service_type.code)
   end
