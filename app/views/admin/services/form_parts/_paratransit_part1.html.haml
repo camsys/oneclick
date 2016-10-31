@@ -15,7 +15,7 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :county_endpoint_array,
+  = f.input :primary_coverage_recipe,
       label: "Primary Service Location",
       placeholder: "List county names separated by commas",
       input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
@@ -24,7 +24,7 @@
       placeholder: "List county names separated by commas",
       input_html: { value: service.secondary_coverage ? service.secondary_coverage.recipe : "" }
   = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
-    :multipolygons => service.get_polylines,
+    :multipolygons => service.coverage_area_polygons,
     :tile_provider => 'GOOGLEMAP',
     :min_zoom => 3,
     :max_zoom => 15,

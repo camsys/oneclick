@@ -18,7 +18,7 @@ class CoverageZone < ActiveRecord::Base
 
       # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
       search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
-      state_filter = state_specifier ? [state_specifier] : Oneclick::Application.config.states
+      state_filter = state_specifier ? [state_specifier] : [Oneclick::Application.config.state]
       # state_filter = state_specifier ? [state_specifier] : ["MA", "CT", "VA"]
 
       # Make a hash key for the area name, and fill it with an array of matching objects from the database
