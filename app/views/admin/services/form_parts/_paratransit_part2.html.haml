@@ -87,7 +87,7 @@
     form.$('.delete-schedule-btn').on("click", function(e) {
       console.log("Delete Schedule Button Clicked", $(this));
       $(this).closest(".service-details-row").addClass("hidden"); // Hide this row
-      $(this).siblings().find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
+      $(this).closest(".service-details-row").find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
     });
 
     // Add Hours Button Handler shows and prepares next schedule row
@@ -95,7 +95,7 @@
       console.log("Add Schedule Button Clicked", $(this));
       $(this).closest(".service-details-row").removeClass("faded"); // Unfade the parent row element
       $(this).addClass("hidden"); // Hide the add hours button
-      $(this).siblings().find(".input-schedule-destroy").attr("value", false); // Set destroy value to false for this element
+      $(this).closest(".service-details-row").find(".input-schedule-destroy").attr("value", false); // Set destroy value to false for this element
       $(this).siblings(".delete-schedule-btn").removeClass("hidden"); // Unhide delete button
       $(this).closest(".service-details-row").next().removeClass("hidden"); // Unhide next row
     });
