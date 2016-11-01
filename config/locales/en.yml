@@ -31,6 +31,13 @@ en:
   fleet_size: "Fleet Size"
   daily_trips: "Daily Trips"
   not_listed: "Not Listed"
+  show_mode_paratransit: "Show Paratransit"
+  show_mode_bus: "Show Bus"
+  show_mode_transit: "Show Transit"
+  show_mode_ridehailing: "Show Uber"
+  show_mode_taxi: "Show Taxi"
+  show_mode_bicycle: "Show Bicycle"
+  show_mode_walk: "Show Walk"
 
   other_name: "Other"
   refresh_materialized_views: "Update Report Data"
