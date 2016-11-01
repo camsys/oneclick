@@ -15,15 +15,61 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :booking_profile,
-    as: :select,
-    :collection => booking_services,
-    selected: service.booking_profile.nil? ? 'placeholder' : service.booking_profile,
-    label_html: { class: "header-label"},
-    input_html: { class: "select-booking-profile"}
-  = render partial: "admin/services/form_parts/booking_profile_form_ridepilot", locals: {f:f, service:service}
-  = render partial: "admin/services/form_parts/booking_profile_form_trapeze", locals: {f:f, service:service}
-  = render partial: "admin/services/form_parts/booking_profile_form_ecolane", locals: {f:f, service:service}
+  .service-details-container
+    = f.input :booking_profile,
+      as: :select,
+      :collection => booking_services,
+      selected: service.booking_profile.nil? ? 'placeholder' : service.booking_profile,
+      label_html: { class: "header-label"},
+      input_html: { class: "select-booking-profile"}
+    = render partial: "admin/services/form_parts/booking_profile_form_ridepilot", locals: {f:f, service:service}
+    = render partial: "admin/services/form_parts/booking_profile_form_trapeze", locals: {f:f, service:service}
+    = render partial: "admin/services/form_parts/booking_profile_form_ecolane", locals: {f:f, service:service}
+
+  -# .service-details-container
+  -#   %h4= "Fare Structures #{service.fare_structures.count}"
+  -#   = f.input :fare_structures,
+  -#     as: :select,
+  -#     :collection => [["Flat Fare", 0], ["Mileage", 1], ["Zone", 3]],
+  -#     label_html: { class: "header-label"},
+  -#     input_html: { class: "select-fare-structure"}
+    -#
+    -# = f.simple_fields_for :fare_structures do |fare|
+    -#   - fare_structure = fare.object
+    -#   -# = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare.object}
+    -#   .col-sm-3
+    -#     = translate_helper(:fare_type)
+    -#   .col-sm-9
+    -#     %input.hidden{name:'service[base_fare_structure_attributes][id]', value: fare_structure.id}
+    -#     %select.form-control#fare_type_select{name: 'service[base_fare_structure_attributes][fare_type]'}
+    -#       %option{value: FareStructure::FLAT}
+    -#         = translate_helper(:flat_fare)
+    -#       %option{value: FareStructure::MILEAGE}
+    -#         = translate_helper(:mileage_fare)
+    -#       %option{value: FareStructure::ZONE}
+    -#         = translate_helper(:zone_fare)
+    -#   .row#fare_type_form
+    -#     - fare_type = fare_structure.fare_type
+    -#     - is_flat_fare = fare_type == FareStructure::FLAT
+    -#     - is_mileage_fare = fare_type == FareStructure::MILEAGE
+    -#     - is_zone_fare = fare_type == FareStructure::ZONE
+    -#     .paratransit-flat-fare{style: "#{is_flat_fare ? '' : 'display:none;'}"}
+    -#       = render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: fare_structure}
+    -#     .paratransit-mileage-fare{style: "#{is_mileage_fare ? '' : 'display:none;'}"}
+    -#       = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
+    -#     .paratransit-zone-fare{style: "#{is_zone_fare ? '' : 'display:none;'}"}
+    -#       - if fare_structure.service && fare_structure.service.id
+    -#         = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
+    -#       - else
+    -#         .col-sm-12
+    -#           = translate_helper(:zone_fare_new_service_warning)
+
+    -# - else
+    -#   %h4 No Fare Structures
+    -#   -# = f.simple_fields_for :fare_structures do |fare|
+    -#   -#   = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}
+    -#   -#   = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
+    -#   -#   = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
