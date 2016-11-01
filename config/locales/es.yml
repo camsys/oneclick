@@ -26,6 +26,13 @@ es:
   yes_button: "Yes"
   plural_translate_options: "There are %s transit options for your return trip."
   singular_transit_options: "There is 1 transit option for your return trip."
+  show_mode_paratransit: "Show Paratransit"
+  show_mode_bus: "Show Bus"
+  show_mode_transit: "Show Transit"
+  show_mode_ridehailing: "Show Uber"
+  show_mode_taxi: "Show Taxi"
+  show_mode_bicycle: "Show Bicycle"
+  show_mode_walk: "Show Walk"
   ###################################
 
 
