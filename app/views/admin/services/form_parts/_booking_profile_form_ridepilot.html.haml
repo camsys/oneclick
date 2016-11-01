@@ -9,6 +9,6 @@
       = rp.input :api_token
       = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
   %center
-    .ridepilot-response.alert.alert-info
+    .ridepilot-response.alert.alert-info.hidden
     = button_tag :type => :button, class: "btn btn-default btn-svc-data btn-ridepilot-test-connection", :remote => true do
       = icon_label(:test_connection)

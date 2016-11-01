@@ -100,12 +100,12 @@
         success: function(result){
           form.$('.btn-ridepilot-test-connection').prop('disabled', false);
           form.$('.ridepilot-response').text(result['message']);
-          form.$('.ridepilot-response').show();
+          form.$('.ridepilot-response').removeClass('hidden');
         },
         error: function(result){
           form.$('.btn-ridepilot-test-connection').prop('disabled', false);
           form.$('.ridepilot-response').text(result['message']);
-          form.$('.ridepilot-response').show();
+          form.$('.ridepilot-response').removeClass('hidden');
         }
       });
     });
