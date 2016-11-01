@@ -28,6 +28,10 @@
   label {
     font-weight: normal;
     font-size: $font-size-base;
+
+    &.header-label {
+      font-weight: bold;
+    }
   }
 
   .form-control {

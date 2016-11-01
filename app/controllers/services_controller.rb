@@ -281,7 +281,6 @@ class ServicesController < ApplicationController
   end
 
   def update_trapeze_profile(trapeze_params)
-
     tp = TrapezeProfile.where(service: @service).first_or_initialize
     tp.para_service_id = trapeze_params[:para_service_id]
     tp.endpoint = trapeze_params[:endpoint]
@@ -290,17 +289,14 @@ class ServicesController < ApplicationController
     tp.password = trapeze_params[:password]
     tp.booking_offset_minutes = trapeze_params[:booking_offset_minutes].to_i
     tp.save
-
   end
 
   def update_ridepilot_profile(ridepilot_params)
-
     rp = RidepilotProfile.where(service: @service).first_or_initialize
     rp.provider_id = ridepilot_params[:provider_id]
     rp.endpoint = ridepilot_params[:endpoint]
     rp.api_token = ridepilot_params[:api_token]
     rp.save
-
   end
 
   def authenticate_booking_settings

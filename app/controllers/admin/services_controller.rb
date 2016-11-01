@@ -50,13 +50,13 @@ class Admin::ServicesController < Admin::BaseController
       # Update Booking Service Profile
       puts "Updating booking service profile", params[:service][:booking_profile]
       case params[:service][:booking_profile].to_i
-      when "trapeze"
+      when BookingServices::AGENCY[:trapeze]
         puts "Trapeze!"
         update_trapeze_profile(params[:service][:trapeze_profile])
-      when "ridepilot"
+      when BookingServices::AGENCY[:ridepilot]
         puts "RidePilot!"
         update_ridepilot_profile(params[:service][:ridepilot_profile])
-      when "ecolane"
+      when BookingServices::AGENCY[:ecolane]
         puts "Ecolane!"
       else
         puts "Invalid Booking Service"
@@ -91,7 +91,7 @@ class Admin::ServicesController < Admin::BaseController
   end
 
   def update_trapeze_profile(trapeze_params)
-    puts "Updating Trapeze Profile", trapeze_params
+    puts "Updating Trapeze Profile", trapeze_params.ai
     tp = TrapezeProfile.where(service: @service).first_or_initialize
     tp.para_service_id = trapeze_params[:para_service_id]
     tp.endpoint = trapeze_params[:endpoint]
@@ -100,17 +100,15 @@ class Admin::ServicesController < Admin::BaseController
     tp.password = trapeze_params[:password]
     tp.booking_offset_minutes = trapeze_params[:booking_offset_minutes].to_i
     tp.save
-
   end
 
   def update_ridepilot_profile(ridepilot_params)
-    puts "Updating RidePilot Profile", ridepilot_params
+    puts "Updating RidePilot Profile", ridepilot_params.ai
     rp = RidepilotProfile.where(service: @service).first_or_initialize
     rp.provider_id = ridepilot_params[:provider_id]
     rp.endpoint = ridepilot_params[:endpoint]
     rp.api_token = ridepilot_params[:api_token]
     rp.save
-
   end
 
   def authenticate_booking_settings
