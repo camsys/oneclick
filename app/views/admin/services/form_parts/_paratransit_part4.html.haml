@@ -1,11 +1,12 @@
 - this_path = "admin/services/form_parts/paratransit_part4"
 - form_index = 4
 - service_id = new_service ? "new-#{mode}" : service.id
+- booking_services = BookingServices::AGENCY.sort.map {|k,v| [translate_helper(k), v] }.unshift(["Select a booking service", 'placeholder'])
 
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'form-horizontal service-details-form', multipart: true },
+        html: { class: 'form-vertical service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},
         authenticity_token: true,
         wrapper: :vertical_form do |f|
@@ -14,7 +15,46 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  %h4 FARE AND BOOKING
+  = f.input :booking_profile,
+    as: :select,
+    :collection => booking_services,
+    selected: service.booking_profile.nil? ? 'placeholder' : service.booking_profile,
+    input_html: { class: "select-booking-profile"}
+
+  .booking-profile-form-container.ridepilot.agency-2{ class: service.booking_profile == 2 ? "" : "hidden" }
+    = f.simple_fields_for :ridepilot_profile do |rp|
+      -unless service.ridepilot_profile.nil?
+        = rp.input :endpoint, input_html: {value: service.ridepilot_profile.endpoint, class: "input-ridepilot-profile-endpoint"}
+        = rp.input :api_token, input_html: {value: service.ridepilot_profile.api_token, class: "input-ridepilot-profile-api-token"}
+        = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id), input_html: {value: service.ridepilot_profile.provider_id, class: "input-ridepilot-profile-provider-id"}
+      -else
+        = rp.input :endpoint
+        = rp.input :api_token
+        = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
+    %center
+      .ridepilot-response.alert.alert-info
+      = button_tag :type => :button, class: "btn btn-default btn-svc-data btn-ridepilot-test-connection", :remote => true do
+        = icon_label(:test_connection)
+
+  .booking-profile-form-container.trapeze.agency-1{ class: service.booking_profile == 1 ? "" : "hidden" }
+    = f.simple_fields_for :trapeze_profile do |tp|
+      -unless service.trapeze_profile.nil?
+        = tp.input :endpoint, input_html: {value: service.trapeze_profile.endpoint}
+        = tp.input :namespace, input_html: {value: service.trapeze_profile.namespace}
+        = tp.input :username, input_html: {value: service.trapeze_profile.username}
+        = tp.input :password, input_html: {value: service.trapeze_profile.password}
+        = tp.input :para_service_id, label: 'Trapeze ParaServiceId', input_html: {value: service.trapeze_profile.para_service_id}
+        = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: service.trapeze_profile.booking_offset_minutes}
+      -else
+        = tp.input :endpoint
+        = tp.input :namespace
+        = tp.input :username
+        = tp.input :password
+        = tp.input :para_service_id, label: 'Trapeze ParaServiceId'
+        = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: 0}
+
+  .booking-profile-form-container.ecolane.agency-0{ class: service.booking_profile == 0 ? "" : "hidden" }
+    %p Ecolane Profile Form
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
@@ -25,5 +65,34 @@
 
     // Setup form, setting parameters via (ruby) string interpolation
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+    // Display appropriate booking service form on menu select
+    form.$('.select-booking-profile').on('change', function(e) {
+      var bs = this.value;
+      form.$('.booking-profile-form-container').addClass('hidden');
+      form.$(`.booking-profile-form-container.agency-${bs}`).removeClass('hidden');
+    });
+
+    form.$('.btn-ridepilot-test-connection').on("click", function(){
+      form.$('.btn-ridepilot-test-connection').prop('disabled', true);
+      var ridepilot_endpoint = form.$('.input-ridepilot-profile-endpoint').val();
+      var ridepilot_api_token = form.$('.input-ridepilot-profile-api-token').val();
+      var ridepilot_provider_id = form.$('.input-ridepilot-profile-provider-id').val();
+
+      $.ajax({
+        url: '/services/authenticate_booking_settings?booking_profile=' + '#{BookingServices::AGENCY[:ridepilot]}' + '&endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
+        method: 'GET',
+        success: function(result){
+          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
+          form.$('.ridepilot-response').text(result['message']);
+          form.$('.ridepilot-response').show();
+        },
+        error: function(result){
+          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
+          form.$('.ridepilot-response').text(result['message']);
+          form.$('.ridepilot-response').show();
+        }
+      });
+    });
 
   });
