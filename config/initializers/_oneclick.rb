@@ -18,8 +18,8 @@ Oneclick::Application.configure do
   config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
 
   #Staff email updates for booked ecolane trips
-  config.send_ecolane_email_updates = true
-  config.ecolane_email_update_recipients = "ngarcia@camsys.com, nicolas.o.garcia@gmail.com"
+  config.send_ecolane_email_updates = false
+  config.ecolane_email_update_recipients = "email@camsys.com, email@camsys.com"
 
   #Review the necessity of these variables
   config.show_update_services = false
