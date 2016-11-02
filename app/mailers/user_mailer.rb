@@ -30,6 +30,13 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
+  def booked_trip_update_email(addresses, trip, booking_service=nil)
+    @trip = trip
+    @booking_service = booking_service
+    @itineraries = trip.selected_itineraries
+    mail(to:addresses, subject: "A User Booked a Trip in #{booking_service}", from: @@from)
+  end
+
   def provider_trip_email(emails, trip, subject, from, comments)
     @trip = trip
     @comments = comments
