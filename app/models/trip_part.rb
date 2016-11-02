@@ -175,7 +175,7 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
-    
+
     modes.each do |mode|
 
       Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
@@ -196,7 +196,7 @@ class TripPart < ActiveRecord::Base
         timed "rideshare" do
           itins += create_rideshare_itineraries
         end
-      when Mode.ride_hailing 
+      when Mode.ride_hailing
         timed "ride_hailing" do
           itins += RideHailingItinerary.get_itineraries(self)
         end
@@ -296,11 +296,29 @@ class TripPart < ActiveRecord::Base
       itins = check_for_short_drives(itins)
     end
 
+    # Filter out itineraries outside of a configured time window
+    if Oneclick::Application.config.respond_to? :trip_result_time_window
+      itins = filter_by_time_window(itins)
+    end
+
     # Don't hide duplicate itineraries in new UI
     # See https://www.pivotaltracker.com/story/show/71254872
     # TODO This will probably break kiosk, will add story
     # hide_duplicate_fixed_route(itineraries)
     itins
+  end
+
+  # Filters itineraries significantly before the requested arrival or after the requested departure time
+  def filter_by_time_window itineraries
+    window = Oneclick::Application.config.trip_result_time_window
+    puts "Window is: #{window}"
+    if self.is_depart
+      # Filter out itineraries that begin way after scheduled departure time
+      return itineraries.select {|itin| itin.start_time <= (self.scheduled_time + window)}
+    else
+      # Filter out itineraries that end way before scheduled arrival time
+      return itineraries.select {|itin| itin.end_time >= (self.scheduled_time - window)}
+    end
   end
 
   # TODO refactor following 4 methods
