@@ -1,0 +1,44 @@
+%head
+
+-@itineraries.each_with_index do |itin, i|
+  %h3= (i == 0) ? "Outbound Trip" : "Return Trip"
+  %table.trip_header{style: "font-size:1.0em; padding: 12px 0px; font-family: 'Helvetica Neue', Arial;"}
+    %tr
+      %td{style: "color:grey; padding-right: 10px;"}
+        %strong.trip_header_detail
+          = 'From: '
+      %td{style: "padding-right: 10px;"}
+        %strong.trip_header_detail
+          =itin.trip_part.from_trip_place.raw_address
+    %tr
+      %td{style: "color:grey; weight:strong; padding-right: 10px;"}
+        %strong.trip_header_detail
+          ='To: '
+      %td{style: "padding-right: 10px;"}
+        %strong.trip_header_detail
+          =itin.trip_part.to_trip_place.raw_address
+    %tr
+      %td{style: "color:grey; padding-right: 10px;"}
+        %strong.trip_header_detail
+          ='Date: '
+      %td{style: "padding-right: 10px;"}
+        %strong
+          =itin.trip_part.scheduled_time.in_time_zone.strftime("%A, %B %-d")
+    %tr
+      %td{style: "color:grey; padding-right: 10px;"}
+        %strong.trip_header_detail
+          ='Time: '
+      %td{style: "padding-right: 10px;"}
+        %strong
+          =itin.trip_part.scheduled_time.in_time_zone.strftime("%I:%M %p")
+    -unless itin.booking_confirmation.nil?
+      %tr
+        %td{style: "color:grey; padding-right: 10px;"}
+          %strong.trip_header_detail
+            ="#{@booking_service} Confirmation #: "
+        %td{style: "padding-right: 10px;"}
+          %strong
+            =itin.booking_confirmation
+
+%hr{style: "height:12px; background:#848484;"}
+= translate_helper(:user_trip_email_footer).to_s

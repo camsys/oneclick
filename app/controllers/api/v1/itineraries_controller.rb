@@ -232,7 +232,18 @@ module Api
             negotiated_duration = negotiated_do_time - negotiated_pu_time
             negotiated_do_time = negotiated_do_time.iso8601
             results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
+
           end
+
+          # If staff email updates are configured, send one for the booked trip.
+          if Oneclick::Application.config.send_ecolane_email_updates
+            puts "Sending Ecolane Update Email", results_array.ai
+            trip = Trip.find(results_array.first[:trip_id])
+            UserMailer.booked_trip_update_email(Oneclick::Application.config.ecolane_email_update_recipients,
+              trip,
+              "Ecolane").deliver
+          end
+
 
         #Build Failure Response
         else

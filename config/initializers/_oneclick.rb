@@ -17,6 +17,10 @@ Oneclick::Application.configure do
   config.ada_funding_sources = []
   config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
 
+  #Staff email updates for booked ecolane trips
+  config.send_ecolane_email_updates = true
+  config.ecolane_email_update_recipients = "ngarcia@camsys.com, nicolas.o.garcia@gmail.com"
+
   #Review the necessity of these variables
   config.show_update_services = false
   config.min_drive_seconds = 180
