@@ -60,7 +60,10 @@ class CoverageZone < ActiveRecord::Base
   def self.build_coverage_area(recipe)
     parsed_recipe = self.parse_coverage_recipe(recipe)
     geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
-    return self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geoms.reduce { |combined_area, geom| combined_area.union(geom) })
+    geom = geoms.reduce { |combined_area, geom| combined_area.union(geom) }
+    return if geom.nil?
+    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon)
+    return self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
   end
 
   # Returns an array of coverage zone polygon geoms
