@@ -31,6 +31,7 @@ Oneclick::Application.configure do
   config.allows_booking = false
   config.restrict_results_registered_services = false #Only show results on the review page from services that the user is registered to book with (used at PA)
   config.replace_long_walks = false
+  config.selected_sortby_tags = ["start-time", "end-time"]
 
   config.street_view_url = '/streetview.html'
   config.enable_sidewalk_obstruction = true
