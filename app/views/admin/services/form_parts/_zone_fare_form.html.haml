@@ -1,0 +1,35 @@
+.fare-structure-form-container.type-3{ class: fare_structure.fare_type == 3 ? "" : "hidden" }
+  = button_tag :type => 'button',
+    "data-target" => "#fare-zone-upload-dialog-service-#{service.id}",
+    "data-toggle" => "modal",
+    :class => "btn btn-default btn-svc-data pull-right" do
+    = translate_helper(:upload_fare_zones)
+  %div{id: "zone-fares-table-service-#{service.id}"}
+    - service_id = fare_structure.service.id if fare_structure.service
+    - zones = FareZone.where(service_id: service_id).select(:id, :zone_id).order(:zone_id)
+    - fares = {}
+    - fare_structure.zone_fares.each { |x| fares["from_#{x.from_zone_id}_to_#{x.to_zone_id}"] = {id: x.id, rate: x.rate}}
+    - if zones.count > 0
+      - fares = nil if !fares
+      %table.table.table-condensed.table-striped.table-bordered.table-hover
+        %thead
+          %tr
+            %th= translate_helper(:zone_id)
+            - zones.each do |zone|
+              %th= zone[:zone_id]
+        %tbody
+          - zones.each do |from_zone|
+            %tr
+              %td= from_zone[:zone_id]
+              - zones.each do |to_zone|
+                %td
+                  - key = "from_#{from_zone[:id]}_to_#{to_zone[:id]}"
+                  - has_fare = if fares && fares[key]
+                  - has_fare
+                    %input.hidden{name: 'service[zone_fares_attributes][][id]', value: fares[key][:id]}
+                  %input.hidden{name: 'service[zone_fares_attributes][][from_zone_id]', value: from_zone[:id]}
+                  %input.hidden{name: 'service[zone_fares_attributes][][to_zone_id]', value: to_zone[:id]}
+                  %input.form-control.text-right{style: "min-width: 60px; padding: 0px;", type: 'number', name: 'service[zone_fares_attributes][][rate]', min:"0", value: (has_fare ? fares[key][:rate] : '')}
+    - else
+      .row_fluid
+        = translate_helper(:upload_fare_zones_notes)

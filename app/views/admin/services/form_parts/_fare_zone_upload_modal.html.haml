@@ -1,0 +1,31 @@
+.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:upload_fare_zones),
+  id: "fare-zone-upload-dialog-service-#{service.id}",
+  :role => "dialog",
+  "aria-hidden" => 'true',
+  :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        = button_tag class: 'btn btn-default btn-svc-data pull-right', data: {dismiss: 'modal'} do
+          = translate_helper(:cancel)
+        = button_tag id: "fare-zone-upload-button-service-#{service.id}", class: "btn btn-default btn-svc-data pull-right" do
+          = translate_helper(:ok)
+        :javascript
+          $("#fare-zone-upload-button-service-#{service.id}").on('click', function() {
+            $("#fare-zone-upload-form-service-#{service.id}").submit();
+          });
+        .modal-title{:style => "text-align:left;"}
+          %strong
+            = translate_helper(:upload_fare_zones)
+      .modal-body{:style => "text-align:left;"}
+        .modal-flash
+        = simple_form_for :fare_zone, url: service_fare_zones_url(service),
+          remote: true, format: 'js',
+          html: { class: 'form-horizontal', multipart: true, id: "fare-zone-upload-form-service-#{service.id}" },
+          authenticity_token: true,
+          wrapper: :horizontal_form do |fzm|
+          = fzm.error_notification message: print_messages(fzm)
+          %label
+            = translate_helper(:upload_fare_zones_notes)
+          = fzm.input :zone_id_column, :label => translate_helper(:zone_id_column), required:true
+          = fzm.input :file, required:true, :label => translate_helper(:fare_zones_shapefile),:as => :file

@@ -14,6 +14,7 @@ class Admin::ServicesController < Admin::BaseController
 
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
+    @service.fare_structures.build
 
     respond_to do |format|
       puts "RESPONDING TO CREATE REQUEST", request.format.html?
@@ -48,19 +49,10 @@ class Admin::ServicesController < Admin::BaseController
       @service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])) if params[:service][:secondary_coverage_recipe]
 
       # Update Booking Service Profile
-      puts "Updating booking service profile", params[:service][:booking_profile]
-      case params[:service][:booking_profile].to_i
-      when BookingServices::AGENCY[:trapeze]
-        puts "Trapeze!"
-        update_trapeze_profile(params[:service][:trapeze_profile])
-      when BookingServices::AGENCY[:ridepilot]
-        puts "RidePilot!"
-        update_ridepilot_profile(params[:service][:ridepilot_profile])
-      when BookingServices::AGENCY[:ecolane]
-        puts "Ecolane!"
-      else
-        puts "Invalid Booking Service"
-      end
+      update_booking_service_profile
+
+      # Update Fare Structures
+      update_fare
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
@@ -87,7 +79,19 @@ class Admin::ServicesController < Admin::BaseController
     puts "LOADING SERVICE", @service.ai
   end
 
-  def update_booking_profile()
+  def update_booking_service_profile
+    puts "Updating booking service profile", params[:service][:booking_profile]
+
+    case params[:service][:booking_profile].to_i
+    when BookingServices::AGENCY[:trapeze]
+      update_trapeze_profile(params[:service][:trapeze_profile])
+    when BookingServices::AGENCY[:ridepilot]
+      update_ridepilot_profile(params[:service][:ridepilot_profile])
+    when BookingServices::AGENCY[:ecolane]
+      puts "Ecolane!"
+    else
+      puts "Invalid Booking Service"
+    end
   end
 
   def update_trapeze_profile(trapeze_params)
@@ -120,6 +124,88 @@ class Admin::ServicesController < Admin::BaseController
     else
       render json: {message: result[:message]}
     end
+  end
+
+  def update_fare
+    if @service.fare_structures.count == 0
+      @service.fare_structures.build
+    end
+
+    fs_attrs = params[:service][:base_fare_structure_attributes]
+
+    if !fs_attrs[:id].blank?
+      fs = FareStructure.find(fs_attrs[:id])
+    else
+      fs = @service.fare_structures.first
+    end
+    fs.fare_type = fs_attrs[:fare_type].to_i
+
+    case fs.fare_type
+    when FareStructure::FLAT
+      # flat fare
+      flat_fare_attrs = params[:service][:flat_fare_attributes]
+      flat_fare_params = {
+        fare_structure: fs,
+        one_way_rate: (flat_fare_attrs[:one_way_rate].to_f if !flat_fare_attrs[:one_way_rate].blank?),
+        round_trip_rate: (flat_fare_attrs[:round_trip_rate].to_f if !flat_fare_attrs[:round_trip_rate].blank?)
+      }
+
+      if !fs.flat_fare
+        FlatFare.create flat_fare_params
+      else
+        fs.flat_fare.update_attributes flat_fare_params
+      end
+
+      if fs.mileage_fare
+        fs.mileage_fare.delete
+        fs.mileage_fare = nil
+      end
+      fs.zone_fares.update_all(:rate => nil)
+    when FareStructure::MILEAGE
+      # mileage fare
+      mileage_fare_attrs = params[:service][:mileage_fare_attributes]
+      mileage_fare_params = {
+        fare_structure: fs,
+        base_rate: (mileage_fare_attrs[:base_rate].to_f if !mileage_fare_attrs[:base_rate].blank? ),
+        mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !mileage_fare_attrs[:mileage_rate].blank?)
+      }
+
+      if !fs.mileage_fare
+        MileageFare.create mileage_fare_params
+      else
+        fs.mileage_fare.update_attributes mileage_fare_params
+      end
+
+      fs.zone_fares.update_all(:rate => nil)
+      if fs.flat_fare
+        fs.flat_fare.delete
+        fs.flat_fare = nil
+      end
+    when FareStructure::ZONE
+      # zone fares
+      zone_fares_attrs = params[:service][:zone_fares_attributes]
+
+      zone_fares_attrs.each do | fare_attrs |
+        next if fare_attrs[:rate].blank?
+        fare_params = {
+          rate: fare_attrs[:rate].to_f
+        }
+
+        fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
+      end
+
+      if fs.mileage_fare
+        fs.mileage_fare.delete
+        fs.mileage_fare = nil
+      end
+
+      if fs.flat_fare
+        fs.flat_fare.delete
+        fs.flat_fare = nil
+      end
+    end
+
+    fs.save
   end
 
   def service_params

@@ -2,6 +2,7 @@
 - form_index = 4
 - service_id = new_service ? "new-#{mode}" : service.id
 - booking_services = BookingServices::AGENCY.sort.map {|k,v| [translate_helper(k), v] }.unshift(["Select a booking service", 'placeholder'])
+- fare_types = FareStructure::TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
 
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
@@ -22,58 +23,29 @@
       selected: service.booking_profile.nil? ? 'placeholder' : service.booking_profile,
       label_html: { class: "header-label"},
       input_html: { class: "select-booking-profile"}
-    = render partial: "admin/services/form_parts/booking_profile_form_ridepilot", locals: {f:f, service:service}
-    = render partial: "admin/services/form_parts/booking_profile_form_trapeze", locals: {f:f, service:service}
-    = render partial: "admin/services/form_parts/booking_profile_form_ecolane", locals: {f:f, service:service}
+    = render partial: "admin/services/form_parts/booking_profile_form_ridepilot", locals: {f: f, service: service}
+    = render partial: "admin/services/form_parts/booking_profile_form_trapeze", locals: {f: f, service: service}
+    = render partial: "admin/services/form_parts/booking_profile_form_ecolane", locals: {f: f, service: service}
 
-  -# .service-details-container
-  -#   %h4= "Fare Structures #{service.fare_structures.count}"
-  -#   = f.input :fare_structures,
-  -#     as: :select,
-  -#     :collection => [["Flat Fare", 0], ["Mileage", 1], ["Zone", 3]],
-  -#     label_html: { class: "header-label"},
-  -#     input_html: { class: "select-fare-structure"}
-    -#
-    -# = f.simple_fields_for :fare_structures do |fare|
-    -#   - fare_structure = fare.object
-    -#   -# = render partial: 'services/paratransit_fares/form', locals: {fare_structure: fare.object}
-    -#   .col-sm-3
-    -#     = translate_helper(:fare_type)
-    -#   .col-sm-9
-    -#     %input.hidden{name:'service[base_fare_structure_attributes][id]', value: fare_structure.id}
-    -#     %select.form-control#fare_type_select{name: 'service[base_fare_structure_attributes][fare_type]'}
-    -#       %option{value: FareStructure::FLAT}
-    -#         = translate_helper(:flat_fare)
-    -#       %option{value: FareStructure::MILEAGE}
-    -#         = translate_helper(:mileage_fare)
-    -#       %option{value: FareStructure::ZONE}
-    -#         = translate_helper(:zone_fare)
-    -#   .row#fare_type_form
-    -#     - fare_type = fare_structure.fare_type
-    -#     - is_flat_fare = fare_type == FareStructure::FLAT
-    -#     - is_mileage_fare = fare_type == FareStructure::MILEAGE
-    -#     - is_zone_fare = fare_type == FareStructure::ZONE
-    -#     .paratransit-flat-fare{style: "#{is_flat_fare ? '' : 'display:none;'}"}
-    -#       = render partial: 'services/paratransit_fares/flat_fare_fields', locals: {fare_structure: fare_structure}
-    -#     .paratransit-mileage-fare{style: "#{is_mileage_fare ? '' : 'display:none;'}"}
-    -#       = render partial: 'services/paratransit_fares/mileage_fare_fields', locals: {fare_structure: fare_structure}
-    -#     .paratransit-zone-fare{style: "#{is_zone_fare ? '' : 'display:none;'}"}
-    -#       - if fare_structure.service && fare_structure.service.id
-    -#         = render partial: 'services/paratransit_fares/zone_fare_fields', locals: {fare_structure: fare_structure}
-    -#       - else
-    -#         .col-sm-12
-    -#           = translate_helper(:zone_fare_new_service_warning)
-
-    -# - else
-    -#   %h4 No Fare Structures
-    -#   -# = f.simple_fields_for :fare_structures do |fare|
-    -#   -#   = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}
-    -#   -#   = fare.input :rate, label: translate_helper(:mileage_rate), input_html: {class: "form-control"}
-    -#   -#   = f.input :taxi_fare_finder_city, label: translate_helper(:taxi_fare_finder_city)
+  .service-details-container
+    = f.simple_fields_for :fare_structures do |fare|
+      - fare_structure = fare.object
+      = f.input :fare_structures,
+        as: :select,
+        :collection => fare_types,
+        selected: fare_structure.fare_type,
+        label: translate_helper(:fare_type),
+        label_html: { class: "header-label"},
+        input_html: { class: "select-fare-structure", name: 'service[base_fare_structure_attributes][fare_type]', value: fare_structure.id}
+      = render partial: 'admin/services/form_parts/flat_fare_form', locals: {f: f, fare_structure: fare_structure}
+      = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
+      = render partial: 'admin/services/form_parts/zone_fare_form', locals: {f: f, fare_structure: fare_structure, service: service}
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
     .btn.btn-link.hidden.edit-service-form-btn edit
+
+= render partial: "admin/services/form_parts/fare_zone_upload_modal", locals: {service: service}
 
 :javascript
   $(document).ready(function() {
@@ -88,6 +60,14 @@
       form.$(`.booking-profile-form-container.agency-${bs}`).removeClass('hidden');
     });
 
+    // Display appropriate fare structure form on menu select
+    form.$('.select-fare-structure').on('change', function(e) {
+      var fs = this.value;
+      form.$('.fare-structure-form-container').addClass('hidden');
+      form.$(`.fare-structure-form-container.type-${fs}`).removeClass('hidden');
+    });
+
+    // RidePilot Test Connection Button Handler
     form.$('.btn-ridepilot-test-connection').on("click", function(){
       form.$('.btn-ridepilot-test-connection').prop('disabled', true);
       var ridepilot_endpoint = form.$('.input-ridepilot-profile-endpoint').val();
