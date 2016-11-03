@@ -66,6 +66,7 @@ Oneclick::Application.configure do
   config.max_walk_seconds = 1200
   config.max_walk_seconds_is_constraint = true #If a trip has someone walking longer than the max_walk_seconds don't present it.
                                                 #If this is false, max_walk is a preference and not a constraint
+  config.filter_midnight = false #Filter any trips that begin/end on a different day than they were scheduled to begin/end.
 
   # Paratransit Time Estimate Constants
   config.paratransit_duration_factor = 4.0
