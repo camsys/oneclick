@@ -78,6 +78,17 @@ module Api
         return
       end
 
-    end
-  end
-end
+      # If logged in, returns the 4 most recent places.
+      def recent
+        if @traveler.is_api_guest?
+          render status: 200, json: []
+          return
+        end
+
+        render status: 200, json: @traveler.recent_places.map { |place| place.build_place_details_hash}
+
+      end
+
+    end #Places Controller
+  end #V1
+end #API

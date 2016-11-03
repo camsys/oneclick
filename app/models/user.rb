@@ -331,4 +331,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  #Return 4 most recent trip places.
+  def recent_places count=4
+    self.trip_places.order(created_at: :desc).to_a.uniq(&:address1)[0..(count-1)]
+  end
+
 end
