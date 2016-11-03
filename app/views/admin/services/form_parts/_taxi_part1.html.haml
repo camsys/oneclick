@@ -1,0 +1,30 @@
+- this_path = "admin/services/form_parts/taxi_part1"
+- form_index = 1
+- active = local_assigns[:active].nil? ? false : active
+- service_id = new_service ? "new-#{mode}" : service.id
+
+= simple_form_for service || :service,
+        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  = f.input :phone
+
+  .pull-right
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
+    .btn.btn-link.hidden.edit-service-form-btn edit
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+  });

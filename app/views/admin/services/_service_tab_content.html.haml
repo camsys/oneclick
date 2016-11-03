@@ -30,10 +30,21 @@
     -when "transit"
       = render partial: "admin/services/form_parts/transit_part1",
         locals: { new_service: new_service,
-                  service: service,
-                  active: active }
+                  service: service }
     -when "taxi"
-      %h4 ADDITIONAL TAXI STUFF
+      = render partial: "admin/services/form_parts/taxi_part1",
+        locals: { new_service: new_service,
+                  service: service}
+      = render partial: "admin/services/form_parts/taxi_part2",
+        locals: { new_service: new_service,
+                  service: service,
+                  active: active}
+      = render partial: "admin/services/form_parts/taxi_part3",
+        locals: { new_service: new_service,
+                  service: service }
+      = render partial: "admin/services/form_parts/taxi_part4",
+        locals: { new_service: new_service,
+                  service: service }
     -else
       %h4 SOME OTHER MODE TEMPLATE STUFF
 

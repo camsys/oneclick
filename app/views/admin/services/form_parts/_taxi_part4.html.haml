@@ -1,8 +1,7 @@
-- this_path = "admin/services/form_parts/paratransit_part4"
+- this_path = "admin/services/form_parts/taxi_part4"
 - form_index = 4
 - service_id = new_service ? "new-#{mode}" : service.id
-- booking_services = BookingServices::AGENCY.sort.map {|k,v| [translate_helper(k), v] }.unshift(["Select a booking service", 'placeholder'])
-- fare_types = FareStructure::PARATRANSIT_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
+- fare_types = FareStructure::TAXI_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
 
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
@@ -17,17 +16,6 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .service-details-container
-    = f.input :booking_profile,
-      as: :select,
-      :collection => booking_services,
-      selected: service.booking_profile.nil? ? 'placeholder' : service.booking_profile,
-      label_html: { class: "header-label"},
-      input_html: { class: "select-booking-profile"}
-    = render partial: "admin/services/form_parts/booking_profile_form_ridepilot", locals: {f: f, service: service}
-    = render partial: "admin/services/form_parts/booking_profile_form_trapeze", locals: {f: f, service: service}
-    = render partial: "admin/services/form_parts/booking_profile_form_ecolane", locals: {f: f, service: service}
-
-  .service-details-container
     = f.simple_fields_for :fare_structures do |fare|
       - fare_structure = fare.object
       = f.input :fare_structures,
@@ -37,9 +25,8 @@
         label: translate_helper(:fare_type),
         label_html: { class: "header-label"},
         input_html: { class: "select-fare-structure", name: 'service[base_fare_structure_attributes][fare_type]', value: fare_structure.id}
-      = render partial: 'admin/services/form_parts/flat_fare_form', locals: {f: f, fare_structure: fare_structure}
       = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
-      = render partial: 'admin/services/form_parts/zone_fare_form', locals: {f: f, fare_structure: fare_structure, service: service}
+      = render partial: 'admin/services/form_parts/tff_fare_form', locals: {f: f, fare_structure: fare_structure}
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
@@ -52,13 +39,6 @@
 
     // Setup form, setting parameters via (ruby) string interpolation
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
-
-    // Display appropriate booking service form on menu select
-    form.$('.select-booking-profile').on('change', function(e) {
-      var bs = this.value;
-      form.$('.booking-profile-form-container').addClass('hidden');
-      form.$(`.booking-profile-form-container.agency-${bs}`).removeClass('hidden');
-    });
 
     // Display appropriate fare structure form on menu select
     form.$('.select-fare-structure').on('change', function(e) {

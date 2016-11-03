@@ -7,14 +7,11 @@ class Admin::ServicesController < Admin::BaseController
   end
 
   # POST /admin/providers/:provider_id/services
+  # load_service is called before this runs
   def create
-    puts "CREATE NEW SERVICE", params.ai
-    # already done by load_service
-    # @service = Service.new(service_params)
 
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
-    @service.fare_structures.build
 
     respond_to do |format|
       puts "RESPONDING TO CREATE REQUEST", request.format.html?
@@ -74,9 +71,21 @@ class Admin::ServicesController < Admin::BaseController
     end
   end
 
+  # Initialize Service and perform setup actions as necessary
   def load_service
     @service = Service.new(service_params)
-    puts "LOADING SERVICE", @service.ai
+
+    # Perform Mode-specific Actions (e.g. build fare structures)
+    case @service.service_type_id
+    when 1 # Paratransit
+      @service.fare_structures.build(fare_type: 0)
+    when 4 # Transit
+      # TRANSIT ACTIONS
+    when 5 # Taxi
+      @service.fare_structures.build(fare_type: 1)
+    else
+      # ELSE ACTIONS
+    end
   end
 
   def update_booking_service_profile

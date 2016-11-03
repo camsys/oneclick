@@ -18,12 +18,18 @@ class FareStructure < ActiveRecord::Base
   FLAT = 0
   MILEAGE = 1
   COMPLEX = 2
-  ZONE=3
+  ZONE = 3
+  TFF = 4
 
-  TYPES = {
-    flat: 0,
-    mileage: 1,
-    zone: 3
+  PARATRANSIT_TYPES = {
+    flat: FLAT,
+    mileage: MILEAGE,
+    zone: ZONE
+  }
+
+  TAXI_TYPES = {
+    mileage: MILEAGE,
+    tff: TFF
   }
 
   def fare_data
