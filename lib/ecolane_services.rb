@@ -275,6 +275,34 @@ class EcolaneServices
     return true, fare
   end
 
+  def query_preferred_fare(trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token)
+
+    url_options =  "/api/order/" + system + "/query_preferred_fares"
+    url = BASE_URL + url_options
+    #funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token)
+    #funding_xml = Nokogiri::XML(funding_options.body)
+    #Rails.logger.info("Begin Funding info")
+    #Rails.logger.info(funding_xml)
+    #Rails.logger.info("End Funding info")
+    order =  build_order(nil, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '2')
+    order = order.to_s
+    resp = send_request(url, token, 'POST', order)
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    if resp_code != "200"
+      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
+    end
+    fare = unpack_fare_response(resp)
+    return true, fare
+  end
+
   def unpack_fare_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
     Rails.logger.info(resp_xml)
