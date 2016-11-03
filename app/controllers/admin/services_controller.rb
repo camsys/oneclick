@@ -149,6 +149,9 @@ class Admin::ServicesController < Admin::BaseController
     end
     fs.fare_type = fs_attrs[:fare_type].to_i
 
+    # Unless fare type is 4 (TFF), set taxi fare finder city to nil
+    params[:service][:taxi_fare_finder_city] = nil unless fs.fare_type == FareStructure::TFF
+
     case fs.fare_type
     when FareStructure::FLAT
       # flat fare
@@ -212,6 +215,8 @@ class Admin::ServicesController < Admin::BaseController
         fs.flat_fare.delete
         fs.flat_fare = nil
       end
+    when FareStructure::TFF
+      # Taxi Fare Finder
     end
 
     fs.save

@@ -148,6 +148,7 @@ en:
   fare_type: 'Fare Type'
   flat_fare: 'Flat Fare'
   mileage_fare: 'Mileage Fare'
+  tff_fare: 'Taxi Fare Finder'
   base_fare_unavailable: 'Base fare unavailable'
   fare_unavailable: 'Fare unavailable'
   complex_fare: 'Complex fare'
