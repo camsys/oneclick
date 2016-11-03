@@ -1,9 +1,15 @@
 .fare-structure-form-container.type-3{ class: fare_structure.fare_type == 3 ? "" : "hidden" }
-  = button_tag :type => 'button',
-    "data-target" => "#fare-zone-upload-dialog-service-#{service.id}",
-    "data-toggle" => "modal",
-    :class => "btn btn-default btn-svc-data pull-right" do
-    = translate_helper(:upload_fare_zones)
+  -# = button_tag :type => 'button',
+  -#   "data-target" => "#fare-zone-upload-dialog-service-#{service.id}",
+  -#   "data-toggle" => "modal",
+  -#   :class => "btn btn-default btn-svc-data pull-right" do
+  -#   = translate_helper(:upload_fare_zones)
+  = f.simple_fields_for :fare_zone do |fz|
+    %label= translate_helper(:upload_fare_zones_notes)
+    = fz.error_notification message: print_messages(fz)
+    = fz.input :file, required:true, :label => translate_helper(:fare_zones_shapefile),:as => :file
+    = fz.input :zone_id_column, :label => translate_helper(:zone_id_column), required:true
+
   %div{id: "zone-fares-table-service-#{service.id}"}
     - service_id = fare_structure.service.id if fare_structure.service
     - zones = FareZone.where(service_id: service_id).select(:id, :zone_id).order(:zone_id)

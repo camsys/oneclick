@@ -1,7 +1,8 @@
-- this_path = "admin/services/form_parts/taxi_part4"
-- form_index = 4
+- this_path = "admin/services/form_parts/paratransit_part5"
+- form_index = 5
 - service_id = new_service ? "new-#{mode}" : service.id
-- fare_types = FareStructure::TAXI_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
+- booking_services = BookingServices::AGENCY.sort.map {|k,v| [translate_helper(k), v] }.unshift(["Select a booking service", 'placeholder'])
+- fare_types = FareStructure::PARATRANSIT_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
 
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
@@ -25,8 +26,9 @@
         label: translate_helper(:fare_type),
         label_html: { class: "header-label"},
         input_html: { class: "select-fare-structure", name: 'service[base_fare_structure_attributes][fare_type]', value: fare_structure.id}
+      = render partial: 'admin/services/form_parts/flat_fare_form', locals: {f: f, fare_structure: fare_structure}
       = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
-      = render partial: 'admin/services/form_parts/tff_fare_form', locals: {f: f, fare_structure: fare_structure}
+      = render partial: 'admin/services/form_parts/zone_fare_form', locals: {f: f, fare_structure: fare_structure, service: service}
 
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
@@ -43,29 +45,6 @@
       var fs = this.value;
       form.$('.fare-structure-form-container').addClass('hidden');
       form.$(`.fare-structure-form-container.type-${fs}`).removeClass('hidden');
-    });
-
-    // RidePilot Test Connection Button Handler
-    form.$('.btn-ridepilot-test-connection').on("click", function(){
-      form.$('.btn-ridepilot-test-connection').prop('disabled', true);
-      var ridepilot_endpoint = form.$('.input-ridepilot-profile-endpoint').val();
-      var ridepilot_api_token = form.$('.input-ridepilot-profile-api-token').val();
-      var ridepilot_provider_id = form.$('.input-ridepilot-profile-provider-id').val();
-
-      $.ajax({
-        url: '/services/authenticate_booking_settings?booking_profile=' + '#{BookingServices::AGENCY[:ridepilot]}' + '&endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
-        method: 'GET',
-        success: function(result){
-          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
-          form.$('.ridepilot-response').text(result['message']);
-          form.$('.ridepilot-response').removeClass('hidden');
-        },
-        error: function(result){
-          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
-          form.$('.ridepilot-response').text(result['message']);
-          form.$('.ridepilot-response').removeClass('hidden');
-        }
-      });
     });
 
   });

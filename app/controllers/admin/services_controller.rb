@@ -194,6 +194,36 @@ class Admin::ServicesController < Admin::BaseController
         fs.flat_fare = nil
       end
     when FareStructure::ZONE
+      # If a new zone ID column and shapefile are included, create a new set of fare zones
+      if params[:service][:fare_zone][:zone_id_column] && params[:service][:fare_zone][:file]
+
+        file = params[:service][:fare_zone][:file]
+
+        ZoneFare.where(fare_structure: fs).delete_all
+        fs.zone_fares.clear
+        FareZone.where(service: @service).delete_all
+        @service.fare_zones.clear
+
+        file_path = file.tempfile.path
+        FareZone.parse_shapefile(params[:service][:fare_zone][:zone_id_column], file_path, @service)
+
+        @zones = FareZone.where(service: @service).select(:id, :zone_id).order(:zone_id)
+        @fares = {}
+        @zones.each do |from_zone|
+          @zones.each do |to_zone |
+            from_zone_id = from_zone[:id]
+            to_zone_id = to_zone[:id]
+            @fares["from_#{from_zone_id}_to_#{to_zone_id}"] = {
+              id: ZoneFare.create(
+                from_zone_id: from_zone_id,
+                to_zone_id: to_zone_id,
+                fare_structure: fs
+              ).id
+            }
+          end
+        end
+      end
+
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
 

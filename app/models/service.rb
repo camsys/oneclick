@@ -45,6 +45,8 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :fare_structures
 
+  accepts_nested_attributes_for :fare_zones
+
   accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
   reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
 
