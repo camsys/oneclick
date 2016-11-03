@@ -320,7 +320,23 @@ class TripPart < ActiveRecord::Base
       itins = check_for_short_drives(itins)
     end
 
+    # Filter out itineraries that occur on different days than requested
+    if Oneclick::Application.config.filter_midnight
+      itins = filter_midnight(itins)
+    end
+
     itins
+  end
+
+  # Filter trips that begin/end on a different day than they were planned to begin/end
+  def filter_midnight itineraries
+    if self.is_depart
+      # Filter out itineraries that begin on a different day than requested
+      return itineraries.select {|itin| itin.start_time.day == self.scheduled_time.day}
+    else
+      # Filter out itineraries that end on a different day than requested
+      return itineraries.select {|itin| itin.end_time.day == self.scheduled_time.day}
+    end
   end
 
   # TODO refactor following 4 methods
