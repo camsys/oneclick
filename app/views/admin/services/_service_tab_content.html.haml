@@ -27,6 +27,13 @@
       = render partial: "admin/services/form_parts/paratransit_part4",
         locals: { new_service: new_service,
                   service: service }
+    -when "transit"
+      = render partial: "admin/services/form_parts/transit_part1",
+        locals: { new_service: new_service,
+                  service: service,
+                  active: active }
+    -when "taxi"
+      %h4 ADDITIONAL TAXI STUFF
     -else
       %h4 SOME OTHER MODE TEMPLATE STUFF
 

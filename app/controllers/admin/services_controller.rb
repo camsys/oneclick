@@ -49,10 +49,10 @@ class Admin::ServicesController < Admin::BaseController
       @service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])) if params[:service][:secondary_coverage_recipe]
 
       # Update Booking Service Profile
-      update_booking_service_profile
+      update_booking_service_profile unless params[:service][:booking_profile].nil?
 
       # Update Fare Structures
-      update_fare
+      update_fare unless params[:service][:base_fare_structure_attributes].nil?
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
