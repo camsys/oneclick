@@ -3,7 +3,6 @@ module Api
     class TranslationsController < Api::V1::ApiController
 
       def find
-        #params = {locale: "en", translations: ["splash", "medical"]}
 
         locale = Locale.find_by(name: params[:locale])
         translations = params[:translations]
@@ -24,7 +23,7 @@ module Api
         dictionaries = {}
 
         if params[:lang]
-          locale = Locale.find_by_name(params[:locale])
+          locale = Locale.find_by_name(params[:lang])
           dictionary = {} #Translation.where(locale: locale).each {|t| {t.key => t.value}}
           Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value }
           dictionaries = dictionary
