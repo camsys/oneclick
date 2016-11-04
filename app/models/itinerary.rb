@@ -19,10 +19,10 @@ class Itinerary < ActiveRecord::Base
 
   # You should usually *always* used the valid scope
   scope :valid, -> {where('mode_id is not null and server_status=200')}
-  scope :selected, -> {where('selected=true')}
+  scope :selected, -> {where(selected: true)}
   scope :invalid, -> {where('mode_id is null or server_status!=200')}
-  scope :visible, -> {where('hidden=false')}
-  scope :hidden, -> {where('hidden=true')}
+  scope :visible, -> {where(hidden: false)}
+  scope :hidden, -> {where(hidden: true)}
   scope :good_score, -> {where('match_score < 3')}
   scope :booked, -> {where.not(booking_confirmation: nil)}
   scope :created_between, lambda {|from_day, to_day| where("itineraries.created_at >= ? AND itineraries.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
