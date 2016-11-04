@@ -88,6 +88,9 @@ module Api
         unless synonyms.nil?
           synonyms = synonyms.value
         end
+        synonyms.delete_if do |key, value| 
+          value.split.include? key
+        end
         render status: 200, json: synonyms.as_json
       end
 
