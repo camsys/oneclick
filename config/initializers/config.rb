@@ -16,7 +16,7 @@ module Rails
           # It's already been defined, just get it
           return @@options[name]
         else
-          return nil
+          super
         end
       end
     end
