@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115214057) do
+ActiveRecord::Schema.define(version: 20161104182344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -478,6 +478,7 @@ ActiveRecord::Schema.define(version: 20161115214057) do
     t.string  "icon"
     t.string  "logo"
     t.string  "disabled_comment"
+    t.boolean "send_booking_emails"
   end
 
   create_table "ratings", force: true do |t|
