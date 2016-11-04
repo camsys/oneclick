@@ -60,18 +60,18 @@ class Provider < ActiveRecord::Base
 
   # Admin User virtual attribute
   def admin_user
-    users.with_role( :admin, self).first
+    users.with_role( :provider_staff, self).first
   end
 
   def admin_user= user_email
     former = admin_user
     user = User.where(email: user_email)[0]
     if !former.nil? && (user != former)
-      former.remove_role :admin, self
+      former.remove_role :provider_staff, self
     end
     if !user.nil?
       users << user
-      user.add_role :admin, self
+      user.add_role :provider_staff, self
       self.save
     end
   end
