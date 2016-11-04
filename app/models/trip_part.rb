@@ -297,7 +297,7 @@ class TripPart < ActiveRecord::Base
     end
 
     # Filter out itineraries outside of a configured time window
-    if Oneclick::Application.config.respond_to? :trip_result_time_window
+    if Oneclick::Application.config.trip_result_time_window
       itins = filter_by_time_window(itins)
     end
 
