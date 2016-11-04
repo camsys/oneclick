@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(version: 20161031165355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "pg_stat_statements"
   enable_extension "postgis_topology"
   enable_extension "tablefunc"
 
@@ -179,8 +179,8 @@ ActiveRecord::Schema.define(version: 20161031165355) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -769,7 +769,7 @@ ActiveRecord::Schema.define(version: 20161031165355) do
   end
 
   create_table "translations_old", id: false, force: true do |t|
-    t.integer  "id",                 default: "nextval('translations_id_seq'::regclass)", null: false
+    t.integer  "id",                 default: 0,     null: false
     t.string   "key"
     t.text     "interpolations"
     t.boolean  "is_proc",            default: false
