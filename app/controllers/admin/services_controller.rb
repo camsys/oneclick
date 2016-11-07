@@ -1,4 +1,6 @@
 class Admin::ServicesController < Admin::BaseController
+  include Admin::CommentsHelper
+
   before_filter :load_services
   before_filter :load_service, only: [:create]
   load_and_authorize_resource
@@ -74,6 +76,9 @@ class Admin::ServicesController < Admin::BaseController
   # Initialize Service and perform setup actions as necessary
   def load_service
     @service = Service.new(service_params)
+
+    # Set up comment fields for each available language locale
+    setup_comments(@service, %w{public})
 
     # Perform Mode-specific Actions (e.g. build fare structures)
     case @service.service_type_id
