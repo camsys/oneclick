@@ -11,9 +11,10 @@ class Admin::ServicesController < Admin::BaseController
   # POST /admin/providers/:provider_id/services
   # load_service is called before this runs
   def create
-
+    puts "CREATING SERVICE", params.ai
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
+    puts @service.ai
 
     respond_to do |format|
       puts "RESPONDING TO CREATE REQUEST", request.format.html?

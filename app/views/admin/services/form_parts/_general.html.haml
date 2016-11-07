@@ -35,6 +35,16 @@
       = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
       = comment.input :locale, as: :hidden
       = comment.input :visibility, as: :hidden
+  -else
+    - I18n.available_locales.map(&:to_s).each do |locale|
+      = f.simple_fields_for :comment do |comment|
+        = comment.input :comment,
+          label: [translate_helper("locales.#{locale}"), translate_helper(:comment)].join(' '),
+          input_html: {name: "service[public_comments_attributes][][comment]"}
+        = comment.input :locale, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][locale]", value: locale}
+        = comment.input :visibility, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][visibility]", value: "public"}
 
 
   .pull-right
