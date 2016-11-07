@@ -613,6 +613,13 @@ en:
   mode_ferry_name: "Ferry"
   mode_subway_name: "Subway"
   mode_tram_name: "Tram"
+  mode_paratransit_name: "Paratransit"
+  mode_taxi_name: "Taxi"
+  mode_transit_name: "Transit"
+  transit_submode_bus_name: "Bus"
+  mode_bus_name: "Bus"
+  transit_submode_rail_name: "Rail"
+  mdoe_rail_name: "Rail"
   bike: 'Bike'
   bicycle: 'Bicycle'
   bikeshare: 'Bikeshare'
