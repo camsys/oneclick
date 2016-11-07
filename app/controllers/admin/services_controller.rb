@@ -14,15 +14,13 @@ class Admin::ServicesController < Admin::BaseController
     puts "CREATING SERVICE", params.ai
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
-    puts @service.ai
 
     respond_to do |format|
-      puts "RESPONDING TO CREATE REQUEST", request.format.html?
-
+      setup_comments(@service, %w{public}) # Set up comments -- makes sure there's a comment created for each locale
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
       if @service.save
-        puts "SERVICE SAVED"
+        puts "SERVICE SAVED", @service.ai
         format.html { render partial: 'admin/services/services_menu' }
         format.json { head :no_content }
       else
@@ -77,9 +75,6 @@ class Admin::ServicesController < Admin::BaseController
   # Initialize Service and perform setup actions as necessary
   def load_service
     @service = Service.new(service_params)
-
-    # Set up comment fields for each available language locale
-    setup_comments(@service, %w{public})
 
     # Perform Mode-specific Actions (e.g. build fare structures)
     case @service.service_type_id
