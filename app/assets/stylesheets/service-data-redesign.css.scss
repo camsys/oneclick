@@ -141,3 +141,11 @@ textarea.form-control.text {
     color: white;
   }
 }
+
+.inline-form-group {
+  .form-control {
+    display: inline;
+    width: auto;
+    padding: 6px 3px;
+  }
+}
