@@ -337,13 +337,46 @@ class User < ActiveRecord::Base
   end
 
   # Used by API call to update characteristics and accommodations from a hash
-  def update_characteristics_and_accommodations params
+  def update_profile params
+
+    if params[:attributes]
+      update_attributes params[:attributes]
+    end
+
     if params[:characteristics]
       update_user_characteristics params[:characteristics]
     end
+
     if params[:accommodations]
       update_user_accommodations params[:accommodations]
     end
+  end
+
+  def update_attributes params
+    params.each do |key, value|
+      case key.to_sym
+        when :first_name
+          self.first_name = value
+        when :last_name
+          self.last_name = value
+        when :email
+          self.email = value
+        when :walking_speed
+          walking_speed = WalkingSpeed.find_by(code: walk_speed_to_code(value))
+          self.walking_speed = walking_speed
+        when :walking_distance
+          walking_maximum_distance = WalkingMaximumDistance.find_by(value: value.to_f)
+          self.walking_maximum_distance = walking_maximum_distance
+        when :ecolane_id
+          self.user_profile.user_services.each do |user_service|
+            user_service.external_user_id = value.to_s
+            user_service.save
+          end
+      end
+    end
+
+    self.save
+
   end
 
   def update_user_characteristics params
