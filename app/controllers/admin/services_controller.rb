@@ -15,6 +15,9 @@ class Admin::ServicesController < Admin::BaseController
     @provider = Provider.find(params[:provider_id] || params[:service][:provider_id])
     @service.provider = @provider
 
+    # Populate Service's Mode based on Service Type
+    @service.update_attributes(mode: Mode.find_by_code("mode_#{@service.service_type.code}")) unless @service.service_type.nil?
+
     respond_to do |format|
       setup_comments(@service, %w{public}) # Set up comments -- makes sure there's a comment created for each locale
       @service.logo = params[:service][:logo] if params[:service][:logo]
