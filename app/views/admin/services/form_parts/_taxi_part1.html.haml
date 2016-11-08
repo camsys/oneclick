@@ -15,8 +15,6 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :phone
-
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
     .btn.btn-link.hidden.edit-service-form-btn edit

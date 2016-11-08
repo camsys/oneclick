@@ -57,7 +57,7 @@ class Admin::ServicesController < Admin::BaseController
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
-        format.html { render partial: params[:service_details_partial], locals: {new_service: false, service: @service, active: true} }
+        format.html { render partial: params[:service_details_partial], locals: {new_service: false, service: @service, active: true, mode: @service.service_type.code} }
         format.json { head :no_content }
       else
         puts "SERVICE UPDATE FAILED"

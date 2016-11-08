@@ -66,6 +66,7 @@
           wrapper_html: {class: "hidden"},
           label: false
         .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
+
   .service-details-container
     %label.control-label Accommodations
     .row.service-details-row
@@ -73,6 +74,15 @@
             collection: Accommodation.all.map{|a| [ translate_helper(a.name), a.id ] }, label: false,
             as: :check_boxes,
             item_wrapper_tag: 'div', wrapper: :inline_checkboxes
+
+  .service-details-container
+    %label.control-label Trip Purposes
+    .row.service-details-row
+      = f.association :trip_purposes,
+            collection: TripPurpose.all.map{|p| [ translate_helper(p.name), p.id ] }, label: false,
+            as: :check_boxes,
+            item_wrapper_tag: 'div', wrapper: :inline_checkboxes
+
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
     .btn.btn-link.hidden.edit-service-form-btn edit

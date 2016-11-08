@@ -29,6 +29,14 @@
       -if service_logo_url.nil?
         %span.subtle-text jpg, gif, png
 
+  -# Show Phone input for Taxi and Paratransit Only
+  -if ["taxi", "paratransit"].include? mode
+    = f.input :phone
+
+  -# Show URL input for Paratransit Only
+  -if mode == "paratransit"
+    = f.input :url
+
   -# Create a comment field for each active locale, or for each comment associated with this service
   -if new_service
     - I18n.available_locales.map(&:to_s).each do |locale|
