@@ -31,6 +31,9 @@ module Api
 
         valid = @traveler.valid?
     
+        #Update accommodations and characteristics
+        @traveler.update_characteristics_and_accommodations params
+
         if !valid
           Rails.logger.error(@traveler.errors.messages)
           hash = {result: false, message: "Unable to update user profile do the following error: #{@traveler.errors.messages}"}
