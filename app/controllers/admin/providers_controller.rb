@@ -81,12 +81,13 @@ class Admin::ProvidersController < ApplicationController
   def create2
     puts "NEW PROVIDER CREATE", params[:provider].ai
     @provider = Provider.new(admin_provider_params)
+
     respond_to do |format|
       @provider.admin_user = params[:provider][:admin_user]
       @provider.logo = params[:provider][:logo] if params[:provider][:logo]
 
       if @provider.save
-        puts "SENDING SUCCESS RESPONSE"
+        puts "SENDING SUCCESS RESPONSE", @provider.admin_user.ai
         format.html { redirect_to edit2_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
         format.json { head :no_content }
       else
@@ -153,8 +154,15 @@ class Admin::ProvidersController < ApplicationController
     puts "UPDATING NEW SERVICEDATA", params.ai, request.format
 
     respond_to do |format|
-      @provider.admin_user = params[:provider][:admin_user]
+
+      # puts "UPDATING PROVIDER", @provider.admin_user.ai
+      # @provider.admin_user = params[:provider][:admin_user]
+      # @provider.save
+      # puts "UPDATED PROVIDER", @provider.admin_user.ai
+
       @provider.logo = params[:provider][:logo] if params[:provider][:logo]
+
+
 
       if @provider.update_attributes(admin_provider_params)
         puts "SENDING SUCCESS RESPONSE"
@@ -248,7 +256,7 @@ class Admin::ProvidersController < ApplicationController
   def admin_provider_params
     params.require(:provider).permit(:name, :email, :address, :city, :state, :zip, :url, :phone,
       :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
-      :public_comments_old, :private_comments_old, :disabled_comment,
+      :public_comments_old, :private_comments_old, :disabled_comment, :admin_user,
       comments_attributes: COMMENT_ATTRIBUTES,
       public_comments_attributes: COMMENT_ATTRIBUTES,
       private_comments_attributes: COMMENT_ATTRIBUTES,
