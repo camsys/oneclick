@@ -51,6 +51,7 @@ module CsHelpers
       {label: TranslationEngine.translate_text(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
       {label: TranslationEngine.translate_text(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
       {label: TranslationEngine.translate_text(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
+      {label: TranslationEngine.translate_text(:provider_profile), target: new_service_data_path, window: "", icon: ACTION_ICONS[:providers], access: :show_provider}, # New Service Data Screen
       {label: TranslationEngine.translate_text(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
       {label: TranslationEngine.translate_text(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
       {label: TranslationEngine.translate_text(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
@@ -110,6 +111,11 @@ module CsHelpers
 
   def provider_profile_path
     admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any
+  end
+
+  # Path to new service data maintenance screen
+  def new_service_data_path
+    edit2_admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any
   end
 
   def create_trips_path
