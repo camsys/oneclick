@@ -60,18 +60,19 @@ class Provider < ActiveRecord::Base
 
   # Admin User virtual attribute
   def admin_user
-    users.with_role( :provider_staff, self).first
+    User.with_role( :provider_staff, self).first
   end
 
   def admin_user= user_email
-    # Only update if valid email address was entered, and if it's different from current user
-    if User.find_by_email(user_email) && User.find_by_email(user_email) != admin_user
+    user = User.find_by_email(user_email)
+
+    # Only update if valid email address was entered, if it's different from current user, and if that user is not already the provider somewhere
+    if user && user != admin_user && !user.has_role?(:provider_staff, :any)
 
       # First, remove :provider_staff role from all users associated with this provider
-      users.with_role(:provider_staff, self).each {|u| u.remove_role(:provider_staff, self)}
+      User.with_role(:provider_staff, self).each {|u| u.remove_role(:provider_staff, self)}
 
       # Then, give the user the provider_staff remove_role
-      user = User.find_by_email(user_email)
       user.add_role(:provider_staff, self) if user
     end
   end

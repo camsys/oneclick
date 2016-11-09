@@ -37,22 +37,23 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  # OLD NEW PROVIDER ROUTE
+  # GET /admin/providers/new
+  # GET /admin/providers/new.json
+  # def new
+  #   # before_filter
+  #   setup_comments(@provider)
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #     format.json { render json: @provider }
+  #   end
+  # end
+
+  # Service Data Maintenance Redesign
   # GET /admin/providers/new
   # GET /admin/providers/new.json
   def new
-    # before_filter
-    setup_comments(@provider)
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @provider }
-    end
-  end
-
-  # Service Data Maintenance Redesign
-  # GET /admin/providers/new2
-  # GET /admin/providers/new2.json
-  def new2
-    puts "NEW2 PROVIDER", @provider.ai
+    puts "NEW PROVIDER", @provider.ai
     # before_filter
     @provider = Provider.new # Remove this line once this is a real method
     setup_comments(@provider)
@@ -62,25 +63,26 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
-  # POST /admin/providers
-  # POST /admin/providers.json
-  def create
-    # before_filter
-    # @provider = Provider.new(admin_provider_params)
-    respond_to do |format|
-      if @provider.save
-        format.html { redirect_to [:admin, @provider], notice: 'Provider was successfully created.' } #TODO Internationalize
-        format.json { render json: @provider, status: :created, location: @provider }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @provider.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # OLD CREATE PROVIDER ROUTE
+  # # POST /admin/providers
+  # # POST /admin/providers.json
+  # def create
+  #   # before_filter
+  #   # @provider = Provider.new(admin_provider_params)
+  #   respond_to do |format|
+  #     if @provider.save
+  #       format.html { redirect_to [:admin, @provider], notice: 'Provider was successfully created.' } #TODO Internationalize
+  #       format.json { render json: @provider, status: :created, location: @provider }
+  #     else
+  #       format.html { render action: "new" }
+  #       format.json { render json: @provider.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-  def create2
+  def create
     puts "NEW PROVIDER CREATE", params[:provider].ai
-    @provider = Provider.new(admin_provider_params)
+    # @provider = Provider.new(admin_provider_params)
 
     respond_to do |format|
       @provider.admin_user = params[:provider][:admin_user]
@@ -88,7 +90,7 @@ class Admin::ProvidersController < ApplicationController
 
       if @provider.save
         puts "SENDING SUCCESS RESPONSE", @provider.admin_user.ai
-        format.html { redirect_to edit2_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
+        format.html { redirect_to edit_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
         format.json { head :no_content }
       else
         puts "SENDING FAILURE RESPONSE"
@@ -98,6 +100,16 @@ class Admin::ProvidersController < ApplicationController
     end
   end
 
+  # OLD PROVIDER PATH
+  # # GET /admin/providers/1/edit
+  # def edit
+  #   # assume only one internal contact for now
+  #   @contact = @provider.users.with_role(:internal_contact, @provider).first
+  #   @staff = @provider.users.with_role(:provider_staff, @provider).uniq
+  #   setup_comments(@provider)
+  # end
+
+  # NEW SERVICE DATA SCREEN
   # GET /admin/providers/1/edit
   def edit
     # assume only one internal contact for now
@@ -106,51 +118,45 @@ class Admin::ProvidersController < ApplicationController
     setup_comments(@provider)
   end
 
-  # GET /admin/providers/1/edit2
-  def edit2
-    # assume only one internal contact for now
-    @contact = @provider.users.with_role(:internal_contact, @provider).first
-    @staff = @provider.users.with_role(:provider_staff, @provider).uniq
-    setup_comments(@provider)
-  end
+  # OLD UPDATE PROVIDER ROUTE
+  # # PUT /admin/providers/1
+  # # PUT /admin/providers/1.json
+  # def update
+  #   puts "UPDATING PROVIDER", params[:provider].ai
+  #
+  #   # special case because need to update rolify
+  #   staff_ids = params[:provider][:staff_ids].split(',').reject(&:blank?)
+  #
+  #   # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
+  #   fixup_comments_attributes_for_delete :provider
+  #
+  #   respond_to do |format|
+  #     if @provider.update_attributes(admin_provider_params)
+  #       # internal_contact is a special case
+  #       @provider.internal_contact = User.find_by_id(params[:provider][:internal_contact])
+  #       @provider.admin_user = params[:provider][:admin_user]
+  #
+  #       if params[:provider][:logo]
+  #         @provider.logo = params[:provider][:logo]
+  #         @provider.save
+  #       elsif params[:provider][:remove_logo] == '1' #confirm to delete it
+  #         @provider.remove_logo!
+  #         @provider.save
+  #       end
+  #
+  #       set_staff(staff_ids)
+  #
+  #       format.html { redirect_to [:admin, @provider], notice: TranslationEngine.translate_text(:provider) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
+  #       format.json { head :no_content }
+  #     else
+  #       format.html { render action: "edit" }
+  #       format.json { render json: @provider.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-  # PUT /admin/providers/1
-  # PUT /admin/providers/1.json
+  # NEW SERVICE DATA UPDATE ROUTE
   def update
-    puts "UPDATING PROVIDER", params[:provider].ai
-
-    # special case because need to update rolify
-    staff_ids = params[:provider][:staff_ids].split(',').reject(&:blank?)
-
-    # TODO This is a little hacky for the moment; might switch to front-end javascript but let's just do this for now.
-    fixup_comments_attributes_for_delete :provider
-
-    respond_to do |format|
-      if @provider.update_attributes(admin_provider_params)
-        # internal_contact is a special case
-        @provider.internal_contact = User.find_by_id(params[:provider][:internal_contact])
-        @provider.admin_user = params[:provider][:admin_user]
-
-        if params[:provider][:logo]
-          @provider.logo = params[:provider][:logo]
-          @provider.save
-        elsif params[:provider][:remove_logo] == '1' #confirm to delete it
-          @provider.remove_logo!
-          @provider.save
-        end
-
-        set_staff(staff_ids)
-
-        format.html { redirect_to [:admin, @provider], notice: TranslationEngine.translate_text(:provider) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @provider.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def update2
     puts "UPDATING NEW SERVICEDATA", params.ai, request.format
 
     respond_to do |format|
@@ -170,7 +176,7 @@ class Admin::ProvidersController < ApplicationController
         format.json { head :no_content }
       else
         puts "SENDING FAILURE RESPONSE"
-        format.html { render action: "edit2" }
+        format.html { render action: "edit" }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end
     end

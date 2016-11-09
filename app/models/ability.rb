@@ -110,8 +110,8 @@ class Ability
       can [:access], :admin_feedback
 
       can [:show, :results, :trips_datatable], Report
-      can [:read, :full_read, :find_staff_by_email, :edit2, :update2], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
-      can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
+      can [:read, :full_read, :find_staff_by_email, :edit, :update, :destroy], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
+      # can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show, :full_read, :destroy, :manage], Service do |s|
         user.provider.services.include?(s)
       end
