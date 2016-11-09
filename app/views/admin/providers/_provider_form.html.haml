@@ -16,9 +16,10 @@
       %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
       -if @provider.logo_url.nil?
         %span.subtle-text jpg, gif, png
-  = f.input :admin_user, label: translate_helper(:admin_user),
-    placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
-    input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
+  - if can? :manage, @provider
+    = f.input :admin_user, label: translate_helper(:admin_user),
+      placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
+      input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
   %input{:name => "provider[staff_ids]", :type => 'hidden'}
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
