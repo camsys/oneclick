@@ -64,15 +64,15 @@ class Provider < ActiveRecord::Base
   end
 
   def admin_user= user_email
-    former = admin_user
-    user = User.where(email: user_email)[0]
-    if !former.nil? && (user != former)
-      former.remove_role :provider_staff, self
-    end
-    if !user.nil?
-      users << user
-      user.add_role :provider_staff, self
-      self.save
+    # Only update if valid email address was entered, and if it's different from current user
+    if User.find_by_email(user_email) && User.find_by_email(user_email) != admin_user
+
+      # First, remove :provider_staff role from all users associated with this provider
+      users.with_role(:provider_staff, self).each {|u| u.remove_role(:provider_staff, self)}
+
+      # Then, give the user the provider_staff remove_role
+      user = User.find_by_email(user_email)
+      user.add_role(:provider_staff, self) if user
     end
   end
 
