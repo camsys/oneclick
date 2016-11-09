@@ -72,8 +72,7 @@ namespace :oneclick do
       end
     end
 
-    # Checks if new transit_submode_code translations exist, and creates
-    # them if they don't, copying over data from the old mode_code tags.
+    # Copies over data from the old mode_code tags into new transit_submode_code translations.
     # Task is idempotent, may be run multiple times with no additional effect.
     task update_transit_mode_tags: :environment do
       puts "Updating Transit Mode Tags..."
@@ -93,8 +92,7 @@ namespace :oneclick do
         unless old_key.nil?
           old_translations = Translation.where(translation_key_id: old_key.id)
 
-          # For each existing old translation, check if a new one exists.
-          # If not, create one and copy over the old translation's content.
+          # Create new translations, or copy over new keys with old keys' values.
           old_translations.each do |t|
             new_translation = Translation.where(translation_key_id: new_key.id, locale_id: t.locale_id)[0]
             if new_translation.nil?
@@ -109,7 +107,9 @@ namespace :oneclick do
 	          	new_translation.save!
               puts "New Translation Created: ", new_translation.ai
             else
-              puts "New translation already exists for #{new_key.name} in #{t.locale.name}. Skipping..."
+              puts "New translation already exists for #{new_key.name} in #{t.locale.name}. Copying over..."
+              new_translation.update_attributes(translation_key_id: new_key.id, locale_id: t.locale_id, value: t.value, is_list: false)
+              puts "Translation Updated: ", new_translation.ai
             end
           end
         else
