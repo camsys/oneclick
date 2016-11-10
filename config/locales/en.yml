@@ -360,6 +360,7 @@ en:
   booking_cutoff_sentence_pt3: 'and'
   booking_cutoff_sentence_pt4: 'days before the scheduled ride.'
   service_eligibility_header: 'Rider Eligibility'
+  service_eligibility_sublabel: 'Riders are eligible if any of the following are true:'
   add_eligibility_rule: 'Add Rule'
   add_hours: 'Add Hours'
   pt_primary_coverage_area: 'Primary Service Location'

@@ -11,6 +11,7 @@
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
@@ -27,9 +28,7 @@
         input_html: { class: "select-fare-structure", name: 'service[base_fare_structure_attributes][fare_type]', value: fare_structure.id}
       = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
       = render partial: 'admin/services/form_parts/tff_fare_form', locals: {f: f, fare_structure: fare_structure}
-
-  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
-
+      
 :javascript
   $(document).ready(function() {
 

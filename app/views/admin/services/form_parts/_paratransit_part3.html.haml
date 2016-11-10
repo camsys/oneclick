@@ -10,16 +10,18 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .service-details-container
     %label.control-label= translate_helper(:service_eligibility_header)
+    %label.sub-label= translate_helper(:service_eligibility_sublabel)
     .row.service-details-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
-          options_for_select(Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}),
+          options_for_select(Characteristic.active.map {|c| [translate_helper(c.name), c.id]}),
           {class: "select form-control service-svc-chars-master-select"})
       .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3= translate_helper(:add_eligibility_rule)
     - service.service_characteristics.each do |char|
@@ -82,8 +84,6 @@
             collection: TripPurpose.all.map{|p| [ translate_helper(p.name), p.id ] }, label: false,
             as: :check_boxes,
             item_wrapper_tag: 'div', wrapper: :inline_checkboxes
-
-  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

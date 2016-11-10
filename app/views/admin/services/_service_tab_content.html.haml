@@ -52,10 +52,8 @@
         = render partial: "admin/services/form_parts/taxi_part4",
           locals: { new_service: new_service,
                     service: service }
-
-  -unless new_service
-    = render partial: "admin/services/form_parts/activate_service_form",
-      locals: { new_service: new_service, service: service}
+      = render partial: "admin/services/form_parts/activate_service_form",
+        locals: { new_service: new_service, service: service}
 
 :javascript
   $(document).ready(function() {

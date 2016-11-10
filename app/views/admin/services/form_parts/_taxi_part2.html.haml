@@ -11,6 +11,7 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
@@ -26,8 +27,6 @@
     :max_zoom => 15,
     :style => "height:500px;",
     :do_not_show_map => true })
-
-  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

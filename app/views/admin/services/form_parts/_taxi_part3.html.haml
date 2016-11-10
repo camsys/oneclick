@@ -10,6 +10,7 @@
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
@@ -25,8 +26,6 @@
           sched: Schedule.new(day_of_week: service.schedules.empty? ? ((i - 1) % 7) : (service.schedules.last.day_of_week + i) % 7,
             start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time,
             end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
-
-  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {
