@@ -3,7 +3,7 @@
 
 .row.info-header
   .col-sm-12
-    %h2 Transportation Services
+    %h2= new_provider ? translate_helper(:new_provider_form_title) : translate_helper(:edit_provider_form_title)
 .row
   .col-md-8.col-sm-10.col-xs-12.center
     .panel.panel-servicedata
@@ -15,10 +15,3 @@
         = render partial: 'provider_form', locals: {new_provider: new_provider}
 -unless new_provider # Only show services menu if in edit mode
   = render partial: 'admin/services/services_menu'
-
-
-:javascript
-
-  $(document).ready(function() {
-
-  });

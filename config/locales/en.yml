@@ -345,6 +345,31 @@ en:
   admin_user: 'Admin User'
   admin_user_placeholder_text: 'Enter an email address'
   new_service: 'New Service'
+  new_provider_form_title: 'Create New Provider'
+  edit_provider_form_title: 'Edit Provider and Services'
+  upload_logo: 'Upload Logo'
+  replace_logo: 'Replace Image'
+  select_mode: 'Select a service type'
+  activate_service: 'Make this service visible to the public?'
+  image_file_types: 'jpg, gif, png'
+  coverage_area_placeholder: 'List counties/cities/zipcodes separated by commas'
+  service_schedule_heading: 'Service Hours'
+  service_booking_cutoff_header: 'Advance Notice Cut-off Times'
+  booking_cutoff_sentence_pt1: 'Riders must book by'
+  booking_cutoff_sentence_pt2: 'between'
+  booking_cutoff_sentence_pt3: 'and'
+  booking_cutoff_sentence_pt4: 'days before the scheduled ride.'
+  service_eligibility_header: 'Rider Eligibility'
+  add_eligibility_rule: 'Add Rule'
+  add_hours: 'Add Hours'
+  pt_primary_coverage_area: 'Primary Service Location'
+  pt_secondary_coverage_area: 'Secondary Locations Covered'
+  taxi_coverage_area: 'Coverage Area'
+  external_id_label: 'GTFS ID'
+  external_id_placeholder: "Enter your service's GTFS ID"
+  show_more: 'show more'
+  show_less: 'show less'
+  service_name_placeholder: 'Enter a service name'
 
   # application logo upload
   not_authorized: 'You are not authorized.'
@@ -799,7 +824,7 @@ en:
   logo_format_alert: 'Only following logo image formats are supported: %{logo_formats}'
   next: 'Plan'
   endpoint_area: "Coverage Area"
-  coverage_area: "Endpoint Area"
+  # coverage_area: "Endpoint Area"
   endpoints: "Endpoint Area"
   coverages: "Coverage Area"
   coverage_area_edit_instruction: "You can either upload a shapefile or select served areas below"
@@ -847,7 +872,7 @@ en:
   services: "Services"
   all_services: "All Services"
   active: "Active"
-  add_service: "Add Service"
+  add_service: "Add a Service"
   remove_service: "Remove Service"
   select_service: "Select Service"
   service_is_inactive: "This service is currently inactive."

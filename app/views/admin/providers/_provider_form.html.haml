@@ -1,6 +1,4 @@
 -# Form for creating or editing a provider
--# url: current_page?(action: 'new') ? create2_admin_providers_path : update2_admin_provider_path,
--# method: 'put',
 = simple_form_for [:admin, @provider],
         remote: !current_page?(action: 'new'),
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
@@ -12,10 +10,10 @@
   .form-group.file.optional.provider_logo
     = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
     .col-sm-9
-      %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? translate_helper(:upload_logo) : translate_helper(:replace_logo)
       %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
       -if @provider.logo_url.nil?
-        %span.subtle-text jpg, gif, png
+        %span.subtle-text= translate_helper(:image_file_types)
   - if can? :manage, @provider
     = f.input :admin_user, label: translate_helper(:admin_user),
       placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
@@ -23,7 +21,7 @@
   %input{:name => "provider[staff_ids]", :type => 'hidden'}
   .pull-right
     = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
-    .btn.btn-link#edit-provider-form-btn.hidden edit
+    .btn.btn-link#edit-provider-form-btn.hidden= translate_helper(:edit).downcase
 
 :javascript
   $(document).ready(function() {

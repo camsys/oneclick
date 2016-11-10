@@ -16,7 +16,7 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   = f.input :primary_coverage_recipe,
-      label: "Coverage Area",
+      label: translate_helper(:taxi_coverage_area),
       placeholder: "List county names separated by commas",
       input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
   = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
@@ -27,9 +27,7 @@
     :style => "height:500px;",
     :do_not_show_map => true })
 
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

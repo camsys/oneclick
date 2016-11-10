@@ -16,7 +16,7 @@
       .col-xs-12
         .pull-right
           .btn.btn-link.collapse-toggle-btn{"data-toggle" => "collapse", "data-target" => "##{mode}-details-#{service_id}", "data-service-id" => service_id}
-            %span show more
+            %span= translate_helper(:show_more)
             .i.fa.fa-chevron-down
     .collapse{id: "#{mode}-details-#{service_id}"}
       -case mode
@@ -42,9 +42,6 @@
           locals: { new_service: new_service,
                     service: service }
       -when "taxi"
-        = render partial: "admin/services/form_parts/taxi_part1",
-          locals: { new_service: new_service,
-                    service: service}
         = render partial: "admin/services/form_parts/taxi_part2",
           locals: { new_service: new_service,
                     service: service,
@@ -55,8 +52,6 @@
         = render partial: "admin/services/form_parts/taxi_part4",
           locals: { new_service: new_service,
                     service: service }
-      -else
-        %h4 SOME OTHER MODE TEMPLATE STUFF
 
   -unless new_service
     = render partial: "admin/services/form_parts/activate_service_form",
@@ -68,10 +63,10 @@
     // Toggles collapse form button
     $(".collapse-toggle-btn[data-service-id=#{service_id}]").on("click", function(e) {
       if(!$("##{mode}-details-#{service_id}").hasClass("in")) {
-        $(this).find("span").text("show less");
+        $(this).find("span").text("#{translate_helper(:show_less)}");
         $(this).find(".i.fa").removeClass("fa-chevron-down").addClass("fa-chevron-up");
       } else {
-        $(this).find("span").text("show more");
+        $(this).find("span").text("#{translate_helper(:show_more)}");
         $(this).find(".i.fa").removeClass("fa-chevron-up").addClass("fa-chevron-down");
       }
     });

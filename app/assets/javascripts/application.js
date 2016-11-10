@@ -235,7 +235,6 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
 // Service Form Class acts as helper for service details
 var ServiceForm = function(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
   this.formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
-  console.log("Setting Up Form", this);
   this.newService = newService;
   this.hiddenElements = ['.edit-service-form-btn'].concat(hiddenElements);
   this.visibleElements = ['.save-service-form-btn'].concat(visibleElements);
@@ -259,13 +258,10 @@ var ServiceForm = function(serviceId, formIndex, newService=false, visibleElemen
   // Handle Service Update or Create
   this.$().on("ajax:success", function(evt, data, status, xhr) {
     if(thisForm.newService) {
-      console.log("Service Created Successfully", arguments);
       $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
     } else {
-      console.log("Service Updated Successfully", arguments);
       $(this).replaceWith(xhr.responseText);
-      // Make Form Read-Only
-      thisForm.setReadOnly(true);
+      thisForm.setReadOnly(true); // Make Form Read-Only
     }
   });
 
@@ -278,7 +274,6 @@ ServiceForm.prototype.$ = function(selector="") {
 
 // Helper function for enabling or disabling form
 ServiceForm.prototype.setReadOnly = function(readOnly=true) {
-  console.log("Setting Form ReadOnly", this.formId);
 
   // Set all form controls to disabled, except the edit button.
   this.$(':input').attr("disabled", readOnly);
@@ -299,7 +294,6 @@ ServiceForm.prototype.setReadOnly = function(readOnly=true) {
 // takes a form object with a formId arrays of visible and hidden elements
 // sets form to read-only or editable based on boolean value passed
 function setFormReadOnly(form, readOnly) {
-  console.log("Setting read only for ", form, " to ", readOnly);
 
   // Set all form inputs to readonly value.
   $(form.formId + ' :input.form-control').attr("disabled", readOnly);

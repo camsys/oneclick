@@ -15,7 +15,7 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .service-details-container
-    %label.control-label Service Hours
+    %label.control-label= translate_helper(:service_schedule_heading)
     - service.schedules.each do |sched|
       = render partial: "admin/services/form_parts/schedule_row",
         locals: {f:f, sched:sched}
@@ -26,22 +26,22 @@
             start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time,
             end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
   .service-details-container
-    %label.control-label Advance Notice Cut-off Times
+    %label.control-label= translate_helper(:service_booking_cutoff_header)
     .row.form-group.form-horizontal.inline-form-group
       .col-xs-12
-        %span Riders must book by
+        %span= translate_helper(:booking_cutoff_sentence_pt1)
         = select_tag(:day_of_week,
           options_for_select(Rails.application.config.times_of_day, service.booking_cut_off_times.empty? ? "8:00 PM" : service.booking_cut_off_times.first.cut_off_time),
           {class: "select form-control service-bct-master-select"})
-        %span between
+        %span= translate_helper(:booking_cutoff_sentence_pt2)
         %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
             value: service.advanced_notice_minutes/60/24.round,
             name: "service[notice_days_part]"}
-        %span and
+        %span= translate_helper(:booking_cutoff_sentence_pt3)
         %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
             value: service.max_advanced_book_minutes/60/24.round,
             name: "service[max_advanced_book_days_part]"}
-        %span days before the scheduled ride.
+        %span= translate_helper(:booking_cutoff_sentence_pt4)
     - if service.booking_cut_off_times.empty?
       - (0..6).each do |dow|
         .row.service-details-row.hidden
@@ -81,10 +81,7 @@
             wrapper_html: {class: "col-xs-2"},
             label: false
 
-
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

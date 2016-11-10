@@ -17,7 +17,7 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .form-group
-    %label.col-sm-8.control-label Make this service visible to the public?
+    %label.col-sm-8.control-label= translate_helper(:activate_service)
     .btn-activate-service-toggle-group.col-sm-4
       %label.service-toggle-btn-wrapper
         %input{name: "service[active]", type: "radio", class: "btn-activate-service-toggle", value: "true", checked: service.active}

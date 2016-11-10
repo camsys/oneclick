@@ -16,7 +16,7 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :name, label: translate_helper(:service_name), placeholder: "Enter a service name"
+  = f.input :name, label: translate_helper(:service_name), placeholder: translate_helper(:service_name_placeholder)
 
   -if new_service # Hidden Input Sets Mode
     %input.hidden#service_service_type_id{value: ServiceType.where(code: mode)[0].id, name: "service[service_type_id]", type: "text"}
@@ -24,14 +24,15 @@
   .form-group.file.optional.service_logo
     = f.input :logo, input_html: { class: "hidden service-logo-upload-real" }, :as => :file, wrapper: false
     .col-sm-9
-      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn= service_logo_url.nil? ? "Upload Logo" : "Replace Image"
+      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn= service_logo_url.nil? ? translate_helper(:upload_logo) : translate_helper(:replace_logo)
       %img.logo-display-img.logo-upload-img{ src: service_logo_url}
       -if service_logo_url.nil?
-        %span.subtle-text jpg, gif, png
+        %span.subtle-text= translate_helper(:image_file_types)
 
   -# Show Phone input for Taxi and Paratransit Only
   -if ["taxi", "paratransit"].include? mode
-    = f.input :phone
+    = f.input :phone,
+      label: translate_helper(:phone)
 
   -# Show URL input for Paratransit Only
   -if mode == "paratransit"
@@ -54,10 +55,7 @@
       = comment.input :locale, as: :hidden
       = comment.input :visibility, as: :hidden
 
-
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

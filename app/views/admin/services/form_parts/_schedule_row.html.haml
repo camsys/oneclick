@@ -26,5 +26,5 @@
     wrapper_html: {class: "hidden"},
     label: false
   .col-xs-3
-    .btn.btn-link.delete-schedule-btn{class:("hidden" if sched.id.nil?)} delete
-    .btn.btn-default.btn-svc-data.add-schedule-btn{class:("hidden" unless sched.id.nil?)} Add Hours
+    .btn.btn-link.delete-schedule-btn{class:("hidden" if sched.id.nil?)}= translate_helper(:delete)
+    .btn.btn-default.btn-svc-data.add-schedule-btn{class:("hidden" unless sched.id.nil?)}= translate_helper(:add_hours)

@@ -30,10 +30,8 @@
       = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
       = render partial: 'admin/services/form_parts/zone_fare_form', locals: {f: f, fare_structure: fare_structure, service: service}
 
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
-
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
+  
 :javascript
   $(document).ready(function() {
 

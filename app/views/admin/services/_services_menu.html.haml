@@ -10,10 +10,10 @@
             = add_tooltip("services_info_help", "fa fa-question-circle", nil)
         .panel-body.form-horizontal
           .form-group.select
-            %label.select.control-label.col-sm-3 Add a service
+            %label.select.control-label.col-sm-3= translate_helper(:add_service)
             .col-sm-9
               %select.select.form-control#select-new-service-type
-                %option{value: ''} Select a service type
+                %option{value: ''}= translate_helper(:select_mode)
                 - mode_list.each do |m|
                   %option{value: m}= translate_helper("mode_#{m}_name".to_sym)
   .row

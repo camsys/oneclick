@@ -15,9 +15,7 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {

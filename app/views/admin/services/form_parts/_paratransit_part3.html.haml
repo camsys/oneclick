@@ -15,13 +15,13 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .service-details-container
-    %label.control-label Rider Eligibility
+    %label.control-label= translate_helper(:service_eligibility_header)
     .row.service-details-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
           options_for_select(Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}),
           {class: "select form-control service-svc-chars-master-select"})
-      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3 Add Rule
+      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3= translate_helper(:add_eligibility_rule)
     - service.service_characteristics.each do |char|
       .row.service-details-row
         = f.input :service_characteristics,
@@ -45,7 +45,7 @@
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: false, class: "input-svc-chars-destroy"},
           wrapper_html: {class: "hidden"},
           label: false
-        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
+        .btn.btn-link.delete-svc-char-btn.col-xs-3= translate_helper(:delete)
     - Characteristic.enabled.length.times do
       .row.service-details-row.hidden
         = f.input :service_characteristics,
@@ -65,10 +65,10 @@
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: true, class: "input-svc-chars-destroy"},
           wrapper_html: {class: "hidden"},
           label: false
-        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
+        .btn.btn-link.delete-svc-char-btn.col-xs-3= translate_helper(:delete)
 
   .service-details-container
-    %label.control-label Accommodations
+    %label.control-label= translate_helper(:accommodations)
     .row.service-details-row
       = f.association :accommodations,
             collection: Accommodation.all.map{|a| [ translate_helper(a.name), a.id ] }, label: false,
@@ -76,16 +76,14 @@
             item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
   .service-details-container
-    %label.control-label Trip Purposes
+    %label.control-label= translate_helper(:trip_purposes)
     .row.service-details-row
       = f.association :trip_purposes,
             collection: TripPurpose.all.map{|p| [ translate_helper(p.name), p.id ] }, label: false,
             as: :check_boxes,
             item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
 :javascript
   $(document).ready(function() {
