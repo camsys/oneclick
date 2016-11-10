@@ -33,6 +33,11 @@
       hiddenElements: ['#edit-provider-form-btn']
     };
 
+    // Form should be read-only on page load if in edit mode
+    if("#{new_provider}" !== "true") {
+      setFormReadOnly(thisForm, true);
+    }
+
     // Handle logo upload via proxy button
     $('#provider-logo-upload-btn').on("click", function(e) {
       e.preventDefault ? e.preventDefault() : e.returnValue = false;
