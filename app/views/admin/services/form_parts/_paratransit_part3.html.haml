@@ -18,11 +18,11 @@
   .service-details-container
     %label.control-label= translate_helper(:service_eligibility_header)
     %label.sub-label= translate_helper(:service_eligibility_sublabel)
-    .row.service-details-row.faded
+    .row.service-details-row.service-svc-chars-master-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
           options_for_select(Characteristic.active.map {|c| [translate_helper(c.name), c.id]}),
-          {class: "select form-control service-svc-chars-master-select"})
+          {class: "select form-control service-svc-chars-master-select" })
       .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3= translate_helper(:add_eligibility_rule)
     - service.service_characteristics.each do |char|
       .row.service-details-row
@@ -89,7 +89,7 @@
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-svc-chars-master-row', '.delete-svc-char-btn']);
 
     // Handler for New Service Characteristic Selector
     form.$(".add-svc-char-btn").on("click", function(e) {

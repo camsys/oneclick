@@ -7,7 +7,7 @@
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'form-horizontal service-details-form', multipart: true },
+        html: { class: "form-horizontal service-details-form #{'last' if new_service}", multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index },
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
