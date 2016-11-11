@@ -32,7 +32,12 @@
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+    var form = new ServiceForm(
+      "#{service_id}",
+      "#{form_index}",
+      ("#{new_service}" === "true"),
+      ['.btn-ridepilot-test-connection']
+    );
 
     // Display appropriate booking service form on menu select
     form.$('.select-booking-profile').on('change', function(e) {
