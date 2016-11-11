@@ -6,20 +6,43 @@
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
-        html: { class: 'form-horizontal service-details-form', multipart: true },
+        html: { class: 'form-vertical service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},
         authenticity_token: true,
-        wrapper: :horizontal_form do |f|
+        wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
   = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
+  = f.input :primary_coverage_recipe,
+      label: translate_helper(:taxi_coverage_area),
+      placeholder: "List county names separated by commas",
+      input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
+  = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
+    :multipolygons => service.coverage_area_polygons,
+    :tile_provider => 'GOOGLEMAP',
+    :min_zoom => 3,
+    :max_zoom => 15,
+    :style => "height:500px;",
+    :do_not_show_map => true })
+
 :javascript
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+    var theMap = CsMaps['lmap_service_area_#{service_id}'];
+
+    // Show Map on Load if Active
+    if("#{active}" === "true") {
+      if(theMap) {theMap.showMap()};
+    };
+
+    // Show Map on Tab Shown Event
+    $('a[data-toggle="tab"][data-service-id="#{service_id}"]').on('shown.bs.tab', function (e) {
+      if(theMap) {theMap.showMap()};
+    });
 
   });

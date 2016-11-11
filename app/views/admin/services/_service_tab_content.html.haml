@@ -42,14 +42,14 @@
           locals: { new_service: new_service,
                     service: service }
       -when "taxi"
-        = render partial: "admin/services/form_parts/taxi_part2",
+        = render partial: "admin/services/form_parts/taxi_part1",
           locals: { new_service: new_service,
                     service: service,
                     active: active}
-        = render partial: "admin/services/form_parts/taxi_part3",
+        = render partial: "admin/services/form_parts/taxi_part2",
           locals: { new_service: new_service,
                     service: service }
-        = render partial: "admin/services/form_parts/taxi_part4",
+        = render partial: "admin/services/form_parts/taxi_part3",
           locals: { new_service: new_service,
                     service: service }
       = render partial: "admin/services/form_parts/activate_service_form",
