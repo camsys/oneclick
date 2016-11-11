@@ -235,6 +235,7 @@ function toggleServiceProfilePanels(obj, transit_id, taxi_id) {
 // Service Form Class acts as helper for service details
 var ServiceForm = function(serviceId, formIndex, newService=false, visibleElements=[], hiddenElements=[]) {
   this.formId = `.service-details-form[data-service-id=${serviceId}][data-form-index=${formIndex}]`;
+  this.tabLinkId = `.service-tab-link[data-service-id=${serviceId}]`;
   this.newService = newService;
   this.visibleElements = ['.save-service-form-btn'].concat(visibleElements);
   this.hiddenElements = ['.edit-service-form-btn'].concat(hiddenElements);
