@@ -2,6 +2,7 @@
 - form_index = 1
 - active = local_assigns[:active].nil? ? false : active
 - service_id = new_service ? "new-#{mode}" : service.id
+- has_coverages = service.primary_coverage.present? || service.secondary_coverage.present?
 
 = simple_form_for service || :service,
         url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
@@ -24,13 +25,14 @@
       label: translate_helper(:pt_secondary_coverage_area),
       placeholder: translate_helper(:coverage_area_placeholder),
       input_html: { value: service.secondary_coverage ? service.secondary_coverage.recipe : "" }
-  = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
-    :multipolygons => service.coverage_area_polygons,
-    :tile_provider => 'GOOGLEMAP',
-    :min_zoom => 3,
-    :max_zoom => 15,
-    :style => "height:500px;",
-    :do_not_show_map => true })
+  -if has_coverages
+    = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
+      :multipolygons => service.coverage_area_polygons,
+      :tile_provider => 'GOOGLEMAP',
+      :min_zoom => 3,
+      :max_zoom => 15,
+      :style => "height:500px;",
+      :do_not_show_map => true })
 
 
 
@@ -41,14 +43,14 @@
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
     var theMap = CsMaps['lmap_service_area_#{service_id}'];
 
-    // Show Map on Load if Active
-    if("#{active}" === "true") {
-      if(theMap) {theMap.showMap()};
-    };
-
-    // Show Map on Tab Shown Event
-    $('a[data-toggle="tab"][data-service-id="#{service_id}"]').on('shown.bs.tab', function (e) {
+    // Handler to show map on section expand (only needs to fire once, hence 'one')
+    form.$().closest('.collapsible').one('shown.bs.collapse', function() {
       if(theMap) {theMap.showMap()};
     });
+
+    // Show map if form is un-collapsed on page load
+    if(form.$().closest('.collapsible').hasClass('in')) {
+      if(theMap) {theMap.showMap()};
+    };
 
   });

@@ -33,18 +33,6 @@
           start_time: service.schedules.any? ? service.schedules.last.start_time : "8:00 AM",
           end_time: service.schedules.any? ? service.schedules.last.end_time : "8:00 PM")}
 
-  -# .service-details-container
-  -#   %label.control-label Service Hours
-  -#   - service.schedules.each do |sched|
-  -#     = render partial: "admin/services/form_parts/schedule_row",
-  -#       locals: {f:f, sched:sched}
-  -#   - (1..7).each do |i|
-  -#     = render partial: "admin/services/form_parts/schedule_row",
-  -#       locals: {f:f, wrapper_classes: "faded#{" hidden" unless i == 1}",
-  -#         sched: Schedule.new(day_of_week: service.schedules.empty? ? ((i - 1) % 7) : (service.schedules.last.day_of_week + i) % 7,
-  -#           start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time,
-  -#           end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
-
 :javascript
   $(document).ready(function() {
 

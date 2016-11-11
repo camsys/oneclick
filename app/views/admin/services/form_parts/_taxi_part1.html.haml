@@ -35,14 +35,14 @@
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
     var theMap = CsMaps['lmap_service_area_#{service_id}'];
 
-    // Show Map on Load if Active
-    if("#{active}" === "true") {
-      if(theMap) {theMap.showMap()};
-    };
-
-    // Show Map on Tab Shown Event
-    $('a[data-toggle="tab"][data-service-id="#{service_id}"]').on('shown.bs.tab', function (e) {
+    // Handler to show map on section expand (only needs to fire once, hence 'one')
+    form.$().closest('.collapsible').one('shown.bs.collapse', function() {
       if(theMap) {theMap.showMap()};
     });
+
+    // Show map if form is un-collapsed on page load
+    if(form.$().closest('.collapsible').hasClass('in')) {
+      if(theMap) {theMap.showMap()};
+    };
 
   });
