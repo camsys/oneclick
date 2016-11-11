@@ -371,6 +371,7 @@ en:
   show_more: 'show more'
   show_less: 'show less'
   service_name_placeholder: 'Enter a service name'
+  no_service_schedules_message: 'No service hours have been set for this service.'
 
   # application logo upload
   not_authorized: 'You are not authorized.'

@@ -17,15 +17,22 @@
 
   .service-details-container
     %label.control-label= translate_helper(:service_schedule_heading)
-    - service.schedules.each do |sched|
+    -if service.schedules.any?
+      - service.schedules.each do |sched|
+        = render partial: "admin/services/form_parts/schedule_row",
+          locals: {f:f, sched:sched}
+    -else
+      %label.sub-label.label-no-schedules= translate_helper(:no_service_schedules_message)
+    - 7.times do
       = render partial: "admin/services/form_parts/schedule_row",
-        locals: {f:f, sched:sched}
-    - (1..7).each do |i|
-      = render partial: "admin/services/form_parts/schedule_row",
-        locals: {f:f, wrapper_classes: "faded#{" hidden" unless i == 1}",
-          sched: Schedule.new(day_of_week: service.schedules.empty? ? ((i - 1) % 7) : (service.schedules.last.day_of_week + i) % 7,
-            start_time: service.schedules.empty? ? "8:00 AM" : service.schedules.last.start_time,
-            end_time: service.schedules.empty? ? "8:00 PM" : service.schedules.last.end_time)}
+        locals: {f:f, wrapper_classes: "hidden",
+          sched: Schedule.new(day_of_week: nil, start_time: nil, end_time: nil)}
+    = render partial: "admin/services/form_parts/schedule_row",
+      locals: {f:f, wrapper_classes: "faded", master: true,
+        sched: Schedule.new(day_of_week: service.schedules.any? ? (service.schedules.last.day_of_week + 1) % 7 : 1,
+          start_time: service.schedules.any? ? service.schedules.last.start_time : "8:00 AM",
+          end_time: service.schedules.any? ? service.schedules.last.end_time : "8:00 PM")}
+
   .service-details-container
     %label.control-label= translate_helper(:service_booking_cutoff_header)
     .row.form-group.form-horizontal.inline-form-group
@@ -86,7 +93,13 @@
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-details-row[data-schedule-id="new-schedule"]'], []);
+    var form = new ServiceForm(
+      "#{service_id}",
+      "#{form_index}",
+      ("#{new_service}" === "true"),
+      ['.delete-schedule-btn', '.service-schedules-master-row'],
+      ['.label-no-schedules']
+    );
 
     // Delete Schedule Button Handler - Hide Row and Set Destroy to TRUE
     form.$('.delete-schedule-btn').on("click", function(e) {
@@ -95,14 +108,34 @@
       $(this).closest(".service-details-row").find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
     });
 
-    // Add Hours Button Handler shows and prepares next schedule row
-    form.$('.add-schedule-btn').on("click", function(e) {
-      console.log("Add Schedule Button Clicked", $(this));
-      $(this).closest(".service-details-row").removeClass("faded"); // Unfade the parent row element
-      $(this).addClass("hidden"); // Hide the add hours button
-      $(this).closest(".service-details-row").find(".input-schedule-destroy").attr("value", false); // Set destroy value to false for this element
-      $(this).siblings(".delete-schedule-btn").removeClass("hidden"); // Unhide delete button
-      $(this).closest(".service-details-row").next().removeClass("hidden"); // Unhide next row
+    // Handler for New Schedule Row Selector
+    form.$('.service-schedules-master-row .add-schedule-btn').on("click", function(e) {
+
+      // Identify the next hidden new schedule form
+      var nextNewScheduleForm = $(this).closest(".service-details-row").siblings(".hidden[data-schedule-id='new-schedule']").first();
+
+      // Modify its values to match the master form
+      var dow = parseInt(form.$('.service-schedules-master-row .select-schedule-dow').val());
+      nextNewScheduleForm.find('.select-schedule-dow').val(dow).change();
+      // nextNewScheduleForm.find(`.select-schedule-dow option[value='${dow}']`).prop("selected", true);
+
+      var startTime = form.$('.service-schedules-master-row .select-schedule-start-time').val();
+      nextNewScheduleForm.find('.select-schedule-start-time').val(startTime).change();
+      // nextNewScheduleForm.find(`.select-schedule-start-time option[value='${startTime}']`).prop("selected", true);
+
+      var endTime = form.$('.service-schedules-master-row .select-schedule-end-time').val();
+      nextNewScheduleForm.find('.select-schedule-end-time').val(endTime).change();
+      // nextNewScheduleForm.find(`.select-schedule-end-time option[value='${endTime}']`).prop("selected", true);
+
+      // Set its destroy value to true
+      nextNewScheduleForm.find('.input-schedule-destroy').attr("value", false);
+
+      // Unhide it
+      nextNewScheduleForm.removeClass("hidden");
+
+      // Update the master form to have the same times but the next day
+      form.$('.service-schedules-master-row .select-schedule-dow').val((dow + 1) % 7).change();
+
     });
 
     // Handler for Booking Cutoff Times Selector sets all hidden BCT fields to its value
