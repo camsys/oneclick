@@ -17,7 +17,8 @@
 
   .service-details-container
     %label.control-label= translate_helper(:service_eligibility_header)
-    %label.sub-label= translate_helper(:service_eligibility_sublabel)
+    %label.sub-label.label-service-eligibility-sublabel= translate_helper(:service_eligibility_sublabel)
+    %label.sub-label.label-no-svc-chars-sublabel= service.service_characteristics.any? ? translate_helper(:service_eligibility_sublabel) : translate_helper(:no_svc_chars_message)
     .row.service-details-row.service-svc-chars-master-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
@@ -89,13 +90,19 @@
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-svc-chars-master-row', '.delete-svc-char-btn']);
+    var form = new ServiceForm(
+      "#{service_id}",
+      "#{form_index}",
+      ("#{new_service}" === "true"),
+      ['.service-svc-chars-master-row', '.delete-svc-char-btn', '.label-service-eligibility-sublabel'],
+      ['.label-no-svc-chars-sublabel']
+    );
 
     // Handler for New Service Characteristic Selector
     form.$(".add-svc-char-btn").on("click", function(e) {
       // On click, change value of next service char form, set its destroy value to false, and unhide it.
       var charId = $(this).closest(".service-details-row").find(".service-svc-chars-master-select").val();
-      var nextNewSvcCharsForm = $(this).closest(".service-details-row").siblings(".hidden").first();
+      var nextNewSvcCharsForm = $(this).closest(".service-details-row").siblings(".service-details-row.hidden").first();
       nextNewSvcCharsForm.find(`.select-svc-chars-char-id option[value=${charId}]`).attr("selected", true);
       nextNewSvcCharsForm.find(".input-svc-chars-destroy").attr("value", false);
       nextNewSvcCharsForm.removeClass("hidden");
