@@ -13,7 +13,7 @@ class Provider < ActiveRecord::Base
 
   #associations
   has_many :users
-  has_many :services
+  has_many :services, -> { order(updated_at: :asc) }
   has_many :ratings, through: :services
 
   has_many :cs_roles, -> {where(resource_type: 'Provider')}, class_name: 'Role',
