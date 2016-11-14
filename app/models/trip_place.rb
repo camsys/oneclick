@@ -14,6 +14,7 @@ class TripPlace < GeocodedAddress
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
   belongs_to :poi     # optional
+  has_one :user, :through => :trip
 
   # Updatable attributes
   # attr_accessible :sequence, :raw_address

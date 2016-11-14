@@ -331,4 +331,80 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Return 4 most recent trip places.
+  def recent_places count=20
+    self.trip_places.order(created_at: :desc).to_a.uniq(&:address1)[0..(count-1)]
+  end
+
+  # Used by API call to update characteristics and accommodations from a hash
+  def update_profile params
+
+    if params[:attributes]
+      update_attributes params[:attributes]
+    end
+
+    if params[:characteristics]
+      update_user_characteristics params[:characteristics]
+    end
+
+    if params[:accommodations]
+      update_user_accommodations params[:accommodations]
+    end
+
+    if params[:lang]
+      self.preferred_locale = params[:lang]
+      self.save
+    end
+
+  end
+
+  def update_attributes params
+    params.each do |key, value|
+      case key.to_sym
+        when :first_name
+          self.first_name = value
+        when :last_name
+          self.last_name = value
+        when :email
+          self.email = value
+        when :walking_speed
+          walking_speed = WalkingSpeed.find_by(code: walk_speed_to_code(value))
+          self.walking_speed = walking_speed
+        when :walking_distance
+          walking_maximum_distance = WalkingMaximumDistance.find_by(value: value.to_f)
+          self.walking_maximum_distance = walking_maximum_distance
+        when :ecolane_id
+          self.user_profile.user_services.each do |user_service|
+            user_service.external_user_id = value.to_s
+            user_service.save
+          end
+      end
+    end
+
+    self.save
+
+  end
+
+  def update_user_characteristics params
+    params.each do |key,value|
+      characteristic = Characteristic.find_by(code: key)
+      if characteristic
+        user_characteristic = self.user_characteristics.where(user_profile: self.user_profile, characteristic: characteristic).first_or_initialize
+        user_characteristic.value = value
+        user_characteristic.save
+      end
+    end
+  end
+
+  def update_user_accommodations params
+    params.each do |key,value|
+      accommodation = Accommodation.find_by(code: key)
+      if accommodation
+        user_accommodation = self.user_accommodations.where(user_profile: self.user_profile, accommodation: accommodation).first_or_initialize
+        user_accommodation.value = value
+        user_accommodation.save
+      end
+    end
+  end
+
 end

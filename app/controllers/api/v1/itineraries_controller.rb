@@ -29,6 +29,12 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        user_profile = params[:user_profile]
+        if user_profile
+          @traveler.update_profile user_profile
+        end
+
+
         #Unpack params
         modes = params['modes'] || ['mode_transit', 'mode_paratransit', 'mode_taxi', 'mode_ride_hailing']
         trip_parts = params[:itinerary_request]

@@ -3,34 +3,11 @@ module Api
     class UsersController < Api::V1::ApiController
 
       def update
-        attributes = params[:attributes]
-        attributes.each do |key, value|
-          case key.to_sym
-            when :first_name
-              @traveler.first_name = value
-            when :last_name
-              @traveler.last_name = value
-            when :email
-              @traveler.email = value
-            when :walking_speed
-              walking_speed = WalkingSpeed.find_by(code: walk_speed_to_code(value))
-              @traveler.walking_speed = walking_speed
-            when :walking_distance
-              walking_maximum_distance = WalkingMaximumDistance.find_by(value: value.to_f)
-              @traveler.walking_maximum_distance = walking_maximum_distance
-            when :ecolane_id
-              @traveler.user_profile.user_services.each do |user_service|
-                user_service.external_user_id = value.to_s
-                user_service.save
-              end
-            else
-              hash = {result: false, message: "Unknown attribute " + key.to_s}
-              render json: hash and return
-          end
-        end
-
+        @traveler.update_profile params
         valid = @traveler.valid?
-    
+        #Update accommodations and characteristics
+
+
         if !valid
           Rails.logger.error(@traveler.errors.messages)
           hash = {result: false, message: "Unable to update user profile do the following error: #{@traveler.errors.messages}"}
@@ -75,6 +52,8 @@ module Api
         else
           hash[:ecolane_id] = nil
         end
+
+        hash[:lang] = @traveler.preferred_locale
 
         render json: hash
 
