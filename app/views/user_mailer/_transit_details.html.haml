@@ -1,7 +1,7 @@
 %table
   %tr
     %td.itinerary_icons
-      = image_tag(ENV['HOST'] + '/assets/start.png', height: 26, width: 26, style: 'vertical-align: top;')
+      = image_tag(ENV['HOST'].to_s + '/assets/start.png', height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container
       .itinerary_text
         = translate_helper(:start) + itinerary.trip_part.from_trip_place.name
@@ -40,7 +40,7 @@
             = ', ' + exact_distance_to_words(leg.distance)
   %tr
     %td.itinerary_icons
-      = image_tag(ENV['HOST'] + "/assets/stop.png", height: 26, width: 26, style: 'vertical-align: top;')
+      = image_tag(ENV['HOST'].to_s + "/assets/stop.png", height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container
       .itinerary_text
         = translate_helper(:arrive) + itinerary.trip_part.to_trip_place.name
