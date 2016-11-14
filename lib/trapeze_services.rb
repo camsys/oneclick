@@ -103,7 +103,7 @@ class TrapezeServices
 
   def pass_create_trip(endpoint, namespace, username, password, para_service_id, client_id, client_password, origin, destination, request_start_seconds_past_midnight, request_end_seconds_past_midnight, offset_minutes, request_date, booking_purpose_id, is_depart, pass1, pass2, pass3, fare1, fare2, fare3, space1, space2, space3)
 
-    pu_address_hash = {address_mode: 'ZZ', street_no: origin[:street_no], on_street: origin[:on_street], city: origin[:city], state: origin[:state], zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    pu_address_hash = {address_mode: 'ZZ', street_no: (origin[:street_no] || "").upcase, on_street: (origin[:on_street] || "").upcase, unit: (origin[:unit] || "").upcase, city: (origin[:city] || "").upcase, state: (origin[:state] || "").upcase, zip_code: origin[:zip_code], lat: (origin[:lat]*1000000).to_i, lon: (origin[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       pu_leg_hash = {req_time: [request_start_seconds_past_midnight + (offset_minutes*60), 86399].min, request_address: pu_address_hash}
     else
@@ -111,7 +111,7 @@ class TrapezeServices
     end
 
 
-    do_address_hash = {address_mode: 'ZZ', street_no: destination[:street_no], on_street: destination[:on_street], city: destination[:city], state: destination[:state], zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
+    do_address_hash = {address_mode: 'ZZ', street_no: (destination[:street_no] || "").upcase, on_street: (destination[:on_street] || "").upcase, unit: (destination[:unit] || "").upcase, city: (destination[:city] || "").upcase, state: (destination[:state] || "").upcase, zip_code: destination[:zip_code], lat: (destination[:lat]*1000000).to_i, lon: (destination[:lon]*1000000).to_i, geo_status:  -2147483648 }
     if is_depart
       do_leg_hash = {request_address: do_address_hash}
     else
@@ -138,6 +138,7 @@ class TrapezeServices
     funding_source_array.each do |funding_source|
       trip_hash[:excluded_validation_checks] = funding_source[:excluded_validation_checks]
       trip_hash[:funding_source_id] = funding_source[:funding_source_id]
+      trip_hash[:fare_type_id] = funding_source[:fare_type_id]
       Rails.logger.info trip_hash.ai
 
       result = client.call(:pass_create_trip, message: trip_hash, cookies: auth_cookies)
@@ -167,11 +168,11 @@ class TrapezeServices
     Rails.logger.info result.ai
 
     begin
-      cancellation_number = result[:envelope][:body][:pass_cancel_trip_response][:pass_cancel_trip_result][:cancellation_number]
-      unless cancellation_number.nil?
-        return true
-      else
+      validation = result[:envelope][:body][:pass_cancel_trip_response][:validation]
+      if validation.nil?
         return false
+      else
+        return confirm_resultok validation
       end
     rescue
       return false
@@ -212,17 +213,34 @@ class TrapezeServices
     check_polygon = Oneclick::Application.config.check_polygon_id
 
     funding_source_array = []
-    funding_sources = pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password).sort_by{ |fs| fs[:sequence] }
+    funding_sources = pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password)
+
+    # If this client has 1 funding source returned, the returned object is a json hash.
+    # If this client has more than 1 funding source, the returned object is an array of json_hashes
+    # Turn all results into an array
+    unless funding_sources.kind_of?(Array)
+      funding_sources = [funding_sources]
+    end
+
+    funding_sources = funding_sources.sort_by{ |fs| fs[:sequence] }
+
+    #First load any ADA Funding Sources
     funding_sources.each do |funding_source|
-      Rails.logger.info funding_source.ai
       if funding_source[:funding_source_name].in? ada_funding_sources
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: 1}
-      else
-        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: ignore_polygon, fare_type_id: 14}
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: check_polygon, fare_type_id: Oneclick::Application.config.ada_fare_type}
       end
     end
 
+    #Second load any non-ADA Funding Sources
+    funding_sources.each do |funding_source|
+      unless funding_source[:funding_source_name].in? ada_funding_sources
+        funding_source_array << {funding_source_id: funding_source[:funding_source_id].to_i, excluded_validation_checks: ignore_polygon, fare_type_id: Oneclick::Application.config.non_ada_fare_type}
+      end
+    end
+
+    Rails.logger.info funding_source_array.ai
     funding_source_array
+
   end
 
 
@@ -261,6 +279,17 @@ class TrapezeServices
   def pass_get_client_funding_sources(endpoint, namespace, username, password, client_id, client_password)
     client_info = pass_get_client_info(endpoint, namespace, username, password, client_id, client_password)
     client_info[:envelope][:body][:pass_get_client_info_response][:pass_get_client_info_result][:pass_client_funding_sources][:pass_client_funding_source]
+  end
+
+  #Pass a validation object and search through it to confirm that the RESULTOK was returned
+  def confirm_resultok(validation)
+    items = validation[:item]
+    items.each do |item|
+      if item[:code] == 'RESULTOK'
+        return true
+      end
+    end
+    return false
   end
 
 end

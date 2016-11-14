@@ -1,6 +1,7 @@
 class BookingServices
 
   require 'indirizzo'
+  require 'street_address'
   include ActionView::Helpers::NumberHelper
 
   ##### Constants ####
@@ -29,13 +30,12 @@ class BookingServices
         trapeze_profile = itinerary.service.trapeze_profile
 
         origin = itinerary.trip_part.from_trip_place
-        parsed_address = get_number_and_street(origin.raw_address.blank? ? origin.address1 : origin.raw_address)
-        origin_hash = {street_no: parsed_address[0], on_street: parsed_address[1], city: origin.city, state: origin.state, zip_code: origin.zip, lat: origin.lat, lon: origin.lon}
+        parsed_address = get_parsed_address(origin.raw_address.blank? ? origin.address1 : origin.raw_address)
+        origin_hash = {street_no: parsed_address.number, on_street: parsed_address.street.to_s + ' ' + parsed_address.street_type.to_s, unit: origin.unit, city: origin.city, state: origin.state, zip_code: origin.zip, lat: origin.lat, lon: origin.lon}
 
         destination = itinerary.trip_part.to_trip_place
-        parsed_address = get_number_and_street(destination.raw_address.blank? ? destination.address1 : destination.raw_address)
-        destination_hash = {street_no: parsed_address[0], on_street: parsed_address[1], city: destination.city, state: destination.state, zip_code: destination.zip, lat: destination.lat, lon: destination.lon}
-
+        parsed_address = get_parsed_address(destination.raw_address.blank? ? destination.address1 : destination.raw_address)
+        destination_hash = {street_no: parsed_address.number, on_street: parsed_address.street.to_s + ' ' + parsed_address.street_type.to_s, unit: destination.unit, city: destination.city, state: destination.state, zip_code: destination.zip, lat: destination.lat, lon: destination.lon}
 
         ts = TrapezeServices.new
         result = ts.pass_create_trip(trapeze_profile.endpoint, trapeze_profile.namespace, trapeze_profile.username, trapeze_profile.password, trapeze_profile.para_service_id, user_service.external_user_id,user_service.user_password, origin_hash, destination_hash, itinerary.start_time.seconds_since_midnight.to_i, itinerary.end_time.seconds_since_midnight.to_i, trapeze_profile.booking_offset_minutes, itinerary.start_time.strftime("%Y%m%d"), itinerary.trip_part.booking_trip_purpose_id, itinerary.trip_part.is_depart, itinerary.trapeze_booking.passenger1_type, itinerary.trapeze_booking.passenger2_type, itinerary.trapeze_booking.passenger3_type, itinerary.trapeze_booking.fare1_type_id, itinerary.trapeze_booking.fare2_type_id, itinerary.trapeze_booking.fare3_type_id, itinerary.trapeze_booking.passenger1_space_type, itinerary.trapeze_booking.passenger2_space_type, itinerary.trapeze_booking.passenger3_space_type)
@@ -198,9 +198,8 @@ class BookingServices
     end
   end
 
-  def get_number_and_street(raw_address)
-    parsable_address = Indirizzo::Address.new(raw_address)
-    return [parsable_address.number, parsable_address.street.first]
+  def get_parsed_address(raw_address)
+    return StreetAddress::US.parse(raw_address)
   end
 
   def seconds_since_midnight_to_string(seconds_since_midnight)

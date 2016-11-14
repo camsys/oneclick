@@ -98,3 +98,5 @@ app/assets/stylesheets/default/.#application.css.scss
 app/reports/.#system_usage_report.rb
 
 public/uploads/
+
+cpta_sample_data.rake

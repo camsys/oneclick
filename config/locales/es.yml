@@ -1,6 +1,7 @@
 # Spanish
 
 es:
+  unit_number: "Número de apartamento"
   more: "Mas"
   user_id: "User Id"
   client_id: "Client Id"

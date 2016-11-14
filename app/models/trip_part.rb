@@ -114,6 +114,10 @@ class TripPart < ActiveRecord::Base
     end
   end
 
+  def unit
+    self.from_trip_place.unit
+  end
+
   ### END Booking Specific Methods #####
 
   def has_selected?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151231151341) do
+ActiveRecord::Schema.define(version: 20161114014908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,8 +144,8 @@ ActiveRecord::Schema.define(version: 20151231151341) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -798,6 +798,7 @@ ActiveRecord::Schema.define(version: 20151231151341) do
     t.string   "county",       limit: 128
     t.string   "result_types"
     t.string   "name",         limit: 256
+    t.string   "unit"
   end
 
   create_table "trip_purposes", force: true do |t|
