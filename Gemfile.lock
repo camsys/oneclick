@@ -72,8 +72,14 @@ GIT
       sass-rails
       simple_form
 
+GIT
+  remote: git://github.com/derrek/street-address.git
+  revision: e81768dacec5b889c751b093cf6796cb5fb7b0e4
+  specs:
+    StreetAddress (2.0.0)
+
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     Indirizzo (0.1.7)
     RedCloth (4.2.9)
@@ -586,6 +592,7 @@ PLATFORMS
 DEPENDENCIES
   Indirizzo
   RedCloth
+  StreetAddress!
   active_attr
   active_model_serializers
   activemdb
