@@ -350,6 +350,12 @@ class User < ActiveRecord::Base
     if params[:accommodations]
       update_user_accommodations params[:accommodations]
     end
+
+    if params[:lang]
+      self.preferred_locale = params[:lang]
+      self.save
+    end
+
   end
 
   def update_attributes params
