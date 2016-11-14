@@ -53,6 +53,8 @@ module Api
           hash[:ecolane_id] = nil
         end
 
+        hash[:lang] = @traveler.preferred_locale
+
         render json: hash
 
       end
