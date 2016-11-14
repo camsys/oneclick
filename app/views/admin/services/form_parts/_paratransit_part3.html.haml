@@ -49,7 +49,7 @@
           wrapper_html: {class: "hidden"},
           label: false
         .btn.btn-link.delete-svc-char-btn.col-xs-3= translate_helper(:delete)
-    - Characteristic.enabled.length.times do
+    - Characteristic.enabled.length.times do |i|
       .row.service-details-row.hidden
         = f.input :service_characteristics,
           collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]},
@@ -63,6 +63,12 @@
         = f.input :service_characteristics,
           input_html: {name: input_name(f, :service_characteristics, :active), value: true},
           wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :group),
+            value: service.service_characteristics.empty? ? i : service.service_characteristics.max_by {|sc| sc.group}.group + 1 + i,
+            class: "input-svc-chars-group"},
+          wrapper_html: {class: ""},
           label: false
         = f.input :service_characteristics,
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: true, class: "input-svc-chars-destroy"},
