@@ -89,12 +89,12 @@ class Admin::ProvidersController < ApplicationController
       @provider.logo = params[:provider][:logo] if params[:provider][:logo]
 
       if @provider.save
-        puts "SENDING SUCCESS RESPONSE", @provider.admin_user.ai
+        puts "SENDING SUCCESS RESPONSE"
         format.html { redirect_to edit_admin_provider_path(@provider), notice: 'Provider was successfully created.' }
         format.json { head :no_content }
       else
-        puts "SENDING FAILURE RESPONSE"
-        format.html { render action: "new" }
+        puts "SENDING FAILURE RESPONSE", @provider.ai
+        format.html { render :new }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end
     end
@@ -176,7 +176,6 @@ class Admin::ProvidersController < ApplicationController
         format.json { head :no_content }
       else
         puts "SENDING FAILURE RESPONSE", @provider.ai
-        # format.html { render action: "edit" }
         format.html { render partial: "provider_form", locals: { provider: @provider, new_provider: false, read_only: false } }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end

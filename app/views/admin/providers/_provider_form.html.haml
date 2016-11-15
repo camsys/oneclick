@@ -2,7 +2,7 @@
 
 -# Form for creating or editing a provider
 = simple_form_for [:admin, @provider],
-        remote: !current_page?(action: 'new'),
+        remote: !new_provider,
         html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
         data: {type: :html},
         authenticity_token: true,
@@ -34,7 +34,7 @@
     };
 
     // Form should be read-only on page load if in edit mode
-    if("#{read_only}" === "true") {
+    if(#{read_only}) {
       setFormReadOnly(thisForm, true);
     }
 
@@ -61,12 +61,15 @@
       $('#provider-data-form').submit();
     })
 
-    // Handle Form submit
-    $('#provider-data-form')
-    .on("ajax:success", function(evt, data, status, xhr) {
-      // On success, refresh just the provider form partial
-      $('#provider-data-form').replaceWith(xhr.responseText);
-      setFormReadOnly(thisForm, #{read_only} === "true");
-    });
+    // Handle Form AJAX response if not a new provider
+    if(!#{new_provider}) {
+      $('#provider-data-form')
+      .on("ajax:success", function(evt, data, status, xhr) {
+        // On success, refresh just the provider form partial
+        console.log("AJAX SUCCESS, REPLACING FORM", #{new_provider});
+        $('#provider-data-form').replaceWith(xhr.responseText);
+        setFormReadOnly(thisForm, #{read_only});
+      });
+    }
 
   });
