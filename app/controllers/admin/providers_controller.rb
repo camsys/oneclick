@@ -172,11 +172,12 @@ class Admin::ProvidersController < ApplicationController
 
       if @provider.update_attributes(admin_provider_params)
         puts "SENDING SUCCESS RESPONSE"
-        format.html { render partial: "provider_form", locals: { provider: @provider } }
+        format.html { render partial: "provider_form", locals: { provider: @provider, new_provider: false, read_only: true } }
         format.json { head :no_content }
       else
-        puts "SENDING FAILURE RESPONSE"
-        format.html { render action: "edit" }
+        puts "SENDING FAILURE RESPONSE", @provider.ai
+        # format.html { render action: "edit" }
+        format.html { render partial: "provider_form", locals: { provider: @provider, new_provider: false, read_only: false } }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end
     end

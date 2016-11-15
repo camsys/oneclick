@@ -1,3 +1,5 @@
+- read_only = !new_provider if local_assigns[:read_only].nil?
+
 -# Form for creating or editing a provider
 = simple_form_for [:admin, @provider],
         remote: !current_page?(action: 'new'),
@@ -32,7 +34,7 @@
     };
 
     // Form should be read-only on page load if in edit mode
-    if("#{new_provider}" !== "true") {
+    if("#{read_only}" === "true") {
       setFormReadOnly(thisForm, true);
     }
 
@@ -64,7 +66,7 @@
     .on("ajax:success", function(evt, data, status, xhr) {
       // On success, refresh just the provider form partial
       $('#provider-data-form').replaceWith(xhr.responseText);
-      setFormReadOnly(thisForm, true);
+      setFormReadOnly(thisForm, #{read_only} === "true");
     });
 
   });
