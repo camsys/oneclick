@@ -35,7 +35,7 @@ es:
   show_mode_walk: "Show Walk"
   ###################################
 
-
+  unit_number: "Número de apartamento"
   wheelchair_lift_equipped_name: 'Equipado con una silla de ruedas'
   mode_transit_name: 'Transporte Público'
   mode_car_name: 'Conduciendo'

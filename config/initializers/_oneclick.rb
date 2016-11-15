@@ -10,16 +10,21 @@ Oneclick::Application.configure do
 
   ActiveRecord::Base.logger.level = 1
 
-  #Remove these via improved ecolane support
+  #ECOLANE CONFIGS
   config.ecolane_base_url = "https://apiserver.ecolane.com"
   config.get_fares_from_ecolane = false
   config.service_max_allow_advanced_book_days = 365
   config.ada_funding_sources = []
   config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
-
-  #Staff email updates for booked ecolane trips
   config.send_ecolane_email_updates = false
   config.ecolane_email_update_recipients = "email@camsys.com, email@camsys.com"
+
+  #TRAPEZE CONFIGS
+  config.ada_funding_sources = ['ADA']
+  config.ignore_polygon_id = 18
+  config.check_polygon_id = 0
+  config.ada_fare_type = 0
+  config.non_ada_fare_type = 14
 
   #Review the necessity of these variables
   config.show_update_services = false
@@ -143,7 +148,7 @@ Oneclick::Application.configure do
   config.google_place_search = 'geocode'
   config.use_google_analytics = true
 
-    # General UI configuration settings
+  # General UI configuration settings
   config.ui_typeahead_delay = 300       # milliseconds delay between keystrokes before a query is sent to the server to retrieve a typeahead list
   config.ui_typeahead_min_chars = 4     # minimum number of characters to initiate a query
   config.ui_typeahead_list_length = 10  # max number of items displayed in the typeahead list

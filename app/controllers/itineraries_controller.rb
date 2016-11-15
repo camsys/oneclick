@@ -78,6 +78,9 @@ class ItinerariesController < ApplicationController
             when "trip_part[booking_trip_purpose_id]"
               @trip_part.booking_trip_purpose_id = object.last[:value].to_i
               @trip_part.save
+            when "trip_part[unit]"
+              @trip_part.from_trip_place.unit = object.last[:value]
+              @trip_part.from_trip_place.save
             when "trip_part[passenger1_type]"
               trapeze_booking.passenger1_type = (object.last[:value]).split('%%').first
               trapeze_booking.fare1_type_id = (object.last[:value]).split('%%').last

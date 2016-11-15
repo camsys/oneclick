@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031165355) do
+ActiveRecord::Schema.define(version: 20161115214057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -857,12 +857,12 @@ ActiveRecord::Schema.define(version: 20161031165355) do
     t.string   "county",          limit: 128
     t.string   "result_types"
     t.string   "name",            limit: 256
-    t.string   "unit"
     t.string   "street_number"
     t.string   "route"
     t.string   "google_place_id"
     t.string   "stop_code"
     t.text     "types"
+    t.string   "unit"
   end
 
   create_table "trip_purposes", force: true do |t|

@@ -72,6 +72,7 @@ gem 'remotipart', '~> 1.2'
 gem 'savon'
 gem 'attr_encrypted'
 gem 'uber-ruby', require: 'uber'
+gem 'StreetAddress', github: 'derrek/street-address'
 
 group :development do
   # gem 'ffi-geos'
