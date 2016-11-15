@@ -8,14 +8,8 @@ class UserMailer < ActionMailer::Base
     @trip = trip
     @comments = comments
     @user = current_user
-    subject = TranslationEngine.translate_text(
-      :user_trip_email_subject,
-      app_name: Oneclick::Application.config.name,
-      trip_date: @trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
-    )
+    subject = 'Your Trip Details'
     @itineraries = trip.selected_itineraries
-    # @legs = @itinerary.get_legs
-
     mail(to: addresses, subject: subject, from: @@from)
   end
 

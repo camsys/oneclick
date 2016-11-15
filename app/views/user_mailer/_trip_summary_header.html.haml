@@ -1,11 +1,7 @@
 %table.trip_summary_container{style: "padding: 10px 0px;"}
   %tr
   %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
-    = image_tag(logo_url_helper(itinerary), height: 20, width: 20, style: 'vertical-align: middle; padding-right: 10px;')
-    %span=get_trip_summary_title(itinerary)
-
     -if itinerary.cost
-      %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | '
       %span{style: "font-weight: bold;"}= 'Fare'
       %span=' : '
       -if itinerary.mode.code == 'mode_taxi'
