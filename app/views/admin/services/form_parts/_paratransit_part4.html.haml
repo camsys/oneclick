@@ -5,7 +5,7 @@
 - fare_types = FareStructure::PARATRANSIT_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
 
 = simple_form_for service || :service,
-        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
         html: { class: 'form-horizontal service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},

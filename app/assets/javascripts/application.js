@@ -258,11 +258,11 @@ var ServiceForm = function(serviceId, formIndex, newService=false, visibleElemen
 
   // Handle Service Update or Create
   this.$().on("ajax:success", function(evt, data, status, xhr) {
-    if(thisForm.newService) {
-      $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu
+    if(thisForm.newService && xhr.status === 200) {
+      $('#services-menu').replaceWith(xhr.responseText); // Refresh the whole menu on successful create
     } else {
-      $(this).replaceWith(xhr.responseText);
-      thisForm.setReadOnly(true); // Make Form Read-Only
+      $(this).replaceWith(xhr.responseText); // Re-render just this form
+      thisForm.setReadOnly(xhr.status !== 206); // Set to read-only unless there were errors
     }
   });
 

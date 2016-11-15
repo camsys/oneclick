@@ -5,7 +5,7 @@
 
 -# Forms for creating or editing a service
 = simple_form_for service || :service,
-        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
         html: { class: "form-horizontal service-details-form #{'last' if new_service}", multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index },
@@ -64,7 +64,7 @@
 
     // Update Tab Name on Name change
     form.$().on("ajax:success", function(evt, data, status, xhr) {
-      var newName = form.$('.service_name .form-control').val();
+      var newName = form.$('.service_name .form-control').val() || $(form.tabLinkId).text();
       $(form.tabLinkId).text(newName);
     });
 

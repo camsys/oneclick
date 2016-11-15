@@ -4,7 +4,7 @@
 - service_id = new_service ? "new-#{mode}" : service.id
 
 = simple_form_for service || :service,
-        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
         html: { class: 'form-vertical service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},

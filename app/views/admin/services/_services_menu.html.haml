@@ -36,17 +36,14 @@
     // Render appropriate service partials on menu select
     $('#select-new-service-type').change(function(e) {
       var mode = this.value;
-      console.log(mode);
 
       // Make appropriate mode tab visible and active0
       $(".new-service-tab").addClass("hidden");
       if(mode) {
         $("#services-container").removeClass("hidden");
-        console.log("Mode exists", mode);
         $(`#new-${mode}-service-tab`).removeClass("hidden");
         $(`#new-${mode}-service-tab > a`).click();
       } else {
-        console.log("No mode", mode);
         if(#{@provider.services.empty?}) {
           $("#services-container").addClass("hidden");
         } else {

@@ -24,13 +24,13 @@ class Admin::ServicesController < Admin::BaseController
 
       if @service.save
         puts "SERVICE SAVED", @service.ai
-        format.html { render partial: 'admin/services/services_menu' }
+        format.html { render partial: 'admin/services/services_menu' } # Refresh the whole services menu on successful create
         format.json { head :no_content }
       else
-        puts "SERVICE NOT SAVED"
-
-        # format.html { render partial: 'service_form_mode_paratransit', notice: 'Service not added.' }
-        format.json { render json: @service.errors, status: :unprocessable_entity }
+        puts "SERVICE NOT SAVED", @service.ai, @service.errors.ai
+        format.html { render partial: params[:service_details_partial],
+          locals: {new_service: true, service: @service, active: true, mode: @service.service_type.code},
+          status: :partial_content }
       end
     end
   end
@@ -57,10 +57,14 @@ class Admin::ServicesController < Admin::BaseController
 
       if @service.update_attributes(service_params)
         puts "SERVICE UPDATED", @service.ai
-        format.html { render partial: params[:service_details_partial], locals: {new_service: false, service: @service, active: true, mode: @service.service_type.code} }
+        format.html { render partial: params[:service_details_partial],
+          locals: {new_service: false, service: @service, active: true, mode: @service.service_type.code} }
         format.json { head :no_content }
       else
-        puts "SERVICE UPDATE FAILED"
+        puts "SERVICE UPDATE FAILED", @service.ai, @service.errors.ai
+        format.html { render partial: params[:service_details_partial],
+          locals: {new_service: false, service: @service, active: true, mode: @service.service_type.code},
+          status: :partial_content }
       end
     end
   end
