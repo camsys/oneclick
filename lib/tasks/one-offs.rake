@@ -138,11 +138,6 @@ namespace :oneclick do
       puts "************************************************"
       puts
 
-      # Make inactive all service characteristics that are not booleans.
-      # First, check to see if any of those characteristics are attached to users or services
-      puts "Setting #{Characteristic.unscoped.where.not(datatype: "bool").count} non-boolean characteristics to inactive."
-      Characteristic.unscoped.where.not(datatype: "bool").each {|c| c.update_attributes(active: false)}
-
       # Create Fare Structures for Services that don't have them
       puts "Migrating services..."
       Service.all.each do |service|
@@ -158,7 +153,8 @@ namespace :oneclick do
 
         # Build Coverage Zones by parsing Endpoint Array and Coverage Array as recipes and joining to existing coverage recipes.
         unless service.county_endpoint_array.nil?
-          recipe = [service.county_endpoint_array.join(', '),service.primary_coverage.recipe].join(',')
+          recipe = [service.county_endpoint_array.join(', ')]
+          recipe.push(service.primary_coverage.recipe].join(',')) unless service.primary_coverage.nil?
           print "Parsing Primary Coverage Area..."
           service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(recipe))
           puts " #{service.primary_coverage.recipe} added as primary coverage."
