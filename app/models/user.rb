@@ -410,4 +410,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def walk_speed_to_code(walk_speed)
+    walk_speed = walk_speed.downcase.strip.to_sym
+    walk_speed_hash = {slow: "slow", average: "average", medium: "average", fast:"fast"}
+    return walk_speed_hash[walk_speed]
+  end
+
 end
