@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108214403) do
+ActiveRecord::Schema.define(version: 20161116190255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20161108214403) do
   end
 
   create_table "coverage_zones", force: true do |t|
-    t.string   "recipe"
+    t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
@@ -846,7 +846,6 @@ ActiveRecord::Schema.define(version: 20161108214403) do
     t.string   "google_place_id"
     t.string   "stop_code"
     t.text     "types"
-    t.string   "unit"
   end
 
   create_table "trip_purposes", force: true do |t|
