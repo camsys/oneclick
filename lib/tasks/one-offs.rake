@@ -142,6 +142,13 @@ namespace :oneclick do
       # First, check to see if any of those characteristics are attached to users or services
       puts "Setting #{Characteristic.unscoped.where.not(datatype: "bool").count} non-boolean characteristics to inactive."
       Characteristic.unscoped.where.not(datatype: "bool").each {|c| c.update_attributes(active: false)}
+      puts
+
+      # Eliminate UserCharacteristics & ServiceCharacteristics that reference the inactive characteristics
+      puts "Eliminating references to nil characteristics..."
+      UserCharacteristic.all.each { |uc| puts "Destroying ", uc.destroy.ai if uc.characteristic.nil? }
+      ServiceCharacteristic.all.each { |sc| puts "Destroying ", sc.destroy.ai if sc.characteristic.nil? }
+      puts
 
       # Create Fare Structures for Services that don't have them
       puts "Migrating services..."
