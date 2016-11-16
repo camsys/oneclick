@@ -130,6 +130,14 @@ namespace :oneclick do
 
     end
 
+    # Transition to New Service Data UI
+    task migrate_to_new_service_data_ui: :environment do
+
+      # Make inactive all service characteristics that are not booleans.
+      # First, check to see if any of those characteristics are attached to users or services
+      Characteristic.unscoped.where.not(datatype: "bool").each {|c| c.update_attributes(active: false)}
+    end
+
   end
 
 end
