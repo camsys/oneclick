@@ -700,6 +700,19 @@ class Service < ActiveRecord::Base
 
   #### End Booking Methods
 
+  def build_fare_structures_by_mode
+    case service_type_id
+    when 1 # Paratransit
+      fare_structures.build(fare_type: 0)
+    when 4 # Transit
+      # TRANSIT ACTIONS
+    when 5 # Taxi
+      fare_structures.build(fare_type: 1)
+    else
+      # ELSE ACTIONS
+    end
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)

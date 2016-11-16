@@ -19,17 +19,14 @@ class CoverageZone < ActiveRecord::Base
       # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
       search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
       state_filter = state_specifier ? [state_specifier] : [Oneclick::Application.config.state]
-      # state_filter = state_specifier ? [state_specifier] : ["MA", "CT", "VA"]
 
       # Make a hash key for the area name, and fill it with an array of matching objects from the database
       match_hash[area_name] = [] unless match_hash.key?(area_name)
       search_tables.each do |table|
         case table
         when "County"
-          # match_hash[area_name] += County.where(name: area_name, state: state_filter).map {|area| {id: area.id, name: area.name, state: area.state}}
           match_hash[area_name] += County.where(name: area_name, state: state_filter)
         when "Zipcode"
-          # match_hash[area_name] += Zipcode.where(zipcode: area_name).map {|area| {id: area.id, zipcode: area.zipcode, name: area.name, state: area.state}}
           match_hash[area_name] += Zipcode.where(zipcode: area_name)
         when "City"
           match_hash[area_name] += City.where(name: area_name, state: state_filter)
@@ -42,7 +39,7 @@ class CoverageZone < ActiveRecord::Base
 
   # Encodes a hash of matching coverage areas into an unambiguous recipe string
   def self.encode_coverage_recipe(matched_areas)
-    match_list = matched_areas.values.flatten
+    match_list = matched_areas.values.flatten.uniq
     match_list.map! do |area|
       case area.class.name
       when "County"
