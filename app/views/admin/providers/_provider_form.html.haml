@@ -66,7 +66,6 @@
       $('#provider-data-form')
       .on("ajax:success", function(evt, data, status, xhr) {
         // On success, refresh just the provider form partial
-        console.log("AJAX SUCCESS, REPLACING FORM", #{new_provider});
         $('#provider-data-form').replaceWith(xhr.responseText);
         setFormReadOnly(thisForm, #{read_only});
       });

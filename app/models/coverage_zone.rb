@@ -37,7 +37,6 @@ class CoverageZone < ActiveRecord::Base
       end
     end
 
-    # puts matched_areas.ai
     return matched_areas
   end
 
@@ -61,9 +60,15 @@ class CoverageZone < ActiveRecord::Base
     parsed_recipe = self.parse_coverage_recipe(recipe)
     geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
     geom = geoms.reduce { |combined_area, geom| combined_area.union(geom) }
-    return if geom.nil?
-    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon)
-    return self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
+    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon) unless geom.nil?
+    @coverage_zone = self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
+
+    # Add errors for no matches and multiple matches
+    errors = { no_matches: parsed_recipe.select {|k,v| v.empty? }.keys, multiple_matches: parsed_recipe.select {|k,v| v.length > 1 }.keys }
+    @coverage_zone.errors.add(:no_matches, " found for: " + errors[:no_matches].join(", ")) unless errors[:no_matches].empty?
+    @coverage_zone.errors.add(:multiple_matches, " found for: " + errors[:multiple_matches].join(", ")) unless errors[:multiple_matches].empty?
+
+    return @coverage_zone
   end
 
   # Returns an array of coverage zone polygon geoms

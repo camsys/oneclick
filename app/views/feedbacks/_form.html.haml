@@ -51,11 +51,13 @@
       });
     }
   }).ajaxError(function(e, xhr, settings, err){
-    console.log([e, xhr, settings, err]);
-    feedbackErrors = JSON.parse(xhr.responseText);
-    $.each(feedbackErrors, function(k,v){
-      $("div[class*=" + k + "]").addClass('has-error');
-      $("#feedbackModal [id$=" + k + "]").siblings('p').remove();
-      $("#feedbackModal [id$=" + k + "]").parent().append("<p>#{translate_helper(:presence_msg)}</p>");
-    });
+    if (xhr.responseText) {
+      console.log([e, xhr, settings, err]);
+      feedbackErrors = JSON.parse(xhr.responseText);
+      $.each(feedbackErrors, function(k,v){
+        $("div[class*=" + k + "]").addClass('has-error');
+        $("#feedbackModal [id$=" + k + "]").siblings('p').remove();
+        $("#feedbackModal [id$=" + k + "]").parent().append("<p>#{translate_helper(:presence_msg)}</p>");
+      });
+    }
   });

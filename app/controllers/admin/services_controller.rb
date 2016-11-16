@@ -46,8 +46,17 @@ class Admin::ServicesController < Admin::BaseController
       @service.logo = params[:service][:logo] if params[:service][:logo]
 
       # Update Coverage Area Maps based on text input
-      @service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(params[:service][:primary_coverage_recipe])) if params[:service][:primary_coverage_recipe]
-      @service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])) if params[:service][:secondary_coverage_recipe]
+      if params[:service][:primary_coverage_recipe]
+        @primary_coverage = CoverageZone.build_coverage_area(params[:service][:primary_coverage_recipe])
+        primary_coverage_errors = @primary_coverage.errors.messages.dup
+        @service.update_attributes(primary_coverage: @primary_coverage)
+      end
+
+      if params[:service][:secondary_coverage_recipe]
+        @secondary_coverage = CoverageZone.build_coverage_area(params[:service][:secondary_coverage_recipe])
+        secondary_coverage_errors = @secondary_coverage.errors.messages.dup
+        @service.update_attributes(secondary_coverage: @secondary_coverage)
+      end
 
       # Update Booking Service Profile
       update_booking_service_profile unless params[:service][:booking_profile].nil?
@@ -56,7 +65,10 @@ class Admin::ServicesController < Admin::BaseController
       update_fare unless params[:service][:base_fare_structure_attributes].nil?
 
       if @service.update_attributes(service_params)
-        puts "SERVICE UPDATED", @service.ai
+        # Add coverage area errors after update so they show up in form error notification
+        primary_coverage_errors.each {|k,v| @service.errors.add(k, v.first)} if primary_coverage_errors
+        secondary_coverage_errors.each {|k,v| @service.errors.add(k, v.first)} if secondary_coverage_errors
+
         format.html { render partial: params[:service_details_partial],
           locals: {new_service: false, service: @service, active: true, mode: @service.service_type.code} }
         format.json { head :no_content }
