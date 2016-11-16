@@ -22,7 +22,7 @@
     .row.service-details-row.service-svc-chars-master-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
-          options_for_select(Characteristic.active.map {|c| [translate_helper(c.name), c.id]}),
+          options_for_select(Characteristic.active.enabled.map {|c| [translate_helper(c.name), c.id]}),
           {class: "select form-control service-svc-chars-master-select" })
       .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3= translate_helper(:add_eligibility_rule)
     - service.service_characteristics.each do |char|
@@ -32,7 +32,7 @@
           wrapper_html: {class: "hidden"},
           label: false
         = f.input :service_characteristics,
-          collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}, selected: char.characteristic_id,
+          collection: Characteristic.active.enabled.map {|c| [translate_helper(c.name), c.id]}, selected: char.characteristic_id,
           input_html: {name: input_name(f, :service_characteristics, :characteristic_id), class: "select-svc-chars-char-id"},
           wrapper_html: {class: "col-xs-6"},
           label: false

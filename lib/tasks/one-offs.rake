@@ -138,6 +138,11 @@ namespace :oneclick do
       puts "************************************************"
       puts
 
+      # Make inactive all service characteristics that are not booleans.
+      # First, check to see if any of those characteristics are attached to users or services
+      puts "Setting #{Characteristic.unscoped.where.not(datatype: "bool").count} non-boolean characteristics to inactive."
+      Characteristic.unscoped.where.not(datatype: "bool").each {|c| c.update_attributes(active: false)}
+
       # Create Fare Structures for Services that don't have them
       puts "Migrating services..."
       Service.all.each do |service|

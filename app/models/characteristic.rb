@@ -17,8 +17,8 @@ class Characteristic < ActiveRecord::Base
   scope :active, -> {where(active: true)}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
-  # scope :enabled, -> { where.not(datatype: 'disabled') }
-  scope :enabled, -> { where(datatype: 'bool') } # Only enable boolean characteristics
+  scope :enabled, -> { where.not(datatype: 'disabled') }
+  # scope :enabled, -> { where(datatype: 'bool') } # Only enable boolean characteristics
   scope :for_traveler, -> { where(for_traveler: true) }
   scope :for_service, -> { where(for_service: true) }
 
