@@ -846,6 +846,7 @@ ActiveRecord::Schema.define(version: 20161116190255) do
     t.string   "google_place_id"
     t.string   "stop_code"
     t.text     "types"
+    t.string   "unit"
   end
 
   create_table "trip_purposes", force: true do |t|
