@@ -372,4 +372,5 @@ age.update_attributes!(for_traveler: false, linked_characteristic: dob,
 Oneclick::Application.load_tasks
 Rake::Task["oneclick:add_feedback_types"].invoke
 Rake::Task["oneclick:load_locales"].invoke
+Rake::Task["oneclick:create_trips_sql_view"].invoke
 
