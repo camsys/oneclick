@@ -1,6 +1,5 @@
 // Panels for provider and service forms
 .panel.panel-servicedata {
-  box-shadow: none;
   margin: 20px 0;
 
   .panel-heading {
@@ -8,8 +7,33 @@
   }
 
   .panel-body {
-    border: 1px solid gainsboro;
+    border: 1px solid silver;
+    box-shadow: 2px 2px 20px -2px rgba(0, 0, 0, 0.2);
     padding: 60px 60px 10px;
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid silver;
+
+    li > a {
+      border-top: 1px solid silver;
+      border-left: 1px solid silver;
+      border-right: 1px solid silver;
+    }
+
+    li:not(.active) > a {
+      background-color: #E9E9E9;
+      border-bottom: 1px solid silver;
+      box-shadow: inset 0px -2px 4px -2px rgba(0, 0, 0, 0.2);
+      // border: 1px solid silver;
+      // border-bottom-color: inherit;
+    }
+
+    li.active > a {
+      // background-color: inherit;
+      // border: 1px solid silver;
+      // border-bottom-color: transparent;
+    }
   }
 
   .panel-body.tab-pane {
@@ -31,6 +55,11 @@
 
     &.header-label {
       font-weight: bold;
+    }
+
+    &.sub-label {
+      display: block;
+      color: gray;
     }
   }
 
@@ -76,12 +105,13 @@ textarea.form-control.text {
 }
 
 .service-details-form {
-  margin: 0 0 40px;
-  padding: 0 0 20px;
+  margin: 20px 0 20px;
+  border-bottom: 1px solid gainsboro;
+  padding: 0 0 60px;
 
-  &:not(:last-of-type) {
-    border-bottom: 1px solid gainsboro;
-    padding: 0 0 80px;
+  &.last {
+    border-bottom-color: transparent;
+    padding: 0 0 20px;
   }
 }
 
@@ -98,6 +128,10 @@ textarea.form-control.text {
 }
 
 .service-details-row {
+}
+
+.service-details-form-button-container {
+  margin-bottom: 10px;
 }
 
 .btn-activate-service-toggle-group {
@@ -140,4 +174,20 @@ textarea.form-control.text {
     background-color: limegreen;
     color: white;
   }
+}
+
+.inline-form-group {
+  .form-control {
+    display: inline;
+    width: auto;
+    padding: 6px 3px;
+  }
+}
+
+.collapser-container {
+  margin-bottom: 30px;
+}
+
+a:focus, div:focus {
+  outline: none;
 }

@@ -28,7 +28,7 @@ class UserMailer < ActionMailer::Base
     @trip = trip
     @booking_service = booking_service
     @itineraries = trip.selected_itineraries
-    mail(to:addresses, subject: "A User Booked a Trip in #{booking_service}", from: @@from)
+    mail(to:addresses, subject: "User #{@trip.user.name} Booked a Trip in #{booking_service}", from: @@from)
   end
 
   def provider_trip_email(emails, trip, subject, from, comments)

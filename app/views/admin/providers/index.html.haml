@@ -4,6 +4,7 @@
     .btns.pull-right
       - if can? :create, Provider
         = link_to translate_helper(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
+        -# = link_to translate_helper(:create), new_admin_provider_path, {class: 'btn action-button', role: 'button'}
       = button_tag translate_helper(:export), id: 'exportAll', class: 'btn action-button', role: 'button'
     %h1= translate_helper(:providers)
 .panel.panel-default{style: 'padding: 0px;'}
@@ -17,19 +18,24 @@
         %tr
           %th= translate_helper(:id)
           %th= translate_helper(:name)
-          %th#status= translate_helper(:status)
-          %th
+          %th#status.hidden= translate_helper(:status)
+          -# %th
       %tbody
         - @providers.each do |provider|
           %tr
             %td= provider.id
-            %td= link_to provider.name, admin_provider_path(provider)
             %td
+              - if can? :update, provider
+                = link_to provider.name, edit_admin_provider_path(provider)
+                -# %td= link_to provider.name, admin_provider_path(provider)
+              - else
+                = link_to provider.name, provider_path(provider)
+            %td.hidden
               - if provider.active == false
                 = translate_helper(:inactive)
 
-            %td.center
-              = link_to admin_provider_services_path(provider) do
-                = translate_helper(:services)
+            -# %td.center
+            -#   = link_to admin_provider_services_path(provider) do
+            -#     = translate_helper(:services)
 
 = render partial: 'admin/shared/datatable_js', locals: {key: 'admin_providers', entity: 'providers'}

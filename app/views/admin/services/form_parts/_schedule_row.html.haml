@@ -1,24 +1,25 @@
 - wrapper_classes = "" if local_assigns[:wrapper_classes].nil?
+- master = false if local_assigns[:master].nil?
 
-.row.service-details-row{"data-schedule-id" => sched.id || "new-schedule", class: wrapper_classes}
+.row.service-details-row{"data-schedule-id" => sched.id || "new-schedule", class: wrapper_classes + (master ? " service-schedules-master-row" : "")}
   -unless sched.id.nil?
     = f.input :schedules,
-      input_html: {name: input_name(f, :schedules, :id), value: sched.id},
+      input_html: {name: input_name(f, :schedules, :id), value: sched.id, class: "input-schedule-id"},
       wrapper_html: {class: "hidden"},
       label: false
   = f.input :schedules,
     collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: sched.day_of_week,
-    input_html: {name: input_name(f, :schedules, :day_of_week)},
+    input_html: {name: input_name(f, :schedules, :day_of_week), class: "select-schedule-dow"},
     wrapper_html: {class: "col-xs-3"},
     label: false
   = f.input :schedules,
     collection: Rails.application.config.times_of_day, selected: sched.start_time,
-    input_html: {name: input_name(f, :schedules, :start_time)},
+    input_html: {name: input_name(f, :schedules, :start_time), class: "select-schedule-start-time"},
     wrapper_html: {class: "col-xs-3"},
     label: false
   = f.input :schedules,
     collection: Rails.application.config.times_of_day, selected: sched.end_time,
-    input_html: {name: input_name(f, :schedules, :end_time)},
+    input_html: {name: input_name(f, :schedules, :end_time), class: "select-schedule-end-time"},
     wrapper_html: {class: "col-xs-3"},
     label: false
   = f.input :schedules,
@@ -26,5 +27,7 @@
     wrapper_html: {class: "hidden"},
     label: false
   .col-xs-3
-    .btn.btn-link.delete-schedule-btn{class:("hidden" if sched.id.nil?)} delete
-    .btn.btn-default.btn-svc-data.add-schedule-btn{class:("hidden" unless sched.id.nil?)} Add Hours
+    -if master
+      .btn.btn-default.btn-svc-data.add-schedule-btn= translate_helper(:add_hours)
+    -else
+      .btn.btn-link.delete-schedule-btn= translate_helper(:delete)

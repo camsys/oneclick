@@ -10,15 +10,15 @@
             = add_tooltip("services_info_help", "fa fa-question-circle", nil)
         .panel-body.form-horizontal
           .form-group.select
-            %label.select.control-label.col-sm-3 Add a service
+            %label.select.control-label.col-sm-3= translate_helper(:add_service)
             .col-sm-9
               %select.select.form-control#select-new-service-type
-                %option{value: ''} Select a service type
+                %option{value: ''}= translate_helper(:select_mode)
                 - mode_list.each do |m|
                   %option{value: m}= translate_helper("mode_#{m}_name".to_sym)
   .row
     .col-md-8.col-sm-10.col-xs-12.center
-      .panel.panel-servicedata
+      #services-container.panel.panel-servicedata{class: @provider.services.empty? ? "hidden" : ""}
         %ul.nav.nav-tabs{role: "tablist"}
           - @provider.services.each_with_index do |s, i|
             = render partial: "admin/services/service_tab", locals: {new_service: false, service: s, active: i == @provider.services.length - 1}
@@ -37,15 +37,16 @@
     $('#select-new-service-type').change(function(e) {
       var mode = this.value;
 
-      // Make appropriate mode tab visible and active
+      // Make appropriate mode tab visible and active0
       $(".new-service-tab").addClass("hidden");
-
       if(mode) {
+        $("#services-container").removeClass("hidden");
         $(`#new-${mode}-service-tab`).removeClass("hidden");
         $(`#new-${mode}-service-tab > a`).click();
       } else {
-        $(".new-service-tab-pane").addClass("hidden");
-        if($(".service-tab-link")) {
+        if(#{@provider.services.empty?}) {
+          $("#services-container").addClass("hidden");
+        } else {
           $(".service-tab-link")[0].click();
         }
       }

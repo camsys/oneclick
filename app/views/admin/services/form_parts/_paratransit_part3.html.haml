@@ -3,25 +3,28 @@
 - service_id = new_service ? "new-#{mode}" : service.id
 
 = simple_form_for service || :service,
-        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
         remote: true,
         html: { class: 'form-vertical service-details-form', multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index},
         authenticity_token: true,
         wrapper: :vertical_form do |f|
   = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
 
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .service-details-container
-    %label.control-label Rider Eligibility
-    .row.service-details-row.faded
+    %label.control-label= translate_helper(:service_eligibility_header)
+    %label.sub-label.label-service-eligibility-sublabel= translate_helper(:service_eligibility_sublabel)
+    %label.sub-label.label-no-svc-chars-sublabel= service.service_characteristics.any? ? translate_helper(:service_eligibility_sublabel) : translate_helper(:no_svc_chars_message)
+    .row.service-details-row.service-svc-chars-master-row.faded
       .form-group.select.optional.col-xs-6
         = select_tag(:characteristic_id,
-          options_for_select(Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}),
-          {class: "select form-control service-svc-chars-master-select"})
-      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3 Add Rule
+          options_for_select(Characteristic.active.enabled.map {|c| [translate_helper(c.name), c.id]}),
+          {class: "select form-control service-svc-chars-master-select" })
+      .btn.btn-default.btn-svc-data.add-svc-char-btn.col-xs-3= translate_helper(:add_eligibility_rule)
     - service.service_characteristics.each do |char|
       .row.service-details-row
         = f.input :service_characteristics,
@@ -29,7 +32,7 @@
           wrapper_html: {class: "hidden"},
           label: false
         = f.input :service_characteristics,
-          collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]}, selected: char.characteristic_id,
+          collection: Characteristic.active.enabled.map {|c| [translate_helper(c.name), c.id]}, selected: char.characteristic_id,
           input_html: {name: input_name(f, :service_characteristics, :characteristic_id), class: "select-svc-chars-char-id"},
           wrapper_html: {class: "col-xs-6"},
           label: false
@@ -45,8 +48,8 @@
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: false, class: "input-svc-chars-destroy"},
           wrapper_html: {class: "hidden"},
           label: false
-        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
-    - Characteristic.enabled.length.times do
+        .btn.btn-link.delete-svc-char-btn.col-xs-3= translate_helper(:delete)
+    - Characteristic.enabled.length.times do |i|
       .row.service-details-row.hidden
         = f.input :service_characteristics,
           collection: Characteristic.enabled.map {|c| [translate_helper(c.name), c.id]},
@@ -62,32 +65,50 @@
           wrapper_html: {class: "hidden"},
           label: false
         = f.input :service_characteristics,
+          input_html: {name: input_name(f, :service_characteristics, :group),
+            value: service.service_characteristics.empty? ? i : service.service_characteristics.max_by {|sc| sc.group}.group + 1 + i,
+            class: "input-svc-chars-group"},
+          wrapper_html: {class: "hidden"},
+          label: false
+        = f.input :service_characteristics,
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: true, class: "input-svc-chars-destroy"},
           wrapper_html: {class: "hidden"},
           label: false
-        .btn.btn-link.delete-svc-char-btn.col-xs-3 delete
+        .btn.btn-link.delete-svc-char-btn.col-xs-3= translate_helper(:delete)
+
   .service-details-container
-    %label.control-label Accommodations
+    %label.control-label= translate_helper(:accommodations)
     .row.service-details-row
       = f.association :accommodations,
             collection: Accommodation.all.map{|a| [ translate_helper(a.name), a.id ] }, label: false,
             as: :check_boxes,
             item_wrapper_tag: 'div', wrapper: :inline_checkboxes
-  .pull-right
-    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
-    .btn.btn-link.hidden.edit-service-form-btn edit
+
+  .service-details-container
+    %label.control-label= translate_helper(:trip_purposes)
+    .row.service-details-row
+      = f.association :trip_purposes,
+            collection: TripPurpose.all.map{|p| [ translate_helper(p.name), p.id ] }, label: false,
+            as: :check_boxes,
+            item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
 :javascript
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
-    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+    var form = new ServiceForm(
+      "#{service_id}",
+      "#{form_index}",
+      ("#{new_service}" === "true"),
+      ['.service-svc-chars-master-row', '.delete-svc-char-btn', '.label-service-eligibility-sublabel'],
+      ['.label-no-svc-chars-sublabel']
+    );
 
     // Handler for New Service Characteristic Selector
     form.$(".add-svc-char-btn").on("click", function(e) {
       // On click, change value of next service char form, set its destroy value to false, and unhide it.
       var charId = $(this).closest(".service-details-row").find(".service-svc-chars-master-select").val();
-      var nextNewSvcCharsForm = $(this).closest(".service-details-row").siblings(".hidden").first();
+      var nextNewSvcCharsForm = $(this).closest(".service-details-row").siblings(".service-details-row.hidden").first();
       nextNewSvcCharsForm.find(`.select-svc-chars-char-id option[value=${charId}]`).attr("selected", true);
       nextNewSvcCharsForm.find(".input-svc-chars-destroy").attr("value", false);
       nextNewSvcCharsForm.removeClass("hidden");

@@ -1,0 +1,12 @@
+- flat_fare = fare_structure.flat_fare || FlatFare.new(fare_structure: fare_structure)
+.fare-structure-form-container.type-0{ class: fare_structure.fare_type == 0 ? "" : "hidden" }
+  = f.simple_fields_for :flat_fare_attributes do |ff|
+    = ff.input :id,
+      input_html: {value: flat_fare.id, class: "input-flatfare-id"},
+      wrapper_html: {class: "hidden"}
+    = ff.input :one_way_rate,
+      input_html: {value: flat_fare.one_way_rate, class: "input-flatfare-onewayrate text-right", type: "number", min: 0},
+      label: translate_helper('one_way_rate')
+    = ff.input :round_trip_rate,
+      input_html: {value: flat_fare.round_trip_rate, class: "input-flatfare-roundtriprate text-right", type: "number", min: 0},
+      label: translate_helper('round_trip_rate')

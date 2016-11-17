@@ -5,9 +5,9 @@
 - service_id = new_service ? "new-#{mode}" : service.id
 
 = simple_form_for service || :service,
-        url: service.nil? ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service.id),
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service.id),
         remote: true,
-        html: { class: 'form-horizontal activate-service-form', multipart: true },
+        html: { class: 'form-horizontal activate-service-form service-details-form last', multipart: true },
         data: {type: :html, "service-id" => service.id, "form-index" => form_index },
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
@@ -17,7 +17,7 @@
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
   .form-group
-    %label.col-sm-8.control-label Make this service visible to the public?
+    %label.col-sm-8.control-label= translate_helper(:activate_service)
     .btn-activate-service-toggle-group.col-sm-4
       %label.service-toggle-btn-wrapper
         %input{name: "service[active]", type: "radio", class: "btn-activate-service-toggle", value: "true", checked: service.active}

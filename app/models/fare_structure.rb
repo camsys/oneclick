@@ -1,6 +1,6 @@
 class FareStructure < ActiveRecord::Base
   include Commentable
-  
+
   #associations
   belongs_to :service
 
@@ -18,7 +18,19 @@ class FareStructure < ActiveRecord::Base
   FLAT = 0
   MILEAGE = 1
   COMPLEX = 2
-  ZONE=3
+  ZONE = 3
+  TFF = 4
+
+  PARATRANSIT_TYPES = {
+    flat: FLAT,
+    mileage: MILEAGE,
+    zone: ZONE
+  }
+
+  TAXI_TYPES = {
+    mileage: MILEAGE,
+    tff: TFF
+  }
 
   def fare_data
     case fare_type
@@ -43,11 +55,11 @@ class FareStructure < ActiveRecord::Base
     return nil unless trip_part && mileage_fare && mileage_fare.base_rate
 
     mileage = TripPlanner.new.get_drive_distance(
-      !trip_part.is_depart, 
-      trip_part.scheduled_time, 
-      trip_part.from_trip_place.lat, 
-      trip_part.from_trip_place.lon, 
-      trip_part.to_trip_place.lat, 
+      !trip_part.is_depart,
+      trip_part.scheduled_time,
+      trip_part.from_trip_place.lat,
+      trip_part.from_trip_place.lon,
+      trip_part.to_trip_place.lat,
       trip_part.to_trip_place.lon)
 
     if mileage_fare.mileage_rate
@@ -59,13 +71,13 @@ class FareStructure < ActiveRecord::Base
 
   def zone_fare_number(trip_part)
     return nil unless trip_part && service && service.fare_zones
-    
+
     start_lat = trip_part.from_trip_place.lat
-    start_lng = trip_part.from_trip_place.lon 
-    end_lat = trip_part.to_trip_place.lat 
+    start_lng = trip_part.from_trip_place.lon
+    end_lat = trip_part.to_trip_place.lat
     end_lng = trip_part.to_trip_place.lon
     return nil unless start_lat && start_lng && end_lat && end_lng
-    
+
     from_zone_id = service.fare_zones.identify(start_lat, start_lng)
     to_zone_id = service.fare_zones.identify(end_lat, end_lng)
 

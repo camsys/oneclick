@@ -33,6 +33,36 @@ es:
   show_mode_taxi: "Show Taxi"
   show_mode_bicycle: "Show Bicycle"
   show_mode_walk: "Show Walk"
+
+  # Admin Provider/Service Data Form
+  admin_user: 'Admin User'
+  admin_user_placeholder_text: 'Enter an email address'
+  new_service: 'New Service'
+  new_provider_form_title: 'Create New Provider'
+  edit_provider_form_title: 'Edit Provider and Services'
+  upload_logo: 'Upload Logo'
+  replace_logo: 'Replace Image'
+  select_mode: 'Select a service type'
+  activate_service: 'Make this service visible to the public?'
+  image_file_types: 'jpg, gif, png'
+  coverage_area_placeholder: 'List counties/cities/zipcodes separated by commas'
+  service_schedule_heading: 'Service Hours'
+  service_booking_cutoff_header: 'Advance Notice Cut-off Times'
+  booking_cutoff_sentence_pt1: 'Riders must book by'
+  booking_cutoff_sentence_pt2: 'between'
+  booking_cutoff_sentence_pt3: 'and'
+  booking_cutoff_sentence_pt4: 'days before the scheduled ride.'
+  service_eligibility_header: 'Rider Eligibility'
+  add_eligibility_rule: 'Add Rule'
+  add_hours: 'Add Hours'
+  pt_primary_coverage_area: 'Primary Service Location'
+  pt_secondary_coverage_area: 'Secondary Locations Covered'
+  taxi_coverage_area: 'Coverage Area'
+  external_id_label: 'GTFS ID'
+  external_id_placeholder: "Enter your service's GTFS ID"
+  show_more: 'show more'
+  show_less: 'show less'
+  service_name_placeholder: 'Enter a service name'
   ###################################
 
   unit_number: "Número de apartamento"

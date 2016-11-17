@@ -16,8 +16,6 @@ Oneclick::Application.configure do
   config.service_max_allow_advanced_book_days = 365
   config.ada_funding_sources = []
   config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
-  config.send_ecolane_email_updates = false
-  config.ecolane_email_update_recipients = "email@camsys.com, email@camsys.com"
 
   #TRAPEZE CONFIGS
   config.ada_funding_sources = ['ADA']
