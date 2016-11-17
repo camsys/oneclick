@@ -315,6 +315,12 @@ class EligibilityService
 
   def eligible_by_trip_purpose(trip_part, itineraries)
 
+    #If this trip not specify a specifc purpose, return all itineraries
+    #It's basically saying "Show me all services, I don't want to filter by purpose"
+    if trip_part.trip.trip_purpose.nil?
+      return itineraries
+    end
+
     eligible_itineraries = []
     itineraries.each do |itinerary|
       service = itinerary['service']
