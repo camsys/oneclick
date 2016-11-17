@@ -76,6 +76,7 @@ module Api
         to_trip_place.save
 
         final_itineraries = []
+        relevant_purposes = []
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
@@ -130,6 +131,7 @@ module Api
             i_hash[:bookable] = itinerary.is_bookable?
             i_hash[:product_id] = itinerary.product_id #Used for Uber
             if itinerary.service
+              relevant_purposes << itinerary.service.purpose_hash
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= itinerary.service.logo_url
@@ -176,7 +178,7 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, trip_token: trip.token, itineraries: final_itineraries}
+        render json: {trip_id: trip.id, trip_token: trip.token, purposes: relevant_purposes.uniq, itineraries: final_itineraries}
 
       end
 
