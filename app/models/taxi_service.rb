@@ -38,12 +38,12 @@ class TaxiService < Service
 
     # Match (New) Secondary Coverage Area
     # This is not necessary given current UI -- taxis only get primary coverage area -- but keeping in place just in case.
-    unless service.secondary_coverage.nil?
+    unless service.secondary_coverage.nil? || service.secondary_coverage.geom.nil?
       return false unless service.secondary_coverage.geom.contains? origin_point or service.secondary_coverage.geom.contains? destination_point
     end
 
     # Match (New) Primary Coverage Area
-    unless service.primary_coverage.nil?
+    unless service.primary_coverage.nil? || service.primary_coverage.geom.nil?
       return false unless service.primary_coverage.geom.contains? origin_point and service.primary_coverage.geom.contains? destination_point
     end
 
