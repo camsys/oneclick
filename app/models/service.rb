@@ -45,6 +45,8 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :fare_structures
 
+  accepts_nested_attributes_for :fare_zones
+
   accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
   reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
 
@@ -697,6 +699,19 @@ class Service < ActiveRecord::Base
   end
 
   #### End Booking Methods
+
+  def build_fare_structures_by_mode
+    case service_type_id
+    when 1 # Paratransit
+      fare_structures.build(fare_type: 0)
+    when 4 # Transit
+      # TRANSIT ACTIONS
+    when 5 # Taxi
+      fare_structures.build(fare_type: 1)
+    else
+      # ELSE ACTIONS
+    end
+  end
 
   private
 

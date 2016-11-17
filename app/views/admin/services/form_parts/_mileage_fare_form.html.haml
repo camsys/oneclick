@@ -1,0 +1,12 @@
+- mileage_fare = fare_structure.mileage_fare || MileageFare.new(fare_structure: fare_structure)
+.fare-structure-form-container.type-1{ class: fare_structure.fare_type == 1 ? "" : "hidden" }
+  = f.simple_fields_for :mileage_fare_attributes do |mf|
+    = mf.input :id,
+      input_html: {value: mileage_fare.id, class: "input-mileagefare-id"},
+      wrapper_html: {class: "hidden"}
+    = mf.input :base_rate,
+      input_html: {value: mileage_fare.base_rate, class: "input-mileagefare-baserate text-right", type: "number", min: 0},
+      label: translate_helper('base_rate')
+    = mf.input :mileage_rate,
+      input_html: {value: mileage_fare.mileage_rate, class: "input-mileagefare-mileagerate text-right", type: "number", min: 0},
+      label: translate_helper('mileage_rate')

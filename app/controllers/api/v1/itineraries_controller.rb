@@ -242,14 +242,11 @@ module Api
           end
 
           # If staff email updates are configured, send one for the booked trip.
-          if Oneclick::Application.config.send_ecolane_email_updates
-            puts "Sending Ecolane Update Email", results_array.ai
-            trip = Trip.find(results_array.first[:trip_id])
-            UserMailer.booked_trip_update_email(Oneclick::Application.config.ecolane_email_update_recipients,
-              trip,
-              "Ecolane").deliver
+          booked_provider = booked_itineraries.first.service.provider
+          if booked_provider && booked_provider.send_booking_emails
+            email_for_update = booked_provider.users.with_role(:provider_staff, booked_provider).first.email
+            UserMailer.booked_trip_update_email(email_for_update, Trip.find(booked_itineraries.first.trip_part.trip.id), "Ecolane").deliver
           end
-
 
         #Build Failure Response
         else

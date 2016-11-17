@@ -1,4 +1,4 @@
-- this_path = "admin/services/form_parts/paratransit_part2"
+- this_path = "admin/services/form_parts/taxi_part2"
 - form_index = 2
 - service_id = new_service ? "new-#{mode}" : service.id
 
@@ -32,62 +32,6 @@
         sched: Schedule.new(day_of_week: service.schedules.any? ? (service.schedules.last.day_of_week + 1) % 7 : 1,
           start_time: service.schedules.any? ? service.schedules.last.start_time : "8:00 AM",
           end_time: service.schedules.any? ? service.schedules.last.end_time : "8:00 PM")}
-
-  .service-details-container
-    %label.control-label= translate_helper(:service_booking_cutoff_header)
-    .row.form-group.form-horizontal.inline-form-group
-      .col-xs-12
-        %span= translate_helper(:booking_cutoff_sentence_pt1)
-        = select_tag(:day_of_week,
-          options_for_select(Rails.application.config.times_of_day, service.booking_cut_off_times.empty? ? "8:00 PM" : service.booking_cut_off_times.first.cut_off_time),
-          {class: "select form-control service-bct-master-select"})
-        %span= translate_helper(:booking_cutoff_sentence_pt2)
-        %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
-            value: service.advanced_notice_minutes/60/24.round,
-            name: "service[notice_days_part]"}
-        %span= translate_helper(:booking_cutoff_sentence_pt3)
-        %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
-            value: service.max_advanced_book_minutes/60/24.round,
-            name: "service[max_advanced_book_days_part]"}
-        %span= translate_helper(:booking_cutoff_sentence_pt4)
-    - if service.booking_cut_off_times.empty?
-      - (0..6).each do |dow|
-        .row.service-details-row.hidden
-          = f.input :booking_cut_off_times,
-            collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: dow,
-            input_html: {name: input_name(f, :booking_cut_off_times, :day_of_week)},
-            wrapper_html: {class: "col-xs-3"},
-            label: false
-          = f.input :booking_cut_off_times,
-            collection: Rails.application.config.times_of_day, selected: "8:00 PM",
-            input_html: {name: input_name(f, :booking_cut_off_times, :cut_off_time), class: "cutoff-time-select"},
-            wrapper_html: {class: "col-xs-3"},
-            label: false
-          = f.input :booking_cut_off_times,
-            input_html: {name: input_name(f, :booking_cut_off_times, :_destroy), value: false, class: "input-bct-destroy"},
-            wrapper_html: {class: "col-xs-2"},
-            label: false
-    - else
-      - service.booking_cut_off_times.each do |bct|
-        .row.service-details-row.hidden
-          = f.input :booking_cut_off_times,
-            input_html: {name: input_name(f, :booking_cut_off_times, :id), value: bct.id},
-            wrapper_html: {class: "col-xs-2"},
-            label: false
-          = f.input :booking_cut_off_times,
-            collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: bct.day_of_week,
-            input_html: {name: input_name(f, :booking_cut_off_times, :day_of_week)},
-            wrapper_html: {class: "col-xs-3"},
-            label: false
-          = f.input :booking_cut_off_times,
-            collection: Rails.application.config.times_of_day, selected: bct.cut_off_time,
-            input_html: {name: input_name(f, :booking_cut_off_times, :cut_off_time), class: "cutoff-time-select"},
-            wrapper_html: {class: "col-xs-3"},
-            label: false
-          = f.input :booking_cut_off_times,
-            input_html: {name: input_name(f, :booking_cut_off_times, :_destroy), value: false, class: "input-bct-destroy"},
-            wrapper_html: {class: "col-xs-2"},
-            label: false
 
 :javascript
   $(document).ready(function() {
@@ -136,11 +80,6 @@
       // Update the master form to have the same times but the next day
       form.$('.service-schedules-master-row .select-schedule-dow').val((dow + 1) % 7).change();
 
-    });
-
-    // Handler for Booking Cutoff Times Selector sets all hidden BCT fields to its value
-    form.$('.service-bct-master-select').change(function(e) {
-      $(this).closest(".service-details-container").find(`.cutoff-time-select option[value="${$(this).val()}"]`).attr("selected", true);
     });
 
   });

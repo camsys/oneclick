@@ -130,6 +130,68 @@ namespace :oneclick do
 
     end
 
+    # Get rid of UserServices with nil services
+    task clean_up_user_services: :environment do
+      puts "Cleaning up User Services..."
+
+      UserService.all.each do |us|
+        puts "Destroying User Service #{us.id}" if us.service.nil?
+        us.destroy if us.service.nil?
+      end
+    end
+
+    # Transition to New Service Data UI
+    task migrate_to_new_service_data_ui: :environment do
+      puts "************************************************"
+      puts "Preparing Database for New Service Data Interface."
+      puts "This task should be run after running rake db:migrate."
+      puts "************************************************"
+      puts
+
+      # Make inactive all service characteristics that are not booleans.
+      # First, check to see if any of those characteristics are attached to users or services
+      puts "Setting #{Characteristic.unscoped.where.not(datatype: "bool").count} non-boolean characteristics to inactive."
+      Characteristic.unscoped.where.not(datatype: "bool").each {|c| c.update_attributes(active: false)}
+      puts
+
+      # Eliminate UserCharacteristics & ServiceCharacteristics that reference the inactive characteristics
+      puts "Eliminating references to nil characteristics..."
+      UserCharacteristic.all.each { |uc| puts "Destroying ", uc.destroy.ai if uc.characteristic.nil? }
+      ServiceCharacteristic.all.each { |sc| puts "Destroying ", sc.destroy.ai if sc.characteristic.nil? }
+      puts
+
+      # Create Fare Structures for Services that don't have them
+      puts "Migrating services..."
+      Service.all.each do |service|
+        puts
+        puts "[#{service.id}] #{service.name} (#{service.service_type.code}):"
+
+        # Build fare structures for any services that don't have them.
+        if service.fare_structures.empty?
+          print "Building fare structures..."
+          service.build_fare_structures_by_mode
+          puts " #{service.fare_structures.length} new fare structures created."
+        end
+
+        # Build Coverage Zones by parsing Endpoint Array and Coverage Array as recipes and joining to existing coverage recipes.
+        unless service.county_endpoint_array.nil?
+          recipe = service.county_endpoint_array.join(', ') + (service.primary_coverage.nil? ? "" : ", #{service.primary_coverage.recipe}")
+          print "Parsing Primary Coverage Area..."
+          service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(recipe))
+          puts " #{service.primary_coverage.recipe} added as primary coverage."
+        end
+
+        unless service.county_coverage_array.nil?
+          recipe = service.county_coverage_array.join(', ') + (service.secondary_coverage.nil? ? "" : ", #{service.secondary_coverage.recipe}")
+          puts "Parsing Secondary Coverage Area..."
+          service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(recipe))
+          puts " #{service.secondary_coverage.recipe} added as secondary coverage."
+        end
+
+      end
+
+    end
+
   end
 
 end

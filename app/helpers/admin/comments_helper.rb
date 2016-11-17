@@ -5,7 +5,7 @@ module Admin::CommentsHelper
   def setup_comments commentable, comment_types = %w{public private}
     comment_types.each do |visibility|
       method = "#{visibility}_comments".to_sym
-      (I18n.available_locales.map(&:to_s) - commentable.send(method).pluck(:locale)).each do |loc|
+      (I18n.available_locales.map(&:to_s) - commentable.send(method).each.map(&:locale)).each do |loc|
         commentable.send(method).build locale: loc
       end
     end

@@ -13,11 +13,12 @@ class Characteristic < ActiveRecord::Base
   belongs_to :linked_characteristic, class_name: 'Characteristic'
 
   # set the default scope
-  default_scope {where('characteristics.active = ?', true)}
+  # default_scope {where('characteristics.active = ?', true)}
   scope :active, -> {where(active: true)}
   scope :personal_factors, -> {where('characteristic_type = ?', 'personal_factor')}
   scope :programs, -> {where('characteristic_type = ?', 'program')}
   scope :enabled, -> { where.not(datatype: 'disabled') }
+  # scope :enabled, -> { where(datatype: 'bool') } # Only enable boolean characteristics
   scope :for_traveler, -> { where(for_traveler: true) }
   scope :for_service, -> { where(for_service: true) }
 

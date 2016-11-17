@@ -13,7 +13,7 @@ class Provider < ActiveRecord::Base
 
   #associations
   has_many :users
-  has_many :services
+  has_many :services, -> { order(updated_at: :asc) }
   has_many :ratings, through: :services
 
   has_many :cs_roles, -> {where(resource_type: 'Provider')}, class_name: 'Role',
@@ -60,19 +60,20 @@ class Provider < ActiveRecord::Base
 
   # Admin User virtual attribute
   def admin_user
-    users.with_role( :admin, self).first
+    User.with_role( :provider_staff, self).first
   end
 
   def admin_user= user_email
-    former = admin_user
-    user = User.where(email: user_email)[0]
-    if !former.nil? && (user != former)
-      former.remove_role :admin, self
-    end
-    if !user.nil?
-      users << user
-      user.add_role :admin, self
-      self.save
+    user = User.find_by_email(user_email)
+
+    # Only update if valid email address was entered, if it's different from current user, and if that user is not already the provider somewhere
+    if user && user != admin_user && !user.has_role?(:provider_staff, :any)
+
+      # First, remove :provider_staff role from all users associated with this provider
+      User.with_role(:provider_staff, self).each {|u| u.remove_role(:provider_staff, self)}
+
+      # Then, give the user the provider_staff remove_role
+      user.add_role(:provider_staff, self) if user
     end
   end
 

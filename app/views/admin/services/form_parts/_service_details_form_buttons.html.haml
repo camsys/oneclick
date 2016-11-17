@@ -1,0 +1,5 @@
+.row.service-details-form-button-container
+  .col-xs-12
+    .pull-right
+      = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data save-service-form-btn"
+      .btn.btn-link.hidden.edit-service-form-btn= translate_helper(:edit).downcase

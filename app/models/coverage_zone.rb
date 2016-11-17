@@ -19,17 +19,14 @@ class CoverageZone < ActiveRecord::Base
       # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
       search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
       state_filter = state_specifier ? [state_specifier] : [Oneclick::Application.config.state]
-      # state_filter = state_specifier ? [state_specifier] : ["MA", "CT", "VA"]
 
       # Make a hash key for the area name, and fill it with an array of matching objects from the database
       match_hash[area_name] = [] unless match_hash.key?(area_name)
       search_tables.each do |table|
         case table
         when "County"
-          # match_hash[area_name] += County.where(name: area_name, state: state_filter).map {|area| {id: area.id, name: area.name, state: area.state}}
           match_hash[area_name] += County.where(name: area_name, state: state_filter)
         when "Zipcode"
-          # match_hash[area_name] += Zipcode.where(zipcode: area_name).map {|area| {id: area.id, zipcode: area.zipcode, name: area.name, state: area.state}}
           match_hash[area_name] += Zipcode.where(zipcode: area_name)
         when "City"
           match_hash[area_name] += City.where(name: area_name, state: state_filter)
@@ -37,13 +34,12 @@ class CoverageZone < ActiveRecord::Base
       end
     end
 
-    # puts matched_areas.ai
     return matched_areas
   end
 
   # Encodes a hash of matching coverage areas into an unambiguous recipe string
   def self.encode_coverage_recipe(matched_areas)
-    match_list = matched_areas.values.flatten
+    match_list = matched_areas.values.flatten.uniq
     match_list.map! do |area|
       case area.class.name
       when "County"
@@ -61,9 +57,15 @@ class CoverageZone < ActiveRecord::Base
     parsed_recipe = self.parse_coverage_recipe(recipe)
     geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
     geom = geoms.reduce { |combined_area, geom| combined_area.union(geom) }
-    return if geom.nil?
-    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon)
-    return self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
+    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon) unless geom.nil?
+    @coverage_zone = self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
+
+    # Add errors for no matches and multiple matches
+    errors = { no_matches: parsed_recipe.select {|k,v| v.empty? }.keys, multiple_matches: parsed_recipe.select {|k,v| v.length > 1 }.keys }
+    @coverage_zone.errors.add(:no_matches, " found for: " + errors[:no_matches].join(", ")) unless errors[:no_matches].empty?
+    @coverage_zone.errors.add(:multiple_matches, " found for: " + errors[:multiple_matches].join(", ")) unless errors[:multiple_matches].empty?
+
+    return @coverage_zone
   end
 
   # Returns an array of coverage zone polygon geoms
