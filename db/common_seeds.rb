@@ -373,4 +373,4 @@ Oneclick::Application.load_tasks
 Rake::Task["oneclick:add_feedback_types"].invoke
 Rake::Task["oneclick:load_locales"].invoke
 Rake::Task["oneclick:create_trips_sql_view"].invoke
-
+Rake::Task["oneclick:create_api_guest"].invoke
