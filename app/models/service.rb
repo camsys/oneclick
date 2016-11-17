@@ -713,6 +713,10 @@ class Service < ActiveRecord::Base
     end
   end
 
+  def purposes_hash
+    self.trip_purposes.collect{ |tp| {name: TranslationEngine.translate_text(tp.name), code: tp.code}}
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
