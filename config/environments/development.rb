@@ -14,6 +14,7 @@ Oneclick::Application.configure do
   # config.assets.compile
   # config.assets.digest
   config.assets.debug = true
+  config.action_controller.asset_host = 'http://localhost:3000'
 
   # # QA settings
   # config.serve_static_assets = true

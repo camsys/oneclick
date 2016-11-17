@@ -7,11 +7,11 @@ module ApplicationHelper
 
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
-    return Oneclick::Application.config.ui_logo
+    Oneclick::Application.config.ui_logo
   end
 
   def get_logo_path
-    return get_logo
+    ActionController::Base.helpers.asset_path(get_logo)
   end
 
   def get_logo_text
@@ -175,7 +175,7 @@ module ApplicationHelper
 
   def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
     return TranslationEngine.translate_text(:n_a) unless (
-      start_time_in_seconds && end_time_in_seconds && 
+      start_time_in_seconds && end_time_in_seconds &&
       (end_time_in_seconds >= start_time_in_seconds)
     )
 
@@ -320,7 +320,7 @@ module ApplicationHelper
     end
   end
 
-  
+
   def links_to_each_locale(show_translations = false)
     links = []
     I18n.available_locales.each do |l|
