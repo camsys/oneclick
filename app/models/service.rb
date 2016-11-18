@@ -718,6 +718,15 @@ class Service < ActiveRecord::Base
     self.trip_purposes.collect{ |tp| {name: TranslationEngine.translate_text(tp.name), code: tp.code}}
   end
 
+  def characteristics_hash
+    self.characteristics.collect{ |c| {name: TranslationEngine.translate_text(c.name), code: c.code, note: TranslationEngine.translate_text(c.note)}}
+  end
+
+
+  def accommodations_hash
+    self.accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.name), code: a.code, note: TranslationEngine.translate_text(a.note)}}
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
