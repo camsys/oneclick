@@ -4,7 +4,7 @@
       %tr
       %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
 
-        %img{:src => logo_url_helper(itinerary), style: "height: 20px; width: 20px;  vertical-align: middle; padding-right: 10px;", height: "20", width: "20"}
+        = image_tag(logo_url_helper(itinerary), height: 20, width: 20, style: 'vertical-align: middle; padding-right: 10px;')
         -if itinerary.mode.code == 'mode_paratransit'
           %span=itinerary.service.name + ' - ' + itinerary.service.provider.name
         -else
@@ -12,8 +12,8 @@
 
 
         -if itinerary.cost
-          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | ' 
-          %span{style: "font-weight: bold;"}= 'Fare'  
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | '
+          %span{style: "font-weight: bold;"}= 'Fare'
           %span=' : '
           -if itinerary.mode.code == 'mode_taxi'
             %span=number_to_currency(itinerary.cost.round) + " " + translate_helper(:est)
@@ -26,32 +26,32 @@
         -if itinerary.start_time
           %span{style: "font-size: 0.6em; padding-left:12px; padding-right: 12px; color: grey;"}=' | '
           %span{style: "font-weight: bold;"}= translate_helper(:depart_at)
-          %span=' : ' 
+          %span=' : '
           %span=format_time(itinerary.start_time.in_time_zone)
 
         -if itinerary.end_time
           %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
           %span{style: "font-weight: bold;"}= translate_helper(:arrive_at)
-          %span=' : ' 
+          %span=' : '
           %span=format_time(itinerary.end_time.in_time_zone)
-        
+
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
-        %span{style: "font-weight: bold;"}= 'Duration' 
-        %span=' : ' 
-        %span.duration= duration_to_words(itinerary.duration) 
+        %span{style: "font-weight: bold;"}= 'Duration'
+        %span=' : '
+        %span.duration= duration_to_words(itinerary.duration)
 
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
         %span{style: "font-weight: bold;"}= 'Walking'
-        %span=' : ' 
+        %span=' : '
         %span=duration_to_words(itinerary.walk_time)
 
         %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
         %span{style: "font-weight: bold;"}='Transfers'
-        %span=' : ' 
+        %span=' : '
         %span=itinerary.transfers.to_s
 
         -if itinerary.mode.code =='mode_rideshare'
           %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}=' | '
           %span{style: "font-weight: bold;"}='Possible Rideshares'
-          %span=' : ' 
+          %span=' : '
           %span=translate_helper(:possible_rideshares1, count: itinerary.ride_count) + ' ' + translate_helper(:possible_rideshares2)

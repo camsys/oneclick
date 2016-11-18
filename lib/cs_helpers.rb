@@ -325,7 +325,7 @@ module CsHelpers
     s = itinerary.service
     if s
       if s.taxi_fare_finder_city.present?
-        return '/assets/tff_logo_50.jpg'
+        return ActionController::Base.helpers.asset_path("tff_logo_50.jpg")
       elsif s.logo_url
         return get_service_provider_icon_url(s.logo_url)
       elsif s.provider and s.provider.logo_url
@@ -343,7 +343,7 @@ module CsHelpers
       asset_path = itinerary.mode.logo_url
     end
 
-    return asset_path
+    return ActionController::Base.helpers.asset_path(asset_path)
   end
 
   # logos are stored in local file system under dev environment

@@ -14,7 +14,7 @@ Oneclick::Application.configure do
   config.assets.compile = false
   config.assets.digest = true
   # config.assets.debug
-
+  config.action_controller.asset_host = ENV['ONECLICK_URL']
   config.i18n.fallbacks = false
 
   config.active_support.deprecation = :notify
@@ -29,5 +29,5 @@ Oneclick::Application.configure do
   # For Heroku; see https://devcenter.heroku.com/articles/logging#writing-to-your-log
   config.logger = Logger.new(STDOUT)
 
-  config.eager_load = true  
+  config.eager_load = true
 end

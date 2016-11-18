@@ -34,7 +34,7 @@ u.add_role :system_administrator
 # Transit has to be handled separate to support submodes.
 transit_hash =
   { klass: Mode, active: 1, name: 'Transit', code: 'mode_transit', otp_mode: "TRANSIT,WALK",
-    logo_url: '/assets/images/modes/transit.png', visible: true,}
+    logo_url: 'modes/transit.png', visible: true,}
 transit_mode = build_internationalized_records(structure_records_from_flat_hash(transit_hash))
 
 [
@@ -254,7 +254,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
  },
  { klass: DateOption, name: 'Custom...', code: 'date_option_custom',
  },
- 
+
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash
@@ -334,4 +334,3 @@ age.update_attributes!(for_traveler: false, linked_characteristic: dob,
 #Run additional Rake Tasks
 Oneclick::Application.load_tasks
 Rake::Task["oneclick:load_locales"].invoke
-
