@@ -539,6 +539,7 @@ class Service < ActiveRecord::Base
 
   # Returns whether or not trip part falls within service schedule times
   def is_valid_for_trip_schedule(trip_part)
+    return true if self.schedules.nil? || self.schedules.empty? # Treat empty schedules as 24/7
     trip_wday = trip_part.trip_time.wday
     trip_time = trip_part.trip_time.seconds_since_midnight
     scheds = self.schedules.where(day_of_week: trip_wday)

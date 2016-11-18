@@ -36,15 +36,15 @@ class TaxiService < Service
      return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
     end
 
+    # Match (New) Primary Coverage Area
+    unless service.primary_coverage.nil? || service.primary_coverage.geom.nil?
+      return false unless service.primary_coverage.geom.contains? origin_point or service.primary_coverage.geom.contains? destination_point
+    end
+
     # Match (New) Secondary Coverage Area
     # This is not necessary given current UI -- taxis only get primary coverage area -- but keeping in place just in case.
     unless service.secondary_coverage.nil? || service.secondary_coverage.geom.nil?
-      return false unless service.secondary_coverage.geom.contains? origin_point or service.secondary_coverage.geom.contains? destination_point
-    end
-
-    # Match (New) Primary Coverage Area
-    unless service.primary_coverage.nil? || service.primary_coverage.geom.nil?
-      return false unless service.primary_coverage.geom.contains? origin_point and service.primary_coverage.geom.contains? destination_point
+      return false unless service.secondary_coverage.geom.contains? origin_point and service.secondary_coverage.geom.contains? destination_point
     end
 
     Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
