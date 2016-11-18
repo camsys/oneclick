@@ -77,6 +77,7 @@ module Api
 
         final_itineraries = []
         relevant_purposes = []
+        relevant_characteristics = []
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
@@ -132,6 +133,7 @@ module Api
             i_hash[:product_id] = itinerary.product_id #Used for Uber
             if itinerary.service
               relevant_purposes << itinerary.service.purposes_hash
+              relevant_characteristics << itinerary.service.characteristics_hash
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= itinerary.service.logo_url
@@ -177,8 +179,12 @@ module Api
           end
 
         end
+
+        # All accommodations are relevant.  If a service does not offer an accommodation it should still show up in the list.
+        relevant_accommodations = Accommodation.all.collect{ |a| {name: TranslationEngine.translate_text(a.name), code: a.code, note: TranslationEngine.translate_text(a.note)}}
+
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, trip_token: trip.token, purposes: relevant_purposes.uniq, itineraries: final_itineraries}
+        render json: {trip_id: trip.id, trip_token: trip.token, purposes: relevant_purposes.uniq, characteristics: relevant_characteristics.uniq, accommodations: relevant_accommodations, itineraries: final_itineraries}
 
       end
 
