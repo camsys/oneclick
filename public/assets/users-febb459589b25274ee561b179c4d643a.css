@@ -1,0 +1,24 @@
+@media screen and (max-width: 360px) {
+  /* line 3, /Users/nicolasgarcia/Projects/1-click/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #agencies .updated {
+    display: none;
+  }
+
+  /* line 8, /Users/nicolasgarcia/Projects/1-click/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .dataTables_filter input {
+    width: 11em;
+  }
+  /* line 11, /Users/nicolasgarcia/Projects/1-click/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .email {
+    display: none;
+  }
+  /* line 14, /Users/nicolasgarcia/Projects/1-click/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+  #buddies .action-button {
+    min-width: 0;
+  }
+}
+/* line 20, /Users/nicolasgarcia/Projects/1-click/otp-trip-manager/app/assets/stylesheets/users.css.scss */
+#buddies_table .action-button {
+  margin-left: 0;
+  margin-right: 5px;
+}
