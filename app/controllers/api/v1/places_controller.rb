@@ -25,10 +25,12 @@ module Api
 
         #Check for exact match on stop code
         #Cut out white space and remove wildcards
-        stripped_string = search_string.tr('%', '').strip
-        stop = Poi.stops.where(stop_code: stripped_string).first
-        if stop
-          locations.append(stop.build_place_details_hash)
+        stripped_string = search_string.tr('%', '').strip.to_s + '%'
+        if strip_string.count >= 4 #Only check once 3 numbers have been entered
+          stops = Poi.stops.where('stop_code LIKE ?', stripped_string).all
+          stops.each do |stop|
+            locations.append(stop.build_place_details_hash)
+          end
         end
 
         # Global POIs
