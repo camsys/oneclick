@@ -6,7 +6,7 @@ module Api
         #Get the Search String
         search_string = params[:search_string]
         include_user_pois = params[:include_user_pois]
-        max_results = (params[:max_results] || 10).to_i
+        max_results = (params[:max_results] || 5).to_i
 
         locations = []
         count = 0
@@ -27,13 +27,14 @@ module Api
         #Cut out white space and remove wildcards
         stripped_string = search_string.tr('%', '').strip.to_s + '%'
         if stripped_string.length >= 4 #Only check once 3 numbers have been entered
-          stops = Poi.stops.where('stop_code LIKE ?', stripped_string).all
+          stops = Poi.stops.where('stop_code LIKE ?', stripped_string).limit(max_results)
           stops.each do |stop|
             locations.append(stop.build_place_details_hash)
           end
         end
 
         # Global POIs
+        count = 0
         pois = Poi.get_by_query_str(search_string, max_results, true)
         pois.each do |poi|
           locations.append(poi.build_place_details_hash)
