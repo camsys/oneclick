@@ -1,1 +1,1 @@
-Oneclick::Application.config.version = 'rtd1.8.16-rc.3'
+Oneclick::Application.config.version = 'rtd1.8.17-rc.1'
