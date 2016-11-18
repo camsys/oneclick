@@ -293,21 +293,22 @@ class EligibilityService
         end
       end
 
-      # Match (New) Secondary Coverage Area
-      unless service.secondary_coverage.nil?
-        unless service.secondary_coverage.geom.contains? origin_point or service.secondary_coverage.geom.contains? destination_point
+      # Match (New) Primary Coverage Area
+      unless service.primary_coverage.nil?
+        unless service.primary_coverage.geom.contains? origin_point or service.primary_coverage.geom.contains? destination_point
           next
         end
       end
 
-      # Match (New) Primary Coverage Area
-      unless service.primary_coverage.nil?
-        unless service.primary_coverage.geom.contains? origin_point and service.primary_coverage.geom.contains? destination_point
+      # Match (New) Secondary Coverage Area
+      unless service.secondary_coverage.nil?
+        unless service.secondary_coverage.geom.contains? origin_point and service.secondary_coverage.geom.contains? destination_point
           next
         end
       end
 
       eligible_itineraries << itinerary
+      puts "#{service.name} is eligible by location"
 
     end
     eligible_itineraries
@@ -414,6 +415,8 @@ class EligibilityService
           itinerary['too_early'] = true
         end
       end
+
+      puts "ITINERARY in ADVANCE NOTICE: ", itinerary.ai
 
       if (itinerary['too_late'] != true && itinerary['too_early'] != true)
         eligible_itineraries << itinerary

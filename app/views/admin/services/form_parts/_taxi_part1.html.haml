@@ -2,6 +2,7 @@
 - form_index = 1
 - active = local_assigns[:active].nil? ? false : active
 - service_id = new_service ? "new-#{mode}" : service.id
+- has_coverages = service.primary_coverage.present? || service.secondary_coverage.present?
 
 = simple_form_for service || :service,
         url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
@@ -20,29 +21,34 @@
       label: translate_helper(:taxi_coverage_area),
       placeholder: "List county names separated by commas",
       input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
-  = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
-    :multipolygons => service.coverage_area_polygons,
-    :tile_provider => 'GOOGLEMAP',
-    :min_zoom => 3,
-    :max_zoom => 15,
-    :style => "height:500px;",
-    :do_not_show_map => true })
+  -if has_coverages
+    = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
+      :multipolygons => service.coverage_area_polygons,
+      :tile_provider => 'GOOGLEMAP',
+      :min_zoom => 3,
+      :max_zoom => 15,
+      :style => "height:500px;",
+      :do_not_show_map => true })
 
 :javascript
   $(document).ready(function() {
 
     // Setup form, setting parameters via (ruby) string interpolation
     var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
-    var theMap = CsMaps['lmap_service_area_#{service_id}'];
 
-    // Handler to show map on section expand (only needs to fire once, hence 'one')
-    form.$().closest('.collapsible').one('shown.bs.collapse', function() {
-      if(theMap) {theMap.showMap()};
-    });
+    // Handle Map Display if there are coverages for this service
+    if(#{has_coverages}) {
+      var theMap = CsMaps['lmap_service_area_#{service_id}'];
 
-    // Show map if form is un-collapsed on page load
-    if(form.$().closest('.collapsible').hasClass('in')) {
-      if(theMap) {theMap.showMap()};
-    };
+      // Handler to show map on section expand (only needs to fire once, hence 'one')
+      form.$().closest('.collapsible').one('shown.bs.collapse', function() {
+        if(theMap) {theMap.showMap()};
+      });
+
+      // Show map if form is un-collapsed on page load
+      if(form.$().closest('.collapsible').hasClass('in')) {
+        if(theMap) {theMap.showMap()};
+      };
+    }
 
   });
