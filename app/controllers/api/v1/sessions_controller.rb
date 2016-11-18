@@ -6,6 +6,8 @@ module Api
       # is compatible with the use of SimpleTokenAuthentication.
       # See https://github.com/gonzalo-bulnes/simple_token_authentication/issues/27
 
+      after_filter :set_access_control_headers
+
       def create
         email = params[:session][:email] if params[:session]
         password = params[:session][:password] if params[:session]
@@ -103,6 +105,15 @@ module Api
           render status: 204, json: {message: 'Signed out' }
         end
       end
-     end
-  end
-end
+
+      protected
+
+      def set_access_control_headers
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
+        headers['Access-Control-Allow-Headers'] = 'Content-Type, X-User-Token, X-User-Email'
+      end
+
+    end  # Class
+  end #V1
+end #API
