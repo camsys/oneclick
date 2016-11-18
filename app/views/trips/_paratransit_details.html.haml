@@ -50,7 +50,7 @@
 
 %table{:style=>'width: 100%;'}
   - itinerary.service.get_contact_info_array.each do |a,b|
-    -unless b.empty?
+    -unless b.blank?
       %tr
         %td{:style=>'width: 50%'}
           = translate_helper(a) +":"
