@@ -6,6 +6,8 @@ class EligibilityService
     #Check to see if this user is registered to book with anyone.
     #If this user is registered to book, we only care about the services that he/she can book with
     user_services = user_profile.user_services
+
+
     if user_services.count > 0 and Oneclick::Application.config.restrict_results_registered_services
       all_services = []
       user_services.each do |us|
@@ -13,7 +15,7 @@ class EligibilityService
           all_services << us.service
         end
       end
-    elsif user_profile.user.api_guest?
+    elsif user_profile.user.api_guest? and Oneclick::Application.config.restrict_services_to_origin_county
       all_services = service_from_trip_part trip_part
     else
       all_services = Service.paratransit.active
