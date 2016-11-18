@@ -104,7 +104,7 @@ Oneclick::Application.configure do
 
   config.host = 'oneclick.camsys-apps.com'
   config.logo_text = "1-Click"
-  config.ui_logo = '/assets/logo.png'
+  config.ui_logo = 'logo.png'
   config.logo_text = "1-Click"
   config.favicon = ''
   config.mobile_favicon = ''

@@ -288,7 +288,7 @@ namespace :oneclick do
     selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip).references(trip_part: :trip)
       .where(selected: true)
       .group("trips.id").count
-    
+
     puts 'find trip ids with trip_part_count == selected_itins_count'
     planned_trip_ids = []
     trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
@@ -521,7 +521,7 @@ end
       "approved",
       "rejected"
     ]
-    feedback_statuses.each { |name| FeedbackStatus.where(name: name).first_or_create }    
+    feedback_statuses.each { |name| FeedbackStatus.where(name: name).first_or_create }
 
     feedback_ratings = [
       "color_scheme",
@@ -625,18 +625,18 @@ end
       code: 'mode_ride_hailing'
       ).first_or_create
 
-    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true 
+    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true
   end
 
   desc 'Enable uberX service'
-  task enable_uberx_service: :environment do 
+  task enable_uberx_service: :environment do
     require 'open-uri'
     # service type
     type = ServiceType.where(
       name: 'uber_x_name',
       code: 'uber_x',
       note: 'uber_x_note'
-    ).first_or_create  
+    ).first_or_create
 
     # Uber provider
     provider = Provider.where(name: 'Uber').first_or_create
@@ -650,7 +650,7 @@ end
     uberx_service = Service.where(provider: provider, service_type: type, name: 'uberX').first_or_create
     #uberx_service.update_attribute :logo_url, 'uber/uberx.png'
     uberx = UberHelpers.new.get_product_by_name('uberX') if UberHelpers.available?
-    if uberx 
+    if uberx
       uberx_service.external_id = uberx.product_id
       uberx_service.remote_logo_url = uberx.image
       uberx_service.save
