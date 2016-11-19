@@ -65,12 +65,6 @@
           wrapper_html: {class: "hidden"},
           label: false
         = f.input :service_characteristics,
-          input_html: {name: input_name(f, :service_characteristics, :group),
-            value: service.service_characteristics.empty? ? i : service.service_characteristics.max_by {|sc| sc.group}.group + 1 + i,
-            class: "input-svc-chars-group"},
-          wrapper_html: {class: "hidden"},
-          label: false
-        = f.input :service_characteristics,
           input_html: {name: input_name(f, :service_characteristics, :_destroy), value: true, class: "input-svc-chars-destroy"},
           wrapper_html: {class: "hidden"},
           label: false
