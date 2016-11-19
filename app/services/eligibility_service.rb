@@ -74,7 +74,7 @@ class EligibilityService
           next
         end
 
-        unless passenger_characteristic.value == "true"
+        unless passenger_characteristic.value
           group_eligible = false
           break
         end
