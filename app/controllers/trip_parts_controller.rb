@@ -34,13 +34,14 @@ class TripPartsController < PlaceSearchingController
     if params[:regen]
       @trip_part.remove_existing_itineraries(@modes)
     end
-    @itineraries = @trip_part.itineraries.where(returned_mode_code: params[:mode])
+    @itineraries = @trip_part.itineraries.visible.where(returned_mode_code: params[:mode])
     Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
 
     if (@itineraries.empty?)
       Rails.logger.info "itineraries is empty, generating itineraries."
 
-      @itineraries = @trip_part.create_itineraries(@modes)
+      @trip_part.create_itineraries(@modes)
+      @itineraries = @trip_part.itineraries.visible
       #end
     else
       Rails.logger.info "itineraries is not empty, not generating itineraries."

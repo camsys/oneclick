@@ -21,9 +21,6 @@ class EligibilityService
       all_services = Service.paratransit.active
     end
 
-    puts "ALL SERVICES"
-    puts all_services
-
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)
@@ -47,7 +44,9 @@ class EligibilityService
     missing_information_text = ''
     missing_info = []
 
+    #TODO Refactor this: Groups are no longer used.  The Group is actualy just the service_characteritsic id. So every characteristic is guaranteed to be in a different group
     groups = service.service_characteristics.pluck(:id).uniq rescue []
+
     if groups.count == 0
       is_eligible = true
       min_match_score = 0
@@ -63,9 +62,7 @@ class EligibilityService
 
       service_characteristics.each do |service_characteristic|
         characteristic = service_characteristic.characteristic
-
         passenger_characteristic = user_profile.user_characteristics.find_by(characteristic: characteristic)
-
         #This passenger characteristic is not listed
         if passenger_characteristic.nil?
           group_match_score += 0.25
@@ -85,10 +82,8 @@ class EligibilityService
 
       if group_eligible
         is_eligible = true
-        # if group_match_score <= min_match_score
         missing_information_text_list << group_missing_information_text
         min_match_score = [min_match_score, group_match_score].min
-        # end
         missing_info << group_missing_info
       end
 
@@ -103,8 +98,12 @@ class EligibilityService
       else
         missing_info = []
       end
-      itinerary = tp.convert_paratransit_itineraries(service, min_match_score, missing_information, missing_information_text)
-      # itinerary['missing_info'] = missing_info.flatten
+    end
+
+    itinerary = tp.convert_paratransit_itineraries(service, min_match_score, missing_information, missing_information_text)
+
+    unless is_eligible
+      itinerary['hidden'] = true
     end
 
     case return_with
