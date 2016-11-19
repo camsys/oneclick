@@ -21,6 +21,9 @@ class EligibilityService
       all_services = Service.paratransit.active
     end
 
+    puts "ALL SERVICES"
+    puts all_services
+
     eligible_itineraries = []
     all_services.each do |service|
       itinerary = get_service_itinerary(service, user_profile, trip_part, return_with)
@@ -43,79 +46,39 @@ class EligibilityService
     missing_information_text_list = []
     missing_information_text = ''
     missing_info = []
-    groups = service.service_characteristics.pluck(:group).uniq rescue []
+
+    groups = service.service_characteristics.pluck(:id).uniq rescue []
     if groups.count == 0
       is_eligible = true
       min_match_score = 0
     end
+
     groups.each do |group|
       group_missing_information_text_list = []
       group_missing_information_text = ''
       group_missing_info = []
       group_match_score = 0
       group_eligible = true
-      service_characteristic_maps = service.service_characteristics.where(group: group)
+      service_characteristics = service.service_characteristics.where(id: group)
 
-      service_characteristic_maps.each do |service_characteristic_map|
-        service_requirement = service_characteristic_map.characteristic
+      service_characteristics.each do |service_characteristic|
+        characteristic = service_characteristic.characteristic
 
-        passenger_characteristic = user_profile.user_characteristics.where(
-        characteristic: service_requirement || service_requirement.linked_characteristic).first
+        passenger_characteristic = user_profile.user_characteristics.find_by(characteristic: characteristic)
 
         #This passenger characteristic is not listed
-        unless passenger_characteristic and not(passenger_characteristic.value.blank?)
+        if passenger_characteristic.nil?
           group_match_score += 0.25
-          if service_requirement.code == 'age'
-            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-              group_missing_information_text_list << 'age_min' + service_characteristic_map.value.to_s
-              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-              group_missing_information_text_list << 'age_max' + service_characteristic_map.value.to_s
-              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            end
-          else
-            group_missing_information_text_list << service_requirement.code + "_missing_info"
-            group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-          end
+          group_missing_information_text_list << characteristic.code + "_missing_info"
+          group_missing_info << characteristic.for_missing_info(service, group, characteristic.code)
           next
         end
 
-        is_age_by_yob = false # whether age is calculated based on year_of_birth, also, if age == service_char.value
-                              # in this case, we dont know whether eligible or not
-        if service_requirement.code == 'age' and !service_characteristic_map.value.blank? and passenger_characteristic and passenger_characteristic.characteristic.code == 'age' and !passenger_characteristic.value.blank? and service_characteristic_map.value == passenger_characteristic.value
-          dob_passenger_char = user_profile.user_characteristics.where( characteristic: passenger_characteristic.characteristic.linked_characteristic).first
-          if !dob_passenger_char.value.blank? and dob_passenger_char.value.to_s.split('-').length <3
-            is_age_by_yob =  true
-            group_match_score += 0.25
-            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or older'
-              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-              group_missing_information_text_list << 'persons ' + service_characteristic_map.value.to_s + ' years or younger'
-              group_missing_info << service_requirement.for_missing_info(service, group, service_requirement.code)
-            end
-          end
+        unless passenger_characteristic.value == "true"
+          group_eligible = false
+          break
         end
 
-        # Passenger does have a value for the characteristic, so test it
-        unless is_age_by_yob
-          begin
-            unless passenger_characteristic.meets_requirement(service_characteristic_map)
-              group_eligible = false
-              break
-            end
-          rescue StandardError
-            group_match_score += 0.25
-            if service_characteristic_map.rel_code == GT or service_characteristic_map.rel_code == GE
-              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or older\n'
-              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
-            elsif service_characteristic_map.rel_code == LT or service_characteristic_map.rel_code == LE
-              group_missing_information_text += 'persons ' + service_characteristic_map.value.to_s + ' years or younger\n'
-              group_missing_info << service_requirement.for_missing_info(service, group, 'age')
-            end
-            next
-          end
-        end
       end  # service_characteristic_maps.each do
 
       group_missing_information_text = group_missing_information_text_list.join(',')
