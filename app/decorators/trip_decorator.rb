@@ -242,7 +242,7 @@ class TripDecorator < Draper::Decorator
           user_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id,
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
-            user_characteristic.first.meets_requirement(map)
+            user_characteristic.first.value == "true"
             result += "#{@elig_svc.translate_service_characteristic_map(map)};"
           end
         end

@@ -1182,12 +1182,14 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         }
 
         var infoGroups = {}; //by group_id
+        group = 0
         missingInfoArray.forEach(function(missInfo) {
-            var infoGroupId = missInfo.group_id;
+            var infoGroupId = group;
             if (!infoGroups.hasOwnProperty(infoGroupId)) {
                 infoGroups[infoGroupId] = [];
             }
             infoGroups[infoGroupId].push(missInfo);
+            group += 1;
         });
 
         var eligible = null; //default
