@@ -132,8 +132,8 @@ module Api
             i_hash[:bookable] = itinerary.is_bookable?
             i_hash[:product_id] = itinerary.product_id #Used for Uber
             if itinerary.service
-              relevant_purposes << itinerary.service.purposes_hash
-              relevant_characteristics << itinerary.service.characteristics_hash
+              relevant_purposes += itinerary.service.purposes_hash
+              relevant_characteristics += itinerary.service.characteristics_hash
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= itinerary.service.logo_url
