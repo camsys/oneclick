@@ -22,7 +22,7 @@ class UserProfile < ActiveRecord::Base
   def age
     age_characteristic = Characteristic.where(code: "age").first
     age = self.user_characteristics.where(characteristic: age_characteristic).first
-    age.nil? ? nil : age.value.to_i
+    (age.nil? || !age.value) ? nil : age.value.to_i
   end
 
   def update_age(dob) #Takes DOB string in mm/dd/yyyy format
@@ -47,4 +47,3 @@ class UserProfile < ActiveRecord::Base
   end
 
 end
-
