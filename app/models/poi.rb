@@ -27,6 +27,33 @@ class Poi < GeocodedAddress
     pois
   end
 
+  #Return Stops that match EVERY string in the search_array
+  # The string that is passed in should look like "Clayton and Main"  or "Clayton & Main"
+  def self.get_stops_by_str(search_string, limit)
+    forbidden = ['and']
+    #Unless this entry is all letters throw it out
+    search_array = search_string.split(' ')
+
+    query = ""
+    search_array.each do |entry|
+
+      #ONLY allow text
+      if (entry[/[a-zA-Z]+/]  != entry) or entry.in? forbidden
+        next
+      end
+
+      query += "UPPER(pois.name) like UPPER('%s') and " % ['%' + entry + '%']
+    end
+
+    query = query.chomp(" and ")
+
+    unless query.blank?
+      return Poi.stops.where(query).limit(limit)
+    else
+      return []
+    end
+  end
+
   def self.load_pois(filename)
     OneclickConfiguration.create_or_update(:poi_is_loading, true)
     require 'csv'

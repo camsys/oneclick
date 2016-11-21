@@ -33,6 +33,13 @@ module Api
           end
         end
 
+        #Check for Stop Names
+        stripped_string = search_string.tr('%', '').strip.to_s
+        matching_stops = Poi.get_stops_by_str(stripped_string, max_results)
+        matching_stops.each do |stop|
+          locations.append(stop.build_place_details_hash)
+        end
+
         # Global POIs
         count = 0
         pois = Poi.get_by_query_str(search_string, max_results, true)
