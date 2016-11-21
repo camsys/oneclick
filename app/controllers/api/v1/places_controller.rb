@@ -11,48 +11,31 @@ module Api
         locations = []
         count = 0
 
-        if include_user_pois.to_bool
-          rel = Place.arel_table[:name].lower().matches(search_string)
-          places = @traveler.places.active.where(rel)
-          places.each do |place|
-            locations.append(place.build_place_details_hash)
-            count += 1
-            if count >= max_results
-              break
-            end
-          end
-        end
-
         #Check for exact match on stop code
         #Cut out white space and remove wildcards
         stripped_string = search_string.tr('%', '').strip.to_s + '%'
         if stripped_string.length >= 4 #Only check once 3 numbers have been entered
-          stops = Poi.stops.where('stop_code LIKE ?', stripped_string).limit(max_results)
-          stops.each do |stop|
-            locations.append(stop.build_place_details_hash)
-          end
+          stops = Poi.stops.where('stop_code LIKE ?', stripped_string).limit(max_results).to_a
+          locations += stops
         end
 
         #Check for Stop Names
         stripped_string = search_string.tr('%', '').strip.to_s
-        matching_stops = Poi.get_stops_by_str(stripped_string, max_results)
-        matching_stops.each do |stop|
-          locations.append(stop.build_place_details_hash)
-        end
+        matching_stops = Poi.get_stops_by_str(stripped_string, max_results).to_a
+        locations += matching_stops
 
         # Global POIs
         count = 0
-        pois = Poi.get_by_query_str(search_string, max_results, true)
-        pois.each do |poi|
-          locations.append(poi.build_place_details_hash)
-          count += 1
-          if count >= max_results
-            break
-          end
+        pois = Poi.get_by_query_str(search_string, max_results, true).to_a
+        locations +=  pois
 
+        locations_hash = []
+
+        locations.uniq.each do |location|
+          locations_hash.append(location.build_place_details_hash)
         end
 
-        hash = {places_search_results: {locations: locations}, record_count: locations.count}
+        hash = {places_search_results: {locations: locations_hash}, record_count: locations.count}
         respond_with hash
 
       end

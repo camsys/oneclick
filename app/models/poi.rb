@@ -38,7 +38,7 @@ class Poi < GeocodedAddress
     search_array.each do |entry|
 
       #ONLY allow text
-      if (entry[/[a-zA-Z]+/]  != entry) or entry.in? forbidden
+      if (entry[/[a-zA-Z0-9]+/]  != entry) or entry.in? forbidden
         next
       end
 
