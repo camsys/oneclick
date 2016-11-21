@@ -12,25 +12,27 @@ class CoverageZone < ActiveRecord::Base
 
       # Look for any bracketed specifiers in the recipe string, and if they exist separate them out
       area_recipe = area_recipe.split(/[\[\]\(\)]/)
-      area_name = area_recipe.first.strip.titleize
-      specifiers = area_recipe.length > 1 ? area_recipe[1].split('-') : []
-      type_specifier = specifiers.length > 0 ? specifiers[0].strip.titleize : nil
-      state_specifier = specifiers.length > 1 ? specifiers[1].strip.upcase : nil
+      unless area_recipe.empty?
+        area_name = area_recipe.first.strip.titleize
+        specifiers = area_recipe.length > 1 ? area_recipe[1].split('-') : []
+        type_specifier = specifiers.length > 0 ? specifiers[0].strip.titleize : nil
+        state_specifier = specifiers.length > 1 ? specifiers[1].strip.upcase : nil
 
-      # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
-      search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
-      state_filter = state_specifier ? [state_specifier] : [Oneclick::Application.config.state]
+        # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
+        search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
+        state_filter = state_specifier ? [state_specifier] : [Oneclick::Application.config.state]
 
-      # Make a hash key for the area name, and fill it with an array of matching objects from the database
-      match_hash[area_name] = [] unless match_hash.key?(area_name)
-      search_tables.each do |table|
-        case table
-        when "County"
-          match_hash[area_name] += County.where(name: area_name, state: state_filter)
-        when "Zipcode"
-          match_hash[area_name] += Zipcode.where(zipcode: area_name)
-        when "City"
-          match_hash[area_name] += City.where(name: area_name, state: state_filter)
+        # Make a hash key for the area name, and fill it with an array of matching objects from the database
+        match_hash[area_name] = [] unless match_hash.key?(area_name)
+        search_tables.each do |table|
+          case table
+          when "County"
+            match_hash[area_name] += County.where(name: area_name, state: state_filter)
+          when "Zipcode"
+            match_hash[area_name] += Zipcode.where(zipcode: area_name)
+          when "City"
+            match_hash[area_name] += City.where(name: area_name, state: state_filter)
+          end
         end
       end
     end
