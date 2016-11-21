@@ -24,7 +24,7 @@ class UserProfile < ActiveRecord::Base
   end
 
   def update_age(dob) #Takes DOB string in mm/dd/yyyy format
-    returns self.user.update_age(dob)
+    return self.user.update_age(dob)
   end
 
 end
