@@ -228,7 +228,7 @@ class EcolaneServices
     url = BASE_URL + url_options
     order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
+    order.children.first.set_attribute('version', '3')
     order = order.to_s
     result  = send_request(url, token, 'POST', order)
     Rails.logger.info('Order Request Sent to Ecolane:')
@@ -242,7 +242,7 @@ class EcolaneServices
     url = BASE_URL + url_options
     order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
+    order.children.first.set_attribute('version', '3')
     order = order.to_s
     send_request(url, token, 'POST', order)
   end
@@ -258,7 +258,7 @@ class EcolaneServices
     Rails.logger.info("End Funding info")
     order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token, funding_xml, funding_array)
     order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
+    order.children.first.set_attribute('version', '3')
     order = order.to_s
     resp = send_request(url, token, 'POST', order)
 
@@ -288,11 +288,9 @@ class EcolaneServices
     funding = {purpose: 'medical'}
     funding_xml = funding.to_xml(:root => 'funding')
 
-    puts funding_xml
-
     order =  build_order(nil, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token, funding_xml)
     order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '2')
+    order.children.first.set_attribute('version', '3')
     order = order.to_s
 
     resp = send_request(url, token, 'POST', order)
@@ -496,8 +494,6 @@ class EcolaneServices
 
   ## Building hash objects that become XML nodes
   def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-    puts 'ok we are her eright?'
-
 
     order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
@@ -508,7 +504,7 @@ class EcolaneServices
 
     puts 'we are here'
 
-    order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
+    order = {assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
     if funding_xml
       order[:funding] = {purpose: 'Medical'}#build_funding_hash(sponsors, trip_purpose_raw, funding_xml, funding_array)
     end
@@ -622,7 +618,7 @@ class EcolaneServices
       funding_source_code = funding_source['code']
       order = build_discount_order(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source_code, system, token)
       order = Nokogiri::XML(order)
-      order.children.first.set_attribute('version', '2')
+      order.children.first.set_attribute('version', '3')
       order = order.to_s
       resp = send_request(url, token, 'POST', order)
 
