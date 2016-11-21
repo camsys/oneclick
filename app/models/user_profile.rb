@@ -20,30 +20,11 @@ class UserProfile < ActiveRecord::Base
   end
 
   def age
-    age_characteristic = Characteristic.where(code: "age").first
-    age = self.user_characteristics.where(characteristic: age_characteristic).first
-    age.nil? ? nil : age.value.to_i
+    self.user.age
   end
 
   def update_age(dob) #Takes DOB string in mm/dd/yyyy format
-
-    dob = dob.split('/')
-    unless dob.count == 3
-      return nil
-    end
-
-    begin
-      dob = (dob[1] + '/' + dob[0] + '/' + dob[2]).to_time
-    rescue  ArgumentError
-      return nil
-    end
-
-    now = Time.now
-
-    age_characteristic = Characteristic.where(code: "age").first
-    age = self.user_characteristics.where(characteristic: age_characteristic).first_or_initialize
-    age.value = (now.year - dob.year - (dob.to_date.change(:year => now.year) > now ? 1 : 0)).to_s
-    age.save
+    returns self.user.update_age(dob)
   end
 
 end

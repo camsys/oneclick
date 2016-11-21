@@ -416,4 +416,24 @@ class User < ActiveRecord::Base
     return walk_speed_hash[walk_speed]
   end
 
+  def update_age(dob) #Takes DOB string in mm/dd/yyyy format
+
+    dob = dob.split('/')
+    unless dob.count == 3
+      return nil
+    end
+
+    begin
+      dob = (dob[1] + '/' + dob[0] + '/' + dob[2]).to_time
+    rescue  ArgumentError
+      return nil
+    end
+
+    now = Time.now
+
+    self.age = (now.year - dob.year - (dob.to_date.change(:year => now.year) > now ? 1 : 0)).to_s
+    self.save
+
+  end
+
 end
