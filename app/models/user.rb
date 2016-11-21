@@ -173,10 +173,6 @@ class User < ActiveRecord::Base
     agency.nil? ? email : "#{email} (#{agency.name})"
   end
 
-  def age
-    return self.user_profile.age
-  end
-
   def is_visitor?
     has_role? :anonymous_traveler
   end
