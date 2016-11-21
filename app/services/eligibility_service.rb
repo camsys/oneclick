@@ -114,26 +114,6 @@ class EligibilityService
     end
   end
 
-  def update_age(user_profile, date = Time.now)
-
-    dob = Characteristic.find_by_code('date_of_birth')
-    age = Characteristic.find_by_code('age')
-    passenger_dob = UserCharacteristic.where(user_profile_id: user_profile.id, characteristic_id: dob.id)
-    if passenger_dob.count != 0 && passenger_dob.first.value != 'na'
-      passenger_dob = passenger_dob.first.value.to_date
-    else
-      return
-    end
-    passenger_age_characteristic = UserCharacteristic.find_or_initialize_by_user_profile_id_and_characteristic_id(user_profile.id, age.id)
-
-    new_age = date.year - passenger_dob.year
-    new_age -= 1 if date < passenger_dob + new_age.years
-    passenger_age_characteristic.value = new_age
-    passenger_age_characteristic.save()
-
-  end
-
-
   def get_accommodating_services_for_traveler(itineraries, user_profile)
 
     if user_profile.nil?
