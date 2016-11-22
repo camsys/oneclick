@@ -1285,7 +1285,8 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
         var tripMidTime = new Date((tripStartTime.getTime() + tripEndTime.getTime()) / 2);
         var midDateLabelTags = "<label class='sr-only' tabindex='" + (isDepartAt ? "17" : "16") + "'>" + "</label><span style='line-height:2;' aria-hidden='true'>" + formatDate(tripMidTime) + '</span>';
 
-        var isSelectedTag = function(tagName, isDepart=true) {
+        var isSelectedTag = function(tagName, isDepart) {
+          isDepart = isDepart || true;
           if(isDepart) {
             return tagName === filterConfigs.selected_sortby_tags[0] ? "selected" : ""
           } else {
