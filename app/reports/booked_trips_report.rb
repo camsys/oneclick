@@ -1,8 +1,9 @@
 class BookedTripsReport < AbstractReport
   attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
-  include Reporting::ReportHelper
+  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable
+  ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
-  AVAILABLE_DATE_OPTIONS = [:weekly, :monthly, :annually]
+  AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
   def initialize(attributes = {})
     # Set up four arrays of column names: Totals, User, Trips, and Ratings
@@ -25,38 +26,28 @@ class BookedTripsReport < AbstractReport
   def get_data(current_user, report)
     @from_date = Chronic.parse(report.from_date).to_date
     @to_date = Chronic.parse(report.to_date).to_date
-    @date_option = report.booked_trips_date_option.to_sym
+    @date_range = @from_date..@to_date
+    @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
     itinerary_base = Itinerary.valid.visible # Base query -- all valid itineraries
     data = {} # Object for holding results tables
 
     # Populate All Booked Trip Counts Data Table
     data[:all_booked_trips] = {
-      table: [],
+      table: [[@time_unit.to_s, "trips booked"]] +
+        itinerary_base.parcel_by(@date_range, @time_unit) { |seg, data| [seg.send(@time_unit).to_s, data.where.not(booking_confirmation: nil).count]},
       visualization: 'ColumnChart',
       options: {
+        title: "Trips Booked by #{@time_unit.to_s.titleize}",
         width: 600,
         height: 400
       }
     }
 
-    case @date_option
-    when :annually
-      data[:all_booked_trips][:table] << ["year", "trips booked"]
-      data[:all_booked_trips][:options][:title] = "Trips Booked by Year"
-    when :monthly
-      data[:all_booked_trips][:table] << ["month", "trips booked"]
-      data[:all_booked_trips][:options][:title] = "Trips Booked by Month"
-    when :weekly
-      data[:all_booked_trips][:table] << ["week", "trips booked"]
-      data[:all_booked_trips][:options][:title] = "Trips Booked by Week"
-    else
-      data.delete(:all_booked_trips)
-    end
-
     # (earliest_itin_date..Date.today).select { |d| d.day == 1 }.each do |m|
     #   data[:booked_trips_by_month][:table] << [m.year.to_s, itinerary_base.where(created_at: (Date.new(m.year,m.month,1)..Date.new(m.year,m.month,-1))).where.not(booking_confirmation: nil).count ]
     # end
 
+    puts "DATA IS: ", data.ai
     data
 
     # # Set the date range using a DateOption object

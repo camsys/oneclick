@@ -51,27 +51,29 @@ module Reporting::ReportHelper
     end
   end
 
-  # Dictionary listing units of time
-  UNITS_OF_TIME = {
-    year: :year, annual: :year, annually: :year,
-    quarter: :quarter, quarterly: :quarter,
-    month: :month, monthly: :month,
-    week: :week, weekly: :week,
-    day: :day, daily: :day
-  }
+  module Parcelable
+    # Dictionary listing units of time
+    UNITS_OF_TIME = {
+      year: :year, annual: :year, annually: :year,
+      month: :month, monthly: :month,
+      week: :week, weekly: :week,
+      day: :day, daily: :day
+    }
 
-  # parcels data out into time units
-  def parcel_by(date_range, time_chunk=:year)
-    time_unit = UNITS_OF_TIME[time_unit]
-    start_date = date_range.begin
-    results = []
-    while date_range === start_date do
-      search_range = start_date...start_date + 1.send(time_chunk)
-      data_count = self.where(created_at: (search_range)).where.not(booking_confirmation: nil).count
-      results << [start_date.year.to_s, data_count]
-      start_date = start_date + 1.send(time_chunk)
+    # parcels data out into time units, and applies passed block to each segment
+    def parcel_by(date_range, time_unit=:year)
+      time_unit = UNITS_OF_TIME[time_unit]
+      start_date = date_range.begin
+      results = []
+      while date_range === start_date do
+        search_range = start_date...start_date + 1.send(time_unit)
+        data_segment = self.where(created_at: (search_range))
+        result = block_given? ? yield(start_date, data_segment) : [start_date.to_s, data_segment.count]
+        results << result
+        start_date = start_date + 1.send(time_unit)
+      end
+      results
     end
-    results
   end
 
   # format output field value if formatter is configured
