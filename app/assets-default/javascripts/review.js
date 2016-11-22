@@ -1296,12 +1296,12 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
 
         var sorterTags =
             '<select style="display: inline-block;" class="trip-sorter" tabindex=' + (isDepartAt ? "17" : "16") + '>"' +
-            `<option value="start-time" ${isSelectedTag("start-time", isDepartAt)}>` + localeDictFinder["departure_time_sorter"] + '</option>' +
-            `<option value="end-time" ${isSelectedTag("end-time", isDepartAt)}>` + localeDictFinder["arrival_time_sorter"] + '</option>' +
-            `<option value="cost" ${isSelectedTag("cost", isDepartAt)}>` + localeDictFinder['fare_sorter'] + '</option>' +
-            `<option value="duration" ${isSelectedTag("duration", isDepartAt)}>` + localeDictFinder['travel_time_sorter'] + '</option>' +
-            `<option value="walk-dist" ${isSelectedTag("walk-dist", isDepartAt)}>` + localeDictFinder['walk_dist_sorter'] + '</option>' +
-            `<option value="wait-time" ${isSelectedTag("wait-time", isDepartAt)}>` + localeDictFinder['wait_time_sorter'] + '</option>' +
+            '<option value="start-time" ' + isSelectedTag("start-time", isDepartAt) + '>' + localeDictFinder["departure_time_sorter"] + '</option>' +
+            '<option value="end-time" ' + isSelectedTag("end-time", isDepartAt) + '>' + localeDictFinder["arrival_time_sorter"] + '</option>' +
+            '<option value="cost" ' + isSelectedTag("cost", isDepartAt) + '>' + localeDictFinder['fare_sorter'] + '</option>' +
+            '<option value="duration" ' + isSelectedTag("duration", isDepartAt) + '>' + localeDictFinder['travel_time_sorter'] + '</option>' +
+            '<option value="walk-dist" ' + isSelectedTag("walk-dist", isDepartAt) + '>' + localeDictFinder['walk_dist_sorter'] + '</option>' +
+            '<option value="wait-time" ' + isSelectedTag("wait-time", isDepartAt) + '>' + localeDictFinder['wait_time_sorter'] + '</option>' +
             '</select>';
 
         var tripHeaderTags = tripDescTag +
