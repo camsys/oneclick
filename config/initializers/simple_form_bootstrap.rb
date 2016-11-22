@@ -238,5 +238,3 @@ SimpleForm.setup do |config|
   # buttons and other elements.
   config.default_wrapper = :vertical_form
 end
-
-

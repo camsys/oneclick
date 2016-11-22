@@ -4,7 +4,7 @@ module Reporting::ReportHelper
 
   # include both generic reports and customized reports
   def all_report_infos
-    
+
     query_hash = {}
 
     role_check = report_by_user_role_query_string
@@ -51,13 +51,36 @@ module Reporting::ReportHelper
     end
   end
 
+  # Dictionary listing units of time
+  UNITS_OF_TIME = {
+    year: :year, annual: :year, annually: :year,
+    quarter: :quarter, quarterly: :quarter,
+    month: :month, monthly: :month,
+    week: :week, weekly: :week,
+    day: :day, daily: :day
+  }
+
+  # parcels data out into time units
+  def parcel_by(date_range, time_chunk=:year)
+    time_unit = UNITS_OF_TIME[time_unit]
+    start_date = date_range.begin
+    results = []
+    while date_range === start_date do
+      search_range = start_date...start_date + 1.send(time_chunk)
+      data_count = self.where(created_at: (search_range)).where.not(booking_confirmation: nil).count
+      results << [start_date.year.to_s, data_count]
+      start_date = start_date + 1.send(time_chunk)
+    end
+    results
+  end
+
   # format output field value if formatter is configured
   def format_output(raw_value, field_type, formatter = nil, formatter_option = nil)
     unless raw_value.blank? || field_type.blank?
       case field_type.to_sym
       when :date, :datetime
         if field_type == :date
-          default_formatter = "%m/%d/%Y" 
+          default_formatter = "%m/%d/%Y"
         else
           default_formatter = "%m/%d/%Y %H:%M:%S"
         end
@@ -103,9 +126,9 @@ module Reporting::ReportHelper
 
     data_access_type = lookup_table.data_access_type
 
-    is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
-    
-    unless is_sys_admin || data_access_type.blank? || 
+    is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin)
+
+    unless is_sys_admin || data_access_type.blank? ||
       lookup_table.data_model.columns_hash.keys.index(lookup_table.id_field_name).nil?
 
       # double quote in case field_name is in uppercase
@@ -117,16 +140,16 @@ module Reporting::ReportHelper
 
       if data_access_type.to_sym == :provider && is_provider_staff
         access_id = current_user.provider.id rescue nil
-        data = data.where("#{field_name} = ?" , access_id) 
+        data = data.where("#{field_name} = ?" , access_id)
       elsif data_access_type.to_sym == :agency && (is_agency_admin || is_agent)
         access_id = current_user.agency.id rescue nil
-        data = data.where("#{field_name} = ?" , access_id) 
+        data = data.where("#{field_name} = ?" , access_id)
       elsif data_access_type.to_sym == :service && is_provider_staff
         access_id = current_user.provider.services.pluck(:id) rescue []
         if access_id.count <=1
-          data = data.where("#{field_name} = ?" , access_id) 
+          data = data.where("#{field_name} = ?" , access_id)
         else
-          data = data.where("#{field_name} in (?)" , access_id) 
+          data = data.where("#{field_name} in (?)" , access_id)
         end
       end
     end
@@ -137,14 +160,14 @@ module Reporting::ReportHelper
   private
 
   def report_by_user_role_query_string
-    is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin) 
+    is_sys_admin = current_user.has_role?(:system_administrator) || current_user.has_role?(:admin)
     is_provider_staff = current_user.has_role?(:provider_staff, :any)
     is_agency_admin = current_user.has_role?(:agency_administrator, :any)
     is_agent = current_user.has_role?(:agent, :any)
 
     # needs to use arel in order to have a OR query chain
     reports_arel = Reporting::ReportingReport.arel_table
-    
+
     # check each role
     sys_admin_role_check = (reports_arel[:is_sys_admin].eq(true)).or(reports_arel[:is_sys_admin].eq(nil)) if is_sys_admin
     provider_staff_role_check = (reports_arel[:is_provider_staff].eq(true)).or(reports_arel[:is_provider_staff].eq(nil)) if is_provider_staff
@@ -155,7 +178,7 @@ module Reporting::ReportHelper
     role_check = sys_admin_role_check if is_sys_admin
     if is_provider_staff
       if role_check
-        role_check = role_check.or provider_staff_role_check 
+        role_check = role_check.or provider_staff_role_check
       else
         role_check = provider_staff_role_check
       end
@@ -163,7 +186,7 @@ module Reporting::ReportHelper
 
     if is_agency_admin
       if role_check
-        role_check = role_check.or agency_admin_role_check 
+        role_check = role_check.or agency_admin_role_check
       else
         role_check = agency_admin_role_check
       end
@@ -171,7 +194,7 @@ module Reporting::ReportHelper
 
     if is_agent
       if role_check
-        role_check = role_check.or agent_role_check 
+        role_check = role_check.or agent_role_check
       else
         role_check = agent_role_check
       end

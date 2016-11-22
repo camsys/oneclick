@@ -1,5 +1,8 @@
 class BookedTripsReport < AbstractReport
   attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
+  include Reporting::ReportHelper
+
+  AVAILABLE_DATE_OPTIONS = [:weekly, :monthly, :annually]
 
   def initialize(attributes = {})
     # Set up four arrays of column names: Totals, User, Trips, and Ratings
@@ -20,42 +23,39 @@ class BookedTripsReport < AbstractReport
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
-    puts "Getting Data for: ", report.ai
+    @from_date = Chronic.parse(report.from_date).to_date
+    @to_date = Chronic.parse(report.to_date).to_date
+    @date_option = report.booked_trips_date_option.to_sym
+    itinerary_base = Itinerary.valid.visible # Base query -- all valid itineraries
+    data = {} # Object for holding results tables
 
-    sample_data = {
-      booked_trips: {
-        table: [
-          ["year", "booked trips"],
-          [2014, 512],
-          [2015, 657],
-          [2016, 845]
-        ],
-        visualization: 'ColumnChart',
-        options: {
-          title: "Trips Booked by Year",
-          width: 600,
-          height: 400
-        }
-      }
-    }
-
-    itinerary_base = Itinerary.valid.visible
-
-    data = {}
-
-    data[:booked_trips] = {
-      table: [["year", "booked trips"]],
+    # Populate All Booked Trip Counts Data Table
+    data[:all_booked_trips] = {
+      table: [],
       visualization: 'ColumnChart',
       options: {
-        title: "Trips Booked by Year",
         width: 600,
         height: 400
       }
     }
 
-    (itinerary_base.min_by {|i| i.created_at }.created_at.year..Date.today.year).each do |y|
-      data[:booked_trips][:table] << [y, itinerary_base.where(created_at: (Date.new(y,1,1)...Date.new(y+1,1,1))).where.not(booking_confirmation: nil).count ]
+    case @date_option
+    when :annually
+      data[:all_booked_trips][:table] << ["year", "trips booked"]
+      data[:all_booked_trips][:options][:title] = "Trips Booked by Year"
+    when :monthly
+      data[:all_booked_trips][:table] << ["month", "trips booked"]
+      data[:all_booked_trips][:options][:title] = "Trips Booked by Month"
+    when :weekly
+      data[:all_booked_trips][:table] << ["week", "trips booked"]
+      data[:all_booked_trips][:options][:title] = "Trips Booked by Week"
+    else
+      data.delete(:all_booked_trips)
     end
+
+    # (earliest_itin_date..Date.today).select { |d| d.day == 1 }.each do |m|
+    #   data[:booked_trips_by_month][:table] << [m.year.to_s, itinerary_base.where(created_at: (Date.new(m.year,m.month,1)..Date.new(m.year,m.month,-1))).where.not(booking_confirmation: nil).count ]
+    # end
 
     data
 
@@ -139,6 +139,10 @@ class BookedTripsReport < AbstractReport
 
   def get_columns
     @totals_cols + @user_cols + @trip_cols
+  end
+
+  def self.available_date_option_collections
+    AVAILABLE_DATE_OPTIONS.map {|option| [TranslationEngine.translate_text(option), option]}
   end
 
 end
