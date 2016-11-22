@@ -147,7 +147,7 @@ module Api
           #Build the itineraries
           tp.create_itineraries
 
-          my_itins = Itinerary.where(trip_part: tp)
+          my_itins = Itinerary.where(trip_part: tp).order('created_at')
           #my_itins = tp.itineraries
           my_itins.each do |itin|
             Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)

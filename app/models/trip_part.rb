@@ -171,7 +171,7 @@ class TripPart < ActiveRecord::Base
 
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
-  def create_itineraries(modes = trip.desired_modes)
+  def create_itineraries(modes = trip.desired_modes.prioritized)
 
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries

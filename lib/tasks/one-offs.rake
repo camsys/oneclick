@@ -72,6 +72,16 @@ namespace :oneclick do
       end
     end
 
+    task set_mode_priority: :environment do
+      [['mode_bicycle', 1], ['mode_transit', 2], ['mode_walk', 3], ['mode_park_transit',4], ['mode_bicycle_transit', 0]].each do |m|
+        mode = Mode.unscoped.find_by(code: m[0])
+        if mode
+          puts "Setting #{m[0]} to priority #{m[1]}."
+          mode.results_sort_order = m[1]
+          mode.save
+        end
+      end
+    end
 
   end
 

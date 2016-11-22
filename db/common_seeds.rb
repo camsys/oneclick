@@ -334,3 +334,4 @@ age.update_attributes!(for_traveler: false, linked_characteristic: dob,
 #Run additional Rake Tasks
 Oneclick::Application.load_tasks
 Rake::Task["oneclick:load_locales"].invoke
+Rake::Task["oneclick:one_offs:set_mode_priority"].invoke
