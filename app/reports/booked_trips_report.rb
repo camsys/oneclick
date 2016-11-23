@@ -84,6 +84,7 @@ class BookedTripsReport < AbstractReport
     ###########################
     # Trips Booked by Purpose #
     ###########################
+    # NOTE: Currently only set up to use trip_purpos_raw field from external booking services
 
     # Query all itineraries with and without a trip_purpose_raw value (for external booking services)
     itins_with_purpose = itinerary_base.includes(trip_part: [trip: [:trip_purpose]])
@@ -106,16 +107,14 @@ class BookedTripsReport < AbstractReport
 
     # Make a list of trip purposes
     purpose_list = (
-      TripPurpose.all.map {|tp| tp.code} +
-      Trip.where.not(trip_purpose_raw: nil).map {|t| t.trip_purpose_raw.parameterize.underscore}
+      Trip.where.not(trip_purpose_raw: nil).map {|t| t.trip_purpose_raw}
     ).uniq
 
     # Add Data to the Table
     purpose_list.each do |tp|
       data[:trip_purposes][:table] << [tp,
-        itins_with_external_purpose.where(:trips => {trip_purpose_raw: tp.humanize.titleize}).count +
-        itins_without_external_purpose.where(:trip_purposes => {:code => tp}).count
-      ] # REFACTOR trip_purpose_raw -- doesn't work for all trip_purposes
+        itins_with_external_purpose.where(:trips => {trip_purpose_raw: tp}).count
+      ]
     end
 
 
