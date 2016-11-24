@@ -702,6 +702,20 @@ class BookingServices
     nil
   end
 
+  # Identifies the current status of booked trips by making a call to external booking services
+  def check_booked_trip_statuses user_service
+    # Is there an ecolane profile associated with this service?
+    if user_service.service.ecolane_profile
+      customer_id = user_service.external_user_id
+      booking_system = user_service.service.ecolane_profile.system
+      token = user_service.service.ecolane_profile.token
+      puts "Checking booked trip statuses for ", customer_id, booking_system, token
+      es = EcolaneServices.new
+      resp = es.fetch_customer_orders(customer_id, booking_system, token)
+      orders = es.unpack_orders(resp)
+    end
+  end
+
   def county_to_service(county)
     Service.find_by(external_id: county_to_external_id(county).downcase.strip)
   end
