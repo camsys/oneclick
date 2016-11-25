@@ -9,6 +9,10 @@ namespace :oneclick do
     puts "After that, run rake oneclick:setup_ecolane_services to setup the ecolane funding sources/sponsors, test users, etc."
     puts "After that you will need to manually add the tokens. A list of services that need tokens will be printed."
     puts "FYI: It's ok to run any of these commands multiple times.  They are idempotent."
+
+    puts 'OPTIONAL: To test the new API fare calls, you can create a test service to replace the Rabbit Shared Ride Service'
+    puts 'To do this run: rake oneclick:turn_on_test_service'
+    puts 'To turn off the test service and turn the real service back on run: rake oneclick:turn_off_test_service'
   end
 
   desc "Create API Guest User"
@@ -515,5 +519,97 @@ namespace :oneclick do
 
       end
     end
-   end
+  end
+
+  desc "Turn On Test Rabbit and Turn off Real Rabbit"
+  task turn_on_test_service: :environment do
+    ecolane_service = {name: "Rabbit Shared Ride Test", external_id: "cambridge-test"}
+
+    service_type = ServiceType.find_by(code: "paratransit")
+
+    service = Service.find_or_create_by(service_type: service_type, external_id: ecolane_service[:external_id]) do |service|
+      puts 'Creating a new service for ' + ecolane_service.as_json.to_s
+      service.service_type = service_type
+      service.name = ecolane_service[:name]
+      provider = Provider.find_or_create_by(name: ecolane_service[:name])
+      service.provider = provider
+      service.booking_profile = BookingServices::AGENCY[:ecolane]
+      service.save
+    end
+
+    #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
+    #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page
+    #Counties
+    service.county_endpoint_array = ['York', 'Adams', 'Cumberland']
+    service.county_coverage_array = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
+
+    #Funding Sources
+    funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
+
+    #Sponsors
+    sponsor_array = [['MATP', 0],['YCAAA', 1]]
+
+    #Dummy User
+    service.fare_user = "79109"
+
+    #Optional: Disallowed Trip Purposes
+    #this is a comma separated string with no spaces around the commas, and all lower-case
+    service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+    #Get or create the ecolane_profile
+    ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+    #Booking System Id
+    ecolane_profile.system = 'cambridge-test'
+    ecolane_profile.default_trip_purpose = 'Other'
+    ecolane_profile.save
+
+    #Clear and set Funding Sources
+    service.funding_sources.destroy_all
+    funding_source_array.each do |fs|
+      new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+      new_funding_source.index = fs[1]
+      new_funding_source.general_public = fs[2]
+      new_funding_source.comment = fs[3]
+      new_funding_source.save
+    end
+
+    #Clear and set Sponsors
+    service.sponsors.destroy_all
+    sponsor_array.each do |s|
+      new_sponsor = Sponsor.where(service: service, code: s[0]).first_or_create
+      new_sponsor.index = s[1]
+      new_sponsor.save
+    end
+
+    #Confirm API Token is set
+    if service.ecolane_profile.token.nil?
+      puts 'Be sure to setup a token for ' + service.name  + ' ' + service.external_id + ', service_id = ' + service.id.to_s
+    end
+
+    service.save
+  end
+
+  desc "Turn Off the Rabbit Test Service and Turn on the Rabbit Shared Ride Service"
+  task turn_off_test_service: :environment do
+    s = Service.find_by(external_id: "cambridge_test")
+    if s.nil?
+      puts 'The test service does not exist'
+    else
+      s.active = false
+      s.save
+      puts "The test service has been turned off"
+    end
+
+    s = Service.find_by(external_id: "rabbit")
+    if s.nil?
+      puts 'The Rabbit service does not exist'
+    else
+      s.active = true
+      s.save
+      puts 'The Rabbit service has been turned on.'
+    end
+
+  end
+
 end
