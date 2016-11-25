@@ -22,6 +22,29 @@ class BookedTripsReport < AbstractReport
     @rating_cols = [:total_ratings, :average_rating]
   end
 
+  # Helper Method sets up tick marks based on time unit
+  def setup_tick_marks(date_range, time_unit)
+    ticks = []
+    case time_unit
+    when :year
+      ticks = date_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
+    when :month
+      ticks = date_range.map {|y| {v: Date.new(y,1,1), f: "Jan #{y}"} } +
+              date_range.map {|y| {v: Date.new(y,7,1), f: "Jul #{y}"} }
+    when :week
+      days_in_range = date_range.count
+      date_range.step( [days_in_range / 28 * 7, 7].max ) do |d|
+        ticks << {v: d, f: d}
+      end
+    when :day
+      ticks = date_range.map do |d|
+        [d.year, d.month]
+      end.uniq.map {|d| {v: Date.new(d[0],d[1],1), f: Date.new(d[0],d[1],1)} }
+    else
+    end
+    ticks
+  end
+
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
     @from_date = Chronic.parse(report.from_date).to_date
@@ -45,7 +68,7 @@ class BookedTripsReport < AbstractReport
         title: "Total Trips Booked, by #{@time_unit.to_s.titleize}",
         width: 1000,
         height: 600,
-        hAxis: {}
+        hAxis: { ticks: [] }
       }
     }
 
@@ -59,6 +82,10 @@ class BookedTripsReport < AbstractReport
     data[:all_booked_trips][:rows] = booked_itins.parcel_by(@date_range, @time_unit) do |seg, data|
       [seg, data.count]
     end
+
+    # Set up Tick Marks on hAxis
+    data[:all_booked_trips][:options][:hAxis][:ticks] = setup_tick_marks(@date_range, @time_unit)
+
 
     ##########################
     # Trips Selected by Mode #
@@ -75,7 +102,8 @@ class BookedTripsReport < AbstractReport
         title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
         width: 1000,
         height: 600,
-        isStacked: true
+        isStacked: true,
+        hAxis: { ticks: [] }
       }
     }
 
@@ -90,6 +118,9 @@ class BookedTripsReport < AbstractReport
     selected_itins.parcel_by(@date_range, @time_unit) do |seg, data|
       [seg] + Mode.all.map {|m| data.where(mode_id: m.id).count }
     end
+
+    # Set up Tick Marks on hAxis
+    data[:selected_trips_by_mode][:options][:hAxis][:ticks] = setup_tick_marks(@date_range, @time_unit)
 
     ###########################
     # Trips Booked by Purpose #

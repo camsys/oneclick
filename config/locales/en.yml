@@ -341,6 +341,13 @@ en:
   restore_provider: 'Restore provider'
   confirm_restore_message: 'Are you sure you want to restore'
 
+  # Booked Trips Report
+  annually: 'Annually'
+  daily: 'Daily'
+  BookedTripsReport: 'Booked Trips Report'
+  from_date: 'From Date'
+  to_date: 'To Date'
+
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'
   admin_user_placeholder_text: 'Enter an email address'
@@ -1270,7 +1277,6 @@ en:
     en: "English"
     es: "En Español"
     ht: "Creole"
-
 
   simple_form:
     labels:

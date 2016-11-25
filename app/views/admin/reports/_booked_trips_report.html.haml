@@ -25,11 +25,16 @@
         var dataTable = new google.visualization.DataTable();
         var columns = data[set].columns;
         var rows = data[set].rows;
+        var options = data[set].options;
         for (var i = 0; i < columns.length; i++) {
           dataTable.addColumn(columns[i].type, columns[i].heading);
           if (columns[i].type == "date") {
             for (var j = 0; j < rows.length; j++) {
               rows[j][i] = new Date(rows[j][i]);
+            }
+            for (var k = 0; k < options.hAxis.ticks.length; k++) {
+              options.hAxis.ticks[k].v = new Date(options.hAxis.ticks[k].v);
+              console.log("tick:", options.hAxis.ticks[k]);
             }
           }
         }
@@ -39,7 +44,7 @@
         var chart = new google.visualization[data[set].visualization](document.getElementById(`chart_div_${set}`));
 
         // chart.draw(google.visualization.arrayToDataTable(data[set].table), data[set].options);
-        chart.draw(dataTable, data[set].options);
+        chart.draw(dataTable, options);
       }
 
     };
