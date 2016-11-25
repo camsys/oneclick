@@ -186,7 +186,7 @@ class BookingServices
       when AGENCY[:ridepilot]
         ridepilot_profile = itinerary.service.ridepilot_profile
         rs = RidepilotServices.new
-        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
+        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profilqe.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
         return result
 
     end
@@ -511,8 +511,6 @@ class BookingServices
         service = user_service.service
         ## End Assumption
 
-        #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
-        sponsors = service.sponsors.order(:index).pluck(:code).as_json
         trip_purpose_raw = itinerary.trip_part.trip.trip_purpose_raw
         is_depart = itinerary.trip_part.is_depart
         scheduled_time = itinerary.trip_part.scheduled_time
@@ -522,30 +520,54 @@ class BookingServices
         system = service.ecolane_profile.system
         token = service.ecolane_profile.token
 
-        #Get the default funding source for this customer and build an array of valid funding source ordered from
-        # most desired to least desired.
-        default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
-        funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+        case service.ecolane_profile.api_version
+        when "8"
+          #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+          sponsors = service.sponsors.order(:index).pluck(:code).as_json
 
-        ecolane_params  =
-          {
-            sponsors: sponsors,
-            trip_purpose_raw: trip_purpose_raw,
-            is_depart: is_depart,
-            scheduled_time: scheduled_time,
-            from_trip_place: from_trip_place,
-            to_trip_place: to_trip_place,
-            customer_number: customer_number,
-            system: system,
-            token: token,
-            funding_array: funding_array
+          #Get the default funding source for this customer and build an array of valid funding source ordered from
+          # most desired to least desired.
+          default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+          funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+
+          ecolane_params  =
+            {
+              sponsors: sponsors,
+              trip_purpose_raw: trip_purpose_raw,
+              is_depart: is_depart,
+              scheduled_time: scheduled_time,
+              from_trip_place: from_trip_place,
+              to_trip_place: to_trip_place,
+              customer_number: customer_number,
+              system: system,
+              token: token,
+              funding_array: funding_array
+            }
+
+          result, fare = es.query_fare(ecolane_params)
+          if result
+            return fare
+          else
+            return nil
+          end
+        when "9"
+          ecolane_params  =
+              {
+              trip_purpose_raw: trip_purpose_raw,
+              is_depart: is_depart,
+              scheduled_time: scheduled_time,
+              from_trip_place: from_trip_place,
+              to_trip_place: to_trip_place,
+              customer_number: customer_number,
+              system: system,
+              token: token
           }
-
-        result, fare = es.query_fare(ecolane_params)
-        if result
-          return fare
-        else
-          return nil
+          result, fare = es.query_preferred_fare(ecolane_params)
+          if result
+            return fare
+          else
+            return nil
+          end
         end
       else
         return nil

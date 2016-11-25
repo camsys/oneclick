@@ -253,7 +253,7 @@ class EcolaneServices
 
 
   # Description:
-  # Find the fare for a trip, and return the funding options used to calculate that fare
+  # Find the fare for a trip.
 
   # Params:
   # sponsors
@@ -294,25 +294,31 @@ class EcolaneServices
     return true, fare
   end
 
-  def query_preferred_fare(trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token)
+  # Description:
+  # Find the fare for a trip. (Used in v9 of the API)
+
+  # Params:
+  # trip_purpose_raw
+  # is_depart
+  # scheduled_time
+  # from_trip_place
+  # to_trip_place
+  # customer_number
+  # system
+  # token
+  def query_preferred_fare params
     sponsors = nil
-    url_options =  "/api/order/" + system + "/query_preferred_fares"
+    url_options =  "/api/order/" + params[:system] + "/query_preferred_fares"
     url = BASE_URL + url_options
-    #funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token)
 
-    #funding_xml = Nokogiri::XML(funding_options.body)
-    #Rails.logger.info("Begin Funding info")
-    #Rails.logger.info(funding_xml)
-    #Rails.logger.info("End Funding info")
-    funding = {purpose: 'medical'}
-    funding_xml = funding.to_xml(:root => 'funding')
+    funding = {purpose: params['trip_purpose_raw']}
+    params[:funding] = funding
 
-    order =  build_order(nil, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token, funding_xml)
+    order =  build_order_v9 params
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '3')
     order = order.to_s
-
-    resp = send_request(url, token, 'POST', order)
+    resp = send_request(url, params[:token], 'POST', order)
 
     begin
       resp_code = resp.code
@@ -323,8 +329,6 @@ class EcolaneServices
     if resp_code != "200"
       return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
-    return resp
-
     fare = unpack_fare_response(resp)
     return true, fare
   end
@@ -518,6 +522,30 @@ class EcolaneServices
     order_xml
   end
 
+  # Description
+  # Builds an order without searching through funding sources/sponsors
+
+  # params
+  # customer_number
+  # assistant
+  # companions
+  # children
+  # other_passengers
+  # is_depart
+  # scheduled_time
+  # from_trip_place
+  # to_trip_place
+  # note_to_driver
+  # trip_purpose_raw
+  # system
+  # token
+  def build_order_v9 params
+    order_hash = {customer_id: get_customer_id(params[:customer_number], params[:system], params[:token]), assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
+    order_hash[:funding] =  {purpose: params[:trip_purpose_raw]}
+    order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
+    order_xml
+  end
+
   def build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
     order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
     if funding_xml
@@ -692,9 +720,6 @@ class EcolaneServices
   # system
   # token
   def cancel params
-
-    puts params.ai
-
     url_options = "/api/order/" + params[:system] + '/'
     url_options += params[:confirmation_number].to_s
     url = Oneclick::Application.config.ecolane_base_url + url_options
