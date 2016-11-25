@@ -25,12 +25,13 @@ class BookedTripsReport < AbstractReport
   # Helper Method sets up tick marks based on time unit
   def setup_tick_marks(date_range, time_unit)
     ticks = []
+    year_range = date_range.begin.year..date_range.end.year
     case time_unit
     when :year
-      ticks = date_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
+      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
     when :month
-      ticks = date_range.map {|y| {v: Date.new(y,1,1), f: "Jan #{y}"} } +
-              date_range.map {|y| {v: Date.new(y,7,1), f: "Jul #{y}"} }
+      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: "Jan #{y}"} } +
+              year_range.map {|y| {v: Date.new(y,7,1), f: "Jul #{y}"} }
     when :week
       days_in_range = date_range.count
       date_range.step( [days_in_range / 28 * 7, 7].max ) do |d|
