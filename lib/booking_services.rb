@@ -527,7 +527,21 @@ class BookingServices
         default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
         funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
 
-        result, fare = es.query_fare(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token, funding_array)
+        ecolane_params  =
+          {
+            sponsors: sponsors,
+            trip_purpose_raw: trip_purpose_raw,
+            is_depart: is_depart,
+            scheduled_time: scheduled_time,
+            from_trip_place: from_trip_place,
+            to_trip_place: to_trip_place,
+            customer_number: customer_number,
+            system: system,
+            token: token,
+            funding_array: funding_array
+          }
+
+        result, fare = es.query_fare(ecolane_params)
         if result
           return fare
         else

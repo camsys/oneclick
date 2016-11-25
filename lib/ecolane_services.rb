@@ -253,16 +253,31 @@ class EcolaneServices
     send_request(url, token, 'POST', order)
   end
 
-  def query_fare(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, customer_number, system, token, funding_array)
 
-    url_options =  "/api/order/" + system + "/queryfare"
+  # Description:
+  # Find the fare for a trip, and return the funding options used to calculate that fare
+
+  # Params:
+  # sponsors
+  # trip_purpose_raw
+  # is_depart
+  # scheduled_time
+  # from_trip_place
+  # to_trip_place
+  # customer_number
+  # system
+  # token
+  # funding_array
+  def query_fare params
+
+    url_options =  "/api/order/" + params[:system] + "/queryfare"
     url = BASE_URL + url_options
-    funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token)
+    funding_options = query_funding_options(params[:sponsors], params[:trip_purpose_raw], params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:to_trip_place], note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, params[:customer_number], params[:system], params[:token])
     funding_xml = Nokogiri::XML(funding_options.body)
     Rails.logger.info("Begin Funding info")
     Rails.logger.info(funding_xml)
     Rails.logger.info("End Funding info")
-    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, customer_number, system, token, funding_xml, funding_array)
+    order =  build_order(params[:sponsors], params[:trip_purpose_raw], params[:is_depart], params[:scheduled_time], parms[:from_trip_place], params[:to_trip_place], note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, params[:customer_number], params[:system], params[:token], funding_xml, params[:funding_array])
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '3')
     order = order.to_s
@@ -675,51 +690,6 @@ class EcolaneServices
     {street_number: street_number, street: street, city: place['city'], state: place['state'], zip: place['zip'], latitude: place['lat'], longitude: place['lon']}
   end
 
-
-  ## Send the Requests
-  def send_request(url, token, type='GET', message=nil)
-
-    Rails.logger.info("Sending Request . . .")
-
-    url.sub! " ", "%20"
-
-    Rails.logger.info("URL")
-    Rails.logger.info(url)
-    Rails.logger.info("MESSAGE")
-    Rails.logger.info(message)
-
-    begin
-      uri = URI.parse(url)
-      case type.downcase
-        when 'post'
-          req = Net::HTTP::Post.new(uri.path)
-          req.body = message
-        when 'delete'
-          req = Net::HTTP::Delete.new(uri.path)
-        else
-          req = Net::HTTP::Get.new(uri)
-      end
-
-      req.add_field 'X-ECOLANE-TOKEN', token
-      req.add_field 'X-Ecolane-Agent', 'ococtest'
-      req.add_field 'Content-Type', 'text/xml'
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      resp = http.start {|http| http.request(req)}
-      Rails.logger.info("REQ")
-      Rails.logger.info(req.inspect)
-      Rails.logger.info("RESPONSE")
-      Rails.logger.info(resp.body)
-      Rails.logger.info("End")
-      return resp
-    rescue Exception=>e
-      Rails.logger.info("Sending Error")
-      return false, {'id'=>500, 'msg'=>e.to_s}
-    end
-  end
-
   # Description:
   # Cancels a Trip
 
@@ -773,6 +743,50 @@ class EcolaneServices
   end
 
   ## Utility functions:
+
+  ## Send the Requests
+  def send_request(url, token, type='GET', message=nil)
+
+    Rails.logger.info("Sending Request . . .")
+
+    url.sub! " ", "%20"
+
+    Rails.logger.info("URL")
+    Rails.logger.info(url)
+    Rails.logger.info("MESSAGE")
+    Rails.logger.info(message)
+
+    begin
+      uri = URI.parse(url)
+      case type.downcase
+        when 'post'
+          req = Net::HTTP::Post.new(uri.path)
+          req.body = message
+        when 'delete'
+          req = Net::HTTP::Delete.new(uri.path)
+        else
+          req = Net::HTTP::Get.new(uri)
+      end
+
+      req.add_field 'X-ECOLANE-TOKEN', token
+      req.add_field 'X-Ecolane-Agent', 'ococtest'
+      req.add_field 'Content-Type', 'text/xml'
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      resp = http.start {|http| http.request(req)}
+      Rails.logger.info("REQ")
+      Rails.logger.info(req.inspect)
+      Rails.logger.info("RESPONSE")
+      Rails.logger.info(resp.body)
+      Rails.logger.info("End")
+      return resp
+    rescue Exception=>e
+      Rails.logger.info("Sending Error")
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end
+  end
 
   def iso8601ify(dob)
                                                                             gri
