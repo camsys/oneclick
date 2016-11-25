@@ -96,7 +96,7 @@ class BookedTripsReport < AbstractReport
       table: [],
       visualization: 'PieChart',
       options: {
-        title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
+        title: "Mode of Trips Selected",
         width: 1000,
         height: 600
       }
@@ -117,6 +117,32 @@ class BookedTripsReport < AbstractReport
       ]
     end
 
+    ##########################
+    # Status of Booked Trips #
+    ##########################
+
+    itins_with_ecolane_booking = itinerary_base.includes(:ecolane_booking).where.not(ecolane_bookings: {id: nil}).references(:ecolane_bookings)
+
+    # Prepare Data Table
+    data[:booked_trip_status] = {
+      table: [],
+      visualization: 'PieChart',
+      options: {
+        title: "Status of Booked Trips",
+        width: 1000,
+        height: 600
+      }
+    }
+
+    # Create Column Headers
+    data[:booked_trip_status][:table] << ['status', 'trip count']
+
+    status_counts = itins_with_ecolane_booking.group('ecolane_bookings.booking_status_code').count
+
+    # Add Data to the Table
+    status_counts.each do |status, count|
+      data[:booked_trip_status][:table] << [status.strip, count] if status
+    end
 
     ###########################
 
