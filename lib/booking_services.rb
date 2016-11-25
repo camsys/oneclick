@@ -714,14 +714,16 @@ class BookingServices
     resp = es.fetch_customer_orders(customer_id, booking_system, token)
     orders = es.unpack_orders(resp)
     return false unless orders[0] # Return false if ecolane call returns an error.
+    response_array = []
     orders.each do |order|
       # Find itinerary based on ecolane booking confirmation id
       itin = Itinerary.find_by(booking_confirmation: order["id"])
       unless itin.nil?
-        EcolaneBooking.where(itinerary: itin).first_or_create
-        itin.ecolane_booking.update_attributes(booking_status_code: order["status"])
+        eb = EcolaneBooking.where(itinerary: itin).first_or_create
+        response_array << eb.id if itin.ecolane_booking.update_attributes(booking_status_code: order["status"])
       end
     end
+    return response_array # Return an array of successfully updated Ecolane Booking ids
   end
 
   def county_to_service(county)
