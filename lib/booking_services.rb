@@ -217,7 +217,13 @@ class BookingServices
     service = user_service.service
     ecolane_profile = service.ecolane_profile
     es = EcolaneServices.new
-    es.trip_belongs_to_user?(booking_confirmation, ecolane_profile.system, ecolane_profile.token, user_service.external_user_id)
+
+    request_params =
+        {booking_confirmation: booking_confirmation,
+        system: ecolane_profile.system,
+        token: ecolane_profile.token,
+        customer_number: user_service.external_user_id}
+    es.trip_belongs_to_user?(request_params)
   end
 
   # Given a service, a user, and login credentials, test to see if the login credentials are valid, if they are create

@@ -11,10 +11,16 @@ class EcolaneServices
     BASE_URL = nil
   end
 
+  # Description:
   # Ecolane users two identifiers for each customer.
   # customer_number: the publicly-known customer that each person is given.
   # customer_id: an internal id that is used in most requests.
-  # This function converts a customer_numnber into a customer_id
+  # This function converts a customer_number into a customer_id
+
+  # Params:
+  # customer_number
+  # system
+  # token
   def get_customer_id(customer_number, system, token)
     resp = search_for_customers(terms = {customer_number: customer_number}, system, token)
     resp_xml = Nokogiri::XML(resp.body)
@@ -748,19 +754,26 @@ class EcolaneServices
 
   end
 
-  def trip_belongs_to_user?(booking_confirmation, system, token, customer_number)
-    resp = fetch_single_order(booking_confirmation, system, token)
+  # Description:
+  # Returns true if this trep belongs to that customer_number
+
+  # Params:
+  # booking_confirmation
+  # system
+  # token
+  # customer_number
+  def trip_belongs_to_user? params
+    resp = fetch_single_order(params[:booking_confirmation], params[:system], params[:token])
     body = Hash.from_xml(resp.body)
     customer_id_from_trip = body["order"]["customer_id"]
-    customer_id = get_customer_id(customer_number, system, token)
+    customer_id = get_customer_id(params[:customer_number], params[:system], params[:token])
     return customer_id_from_trip == customer_id
   end
 
   ## Utility functions:
-  #Ecolane has two unique identifiers customer_number and customer_id.
 
   def iso8601ify(dob)
-
+                                                                            gri
     dob = dob.split('/')
     unless dob.count == 3
       return nil
