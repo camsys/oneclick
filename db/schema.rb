@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121215721) do
+ActiveRecord::Schema.define(version: 20161125161822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20161121215721) do
     t.integer  "service_id"
     t.string   "system"
     t.string   "token"
+    t.string   "api_version",          default: "8", null: false
   end
 
   create_table "fare_structures", force: true do |t|

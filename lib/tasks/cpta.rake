@@ -133,6 +133,7 @@ namespace :oneclick do
           #Booking System Id
           ecolane_profile.system = 'rabbit'
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.api_version = "8"
           ecolane_profile.save
 
         when 'lebanon'
@@ -155,6 +156,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system= 'lebanon'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -182,6 +184,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'cambria'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Misc'
           ecolane_profile.save
 
@@ -205,6 +208,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'franklin'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -229,6 +233,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'dauphin'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Medical'
           ecolane_profile.save
 
@@ -254,6 +259,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'northumberland'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -281,6 +287,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'northumberland'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Medical'
           ecolane_profile.save
 
@@ -308,6 +315,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'northumberland'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -351,6 +359,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'blair'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -387,6 +396,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'monroe'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -418,6 +428,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'carbon'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -450,6 +461,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'lanta'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -481,6 +493,7 @@ namespace :oneclick do
 
           #Booking System Id
           ecolane_profile.system = 'northumberland'
+          ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.save
 
@@ -561,6 +574,7 @@ namespace :oneclick do
 
     #Booking System Id
     ecolane_profile.system = 'cambridge-test'
+    ecolane_profile.api_version = "9"
     ecolane_profile.default_trip_purpose = 'Other'
     ecolane_profile.save
 
