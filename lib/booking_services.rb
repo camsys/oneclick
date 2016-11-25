@@ -562,9 +562,13 @@ class BookingServices
               system: system,
               token: token
           }
-          result, fare = es.query_preferred_fare(ecolane_params)
+          result, resp_hash = es.query_preferred_fare(ecolane_params)
           if result
-            return fare
+            ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
+            ecolane_booking.funding_source = resp_hash[:funding_source]
+            ecolane_booking.sponsor = resp_hash[:sponsor]
+            ecolane_booking.save
+            return resp_hash[:fare].to_f
           else
             return nil
           end

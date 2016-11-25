@@ -16,7 +16,6 @@ class EcolaneServices
   # customer_number: the publicly-known customer that each person is given.
   # customer_id: an internal id that is used in most requests.
   # This function converts a customer_number into a customer_id                                               q
-
   # Params:
   # customer_number
   # system
@@ -69,6 +68,22 @@ class EcolaneServices
     end
 
     resp = request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_xml, funding_array, system, token)
+
+    return unpack_booking_response(resp)
+  end
+
+  def book_itinerary_v9(params)
+
+    url_options = "/api/order/" + params[:system] + "?overlaps=reject"
+    url = BASE_URL + url_options
+    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '3')
+    order = order.to_s
+    result  = send_request(url, token, 'POST', order)
+    Rails.logger.info('Order Request Sent to Ecolane:')
+    Rails.logger.info(order)
+    result
 
     return unpack_booking_response(resp)
   end
@@ -254,7 +269,6 @@ class EcolaneServices
 
   # Description:
   # Find the fare for a trip.
-
   # Params:
   # sponsors
   # trip_purpose_raw
@@ -296,7 +310,6 @@ class EcolaneServices
 
   # Description:
   # Find the fare for a trip. (Used in v9 of the API)
-
   # Params:
   # trip_purpose_raw
   # is_depart
@@ -329,8 +342,8 @@ class EcolaneServices
     if resp_code != "200"
       return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
     end
-    fare = unpack_fare_response(resp)
-    return true, fare
+    fare, funding_source, sponsor = unpack_fare_response_v9(resp)
+    return true, {fare: fare, funding_source: funding_source, sponsor: sponsor}
   end
 
   def unpack_fare_response (resp)
@@ -338,6 +351,14 @@ class EcolaneServices
     Rails.logger.info(resp_xml)
     client_copay = resp_xml.xpath("fare").xpath("client_copay").text
     return client_copay.to_f/100.0
+  end
+
+  def unpack_fare_response_v9 (resp)
+    fare_hash = Hash.from_xml(resp.body)
+    fare = fare_hash['fares'] ['fare']['client_copay']
+    funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
+    sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
+    return fare, funding_source, sponsor
   end
 
   def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
@@ -540,8 +561,23 @@ class EcolaneServices
   # system
   # token
   def build_order_v9 params
+
     order_hash = {customer_id: get_customer_id(params[:customer_number], params[:system], params[:token]), assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
-    order_hash[:funding] =  {purpose: params[:trip_purpose_raw]}
+
+    funding_hash = {}
+    if params[:trip_purpose_raw]
+      funding_hash[:purpose] = params[:trip_purpose_raw]
+    end
+    if params[:funding_source]
+      funding_hash[:funding_source] = params[:funding_source]
+    end
+    if params[:sponsor]
+    funding_hash[:sponsor] = params[:sponsor]
+    end
+    unless funding_hash.empty?
+      order_hash[:funding] = funding_hash
+    end
+
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
   end
@@ -714,7 +750,6 @@ class EcolaneServices
 
   # Description:
   # Cancels a Trip
-
   # Params:
   # booking_confirmation
   # system
@@ -750,7 +785,6 @@ class EcolaneServices
 
   # Description:
   # Returns true if this trep belongs to that customer_number
-
   # Params:
   # booking_confirmation
   # system
