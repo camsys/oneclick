@@ -22,8 +22,24 @@
       console.log("RAW DATA", data);
 
       for (var set in data) {
+        var dataTable = new google.visualization.DataTable();
+        var columns = data[set].columns;
+        var rows = data[set].rows;
+        for (var i = 0; i < columns.length; i++) {
+          dataTable.addColumn(columns[i].type, columns[i].heading);
+          if (columns[i].type == "date") {
+            for (var j = 0; j < rows.length; j++) {
+              rows[j][i] = new Date(rows[j][i]);
+            }
+          }
+        }
+
+        dataTable.addRows(rows);
+
         var chart = new google.visualization[data[set].visualization](document.getElementById(`chart_div_${set}`));
-        chart.draw(google.visualization.arrayToDataTable(data[set].table), data[set].options);
+
+        // chart.draw(google.visualization.arrayToDataTable(data[set].table), data[set].options);
+        chart.draw(dataTable, data[set].options);
       }
 
     };
