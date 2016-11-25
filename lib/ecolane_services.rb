@@ -720,16 +720,18 @@ class EcolaneServices
     end
   end
 
+  # Description:
+  # Cancels a Trip
 
-  #Cancel an Ecolane Booking
-  # Returns boolean
-  def cancel(confirmation_number, system, token)
-    url_options = "/api/order/" + system + '/'
-    url_options += confirmation_number.to_s
-
-    url =  Oneclick::Application.config.ecolane_base_url + url_options
-
-    resp = send_request(url, token, 'DELETE')
+  # Params:
+  # booking_confirmation
+  # system
+  # token
+  def cancel params
+    url_options = "/api/order/" + params[:system] + '/'
+    url_options += params[:confirmation_number].to_s
+    url = Oneclick::Application.config.ecolane_base_url + url_options
+    resp = send_request(url, params[:token], 'DELETE')
 
     begin
       resp_code = resp.code
@@ -738,16 +740,16 @@ class EcolaneServices
     end
 
     if resp_code == "200"
-      Rails.logger.debug "Trip " + confirmation_number.to_s + " canceled."
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " canceled."
       #The trip was successfully canceled
       return true
-    elsif get_trip_status(confirmation_number, system, token) == 'canceled'
-      Rails.logger.debug "Trip " + confirmation_number.to_s + " already canceled."
+    elsif get_trip_status(params[:confirmation_number], system, token) == 'canceled'
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " already canceled."
 
       #The trip was not successfully deleted, because it was already canceled
       return true
     else
-      Rails.logger.debug "Trip " + confirmation_number.to_s + " cannot be canceled."
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " cannot be canceled."
       #The trip is not canceled
       return false
     end

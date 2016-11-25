@@ -171,7 +171,8 @@ class BookingServices
       when AGENCY[:ecolane]
         ecolane_profile = itinerary.service.ecolane_profile
         es = EcolaneServices.new
-        result = es.cancel(itinerary.booking_confirmation, ecolane_profile.system, ecolane_profile.token)
+        ecolane_params = {booking_confirmation: booking_confirmation, system: ecolane_profile.system, token: ecolane_profile.token}
+        result = es.cancel(ecolane_params)
         if result
           itinerary.selected = false
           itinerary.save
@@ -206,7 +207,8 @@ class BookingServices
       when AGENCY[:ecolane]
         ecolane_profile = service.ecolane_profile
         es = EcolaneServices.new
-        result = es.cancel(booking_confirmation, ecolane_profile.system, ecolane_profile.token)
+        ecolane_params = {booking_confirmation: booking_confirmation, system: ecolane_profile.system, token: ecolane_profile.token}
+        result = es.cancel(ecolane_params)
         return result
     end
   end
