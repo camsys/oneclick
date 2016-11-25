@@ -15,7 +15,7 @@ class EcolaneServices
   # Ecolane users two identifiers for each customer.
   # customer_number: the publicly-known customer that each person is given.
   # customer_id: an internal id that is used in most requests.
-  # This function converts a customer_number into a customer_id
+  # This function converts a customer_number into a customer_id                                               q
 
   # Params:
   # customer_number
@@ -142,8 +142,6 @@ class EcolaneServices
     url_options += "?end=" + end_time[0...-6]
     url_options += "&limit=" + (max_results || 10).to_s
     url = BASE_URL + url_options
-
-    puts url.ai
 
     response = send_request(url, token)
     unpack_orders(response)
@@ -277,11 +275,11 @@ class EcolaneServices
     Rails.logger.info("Begin Funding info")
     Rails.logger.info(funding_xml)
     Rails.logger.info("End Funding info")
-    order =  build_order(params[:sponsors], params[:trip_purpose_raw], params[:is_depart], params[:scheduled_time], parms[:from_trip_place], params[:to_trip_place], note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, params[:customer_number], params[:system], params[:token], funding_xml, params[:funding_array])
+    order =  build_order(params[:sponsors], params[:trip_purpose_raw], params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:to_trip_place], note_to_driver="", assistant=false, companions=0, children=0, other_passengers=0, params[:customer_number], params[:system], params[:token], funding_xml, params[:funding_array])
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '3')
     order = order.to_s
-    resp = send_request(url, token, 'POST', order)
+    resp = send_request(url, params[:token], 'POST', order)
 
     begin
       resp_code = resp.code
@@ -515,19 +513,15 @@ class EcolaneServices
 
   ## Building hash objects that become XML nodes
   def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-
     order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
   end
 
   def build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-
-    puts 'we are here'
-
-    order = {assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
+    order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
     if funding_xml
-      order[:funding] = {purpose: 'Medical'}#build_funding_hash(sponsors, trip_purpose_raw, funding_xml, funding_array)
+      order[:funding] = build_funding_hash(sponsors, trip_purpose_raw, funding_xml, funding_array)
     end
     Rails.logger.info(order)
     order
@@ -698,6 +692,9 @@ class EcolaneServices
   # system
   # token
   def cancel params
+
+    puts params.ai
+
     url_options = "/api/order/" + params[:system] + '/'
     url_options += params[:confirmation_number].to_s
     url = Oneclick::Application.config.ecolane_base_url + url_options
@@ -713,7 +710,7 @@ class EcolaneServices
       Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " canceled."
       #The trip was successfully canceled
       return true
-    elsif get_trip_status(params[:confirmation_number], system, token) == 'canceled'
+    elsif get_trip_status(params[:confirmation_number], params[:system], params[:token]) == 'canceled'
       Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " already canceled."
 
       #The trip was not successfully deleted, because it was already canceled
@@ -789,7 +786,7 @@ class EcolaneServices
   end
 
   def iso8601ify(dob)
-                                                                            gri
+
     dob = dob.split('/')
     unless dob.count == 3
       return nil
