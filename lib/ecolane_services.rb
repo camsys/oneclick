@@ -45,14 +45,14 @@ class EcolaneServices
   end
 
   # Books Trip (funding_source and sponsor must be specified)
-  def book_itinerary_v9(params)
+  def book_itinerary_v9 params
     url_options = "/api/order/" + params[:system] + "?overlaps=reject"
     url = BASE_URL + url_options
-    order =  build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
+    order =  build_order_v9 params
     order = Nokogiri::XML(order)
     order.children.first.set_attribute('version', '3')
     order = order.to_s
-    result  = send_request(url, token, 'POST', order)
+    resp = send_request(url, params[:token], 'POST', order)
     Rails.logger.info('Order Request Sent to Ecolane:')
     Rails.logger.info(order)
     return unpack_booking_response(resp)
@@ -688,12 +688,7 @@ class EcolaneServices
     {street_number: street_number, street: street, city: place['city'], state: place['state'], zip: place['zip'], latitude: place['lat'], longitude: place['lon']}
   end
 
-  # Description:
-  # Cancels a Trip
-  # Params:
-  # booking_confirmation
-  # system
-  # token
+  # Cancel a Trip
   def cancel params
     url_options = "/api/order/" + params[:system] + '/'
     url_options += params[:confirmation_number].to_s
@@ -723,13 +718,7 @@ class EcolaneServices
 
   end
 
-  # Description:
-  # Returns true if this trep belongs to that customer_number
-  # Params:
-  # booking_confirmation
-  # system
-  # token
-  # customer_number
+  # Returns true if this trip belongs to that customer_number
   def trip_belongs_to_user? params
     resp = fetch_single_order(params[:booking_confirmation], params[:system], params[:token])
     body = Hash.from_xml(resp.body)

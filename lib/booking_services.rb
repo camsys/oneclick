@@ -30,36 +30,66 @@ class BookingServices
     case itinerary.service.booking_profile
 
       when AGENCY[:ecolane]
+
         service = itinerary.service
         user = itinerary.trip_part.trip.user
         user_service = UserService.find_by(user_profile: user.user_profile, service: service)
         es = EcolaneServices.new
 
-        #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
-        sponsors = service.sponsors.order(:index).pluck(:code).as_json
-        trip_purpose_raw = itinerary.trip_part.trip.trip_purpose_raw
-        is_depart = itinerary.trip_part.is_depart
-        scheduled_time = itinerary.trip_part.scheduled_time
-        from_trip_place = itinerary.trip_part.from_trip_place.as_json
-        to_trip_place = itinerary.trip_part.to_trip_place.as_json
-        note_to_driver = itinerary.ecolane_booking.note_to_driver
-        assistant = itinerary.ecolane_booking.assistant
-        companions = itinerary.ecolane_booking.companions
-        children = itinerary.ecolane_booking.children
-        other_passengers = itinerary.ecolane_booking.other_passengers
-        customer_number = user_service.external_user_id
-        system = service.ecolane_profile.system
-        token = service.ecolane_profile.token
+        case service.ecolane_profile.api_version
+          when "8"
 
-        #Get the default funding source for this customer and build an array of valid funding source ordered from
-        # most desired to least desired.
-        default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
-        funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+            #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+            sponsors = service.sponsors.order(:index).pluck(:code).as_json
+            trip_purpose_raw = itinerary.trip_part.trip.trip_purpose_raw
+            is_depart = itinerary.trip_part.is_depart
+            scheduled_time = itinerary.trip_part.scheduled_time
+            from_trip_place = itinerary.trip_part.from_trip_place.as_json
+            to_trip_place = itinerary.trip_part.to_trip_place.as_json
+            note_to_driver = itinerary.ecolane_booking.note_to_driver
+            assistant = itinerary.ecolane_booking.assistant
+            companions = itinerary.ecolane_booking.companions
+            children = itinerary.ecolane_booking.children
+            other_passengers = itinerary.ecolane_booking.other_passengers
+            customer_number = user_service.external_user_id
+            system = service.ecolane_profile.system
+            token = service.ecolane_profile.token
 
-        result, messages = es.book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
-        Rails.logger.info messages
-        itinerary.booking_confirmation = messages
-        itinerary.save
+            #Get the default funding source for this customer and build an array of valid funding source ordered from
+            # most desired to least desired.
+            default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+            funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+
+            result, messages = es.book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
+            Rails.logger.info messages
+            itinerary.booking_confirmation = messages
+            itinerary.save
+
+          when "9"
+            puts 'Booking v9'
+            ecolane_params = {
+              trip_purpose_raw: itinerary.trip_part.trip.trip_purpose_raw,
+              is_depart: itinerary.trip_part.is_depart,
+              scheduled_time: itinerary.trip_part.scheduled_time,
+              from_trip_place: itinerary.trip_part.from_trip_place.as_json,
+              to_trip_place: itinerary.trip_part.to_trip_place.as_json,
+              note_to_driver: itinerary.ecolane_booking.note_to_driver,
+              assistant: itinerary.ecolane_booking.assistant,
+              companions: itinerary.ecolane_booking.companions,
+              children: itinerary.ecolane_booking.children,
+              other_passengers: itinerary.ecolane_booking.other_passengers,
+              customer_number: user_service.external_user_id,
+              system: service.ecolane_profile.system,
+              token: service.ecolane_profile.token,
+              funding_source: itinerary.ecolane_booking.funding_source,
+              sponsor: itinerary.ecolane_booking.sponsor
+            }
+
+            result, messages = es.book_itinerary_v9(ecolane_params)
+            Rails.logger.info messages
+            itinerary.booking_confirmation = messages
+            itinerary.save
+        end
 
       when AGENCY[:trapeze]
         user = itinerary.trip_part.trip.user
@@ -521,57 +551,57 @@ class BookingServices
         token = service.ecolane_profile.token
 
         case service.ecolane_profile.api_version
-        when "8"
-          #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
-          sponsors = service.sponsors.order(:index).pluck(:code).as_json
+          when "8"
+            #Since ecolane_services.rb has no knowledge of Rails models, pull out the information needed here
+            sponsors = service.sponsors.order(:index).pluck(:code).as_json
 
-          #Get the default funding source for this customer and build an array of valid funding source ordered from
-          # most desired to least desired.
-          default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
-          funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+            #Get the default funding source for this customer and build an array of valid funding source ordered from
+            # most desired to least desired.
+            default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+            funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
 
-          ecolane_params  =
-            {
-              sponsors: sponsors,
-              trip_purpose_raw: trip_purpose_raw,
-              is_depart: is_depart,
-              scheduled_time: scheduled_time,
-              from_trip_place: from_trip_place,
-              to_trip_place: to_trip_place,
-              customer_number: customer_number,
-              system: system,
-              token: token,
-              funding_array: funding_array
-            }
-
-          result, fare = es.query_fare(ecolane_params)
-          if result
-            return fare
-          else
-            return nil
-          end
-        when "9"
-          ecolane_params  =
+            ecolane_params  =
               {
-              trip_purpose_raw: trip_purpose_raw,
-              is_depart: is_depart,
-              scheduled_time: scheduled_time,
-              from_trip_place: from_trip_place,
-              to_trip_place: to_trip_place,
-              customer_number: customer_number,
-              system: system,
-              token: token
-          }
-          result, resp_hash = es.query_preferred_fare(ecolane_params)
-          if result
-            ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
-            ecolane_booking.funding_source = resp_hash[:funding_source]
-            ecolane_booking.sponsor = resp_hash[:sponsor]
-            ecolane_booking.save
-            return resp_hash[:fare].to_f
-          else
-            return nil
-          end
+                sponsors: sponsors,
+                trip_purpose_raw: trip_purpose_raw,
+                is_depart: is_depart,
+                scheduled_time: scheduled_time,
+                from_trip_place: from_trip_place,
+                to_trip_place: to_trip_place,
+                customer_number: customer_number,
+                system: system,
+                token: token,
+                funding_array: funding_array
+              }
+
+            result, fare = es.query_fare(ecolane_params)
+            if result
+              return fare
+            else
+              return nil
+            end
+          when "9"
+            ecolane_params  =
+                {
+                trip_purpose_raw: trip_purpose_raw,
+                is_depart: is_depart,
+                scheduled_time: scheduled_time,
+                from_trip_place: from_trip_place,
+                to_trip_place: to_trip_place,
+                customer_number: customer_number,
+                system: system,
+                token: token
+            }
+            result, resp_hash = es.query_preferred_fare(ecolane_params)
+            if result
+              ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
+              ecolane_booking.funding_source = resp_hash[:funding_source]
+              ecolane_booking.sponsor = resp_hash[:sponsor]
+              ecolane_booking.save
+              return resp_hash[:fare].to_f
+            else
+              return nil
+            end
         end
       else
         return nil
