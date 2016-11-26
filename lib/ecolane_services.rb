@@ -10,7 +10,13 @@ class EcolaneServices
     BASE_URL = nil
   end
 
+  ################################################################################
+  ## Customer Info and Search
+  ################################################################################
+
   # Ecolane users two identifiers for each customer.
+  # This takes in a customer_number (the number that the passenger knows)
+  # and converts to a customer_id (the database id for that passenger)
   def get_customer_id(customer_number, system, token)
     resp = search_for_customers(terms = {customer_number: customer_number}, system, token)
     resp_xml = Nokogiri::XML(resp.body)
@@ -30,19 +36,129 @@ class EcolaneServices
     end
   end
 
-  # Books Trip (used prior to v9 ecolane update.  Funding Source and Sponsors are calculated using 1-Click Logic)
-  def book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
-    begin
-      funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
-      funding_xml = Nokogiri::XML(funding_options.body)
-      Rails.logger.info(funding_xml)
-    rescue
-      Rails.logger.debug "Booking error #003"
-      return false, "Booking error."
+  # Get a list of trip purposes for a customer
+  def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
+    purposes = []
+    customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
+    resp_xml = Nokogiri::XML(customer_information)
+    resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
+      funding_source.xpath("allowed").each do |allowed|
+        purpose = allowed.xpath("purpose").text
+        unless purpose.in? purposes or purpose.downcase.strip.in? (disallowed_purposes || "")
+          purposes.append(purpose)
+        end
+      end
+
     end
-    resp = request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_xml, funding_array, system, token)
-    return unpack_booking_response(resp)
+    purposes.sort
   end
+
+  # Get customer information from ID
+  # If funding=true, return funding_info
+  # If locations=true return a list of the clients locations (e.g., home)
+  def fetch_customer_information(customer_id, system_id, token, funding=false, locations=false)
+    url_options = "/api/customer/" + system_id.to_s + '/'
+    url_options += customer_id.to_s
+    url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
+    url = BASE_URL + url_options
+    Rails.logger.debug URI.parse(url)
+    t = Time.now
+    resp = send_request(url, token )
+    if resp.code != "200"
+      return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
+    end
+    resp.body
+  end
+
+  # Get a list of customers
+  def search_for_customers(terms = {}, system, token)
+    url_options = "/api/customer/" + system.to_s + '/search?'
+    terms.each do |term|
+      url_options += "&" + term[0].to_s + '=' + term[1].to_s
+    end
+    url = Oneclick::Application.config.ecolane_base_url + url_options
+    resp = send_request(url, token)
+  end
+
+  # Check to see if a passenger's DOB matches
+  def validate_passenger(customer_number, dob, system_id, token)
+
+    iso_dob = iso8601ify(dob)
+    if iso_dob.nil?
+      return false, "", ""
+    end
+    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id, token)
+    resp = unpack_validation_response(resp)
+    return resp[0], resp[2][0], resp[2][1]
+  end
+
+  # Unpack the validate_passenger call
+  def unpack_validation_response (resp)
+    resp_xml = Nokogiri::XML(resp.body)
+    status = resp_xml.xpath("status")
+    #On success, status = []
+    unless status.empty?
+      if status.attribute("result").value == "failure"
+        return false, "Unable to validate Client Id"
+      end
+    end
+
+    if resp_xml.xpath("search_results").xpath("customer").count == 1
+      first_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("first_name").text
+      last_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("last_name").text
+      return true, "Success!", [first_name, last_name]
+    else
+      return false, "Invalid Date of Birth or Client Id.", ['', '']
+    end
+  end
+
+  # Return a passenger's home address.  Used the first time a passenger logs in
+  def get_passenger_home(customer_number, system_id, token)
+    customer_id = get_customer_id(customer_number, system_id, token)
+    passenger_xml = fetch_customer_information(customer_id, system_id, token, funding=false, locations=true)
+    passenger_hash = Hash.from_xml(passenger_xml)
+
+    #Unpack one at a time, return if any information is nil
+    customer = passenger_hash['customer']
+    unless customer
+      return nil
+    end
+
+    locations = customer['locations']
+    unless locations
+      return nil
+    end
+
+    locations = locations['location']
+    unless locations
+      return nil
+    end
+
+    # If there is only one locations, it comes back as a single element instead of an array
+    # Ensure that we always get an array
+    unless locations.kind_of?(Array)
+      locations = [locations]
+    end
+
+    possible_home = nil
+    locations.each do |location|
+      if location['type'].downcase == 'home'
+        return location
+      end
+      if location['name']
+        if location['name'].downcase == 'home'
+          possible_home = location
+        end
+      end
+    end
+
+    return possible_home
+
+  end
+
+  ################################################################################
+  ## Booking
+  ################################################################################
 
   # Books Trip (funding_source and sponsor must be specified)
   def book_itinerary_v9 params
@@ -105,6 +221,10 @@ class EcolaneServices
     end
     return false, "Unknown response."
   end
+
+  ################################################################################
+  ## Fetch Orders and Trip Info
+  ################################################################################
 
   # Return a hash of all upcoming trips
   def get_future_orders customer_number, system, token
@@ -211,6 +331,241 @@ class EcolaneServices
     resp_xml.xpath("order").xpath("status").text
   end
 
+  def fetch_single_order(trip_id, system_id, token)
+    url_options = "/api/order/" + system_id + '/'
+    url_options += trip_id.to_s
+    url = BASE_URL + url_options
+    send_request(url, token)
+  end
+
+  # Returns true if this trip belongs to that customer_number
+  def trip_belongs_to_user? params
+    resp = fetch_single_order(params[:booking_confirmation], params[:system], params[:token])
+    body = Hash.from_xml(resp.body)
+    customer_id_from_trip = body["order"]["customer_id"]
+    customer_id = get_customer_id(params[:customer_number], params[:system], params[:token])
+    return customer_id_from_trip == customer_id
+  end
+
+  ################################################################################
+  ## Query Fare
+  ################################################################################
+
+  # Description:
+  # Find the fare for a trip. (Used in v9 of the API)
+  def query_preferred_fare params
+    sponsors = nil
+    url_options =  "/api/order/" + params[:system] + "/query_preferred_fares"
+    url = BASE_URL + url_options
+
+    funding = {purpose: params['trip_purpose_raw']}
+    params[:funding] = funding
+
+    order =  build_order_v9 params
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '3')
+    order = order.to_s
+    resp = send_request(url, params[:token], 'POST', order)
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    if resp_code != "200"
+      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
+    end
+    fare, funding_source, sponsor = unpack_fare_response_v9(resp)
+    return true, {fare: fare, funding_source: funding_source, sponsor: sponsor}
+  end
+
+  # Unpack fare response from query_preferred_fare_call
+  def unpack_fare_response_v9 (resp)
+    fare_hash = Hash.from_xml(resp.body)
+    fare = fare_hash['fares'] ['fare']['client_copay']
+    funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
+    sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
+    return fare, funding_source, sponsor
+  end
+
+  ################################################################################
+  ## Query Fare
+  ################################################################################
+
+  # Cancel a Trip
+  def cancel params
+    url_options = "/api/order/" + params[:system] + '/'
+    url_options += params[:confirmation_number].to_s
+    url = Oneclick::Application.config.ecolane_base_url + url_options
+    resp = send_request(url, params[:token], 'DELETE')
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false
+    end
+
+    if resp_code == "200"
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " canceled."
+      #The trip was successfully canceled
+      return true
+    elsif get_trip_status(params[:confirmation_number], params[:system], params[:token]) == 'canceled'
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " already canceled."
+
+      #The trip was not successfully deleted, because it was already canceled
+      return true
+    else
+      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " cannot be canceled."
+      #The trip is not canceled
+      return false
+    end
+
+  end
+
+
+  ################################################################################
+  ## Utility functions
+  ################################################################################
+
+
+  # Description
+  # Builds an order without searching through funding sources/sponsors
+  def build_order_v9 params
+
+    order_hash = {customer_id: get_customer_id(params[:customer_number], params[:system], params[:token]), assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
+
+    funding_hash = {}
+    if params[:trip_purpose_raw]
+      funding_hash[:purpose] = params[:trip_purpose_raw]
+    end
+    if params[:funding_source]
+      funding_hash[:funding_source] = params[:funding_source]
+    end
+    if params[:sponsor]
+      funding_hash[:sponsor] = params[:sponsor]
+    end
+    unless funding_hash.empty?
+      order_hash[:funding] = funding_hash
+    end
+
+    order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
+    order_xml
+  end
+
+  #Build the hash for the pickup request
+  def build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver)
+    if is_depart
+      pu_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(from_trip_place), note: note_to_driver}
+    else
+      pu_hash = {location: build_location_hash(from_trip_place), note: note_to_driver}
+    end
+    pu_hash
+  end
+
+  #Build the hash for the drop off request
+  def build_do_hash(is_depart, scheduled_time, to_trip_place)
+    if is_depart
+      do_hash = {location: build_location_hash(to_trip_place)}
+    else
+      do_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(to_trip_place)}
+    end
+    do_hash
+  end
+
+  #Build a location hash (Used for dropoffs and pickups )
+  def build_location_hash(place)
+    street_number, street = if place['address1'].present?
+                              parsable_address = Indirizzo::Address.new(place['address1'])
+                              [parsable_address.number, parsable_address.street.first]
+                            end
+
+    {street_number: street_number, street: street, city: place['city'], state: place['state'], zip: place['zip'], latitude: place['lat'], longitude: place['lon']}
+  end
+
+  ## Send the Requests
+  def send_request(url, token, type='GET', message=nil)
+
+    Rails.logger.info("Sending Request . . .")
+
+    url.sub! " ", "%20"
+
+    Rails.logger.info("URL")
+    Rails.logger.info(url)
+    Rails.logger.info("MESSAGE")
+    Rails.logger.info(message)
+
+    begin
+      uri = URI.parse(url)
+      case type.downcase
+        when 'post'
+          req = Net::HTTP::Post.new(uri.path)
+          req.body = message
+        when 'delete'
+          req = Net::HTTP::Delete.new(uri.path)
+        else
+          req = Net::HTTP::Get.new(uri)
+      end
+
+      req.add_field 'X-ECOLANE-TOKEN', token
+      req.add_field 'X-Ecolane-Agent', 'ococtest'
+      req.add_field 'Content-Type', 'text/xml'
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      resp = http.start {|http| http.request(req)}
+      Rails.logger.info("REQ")
+      Rails.logger.info(req.inspect)
+      Rails.logger.info("RESPONSE")
+      Rails.logger.info(resp.body)
+      Rails.logger.info("End")
+      return resp
+    rescue Exception=>e
+      Rails.logger.info("Sending Error")
+      return false, {'id'=>500, 'msg'=>e.to_s}
+    end
+  end
+
+  def iso8601ify(dob)
+
+    dob = dob.split('/')
+    unless dob.count == 3
+      return nil
+    end
+
+    begin
+      dob = Date.parse(dob[1] + '/' + dob[0] + '/' + dob[2]).strftime("%Y/%m/%d")
+    rescue  ArgumentError
+      return nil
+    end
+
+    Date.iso8601(dob.delete('/'))
+  end
+
+  def yes_or_no value
+    value.to_bool ? true : false
+  end
+
+  ################################################################################################
+  ##
+  ## Deprecated Methods: These methods were are used in Ecolane v8 and prior.  They are used to calculate Funding Sources and Sponsors
+  ##
+  ################################################################################################
+
+  # Books Trip (used prior to v9 ecolane update.  Funding Source and Sponsors are calculated using 1-Click Logic)
+  def book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
+    begin
+      funding_options = query_funding_options(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token)
+      funding_xml = Nokogiri::XML(funding_options.body)
+      Rails.logger.info(funding_xml)
+    rescue
+      Rails.logger.debug "Booking error #003"
+      return false, "Booking error."
+    end
+    resp = request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_xml, funding_array, system, token)
+    return unpack_booking_response(resp)
+  end
 
   # Builds the booking request and sends it to Ecolane
   def request_booking(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_xml, funding_array, system, token)
@@ -236,7 +591,6 @@ class EcolaneServices
     order = order.to_s
     send_request(url, token, 'POST', order)
   end
-
 
   # Description:
   # Find the fare for a trip.
@@ -268,35 +622,6 @@ class EcolaneServices
     return true, fare
   end
 
-  # Description:
-  # Find the fare for a trip. (Used in v9 of the API)
-  def query_preferred_fare params
-    sponsors = nil
-    url_options =  "/api/order/" + params[:system] + "/query_preferred_fares"
-    url = BASE_URL + url_options
-
-    funding = {purpose: params['trip_purpose_raw']}
-    params[:funding] = funding
-
-    order =  build_order_v9 params
-    order = Nokogiri::XML(order)
-    order.children.first.set_attribute('version', '3')
-    order = order.to_s
-    resp = send_request(url, params[:token], 'POST', order)
-
-    begin
-      resp_code = resp.code
-    rescue
-      return false, "500"
-    end
-
-    if resp_code != "200"
-      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
-    end
-    fare, funding_source, sponsor = unpack_fare_response_v9(resp)
-    return true, {fare: fare, funding_source: funding_source, sponsor: sponsor}
-  end
-
   # Unpack fare response from query_fare_call
   def unpack_fare_response (resp)
     resp_xml = Nokogiri::XML(resp.body)
@@ -305,220 +630,56 @@ class EcolaneServices
     return client_copay.to_f/100.0
   end
 
-  # Unpack fare response from query_preferred_fare_call
-  def unpack_fare_response_v9 (resp)
-    fare_hash = Hash.from_xml(resp.body)
-    fare = fare_hash['fares'] ['fare']['client_copay']
-    funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
-    sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
-    return fare, funding_source, sponsor
-  end
-
-  # Get a list of trip purposes
-  def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
-    purposes = []
-    customer_information = fetch_customer_information(customer_id, system_id, token, funding = true)
-    resp_xml = Nokogiri::XML(customer_information)
-    resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
-      funding_source.xpath("allowed").each do |allowed|
-        purpose = allowed.xpath("purpose").text
-        unless purpose.in? purposes or purpose.downcase.strip.in? (disallowed_purposes || "")
-          purposes.append(purpose)
-        end
-      end
-
-    end
-
-    purposes.sort
-
-  end
-
-  # Get customer information from ID
-  # If funding=true, return funding_info
-  # If locations=true return a list of the clients locations (e.g., home)
-  def fetch_customer_information(customer_id, system_id, token, funding=false, locations=false)
-    url_options = "/api/customer/" + system_id.to_s + '/'
-    url_options += customer_id.to_s
-    url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
-    url = BASE_URL + url_options
-    Rails.logger.debug URI.parse(url)
-    t = Time.now
-    resp = send_request(url, token )
-    if resp.code != "200"
-      return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
-    end
-    resp.body
-  end
-
-  # Get a list of customers
-  def search_for_customers(terms = {}, system, token)
-    url_options = "/api/customer/" + system.to_s + '/search?'
-    terms.each do |term|
-      url_options += "&" + term[0].to_s + '=' + term[1].to_s
-    end
-    url = Oneclick::Application.config.ecolane_base_url + url_options
-    resp = send_request(url, token)
-  end
-
-  # Check to see if a passenger's DOB matches
-  def validate_passenger(customer_number, dob, system_id, token)
-
-    iso_dob = iso8601ify(dob)
-    if iso_dob.nil?
-      return false, "", ""
-    end
-    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id, token)
-    resp = unpack_validation_response(resp)
-    return resp[0], resp[2][0], resp[2][1]
-  end
-
-  # Unpack the validate_passenger call
-  def unpack_validation_response (resp)
-    resp_xml = Nokogiri::XML(resp.body)
-    status = resp_xml.xpath("status")
-    #On success, status = []
-    unless status.empty?
-      if status.attribute("result").value == "failure"
-        return false, "Unable to validate Client Id"
-      end
-    end
-
-    if resp_xml.xpath("search_results").xpath("customer").count == 1
-      first_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("first_name").text
-      last_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("last_name").text
-      return true, "Success!", [first_name, last_name]
-    else
-      return false, "Invalid Date of Birth or Client Id.", ['', '']
-    end
-
-  end
-
-  # Return a passenger's home address.  Used the first time a passenger logs in
-  def get_passenger_home(customer_number, system_id, token)
-    customer_id = get_customer_id(customer_number, system_id, token)
-    passenger_xml = fetch_customer_information(customer_id, system_id, token, funding=false, locations=true)
-    passenger_hash = Hash.from_xml(passenger_xml)
-
-    #Unpack one at a time, return if any information is nil
-    customer = passenger_hash['customer']
-    unless customer
-      return nil
-    end
-
-    locations = customer['locations']
-    unless locations
-      return nil
-    end
-
-    locations = locations['location']
-    unless locations
-      return nil
-    end
-
-    # If there is only one locations, it comes back as a single element instead of an array
-    # Ensure that we always get an array
-    unless locations.kind_of?(Array)
-      locations = [locations]
-    end
-
-    possible_home = nil
-    locations.each do |location|
-      if location['type'].downcase == 'home'
-        return location
-      end
-      if location['name']
-        if location['name'].downcase == 'home'
-          possible_home = location
-        end
-      end
-    end
-
-    return possible_home
-
-  end
-
-  def get_ecolane_traveler(external_user_id, dob, county, first_name, last_name)
-
-    service = Service.find_by(external_id: county_to_external_id(county).downcase.strip)
-    user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
-    booking_system = service.ecolane_profile.nil? ? nil : service.ecolane_profile.system.to_s
-
-    if user_service
-      u = user_service.user_profile.user
-
-    else
-      new_user = true
-      u = User.where(email: external_user_id.gsub(" ","_") + '_' + booking_system + '@ecolane_user.com').first_or_create
-      u.first_name = first_name
-      u.last_name = last_name
-      u.password = dob
-      u.password_confirmation = dob
-      u.roles << Role.where(name: "registered_traveler").first
-      up = UserProfile.new
-      up.user = u
-      up.save!
-      result = u.save
-    end
-
-    #Update Birth Year
-    dob_object = Characteristic.where(code: "date_of_birth").first
-    if dob_object
-      user_characteristic = UserCharacteristic.where(characteristic_id: dob_object.id, user_profile: u.user_profile).first_or_initialize
-      user_characteristic.value = dob.split('/')[2]
-      user_characteristic.save
-    end
-
-    if new_user #Create User Service
-      user_service = UserService.where(user_profile_id: u.user_profile.id, service_id: service.id).first_or_initialize
-      user_service.external_user_id = external_user_id
-      user_service.save
-    end
-    u
-  end
-
-  def fetch_customer_orders(customer_id, system_id, token)
-    url_options = "/api/customer/" + system_id + '/'
-    url_options += customer_id.to_s
-    url_options += "/orders"
-    url = BASE_URL + url_options
-    send_request(url, token)
-  end
-
-  def fetch_single_order(trip_id, system_id, token)
-    url_options = "/api/order/" + system_id + '/'
-    url_options += trip_id.to_s
-    url = BASE_URL + url_options
-    send_request(url, token)
-  end
-
-
-  ## Building hash objects that become XML nodes
-  def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-    order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
+  def build_discount_order(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
+    order_hash = build_discount_order_hash(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
   end
 
-  # Description
-  # Builds an order without searching through funding sources/sponsors
-  def build_order_v9 params
+  def build_discount_order_hash(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
+    order = {customer_id: customer_id, assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver=""), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
+    funding_options = query_funding_options(sponsors, trip_purpose, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant, companions, children, other_passengers, customer_number, system, token)
+    funding_xml = Nokogiri::XML(funding_options.body)
+    order[:funding] = build_funding_hash_from_funding_source(sponsors, trip_purpose, funding_source, funding_xml)
+    order
+  end
 
-    order_hash = {customer_id: get_customer_id(params[:customer_number], params[:system], params[:token]), assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
+  def build_discount_array(funding_sources, sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, system, token)
+    url_options =  "/api/order/" + system + "/queryfare"
+    url = Oneclick::Application.config.ecolane_base_url + url_options
 
-    funding_hash = {}
-    if params[:trip_purpose_raw]
-      funding_hash[:purpose] = params[:trip_purpose_raw]
-    end
-    if params[:funding_source]
-      funding_hash[:funding_source] = params[:funding_source]
-    end
-    if params[:sponsor]
-    funding_hash[:sponsor] = params[:sponsor]
-    end
-    unless funding_hash.empty?
-      order_hash[:funding] = funding_hash
+    #First: Find Gen Public Fare
+    discount_array = []
+    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
+
+    funding_sources.each do |funding_source|
+      Rails.logger.info(funding_source['code'])
+
+      funding_source_code = funding_source['code']
+      order = build_discount_order(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source_code, system, token)
+      order = Nokogiri::XML(order)
+      order.children.first.set_attribute('version', '3')
+      order = order.to_s
+      resp = send_request(url, token, 'POST', order)
+
+      begin
+        resp_code = resp.code
+      rescue
+        resp_code = nil
+      end
+
+      if resp_code == "200"
+        fare = unpack_fare_response(resp)
+        discount_array.append({fare: fare, comment: funding_source['comment'], funding_source: funding_source['code'], base_fare: funding_source['general_public']})
+      end
     end
 
+    discount_array
+  end
+
+  ## Building hash objects that become XML nodes
+  def build_order(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
+    order_hash = build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml, funding_array)
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
   end
@@ -604,193 +765,6 @@ class EcolaneServices
 
     return {funding_source: funding_source, purpose: purpose, sponsor: best_sponsor}
 
-  end
-
-  ############################################################
-  #Find Fares for users that do not have accounts with ecolane
-  ############################################################
-  def build_discount_order(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
-    order_hash = build_discount_order_hash(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
-    order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
-    order_xml
-  end
-
-  def build_discount_order_hash(sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source, system, token)
-    order = {customer_id: customer_id, assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver=""), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
-    funding_options = query_funding_options(sponsors, trip_purpose, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver="", assistant, companions, children, other_passengers, customer_number, system, token)
-    funding_xml = Nokogiri::XML(funding_options.body)
-    order[:funding] = build_funding_hash_from_funding_source(sponsors, trip_purpose, funding_source, funding_xml)
-    order
-  end
-
-  def build_discount_array(funding_sources, sponsors, trip_purpose, customer_number, customer_id, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, system, token)
-    url_options =  "/api/order/" + system + "/queryfare"
-    url = Oneclick::Application.config.ecolane_base_url + url_options
-
-    #First: Find Gen Public Fare
-    discount_array = []
-    Rails.logger.info "Number of funding sources to try: " + funding_sources.count.to_s
-
-    funding_sources.each do |funding_source|
-      Rails.logger.info(funding_source['code'])
-
-      funding_source_code = funding_source['code']
-      order = build_discount_order(sponsors, trip_purpose, customer_id, customer_number, assistant, companions, children, other_passengers, is_depart, scheduled_time, to_trip_place, from_trip_place, funding_source_code, system, token)
-      order = Nokogiri::XML(order)
-      order.children.first.set_attribute('version', '3')
-      order = order.to_s
-      resp = send_request(url, token, 'POST', order)
-
-      begin
-        resp_code = resp.code
-      rescue
-        resp_code = nil
-      end
-
-      if resp_code == "200"
-        fare = unpack_fare_response(resp)
-        discount_array.append({fare: fare, comment: funding_source['comment'], funding_source: funding_source['code'], base_fare: funding_source['general_public']})
-      end
-    end
-
-    discount_array
-  end
-  ############################################################
-
-
-  #Build the hash for the pickup request
-  def build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver)
-    if is_depart
-      pu_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(from_trip_place), note: note_to_driver}
-    else
-      pu_hash = {location: build_location_hash(from_trip_place), note: note_to_driver}
-    end
-    pu_hash
-  end
-
-  #Build the hash for the drop off request
-  def build_do_hash(is_depart, scheduled_time, to_trip_place)
-    if is_depart
-      do_hash = {location: build_location_hash(to_trip_place)}
-    else
-      do_hash = {requested: scheduled_time.xmlschema.chop.chop.chop.chop.chop.chop, location: build_location_hash(to_trip_place)}
-    end
-    do_hash
-  end
-
-  #Build a location hash (Used for dropoffs and pickups )
-  def build_location_hash(place)
-    street_number, street = if place['address1'].present?
-      parsable_address = Indirizzo::Address.new(place['address1'])
-      [parsable_address.number, parsable_address.street.first]
-    end
-
-    {street_number: street_number, street: street, city: place['city'], state: place['state'], zip: place['zip'], latitude: place['lat'], longitude: place['lon']}
-  end
-
-  # Cancel a Trip
-  def cancel params
-    url_options = "/api/order/" + params[:system] + '/'
-    url_options += params[:confirmation_number].to_s
-    url = Oneclick::Application.config.ecolane_base_url + url_options
-    resp = send_request(url, params[:token], 'DELETE')
-
-    begin
-      resp_code = resp.code
-    rescue
-      return false
-    end
-
-    if resp_code == "200"
-      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " canceled."
-      #The trip was successfully canceled
-      return true
-    elsif get_trip_status(params[:confirmation_number], params[:system], params[:token]) == 'canceled'
-      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " already canceled."
-
-      #The trip was not successfully deleted, because it was already canceled
-      return true
-    else
-      Rails.logger.debug "Trip " + params[:confirmation_number].to_s + " cannot be canceled."
-      #The trip is not canceled
-      return false
-    end
-
-  end
-
-  # Returns true if this trip belongs to that customer_number
-  def trip_belongs_to_user? params
-    resp = fetch_single_order(params[:booking_confirmation], params[:system], params[:token])
-    body = Hash.from_xml(resp.body)
-    customer_id_from_trip = body["order"]["customer_id"]
-    customer_id = get_customer_id(params[:customer_number], params[:system], params[:token])
-    return customer_id_from_trip == customer_id
-  end
-
-  ## Utility functions:
-
-  ## Send the Requests
-  def send_request(url, token, type='GET', message=nil)
-
-    Rails.logger.info("Sending Request . . .")
-
-    url.sub! " ", "%20"
-
-    Rails.logger.info("URL")
-    Rails.logger.info(url)
-    Rails.logger.info("MESSAGE")
-    Rails.logger.info(message)
-
-    begin
-      uri = URI.parse(url)
-      case type.downcase
-        when 'post'
-          req = Net::HTTP::Post.new(uri.path)
-          req.body = message
-        when 'delete'
-          req = Net::HTTP::Delete.new(uri.path)
-        else
-          req = Net::HTTP::Get.new(uri)
-      end
-
-      req.add_field 'X-ECOLANE-TOKEN', token
-      req.add_field 'X-Ecolane-Agent', 'ococtest'
-      req.add_field 'Content-Type', 'text/xml'
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      resp = http.start {|http| http.request(req)}
-      Rails.logger.info("REQ")
-      Rails.logger.info(req.inspect)
-      Rails.logger.info("RESPONSE")
-      Rails.logger.info(resp.body)
-      Rails.logger.info("End")
-      return resp
-    rescue Exception=>e
-      Rails.logger.info("Sending Error")
-      return false, {'id'=>500, 'msg'=>e.to_s}
-    end
-  end
-
-  def iso8601ify(dob)
-
-    dob = dob.split('/')
-    unless dob.count == 3
-      return nil
-    end
-
-    begin
-      dob = Date.parse(dob[1] + '/' + dob[0] + '/' + dob[2]).strftime("%Y/%m/%d")
-    rescue  ArgumentError
-      return nil
-    end
-
-    Date.iso8601(dob.delete('/'))
-  end
-
-  def yes_or_no value
-    value.to_bool ? true : false
   end
 
 end
