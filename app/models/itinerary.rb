@@ -234,6 +234,11 @@ class Itinerary < ActiveRecord::Base
     bs.book self
   end
 
+  def query_fare
+    bs = BookingServices.new
+    bs.query_fare self
+  end
+
   def status
     unless self.booking_confirmation
       return false, "404"
