@@ -20,20 +20,26 @@ end
 
 #Create reports and internationalize their names
 [
-  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.', view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: false},
-  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.', view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: false},
-  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.', view_name: 'trips_report', class_name: 'InvalidTripsReport', active: false},
-  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.', view_name: 'trips_report', class_name: 'RejectedTripsReport', active: false},
+  {name: 'Trips Created', description: 'Displays a chart showing the number of trips created each day.',
+    view_name: 'generic_report', class_name: 'TripsCreatedByDayReport', active: false},
+  {name: 'Trips Scheduled', description: 'Displays a chart showing the number of trips scheduled for each day.',
+    view_name: 'generic_report', class_name: 'TripsScheduledByDayReport', active: false},
+  {name: 'Failed Trips', description: 'Displays a report describing the trips that failed.',
+    view_name: 'trips_report', class_name: 'InvalidTripsReport', active: false},
+  {name: 'Rejected Trips', description: 'Displays a report showing trips that were rejected by a user.',
+    view_name: 'trips_report', class_name: 'RejectedTripsReport', active: false},
   {name: 'Trips Planned', description: 'Trips planned with various breakdowns.',
-   view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: false},
+    view_name: 'breakdown_report', class_name: 'TripsBreakdownReport', active: false},
   {name: 'Trips Details', description: 'Details of all trips.',
-   view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
+    view_name: 'trips_details_report', class_name: 'TripsDetailsReport', active: true},
   {name: 'System Usage', description: 'Overall system usage statistics.',
-   view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true},
+    view_name: 'system_usage_report', class_name: 'SystemUsageReport', active: true},
   {name: 'Trips Details', description: 'Details of all trips.', exportable: true,
-   view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true},
+    view_name: 'paged_trips_details_report', class_name: 'TripsDatatable', active: true},
   {name: 'Feedback', description: 'List of all ratings.', exportable: true,
-   view_name: 'ratings_report', class_name: 'RatingsReport', active: true}
+    view_name: 'ratings_report', class_name: 'RatingsReport', active: true},
+  {name: 'Booked Trips', description: 'Dashboard of trips booked through OneClick',
+    view_name: 'booked_trips_report', class_name: 'BookedTripsReport', active: true}
 
 ].each do |rep|
   # Need to correctly handle updating active state; match everything except that.
@@ -291,7 +297,7 @@ transit_mode = build_internationalized_records(structure_records_from_flat_hash(
  },
  { klass: DateOption, name: 'Custom...', code: 'date_option_custom',
  },
- 
+
 ].each do |record|
   structured_hash = structure_records_from_flat_hash record
   build_internationalized_records structured_hash

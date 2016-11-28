@@ -1,0 +1,51 @@
+- content_for :head do
+  = javascript_include_tag "https://www.gstatic.com/charts/loader.js"
+
+-# Create a div for each chart
+- @data.keys.each do |k|
+  .chart_div{id: "chart_div_#{k}"}
+
+:javascript
+  $(document).ready(function() {
+
+    // Load the Visualization API and any needed packages.
+    google.charts.load('current', {'packages':['corechart', 'treemap']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Draw chart for each element in data.
+    function drawChart() {
+      // Data array is a list of data tables.
+      var data = #{@data.to_json};
+
+      console.log("RAW DATA", data);
+
+      for (var set in data) {
+        var dataTable = new google.visualization.DataTable();
+        var columns = data[set].columns;
+        var rows = data[set].rows;
+        var options = data[set].options;
+        for (var i = 0; i < columns.length; i++) {
+          dataTable.addColumn(columns[i].type, columns[i].heading);
+          if (columns[i].type == "date") {
+            for (var j = 0; j < rows.length; j++) {
+              rows[j][i] = new Date(rows[j][i]);
+            }
+            for (var k = 0; k < options.hAxis.ticks.length; k++) {
+              options.hAxis.ticks[k].v = new Date(options.hAxis.ticks[k].v);
+              console.log("tick:", options.hAxis.ticks[k]);
+            }
+          }
+        }
+
+        dataTable.addRows(rows);
+
+        var chart = new google.visualization[data[set].visualization](document.getElementById(`chart_div_${set}`));
+
+        // chart.draw(google.visualization.arrayToDataTable(data[set].table), data[set].options);
+        chart.draw(dataTable, options);
+      }
+
+    };
+  });

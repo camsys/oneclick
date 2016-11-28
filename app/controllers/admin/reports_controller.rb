@@ -5,8 +5,8 @@ class Admin::ReportsController < Admin::BaseController
   include Reporting::ReportHelper
 
   # load the cancan authorizations
-  load_and_authorize_resource  
-  
+  load_and_authorize_resource
+
   TIME_FILTER_TYPE_SESSION_KEY = 'reports_time_filter_type'
   DATE_OPTION_SESSION_KEY = 'date_range'
   DATE_OPTION_FROM_KEY = 'from_date'
@@ -18,10 +18,10 @@ class Admin::ReportsController < Admin::BaseController
   COLUMNS_PARAMS_KEY = 'columns'
   START_PARAMS_KEY = 'start'
   LENGTH_PARAMS_KEY = 'length'
-  
+
   def show
     @report = Report.find(params[:id])
-    
+
     @reports = all_report_infos # get all report infos (id, name) both generic and customized reports
     @generated_report = GeneratedReport.new(params[:generated_report] || {})
     @generated_report.date_range = session[DATE_OPTION_SESSION_KEY] || DateOption::DEFAULT
@@ -40,7 +40,7 @@ class Admin::ReportsController < Admin::BaseController
       redirect_to admin_reports_path
       return
     end
-    
+
     @generated_report = GeneratedReport.new(params[:generated_report])
 
     # Store filter settings in session for ajax calls.
@@ -52,14 +52,14 @@ class Admin::ReportsController < Admin::BaseController
     session[AGENCY_OPTION_KEY] = @generated_report.agency_id
     session[AGENT_OPTION_KEY] = @generated_report.agent_id
     session[PROVIDER_OPTION_KEY] = @generated_report.provider_id
-    
+
     if @report
 
       params[:order] = session[ORDER_PARAMS_KEY]
       params[:columns] = session[COLUMNS_PARAMS_KEY]
       params[:start] = session[START_PARAMS_KEY]
       params[:length] = session[LENGTH_PARAMS_KEY]
-      
+
       # set up the report view
       @report_view = @report.view_name
       # get the class instance and generate the data
@@ -155,7 +155,7 @@ class Admin::ReportsController < Admin::BaseController
           cols["#{index}"] = params[:columns]["#{index}"]
         end
         session[COLUMNS_PARAMS_KEY] = cols
-        
+
         render json: table
       end
     end
@@ -169,14 +169,14 @@ class Admin::ReportsController < Admin::BaseController
     @provider_id = false
 
     return if current_user.has_role? :system_administrator
-    
+
     Agency.with_role(:agency_administrator, current_user).each do |a|
       @agency = a
       @agency_id = a.id
       @agency_all = false
       @provider_id = -1
     end
-    
+
     Provider.with_role(:provider_staff, current_user).each do |p|
       @agency = nil if @agency == :any
       @agency_id = -1 unless @agency_id
@@ -197,5 +197,5 @@ class Admin::ReportsController < Admin::BaseController
   def refresh_materialized_views
     ActiveRecord::Base.connection.execute("select * from refreshallmaterializedviews();")
   end
-  
+
 end

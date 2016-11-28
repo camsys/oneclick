@@ -702,6 +702,30 @@ class BookingServices
     nil
   end
 
+  # Updates the status of booked trips by making a call to external booking services
+  def update_booked_trip_statuses user_service
+    # Is there an ecolane profile associated with this service?
+    return false if user_service.service.ecolane_profile.nil?
+
+    customer_id = user_service.external_user_id
+    booking_system = user_service.service.ecolane_profile.system
+    token = user_service.service.ecolane_profile.token
+    es = EcolaneServices.new
+    resp = es.fetch_customer_orders(customer_id, booking_system, token)
+    orders = es.unpack_orders(resp)
+    return false unless orders[0] # Return false if ecolane call returns an error.
+    response_array = []
+    orders.each do |order|
+      # Find itinerary based on ecolane booking confirmation id
+      itin = Itinerary.find_by(booking_confirmation: order["id"])
+      unless itin.nil?
+        eb = EcolaneBooking.where(itinerary: itin).first_or_create
+        response_array << eb.id if itin.ecolane_booking.update_attributes(booking_status_code: order["status"])
+      end
+    end
+    return response_array # Return an array of successfully updated Ecolane Booking ids
+  end
+
   def county_to_service(county)
     Service.find_by(external_id: county_to_external_id(county).downcase.strip)
   end

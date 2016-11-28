@@ -36,6 +36,15 @@ class EcolaneServices
     end
   end
 
+  # Get orders for a customer
+  def fetch_customer_orders(customer_id, system_id, token)
+    url_options = "/api/customer/" + system_id + '/'
+    url_options += customer_id.to_s
+    url_options += "/orders"
+    url = BASE_URL + url_options
+    send_request(url, token)
+  end
+
   # Get a list of trip purposes for a customer
   def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
     purposes = []
@@ -685,7 +694,15 @@ class EcolaneServices
   end
 
   def build_order_hash(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, system, token, funding_xml=nil, funding_array=nil)
-    order = {customer_id: get_customer_id(customer_number, system, token), assistant: yes_or_no(assistant), companions: companions, children: children, other_passengers: other_passengers, pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver), dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)}
+    order = {
+      customer_id: get_customer_id(customer_number, system, token),
+      assistant: yes_or_no(assistant),
+      companions: companions,
+      children: children,
+      other_passengers: other_passengers,
+      pickup: build_pu_hash(is_depart, scheduled_time, from_trip_place, note_to_driver),
+      dropoff: build_do_hash(is_depart, scheduled_time, to_trip_place)
+    }
     if funding_xml
       order[:funding] = build_funding_hash(sponsors, trip_purpose_raw, funding_xml, funding_array)
     end
