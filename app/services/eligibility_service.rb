@@ -238,14 +238,14 @@ class EligibilityService
       end
 
       # Match (New) Primary Coverage Area
-      unless service.primary_coverage.nil?
+      unless service.primary_coverage.nil? || service.primary_coverage.geom.nil?
         unless service.primary_coverage.geom.contains? origin_point or service.primary_coverage.geom.contains? destination_point
           next
         end
       end
 
       # Match (New) Secondary Coverage Area
-      unless service.secondary_coverage.nil?
+      unless service.secondary_coverage.nil? || service.secondary_coverage.geom.nil?
         unless service.secondary_coverage.geom.contains? origin_point and service.secondary_coverage.geom.contains? destination_point
           next
         end
