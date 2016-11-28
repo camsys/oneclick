@@ -714,6 +714,10 @@ class Service < ActiveRecord::Base
     end
   end
 
+  def setup_default_booking_cut_off_times
+    self.booking_cut_off_times = (0..6).map {|dow| BookingCutOffTime.new(day_of_week: dow, cut_off_time: "8:00 PM")}
+  end
+
   def purposes_hash
     self.trip_purposes.collect{ |tp| {name: TranslationEngine.translate_text(tp.name), code: tp.code}}
   end

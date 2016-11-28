@@ -94,20 +94,8 @@ class Admin::ServicesController < Admin::BaseController
   # Initialize Service and perform setup actions as necessary
   def load_service
     @service = Service.new(service_params)
-
     @service.build_fare_structures_by_mode
-
-    # # Perform Mode-specific Actions (e.g. build fare structures)
-    # case @service.service_type_id
-    # when 1 # Paratransit
-    #   @service.fare_structures.build(fare_type: 0)
-    # when 4 # Transit
-    #   # TRANSIT ACTIONS
-    # when 5 # Taxi
-    #   @service.fare_structures.build(fare_type: 1)
-    # else
-    #   # ELSE ACTIONS
-    # end
+    @service.setup_default_booking_cut_off_times
   end
 
   def update_booking_service_profile
