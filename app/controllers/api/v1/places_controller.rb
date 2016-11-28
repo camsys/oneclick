@@ -19,6 +19,11 @@ module Api
           locations += stops
         end
 
+        #Check for exact match on Google Place ID
+        stripped_string = search_string.tr('%', '').strip.to_s
+        stops = Poi.where(google_place_id: stripped_string).to_a
+        locations += stops
+
         #Check for Stop Names
         stripped_string = search_string.tr('%', '').strip.to_s
         matching_stops = Poi.get_stops_by_str(stripped_string, max_results).to_a
