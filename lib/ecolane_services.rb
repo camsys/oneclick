@@ -36,6 +36,15 @@ class EcolaneServices
     end
   end
 
+  # Get orders for a customer
+  def fetch_customer_orders(customer_id, system_id, token)
+    url_options = "/api/customer/" + system_id + '/'
+    url_options += customer_id.to_s
+    url_options += "/orders"
+    url = BASE_URL + url_options
+    send_request(url, token)
+  end
+
   # Get a list of trip purposes for a customer
   def get_trip_purposes(customer_id, system_id, token, disallowed_purposes)
     purposes = []
