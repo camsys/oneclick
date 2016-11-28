@@ -70,10 +70,14 @@ class Provider < ActiveRecord::Base
     if user && user != admin_user && !user.has_role?(:provider_staff, :any)
 
       # First, remove :provider_staff role from all users associated with this provider
-      User.with_role(:provider_staff, self).each {|u| u.remove_role(:provider_staff, self)}
+      User.with_role(:provider_staff, self).each do
+        |u| u.remove_role(:provider_staff, self)
+        self.users.delete(u)
+      end
 
-      # Then, give the user the provider_staff remove_role
+      # Then, give the user the provider_staff role, and associate the user with the provider
       user.add_role(:provider_staff, self) if user
+      self.users << user
     end
   end
 
