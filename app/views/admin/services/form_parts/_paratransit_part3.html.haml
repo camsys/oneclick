@@ -110,7 +110,6 @@
 
     // Delete Service Characteristic Handler - Hide Row and Set Destroy to TRUE
     form.$('.delete-svc-char-btn').on("click", function(e) {
-      console.log("Delete Service Characteristic Button Clicked", $(this));
       $(this).closest(".service-details-row").addClass("hidden"); // Hide this row
       $(this).siblings().find(".input-svc-chars-destroy").attr("value", true); // Set destroy value to true for this element
     });

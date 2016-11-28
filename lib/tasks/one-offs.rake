@@ -181,7 +181,8 @@ namespace :oneclick do
           puts " #{service.primary_coverage.recipe} added as primary coverage."
         end
 
-        unless service.county_coverage_array.nil?
+        # Only build secondary coverage zones for paratransit
+        unless service.county_coverage_array.nil? || service.service_type.code != "paratransit"
           recipe = service.county_coverage_array.join(', ') + (service.secondary_coverage.nil? ? "" : ", #{service.secondary_coverage.recipe}")
           puts "Parsing Secondary Coverage Area..."
           service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(recipe))
