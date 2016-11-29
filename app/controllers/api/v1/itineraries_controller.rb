@@ -249,7 +249,7 @@ module Api
           # If staff email updates are configured, send one for the booked trip.
           booked_provider = booked_itineraries.first.service.provider
           if booked_provider && booked_provider.send_booking_emails
-            email_for_update = booked_provider.users.with_role(:provider_staff, booked_provider).first.email
+            email_for_update = booked_provider.admin_user ? booked_provider.admin_user.email : nil
             UserMailer.booked_trip_update_email(email_for_update, Trip.find(booked_itineraries.first.trip_part.trip.id), "Ecolane").deliver
           end
 
