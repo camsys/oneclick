@@ -2,7 +2,8 @@ class TaxiItinerary < Itinerary
 
   def calculate_fare
     if self.cost.blank?
-      base_rate = self.service.fare_structures.first.base
+      fs = self.service.fare_structures.first
+      base_rate = fs.mileage_fare ? fs.mileage_fare.base_rate : fs.base
       # we don't have mileage currently, so not calculating the variable portion
       #variable_rate = self.service.fare_structures.first.rate
       self.cost = base_rate
