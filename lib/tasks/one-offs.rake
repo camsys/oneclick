@@ -2,6 +2,13 @@
 namespace :oneclick do
   namespace :one_offs do
 
+    desc "Create Booked Trips Report"
+    task :create_booked_trips_report => :environment do
+      r = Report.where(name: "Booked Trips").first_or_initialize
+      r.update(description: "Dashboard of trips booked through OneClick", view_name: "booked_trips_report", class_name: "BookedTripsReport", active: true)
+      r.save
+    end
+
     desc "Assign Counties to All Trip Places"
     task :add_counties_to_trip_places => :environment do
       TripPlace.all.each do |trip_place|

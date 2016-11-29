@@ -4,7 +4,7 @@ namespace :update do
   desc "Help"
   task help: :environment do
      puts "During each release run rake update:<release>"
-     puts "No guarantee that these tasks are idempotent."
+     puts "IMPORTANT!  All tasks here should be idempotent."
   end
 
   desc "v1.8.2"
@@ -15,8 +15,9 @@ namespace :update do
     Rake::Task["oneclick:one_offs:clean_up_user_services"].invoke #Not necessary for the new Service-Data UI, but running the following may fix broken User Profiles:
 
     ### Create Booked Trips Report
-    Report.create(name: "Booked Trips", description: "Dashboard of trips booked through OneClick", view_name: "booked_trips_report", class_name: "BookedTripsReport", active: true)
-    Rake::Task["oneclick:scheduled:update_booked_trip_statuses"]
+    #Report.create(name: "Booked Trips", description: "Dashboard of trips booked through OneClick", view_name: "booked_trips_report", class_name: "BookedTripsReport", active: true)
+    Rake::Task["oneclick:one_offs:create_booked_trips_report"].invoke
+    Rake::Task["oneclick:scheduled:update_booked_trip_statuses"].invoke
 
     puts 'Additional Release Notes:'
     puts 'FOR PA, set config.restrict_services_to_origin_county = true'
