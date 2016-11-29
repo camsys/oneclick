@@ -442,7 +442,11 @@ class EcolaneServices
   # Builds an order without searching through funding sources/sponsors
   def build_order_v9 params
 
-    order_hash = {customer_id: get_customer_id(params[:customer_number], params[:system], params[:token]), assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
+    order_hash = {assistant: yes_or_no(params[:assistant]), companions: params[:companions], children: params[:children], other_passengers: params[:other_passengers], pickup: build_pu_hash(params[:is_depart], params[:scheduled_time], params[:from_trip_place], params[:note_to_driver]), dropoff: build_do_hash(params[:is_depart], params[:scheduled_time], params[:to_trip_place])}
+
+    if params[:customer_number]
+      order_hash[:customer_id] = get_customer_id(params[:customer_number], params[:system], params[:token])
+    end
 
     funding_hash = {}
     if params[:trip_purpose_raw]
@@ -454,9 +458,7 @@ class EcolaneServices
     if params[:sponsor]
       funding_hash[:sponsor] = params[:sponsor]
     end
-    unless funding_hash.empty?
-      order_hash[:funding] = funding_hash
-    end
+    order_hash[:funding] = funding_hash
 
     order_xml = order_hash.to_xml(root: 'order', :dasherize => false)
     order_xml
