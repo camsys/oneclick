@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125231855) do
+ActiveRecord::Schema.define(version: 20161130175635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20161125231855) do
     t.datetime "updated_at"
     t.string   "funding_source"
     t.string   "sponsor"
+    t.string   "confirmation_number"
   end
 
   create_table "ecolane_profiles", force: true do |t|
@@ -599,6 +600,7 @@ ActiveRecord::Schema.define(version: 20161125231855) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "booking_status_name"
+    t.string   "confirmation_number"
   end
 
   create_table "ridepilot_profiles", force: true do |t|
@@ -785,6 +787,7 @@ ActiveRecord::Schema.define(version: 20161125231855) do
     t.string   "fare1_type_id"
     t.string   "fare2_type_id"
     t.string   "fare3_type_id"
+    t.string   "confirmation_number"
   end
 
   create_table "trapeze_profiles", force: true do |t|
