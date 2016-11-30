@@ -21,9 +21,11 @@ namespace :update do
 
     puts 'Additional Release Notes:'
     puts 'FOR PA, set config.restrict_services_to_origin_county = true'
-    puts "For every instance be sure to set the state config: OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: 'MA')"
-    puts
+    puts "For PA, in Heroku set rake scheduled:update_booked_trip_statuses as a scheduled task."
     puts "For GTC, set config.show_paratransit_fleet_size_and_trip_volume = true"
+    puts "For every instance be sure to set the state config: OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: 'MA')"
+    puts "For every instance, in Heroku change scheduled task from oneclick:send_feedback_follow_up_emails to scheduled:send_feedback_follow_up_emails"
+
   end
 
 end
