@@ -17,7 +17,7 @@ namespace :update do
     ### Create Booked Trips Report
     #Report.create(name: "Booked Trips", description: "Dashboard of trips booked through OneClick", view_name: "booked_trips_report", class_name: "BookedTripsReport", active: true)
     Rake::Task["oneclick:one_offs:create_booked_trips_report"].invoke
-    Rake::Task["oneclick:scheduled:update_booked_trip_statuses"].invoke
+    Rake::Task["scheduled:update_booked_trip_statuses"].invoke
 
     puts 'Additional Release Notes:'
     puts 'FOR PA, set config.restrict_services_to_origin_county = true'
