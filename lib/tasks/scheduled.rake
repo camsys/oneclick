@@ -1,24 +1,30 @@
-namespace :oneclick do
-  namespace :scheduled do
+# For regularly scheduled tasks
+namespace :scheduled do
+  
+  # Update Booked Trip Status Code through Ecolane
+  task update_booked_trip_statuses: :environment do
+    puts "Updating Status of all Booked Ecolane Trips..."
+    puts
+    bs = BookingServices.new
 
-    # Update Booked Trip Status Code through Ecolane
-    task update_booked_trip_statuses: :environment do
-      puts "Updating Status of all Booked Ecolane Trips..."
-      puts
-      bs = BookingServices.new
-
-      UserService.all.each do |us|
-        puts "Updating booked trip statuses for User Service #{us.id}..."
-        puts
-        update_result = bs.update_booked_trip_statuses(us)
-        puts
-        if update_result
-          puts "...updated #{update_result.length} booking statuses."
-        else
-          puts "...update failed."
-        end
-      end
+    updated_results = {}
+    UserService.all.each do |us|
+      puts "Updating booked trip statuses for User Service #{us.id}..."
+      updated_results[us.id] = bs.update_booked_trip_statuses(us)
     end
 
+    puts
+    puts "The following user_services and their associated itineraries were updated: ", updated_results.ai
+  end
+
+end
+
+# Runs all scheduled tasks
+task :scheduled do
+  Rake.application.tasks.each do |task|
+    if task.name.starts_with?("scheduled:")
+      puts "Running #{task.name}"
+      task.invoke
+    end
   end
 end

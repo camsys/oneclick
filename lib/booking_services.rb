@@ -717,7 +717,7 @@ class BookingServices
     response_array = []
     orders.each do |order|
       # Find itinerary based on ecolane booking confirmation id
-      itin = Itinerary.find_by(booking_confirmation: order["id"])
+      itin = Itinerary.joins(:ecolane_booking).find_by(ecolane_bookings: {confirmation_number: order["id"]})
       unless itin.nil?
         eb = EcolaneBooking.where(itinerary: itin).first_or_create
         response_array << eb.id if itin.ecolane_booking.update_attributes(booking_status_code: order["status"])
