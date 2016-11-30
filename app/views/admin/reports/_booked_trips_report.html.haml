@@ -19,8 +19,6 @@
       // Data array is a list of data tables.
       var data = #{@data.to_json};
 
-      console.log("RAW DATA", data);
-
       for (var set in data) {
         var dataTable = new google.visualization.DataTable();
         var columns = data[set].columns;
@@ -34,7 +32,6 @@
             }
             for (var k = 0; k < options.hAxis.ticks.length; k++) {
               options.hAxis.ticks[k].v = new Date(options.hAxis.ticks[k].v);
-              console.log("tick:", options.hAxis.ticks[k]);
             }
           }
         }
