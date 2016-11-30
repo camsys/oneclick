@@ -7,30 +7,30 @@ class AddBookingConfirmationToBookingObjects < ActiveRecord::Migration
 
     # Copy over data from associated itineraries
     EcolaneBooking.all.each do |booking|
-      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation)
+      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation) if booking.itinerary
     end
 
     TrapezeBooking.all.each do |booking|
-      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation)
+      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation) if booking.itinerary
     end
 
     RidepilotBooking.all.each do |booking|
-      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation)
+      booking.update_attributes(confirmation_number: booking.itinerary.booking_confirmation) if booking.itinerary
     end
   end
 
   def down
     # Copy over data to associated itineraries
     EcolaneBooking.all.each do |booking|
-      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number)
+      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number) if booking.itinerary
     end
 
     TrapezeBooking.all.each do |booking|
-      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number)
+      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number) if booking.itinerary
     end
 
     RidepilotBooking.all.each do |booking|
-      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number)
+      booking.itinerary.update_attributes(booking_confirmation: booking.confirmation_number) if booking.itinerary
     end
 
     # Remove booking_confirmation_number column from each booking object table
