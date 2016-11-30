@@ -43,8 +43,12 @@ namespace :update do
     puts "Run rake oneclick:one_offs:migrate_to_new_service_data_ui if needed to re-copy data from services."
   end
 
-end
+  desc "v1.8.3"
+  task "v1.8.3" => :environment do
+    Rake::Task["oneclick:one_offs:add_comment_to_uber_service"].invoke #Make sure that Uber Services have a public comment.
+  end
 
+end
 task :update do
   Rake::Task["update:default"].invoke
 end

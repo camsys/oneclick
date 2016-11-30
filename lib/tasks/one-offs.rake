@@ -9,6 +9,22 @@ namespace :oneclick do
       r.save
     end
 
+    desc "Add Comment to Uber Service"
+    task :add_comment_to_uber_service => :environment do
+      service_type = ServiceType.unscoped.where(code: "uber_x").first
+      if service_type.nil?
+        puts 'No uber_x service_type present.'
+        next
+      end
+      ubers = Service.where(service_type: service_type)
+      ubers.each do |uber|
+        uber.comments.where(locale: "en").first_or_create do |comment|
+          comment.comment = "Uber is a ride sharing service similar to a taxi. To request an Uber ride, you'll need to download the Uber App."
+          comment.save
+        end
+      end
+    end
+
     desc "Assign Counties to All Trip Places"
     task :add_counties_to_trip_places => :environment do
       TripPlace.all.each do |trip_place|
