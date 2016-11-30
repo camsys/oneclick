@@ -59,7 +59,7 @@ namespace :oneclick do
               old: false,
           })
 
-          if row[8].to_s.strip == '11'
+          if row[8].to_s.strip.in? Oneclick::Application.config.rtd_station_types
             p.types = ['station']
             p.save!
           end
