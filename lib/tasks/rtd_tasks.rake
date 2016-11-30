@@ -192,6 +192,11 @@ namespace :oneclick do
             old: false,
         })
 
+        if stop['cluster']
+          p.types = ['station']
+          p.save!
+        end
+
         if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
           #Reverse Geocode the Lat Lng to fill in the City
           sleep(0.25)
