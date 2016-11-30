@@ -8,6 +8,7 @@ class Itinerary < ActiveRecord::Base
   # Callbacks
   after_initialize :set_defaults
   before_save :clear_walk_time
+  after_save :update_booking_confirmation_number, if: :booking_confirmation_changed?
 
   # Associations
   belongs_to :trip_part
@@ -40,7 +41,7 @@ class Itinerary < ActiveRecord::Base
 
   #For booking purposes
   attr_accessor :segment_index
-  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status, 
+  # attr_accessible :duration, :cost, :end_time, :legs, :server_message, :mode, :start_time, :server_status,
   # :service, :transfers, :transit_time, :wait_time, :walk_distance, :walk_time, :icon_dictionary, :hidden,
   # :ride_count, :external_info, :match_score, :missing_information, :missing_information_text, :date_mismatch,
   # :time_mismatch, :too_late, :accommodation_mismatch, :missing_accommodations
@@ -96,7 +97,7 @@ class Itinerary < ActiveRecord::Base
 
   def self.is_bicycle?(legs)
     legs ||= []
-    
+
     modes = legs.collect{ |m| m.mode }.uniq
     unless Leg::TripLeg::BICYCLE.in? modes
       return false
@@ -147,7 +148,7 @@ class Itinerary < ActiveRecord::Base
     end
 
   end
-  
+
   # parses the legs and returns an array of TripLeg. If there are no legs then an
   # empty array is returned
   def get_legs(include_geometry = true)
@@ -166,7 +167,7 @@ class Itinerary < ActiveRecord::Base
     routes = get_legs.map(&:route)
     [mode.name] + routes
   end
-  
+
   def unhide
     self.hidden = false
     self.save()
@@ -189,7 +190,7 @@ class Itinerary < ActiveRecord::Base
   end
 
   def notes_count
-    [(missing_information ? 1 : 0), 
+    [(missing_information ? 1 : 0),
     (accommodation_mismatch ? 1 : 0),
     ((date_mismatch or time_mismatch or too_late or too_early) ? 1 : 0)].sum
   end
@@ -229,6 +230,19 @@ class Itinerary < ActiveRecord::Base
   #################################
   # BOOKING-SPECIFIC METHODS
   #################################
+
+  # If booking_confirmation is set to something (other than nil), update the associated booking's confirmation_number
+  def update_booking_confirmation_number
+    if self.booking && self.booking_confirmation
+      self.booking.update_attributes(confirmation_number: self.booking_confirmation)
+    end
+  end
+
+  # Returns a reference to the itinerary's associated booking object
+  def booking
+    return self.ecolane_booking || self.trapeze_booking || self.ridepilot_booking || nil
+  end
+
   def book
     bs = BookingServices.new
     bs.book self
