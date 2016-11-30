@@ -23,8 +23,12 @@ namespace :update do
     puts "For every instance be sure to set the state config: OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: 'MA')"
   end
 
-end
+  desc "v1.8.3"
+  task "v1.8.3" => :environment do
+    Rake::Task["oneclick:one_offs:add_comment_to_uber_service"].invoke #Make sure that Uber Services have a public comment.
+  end
 
+end
 task :update do
   Rake::Task["update:default"].invoke
 end
