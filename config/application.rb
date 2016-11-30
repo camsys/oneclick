@@ -123,6 +123,9 @@ module Oneclick
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.6'
+
+    # Service Data UI Configurations
+    config.show_paratransit_fleet_size_and_trip_volume = false
   end
 
 end

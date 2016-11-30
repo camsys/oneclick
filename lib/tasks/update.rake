@@ -22,6 +22,8 @@ namespace :update do
     puts 'Additional Release Notes:'
     puts 'FOR PA, set config.restrict_services_to_origin_county = true'
     puts "For every instance be sure to set the state config: OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: 'MA')"
+    puts
+    puts "For GTC, set config.show_paratransit_fleet_size_and_trip_volume = true"
   end
 
 end

@@ -272,6 +272,7 @@ class Admin::ServicesController < Admin::BaseController
                                     :service_window, :time_factor, :provider_id, :service_type_id, :service_details_partial,
                                     :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     :taxi_fare_finder_city, :display_color, :disabled_comment, :booking_profile,
+                                    :fleet_size, :trip_volume,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:

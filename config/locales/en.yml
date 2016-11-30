@@ -30,6 +30,7 @@ en:
   plural_translate_options: "There are %s transit options for your return trip."
   singular_transit_options: "There is 1 transit option for your return trip."
   fleet_size: "Fleet Size"
+  trip_volume: "Trip Volume"
   daily_trips: "Daily Trips"
   not_listed: "Not Listed"
   show_mode_paratransit: "Show Paratransit"
