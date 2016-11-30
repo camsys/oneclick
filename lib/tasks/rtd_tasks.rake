@@ -59,6 +59,11 @@ namespace :oneclick do
               old: false,
           })
 
+          if row[8].to_s.strip == '11'
+            p.types = ['station']
+            p.save!
+          end
+
           begin
             google_maps_geocode(p, og) unless google_place_geocode(p)
           rescue Exception => e
@@ -191,11 +196,6 @@ namespace :oneclick do
             name: name,
             old: false,
         })
-
-        if stop['cluster']
-          p.types = ['station']
-          p.save!
-        end
 
         if geocoded < Oneclick::Application.config.geocoding_limit or Oneclick::Application.config.limit_geocoding == false
           #Reverse Geocode the Lat Lng to fill in the City
