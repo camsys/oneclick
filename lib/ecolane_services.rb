@@ -357,7 +357,7 @@ class EcolaneServices
   end
 
   ################################################################################
-  ## Query Fare
+  ## Query Fares and Discounts
   ################################################################################
 
   # Description:
@@ -396,6 +396,74 @@ class EcolaneServices
     funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
     sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
     return fare, funding_source, sponsor
+  end
+
+  # For anonymous user, get an array of potential prices and funding sources
+  def build_discount_array_v9 params
+    url_options =  "/api/order/" + params[:system] + "/query_preferred_fares"
+    url = BASE_URL + url_options
+    params[:funding] = {}
+
+    order =  build_order_v9 params
+    order = Nokogiri::XML(order)
+    order.children.first.set_attribute('version', '3')
+    order = order.to_s
+    resp = send_request(url, params[:token], 'POST', order)
+
+    begin
+      resp_code = resp.code
+    rescue
+      return false, "500"
+    end
+
+    if resp_code != "200"
+      return false, {'id'=>resp_code.to_i, 'msg'=>resp.message}
+    end
+
+    #Fare, Funding_Source, Comment
+
+    unpack_build_discount_array_v9 resp
+
+    #fare, funding_source, sponsor = unpack_fare_response_v9(resp)
+    #return true, {fare: fare, funding_source: funding_source, sponsor: sponsor}
+
+  end
+
+  # Unpack build discounts call
+  def unpack_build_discount_array_v9 (resp)
+    temp_hash = {}
+    fare_hash = Hash.from_xml(resp.body)
+    fares = fare_hash['fares']['fare']
+    fares.each do |fare|
+      new_funding_source = fare["funding"]["funding_source"]
+      new_fare = fare["client_copay"].to_f/100
+      new_comment = fare["funding"]["description"]
+
+      current = temp_hash[new_funding_source]
+
+      #If this is the first time seeing this funding source, save it.
+      if current.nil?
+        if not new_comment.nil? and not new_fare.nil?
+          temp_hash[new_funding_source] = {fare: new_fare, comment: new_comment}
+        end
+      #If we've seen this funding source before, but the new fare is higher, save it.
+      elsif current[:fare] < new_fare
+        if not new_comment.nil? and not new_fare.nil?
+          temp_hash[new_funding_source] = {fare: new_fare, comment: new_comment}
+        end
+      end
+    end
+
+    discounts = []
+    temp_hash.each do |k,v|
+      v[:funding_source] = k
+      discounts << v
+    end
+
+    return discounts
+    #funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
+    #sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
+    #return fare, funding_source, sponsor
   end
 
   ################################################################################
