@@ -115,6 +115,7 @@ Oneclick::Application.configure do
   config.default_county = "Denver"
   config.default_zoom = 12
   config.landmarks_file = "https://s3.amazonaws.com/oneclick-bin/tmp/landmarks.csv"
+  config.rtd_station_types = ['10', '11'] #In the landmarks.csv, these categories denote stations
 
   #Open Trip Planner Configs
   config.open_trip_planner = "http://otp-rtd.camsys-apps.com:8080/otp/routers/default"

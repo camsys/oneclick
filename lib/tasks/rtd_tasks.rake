@@ -59,6 +59,11 @@ namespace :oneclick do
               old: false,
           })
 
+          if row[8].to_s.strip.in? Oneclick::Application.config.rtd_station_types
+            p.types = ['station']
+            p.save!
+          end
+
           begin
             google_maps_geocode(p, og) unless google_place_geocode(p)
           rescue Exception => e
