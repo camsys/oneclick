@@ -392,7 +392,7 @@ class EcolaneServices
   # Unpack fare response from query_preferred_fare_call
   def unpack_fare_response_v9 (resp)
     fare_hash = Hash.from_xml(resp.body)
-    fare = fare_hash['fares'] ['fare']['client_copay']
+    fare = fare_hash['fares']['fare']['client_copay']
     funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
     sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
     return fare, funding_source, sponsor
