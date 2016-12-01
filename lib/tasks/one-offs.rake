@@ -78,6 +78,7 @@ namespace :oneclick do
         if mode
           puts "Setting #{m[0]} to priority #{m[1]}."
           mode.results_sort_order = m[1]
+          mode.active = true
           mode.save
         end
       end
