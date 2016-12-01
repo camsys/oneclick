@@ -594,6 +594,7 @@ class BookingServices
               ecolane_booking.funding_source = resp_hash[:funding_source]
               ecolane_booking.sponsor = resp_hash[:sponsor]
               ecolane_booking.save
+              itinerary.reload
               return resp_hash[:fare].to_f
             else
               return nil
