@@ -389,13 +389,17 @@ class EcolaneServices
     return true, {fare: fare, funding_source: funding_source, sponsor: sponsor}
   end
 
-  # Unpack fare response from query_preferred_fare_call
+  # Unpack fare response from query_preferred_fare_call.  Return the Fare with the HIGHEST (Largest Number) Priority
   def unpack_fare_response_v9 (resp)
     fare_hash = Hash.from_xml(resp.body)
-    fare = fare_hash['fares']['fare']['client_copay']
-    funding_source = fare_hash['fares'] ['fare']['funding']['funding_source']
-    sponsor= fare_hash['fares'] ['fare']['funding']['sponsor']
-    return fare, funding_source, sponsor
+    fares = fare_hash['fares']['fare']
+    highest_priority_fare = []
+    fares.each do |fare|
+      if highest_priority_fare.empty? or highest_priority_fare[3] < fare['priority']
+        highest_priority_fare = [fare['client_copay'], fare['funding']['funding_source'], fare['funding']['sponsor'], fare['priority']]
+      end
+    end
+    return highest_priority_fare[0], highest_priority_fare[1], highest_priority_fare[2]
   end
 
   # For anonymous user, get an array of potential prices and funding sources
