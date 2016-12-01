@@ -10,7 +10,10 @@ class FareHelper
     if up.count > 0 and Oneclick::Application.config.get_fares_from_ecolane
         Rails.logger.info("Getting fare from Ecolane")
       return query_fare(itinerary)
-    elsif not service.fare_user.nil? and Oneclick::Application.config.get_fares_from_ecolane
+    elsif not service.fare_user.nil? and Oneclick::Application.config.get_fares_from_ecolane and service.ecolane_profile.api_version == "8"
+      Rails.logger.info("Getting fare from Ecolane for guest user.")
+      return query_guest_fare(itinerary)
+    elsif Oneclick::Application.config.get_fares_from_ecolane and not service.ecolane_profile.nil? and service.ecolane_profile.api_version == "9"
       Rails.logger.info("Getting fare from Ecolane for guest user.")
       return query_guest_fare(itinerary)
     else
@@ -18,7 +21,6 @@ class FareHelper
       return calculate_paratransit_fare itinerary
     end
   end
-
 
   #Get the fare from a third-party source (e.g., a booking agent.)
   def query_fare(itinerary)
@@ -32,14 +34,11 @@ class FareHelper
   end
 
   def query_guest_fare(itinerary)
-
     #Get the official fare for this itinerary
     bs = BookingServices.new
     itinerary.cost = nil
-
     #Get an array of potential discounts
     itinerary.discounts = bs.build_discount_array(itinerary).to_json
-
     itinerary.save
   end
 

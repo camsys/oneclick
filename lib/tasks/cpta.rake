@@ -600,8 +600,19 @@ namespace :oneclick do
     if service.ecolane_profile.token.nil?
       puts 'Be sure to setup a token for ' + service.name  + ' ' + service.external_id + ', service_id = ' + service.id.to_s
     end
-
+    puts "The Rabbit Test Service has been Turned On"
     service.save
+
+    #### Turn OFF Rabbit Shared Ride
+    s = Service.find_by(external_id: "rabbit")
+    if s.nil?
+      puts 'The Rabbit service does not exist'
+    else
+      s.active = false
+      s.save
+      puts 'The Rabbit service has been turned off.'
+    end
+
   end
 
   desc "Turn Off the Rabbit Test Service and Turn on the Rabbit Shared Ride Service"
