@@ -8,7 +8,7 @@ class FareHelper
     up = UserService.where(user_profile: itinerary.trip_part.trip.user.user_profile, service: itinerary.service)
 
     if up.count > 0 and Oneclick::Application.config.get_fares_from_ecolane
-        Rails.logger.info("Getting fare from Ecolane")
+      Rails.logger.info("Getting fare from Ecolane")
       return query_fare(itinerary)
     elsif not service.fare_user.nil? and Oneclick::Application.config.get_fares_from_ecolane and service.ecolane_profile.api_version == "8"
       Rails.logger.info("Getting fare from Ecolane for guest user.")
@@ -24,8 +24,8 @@ class FareHelper
 
   #Get the fare from a third-party source (e.g., a booking agent.)
   def query_fare(itinerary)
-    case itinerary.service.booking_service_code
-    when 'ecolane'
+    case itinerary.service.profile
+    when BookingServices::AGENCY[:ecolane]
       bs = BookingServices.new
       my_fare =  bs.query_fare(itinerary)
       itinerary.cost = my_fare
