@@ -24,7 +24,7 @@ class FareHelper
 
   #Get the fare from a third-party source (e.g., a booking agent.)
   def query_fare(itinerary)
-    case itinerary.service.profile
+    case itinerary.service.booking_profile
     when BookingServices::AGENCY[:ecolane]
       bs = BookingServices.new
       my_fare =  bs.query_fare(itinerary)
