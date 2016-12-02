@@ -92,7 +92,6 @@ module Api
         render status: 200, json: { email: @traveler.email, authentication_token: @traveler.authentication_token, first_name: @traveler.first_name, last_name: @traveler.last_name, last_origin: last_origin, last_destination: last_destination}
       end
 
-
       def destroy
         # Fetch params
         user = User.find_by(authentication_token: params[:user_token])
@@ -106,6 +105,27 @@ module Api
         end
       end
 
+      def sign_up
+        email = params[:email]
+        first_name = params[:first_name]
+        last_name = params[:last_name]
+        password = params[:password]
+        password_confirmation = params[:password_confirmation]
+
+        new_user = User.new(email: email, first_name: first_name, last_name: last_name, password: password, password_confirmation: password_confirmation)
+        if new_user.save
+          new_user.reset_authentication_token!
+          new_user.sign_in_count += 1
+          new_user.save
+          render status: 201, json: {email: new_user.email, authentication_token: new_user.authentication_token}
+          return
+        else
+          render status: 400, json: new_user.errors.messages
+          return
+        end
+
+      end
+
       protected
 
       def set_access_control_headers
@@ -113,6 +133,8 @@ module Api
         headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
         headers['Access-Control-Allow-Headers'] = 'Content-Type, X-User-Token, X-User-Email'
       end
+
+
 
     end  # Class
   end #V1

@@ -404,6 +404,7 @@ Oneclick::Application.routes.draw do
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
+        post 'sign_up' => 'sessions#sign_up'
       end
 
     end
