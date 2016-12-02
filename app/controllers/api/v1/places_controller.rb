@@ -39,27 +39,19 @@ module Api
 
       end
 
+      # Returns true if the provided location is within any of the active service areas, false if not
       def within_area
+        lat = params[:geometry][:location][:lat]
+        lng = params[:geometry][:location][:lng]
+        point = RGeo::Geographic.simple_mercator_factory.point(lng.to_f, lat.to_f)
 
-        gs = GeographyServices.new
-        county = gs.county_from_google_place params
-
-        #No county sent, get county from the lat,lng
-        if county.blank?
-          origin = params[:geometry]
-          lat = origin[:location][:lat]
-          lng = origin[:location][:lng]
-          og = OneclickGeocoder.new
-          county = og.get_county(lat,lng)
+        result = Service.active.paratransit.any? do |service|
+          service.primary_coverage &&
+          service.primary_coverage.geom &&
+          service.primary_coverage.geom.contains?(point)
         end
 
-        Service.active.paratransit.each do |service |
-          if service.county_endpoint_contains?(county)
-            render json: {result: true}
-            return
-          end
-        end
-        render json: {result: false}
+        render json: {result: result}
       end
 
       def boundary
