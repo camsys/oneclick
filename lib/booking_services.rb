@@ -203,10 +203,6 @@ class BookingServices
         es = EcolaneServices.new
         ecolane_params = {confirmation_number: itinerary.booking_confirmation, system: ecolane_profile.system, token: ecolane_profile.token}
         result = es.cancel(ecolane_params)
-        if result
-          itinerary.selected = false
-          itinerary.save
-        end
 
       when AGENCY[:trapeze]
         trapeze_profile = itinerary.service.trapeze_profile

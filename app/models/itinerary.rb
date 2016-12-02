@@ -266,7 +266,6 @@ class Itinerary < ActiveRecord::Base
 
   def cancel
     if self.booking_confirmation.nil?
-      self.selected = false
       self.save
       return true
     end

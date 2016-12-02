@@ -56,6 +56,7 @@ class BookedTripsReport < AbstractReport
     # Base query -- all valid itineraries, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)
     booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
+    selected_itins = itinerary_base.selected
     data = {} # Object for holding results tables
 
     ##########################
@@ -94,8 +95,6 @@ class BookedTripsReport < AbstractReport
     # Trips Selected by Mode #
     ##########################
 
-    selected_itins = itinerary_base.selected
-
     # Prepare Data Table
     data[:selected_trips_by_mode] = {
       columns: [],
@@ -125,13 +124,13 @@ class BookedTripsReport < AbstractReport
     # Set up Tick Marks on hAxis
     data[:selected_trips_by_mode][:options][:hAxis][:ticks] = setup_tick_marks(@date_range, @time_unit)
 
-    ###########################
-    # Trips Booked by Purpose #
-    ###########################
+    #############################
+    # Selected Trips by Purpose #
+    #############################
     # NOTE: Currently only set up to use trip_purpose_raw field from external booking services
 
     # Query all itineraries with and without a trip_purpose_raw value (for external booking services)
-    itins_with_purpose = booked_itins.includes(trip_part: [trip: [:trip_purpose]])
+    itins_with_purpose = selected_itins.includes(trip_part: [trip: [:trip_purpose]])
     itins_with_external_purpose = itins_with_purpose.where.not(trips: {trip_purpose_raw: nil})
     itins_without_external_purpose = itins_with_purpose.where(trips: {trip_purpose_raw: nil})
 
