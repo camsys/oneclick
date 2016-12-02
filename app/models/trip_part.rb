@@ -329,6 +329,11 @@ class TripPart < ActiveRecord::Base
       itins = filter_midnight(itins)
     end
 
+    # Filter out trips with very long waits
+    if Oneclick::Application.config.filter_long_wait
+      itins = filter_long_wait(itins)
+    end
+
     itins
   end
 
@@ -341,6 +346,10 @@ class TripPart < ActiveRecord::Base
       # Filter out itineraries that end on a different day than requested
       return itineraries.select {|itin| itin.end_time.day == self.scheduled_time.day}
     end
+  end
+
+  def filter_long_wait itineraries
+    return itineraries.select { |itin| itin.wait_time < Oneclick::Application.config.absolute_max_wait_minutes*90}
   end
 
   # TODO refactor following 4 methods
