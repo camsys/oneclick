@@ -406,6 +406,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def characteristics_hash
+    self.user_characteristics.collect{ |c| {name: TranslationEngine.translate_text(c.characteristic.name), code: c.characteristic.code, note: TranslationEngine.translate_text(c.characteristic.note), value: c.value}}
+  end
+
+  def accommodations_hash
+    self.user_accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.accommodation.name), code: a.accommodation.code, note: TranslationEngine.translate_text(a.accommodation.note), value: a.value}}
+  end
+
   def walk_speed_to_code(walk_speed)
     walk_speed = walk_speed.downcase.strip.to_sym
     walk_speed_hash = {slow: "slow", average: "average", medium: "average", fast:"fast"}
