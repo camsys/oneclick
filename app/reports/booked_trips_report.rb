@@ -128,7 +128,7 @@ class BookedTripsReport < AbstractReport
     ###########################
     # Trips Booked by Purpose #
     ###########################
-    # NOTE: Currently only set up to use trip_purpos_raw field from external booking services
+    # NOTE: Currently only set up to use trip_purpose_raw field from external booking services
 
     # Query all itineraries with and without a trip_purpose_raw value (for external booking services)
     itins_with_purpose = booked_itins.includes(trip_part: [trip: [:trip_purpose]])
@@ -169,8 +169,6 @@ class BookedTripsReport < AbstractReport
     # Status of Booked Trips #
     ##########################
 
-    itins_with_ecolane_booking = booked_itins.includes(:ecolane_booking).where.not(ecolane_bookings: {id: nil}).references(:ecolane_bookings)
-
     # Prepare Data Table
     data[:booked_trip_status] = {
       columns: [],
@@ -190,7 +188,7 @@ class BookedTripsReport < AbstractReport
       { heading: 'trip count', type: 'number'}
     ]
 
-    status_counts = itins_with_ecolane_booking.group('ecolane_bookings.booking_status_code').count
+    status_counts = booked_itins.group('ecolane_bookings.booking_status_code').count
 
     # Add Data to the Table
     status_counts.each do |status, count|
