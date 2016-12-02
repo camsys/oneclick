@@ -9,4 +9,4 @@
           -value = user_characteristics.get_answer_description(c.code)
           %p.form-control-static= ((value.is_a? String) ? value : translate_helper(value))
         - else
-          %p.form-control-static= translate_helper(user_characteristics.get_answer_description(c.code))
+          %p.form-control-static= user_characteristics.get_answer_description(c.code)
