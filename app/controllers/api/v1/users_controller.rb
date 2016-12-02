@@ -54,11 +54,12 @@ module Api
         end
 
         hash[:lang] = @traveler.preferred_locale
+        hash[:characteristics] = @traveler.characteristics_hash
+        hash[:accommodations] = @traveler.accommodations_hash
 
         render json: hash
 
       end
-
     end
   end
 end
