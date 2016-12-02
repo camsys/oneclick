@@ -39,19 +39,10 @@ module Api
 
       end
 
-      # Returns true if the provided location is within any of the active service areas, false if not
+      # Returns json result: true if the provided location is within any of the active service areas, false if not
       def within_area
-        lat = params[:geometry][:location][:lat]
-        lng = params[:geometry][:location][:lng]
-        point = RGeo::Geographic.simple_mercator_factory.point(lng.to_f, lat.to_f)
-
-        result = Service.active.paratransit.any? do |service|
-          service.primary_coverage &&
-          service.primary_coverage.geom &&
-          service.primary_coverage.geom.contains?(point)
-        end
-
-        render json: {result: result}
+        lat, lng = params[:geometry][:location][:lat], params[:geometry][:location][:lng]
+        render json: {result: Service.active.paratransit.any? { |s| s.primary_coverage_contains?(lat, lng) } }
       end
 
       def boundary

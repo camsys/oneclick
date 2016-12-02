@@ -33,7 +33,7 @@ module Api
           booking_services = Service.where("fare_user <> ?", "")
 
           booking_services.each do |booking_service|
-            if booking_service.endpoint_contains?(lat,lng)
+            if booking_service.primary_coverage_contains?(lat,lng)
               service = booking_service
               break
             end

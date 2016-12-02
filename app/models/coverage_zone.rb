@@ -94,4 +94,10 @@ class CoverageZone < ActiveRecord::Base
     myArray
   end
 
+  # Returns true if passed lat, long are within coverage zone's geom
+  def contains?(lat, lng)
+    point = RGeo::Geographic.simple_mercator_factory.point(lng.to_f, lat.to_f)
+    geom && geom.contains?(point)
+  end
+
 end

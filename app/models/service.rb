@@ -554,8 +554,8 @@ class Service < ActiveRecord::Base
 
   end
 
+  # DEPRECATED
   def endpoint_contains?(lat,lng)
-
     mercator_factory = RGeo::Geographic.simple_mercator_factory
      test_point = mercator_factory.point(lng, lat)
     unless self.endpoint_area_geom.nil?
@@ -564,6 +564,12 @@ class Service < ActiveRecord::Base
     return true
   end
 
+  # Returns true if passed lat, lng are within the service's primary coverage area
+  def primary_coverage_contains?(lat, lng)
+    primary_coverage && primary_coverage.contains?(lat, lng)
+  end
+
+  # DEPRECATED
   def county_endpoint_contains? county
     #Match Endpoint County Names
     unless self.county_endpoint_array.blank?
