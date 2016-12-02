@@ -52,8 +52,10 @@ class BookedTripsReport < AbstractReport
     @to_date = Chronic.parse(report.to_date).to_date
     @date_range = @from_date..@to_date
     @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
-    itinerary_base = Itinerary.valid.visible.where(created_at: @date_range) # Base query -- all valid itineraries
-    booked_itins = itinerary_base.where.not(booking_confirmation: nil)
+
+    # Base query -- all valid itineraries, joined with ecolane bookings
+    itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)
+    booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
     data = {} # Object for holding results tables
 
     ##########################
