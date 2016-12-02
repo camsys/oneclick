@@ -44,7 +44,16 @@ class UserCharacteristicsProxy < UserProfileProxy
   def get_answer_description(code)
     characteristic = Characteristic.find_by_code(code)
     map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
-    return coerce_value_to_string(characteristic, map)
+
+    if map.nil?
+      return TranslationEngine.translate_text(:no_answer_str)
+    elsif map.value == true
+      return TranslationEngine.translate_text(:yes_str)
+    elsif map.value == false
+      return TranslationEngine.translate_text(:no_str)
+    else
+      return TranslationEngine.translate_text(:no_answer_str)
+    end
   end
 
   def update_maps(new_settings)

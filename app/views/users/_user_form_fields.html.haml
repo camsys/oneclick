@@ -171,10 +171,10 @@
                           :javascript
                             $('#input_container .label-help').removeClass('fa-2x');
                         .col-sm-5#eligibility_questions
-                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, "true") }
+                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "true", checked: c.true_false_checked?(@traveler, true) }
                           %label{for: "user_characteristics_proxy_#{c.code}_true", name: "user_characteristics_proxy[#{c.code}]"} #{translate_helper(:yes_str)}
 
-                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, "false") }
+                          %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "false", checked: c.true_false_checked?(@traveler, false) }
                           %label{for: "user_characteristics_proxy_#{c.code}_false", name: "user_characteristics_proxy[#{c.code}]"} #{translate_helper(:no_str)}
 
                           %input.radio_buttons.optional{id: "user_characteristics_proxy_#{c.code}_na", name: "user_characteristics_proxy[#{c.code}]", type: "radio", value: "na", checked: c.na_checked?(@traveler) }

@@ -29,7 +29,7 @@ class UserAccommodationsProxy < UserProfileProxy
     accommodation = Accommodation.find_by_code(code)
     map = UserAccommodation.where("accommodation_id = ? AND user_profile_id = ?", accommodation.id, user.user_profile.id).first
     # if the user has an existing accommodation stored we return it.
-    return coerce_value_to_string(accommodation, map)
+    return TranslationEngine.translate_text(coerce_value_to_string(accommodation, map))
   end
 
   # Update the user accommodation based on the form params
