@@ -22,7 +22,7 @@ class TaxiItinerary < Itinerary
     api_key = Oneclick::Application.config.taxi_fare_finder_api_key
 
     taxi_services.each do |taxi_service|
-      taxi_service_match = taxi_service.is_valid_for_trip_area(from, to) && taxi_service.is_valid_for_trip_schedule(passed_trip_part)
+      taxi_service_match = taxi_service.is_valid_for_trip_area(passed_trip_part) && taxi_service.is_valid_for_trip_schedule(passed_trip_part)
       #taxi_service_match = taxi_service.can_provide_user_accommodations(trip_user, taxi_service) if (trip_user.present? && taxi_service_match)
 
       if (taxi_service_match)

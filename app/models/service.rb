@@ -511,6 +511,7 @@ class Service < ActiveRecord::Base
     rel
   end
 
+  # Returns true if passed trip part origin and destination meet primary and secondary coverage tests
   def is_valid_for_trip_area(trip_part)
     origin_lat, origin_lon = trip_part.from_trip_place.lat.to_f, trip_part.from_trip_place.lon.to_f
     destination_lat, destination_lon = trip_part.to_trip_place.lat.to_f, trip_part.to_trip_place.lon.to_f
