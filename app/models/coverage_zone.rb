@@ -2,9 +2,18 @@ class CoverageZone < ActiveRecord::Base
 
   has_one :service
 
+  # Converts a recipe into a well-formed array
+  def self.clean_recipe(recipe)
+    if recipe.is_a?(Array)
+      return recipe.map{ |area| area.to_s }
+    else
+      return recipe.to_s.split(',').map(&:strip)
+    end
+  end
+
   # Parses a coverage area "recipe" string into an array of matching County, Zipcode, and City objects
   def self.parse_coverage_recipe(recipe)
-    parsed_recipe = recipe.is_a?(Array) ? recipe.map{|area| area.to_s} : recipe.to_s.split(',').map(&:strip)
+    parsed_recipe = CoverageZone.clean_recipe(recipe)
 
     # Create a hash with an array of matches for each area name.
     matched_areas = parsed_recipe.each_with_object({}) do |area_recipe, match_hash|
@@ -97,6 +106,12 @@ class CoverageZone < ActiveRecord::Base
   def contains?(lat, lng)
     point = RGeo::Geographic.simple_mercator_factory.point(lng.to_f, lat.to_f)
     geom && geom.contains?(point)
+  end
+
+  # Adds a new recipe to the existing recipe and parses it.
+  def add_to_recipe(recipe_to_add)
+    new_recipe = CoverageZone.clean_recipe(recipe_to_add) + CoverageZone.clean_recipe(self.recipe)
+    CoverageZone.build_coverage_area(new_recipe)
   end
 
 end

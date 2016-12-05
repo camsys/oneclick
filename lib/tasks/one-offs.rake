@@ -180,21 +180,39 @@ namespace :oneclick do
           puts " #{service.fare_structures.length} new fare structures created."
         end
 
+        ######
         # Build Coverage Zones by parsing Endpoint Array and Coverage Array as recipes and joining to existing coverage recipes.
         unless service.county_endpoint_array.nil?
           recipe = service.county_endpoint_array.join(', ') + (service.primary_coverage.nil? ? "" : ", #{service.primary_coverage.recipe}")
-          print "Parsing Primary Coverage Area..."
+          print "Parsing county_endpoint_array to Primary Coverage Area..."
           service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(recipe))
           puts " #{service.primary_coverage.recipe} added as primary coverage."
         end
 
-        # Only build secondary coverage zones for paratransit
+        # Only build secondary coverage zones for paratransit:
         unless service.county_coverage_array.nil? || service.service_type.code != "paratransit"
           recipe = service.county_coverage_array.join(', ') + (service.secondary_coverage.nil? ? "" : ", #{service.secondary_coverage.recipe}")
-          puts "Parsing Secondary Coverage Area..."
+          puts "Parsing county_coverage_array to Secondary Coverage Area..."
           service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(recipe))
           puts " #{service.secondary_coverage.recipe} added as secondary coverage."
         end
+        ######
+
+        ######
+        # Build Coverage Zones by copying over old Endpoint and Coverage Areas
+        puts "Converting Old Endpoint and Coverage Areas..."
+
+        # If service has endpoints, get their geo coverages' names
+        unless service.endpoints.nil? || service.endpoints.empty?
+          puts service.endpoints.map{ |area| area.geo_coverage.value }.ai
+        end
+
+        # If service has coverages, get their geo coverages' names
+        unless service.coverages.nil? || service.coverages.empty?
+          puts service.coverages.map{ |area| area.geo_coverage.value }.ai
+        end
+
+        ######
 
       end
 
