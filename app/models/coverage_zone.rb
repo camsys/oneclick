@@ -4,8 +4,7 @@ class CoverageZone < ActiveRecord::Base
 
   # Parses a coverage area "recipe" string into an array of matching County, Zipcode, and City objects
   def self.parse_coverage_recipe(recipe)
-    recipe = recipe.to_s
-    parsed_recipe = recipe.split(',').map(&:strip)
+    parsed_recipe = recipe.is_a?(Array) ? recipe.map{|area| area.to_s} : recipe.to_s.split(',').map(&:strip)
 
     # Create a hash with an array of matches for each area name.
     matched_areas = parsed_recipe.each_with_object({}) do |area_recipe, match_hash|
