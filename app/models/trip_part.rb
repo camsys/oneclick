@@ -171,7 +171,7 @@ class TripPart < ActiveRecord::Base
 
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
-  def create_itineraries(modes = trip.desired_modes)
+  def create_itineraries(modes = trip.desired_modes.prioritized)
 
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
@@ -307,6 +307,22 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
+    elsif response['error']
+      itinerary = Itinerary.create(server_status: response['error']['id'], server_message: response['error']['msg'])
+
+      case mode_code.to_s
+        when 'mode_car'
+          itinerary.mode = Mode.car
+        when 'mode_bicycle'
+          itinerary.mode = Mode.bicycle
+        when 'mode_walk'
+          itinerary.mode = Mode.walk
+        else
+          itinerary.mode = Mode.transit
+      end
+
+      itins << itinerary
+
     elsif !response['plan']['id'].blank?
       itinerary = Itinerary.create(server_status: response['plan']['id'], server_message: response['plan']['msg'])
 

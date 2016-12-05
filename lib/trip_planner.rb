@@ -20,6 +20,8 @@ class TripPlanner
 
       if result
         break
+      elsif response['error']
+        return result, response
       elsif response['plan']['id'] == 406 #NO_TRANSIT_TIMES don't retry
         return result, response
       else
@@ -107,7 +109,7 @@ class TripPlanner
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error' and not result['error'].nil?
-      return false, result['error']
+      return false, result
     else
       return true, result
     end

@@ -39,7 +39,7 @@ class GeographyServices
   end
 
   def store_callnride_boundary(shapefile_path)
-    merged_shape = nil
+    shapes = []
     unless shapefile_path.nil?
       begin
         Zip::File.open(shapefile_path) do |zip_file|
@@ -60,11 +60,7 @@ class GeographyServices
               RGeo::Shapefile::Reader.open(shp_name, { :assume_inner_follows_outer => true }) do |shapefile|
                 shapefile.each do |shape|
                   if not shape.geometry.nil?
-                    if merged_shape.nil?
-                      merged_shape = shape.geometry
-                    else
-                      merged_shape = merged_shape.union(shape.geometry)
-                    end
+                    shapes << {name: shape.attributes['NAME'], geometry: shape.geometry}
                   end
                 end
               end
@@ -73,7 +69,7 @@ class GeographyServices
         end
 
       oc = OneclickConfiguration.where(code: "callnride_boundary").first_or_initialize
-      oc.value = merged_shape
+      oc.value = shapes
       oc.save
 
       rescue Exception => msg

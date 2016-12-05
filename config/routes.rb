@@ -345,6 +345,7 @@ Oneclick::Application.routes.draw do
           get 'boundary'
           get 'synonyms'
           get 'routes'
+          get 'blacklist'
         end
       end
 

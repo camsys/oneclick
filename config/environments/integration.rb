@@ -14,7 +14,7 @@ Oneclick::Application.configure do
   config.assets.compile = false
   config.assets.digest = true
   # config.assets.debug
-
+  config.action_controller.asset_host = ENV['ONECLICK_URL']
   config.i18n.fallbacks = false
 
   config.active_support.deprecation = :notify

@@ -1,4 +1,4 @@
-%img{src: "#{get_logo_path}"}
+= image_tag(get_logo_path, height: 75)
 :css
   hr{
     border: 0;
@@ -7,7 +7,7 @@
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
   }
 
-  
+
 
 %br
 = yield

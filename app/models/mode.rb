@@ -15,6 +15,7 @@ class Mode < ActiveRecord::Base
   scope :top_level, -> { where parent_id: nil }
   scope :visible, -> { where visible: true }
   scope :selected_by_default, -> { where selected_by_default: true }
+  scope :prioritized, -> { order(results_sort_order: :asc) }
 
   begin
     Mode.unscoped.load.each do |mode|

@@ -1,7 +1,7 @@
 module Api
   module V1
     class ItinerariesController < Api::V1::ApiController
-      include MapHelper
+      include MapHelper, ItineraryHelper
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
@@ -147,7 +147,7 @@ module Api
           #Build the itineraries
           tp.create_itineraries
 
-          my_itins = Itinerary.where(trip_part: tp)
+          my_itins = Itinerary.where(trip_part: tp).order('created_at')
           #my_itins = tp.itineraries
           my_itins.each do |itin|
             Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
@@ -245,7 +245,10 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        render json: {trip_id: trip.id, origin_in_callnride: trip.origin.within_callnride?, destination_in_callnride: trip.destination.within_callnride?, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+        origin_in_callnride, origin_callnride = trip.origin.within_callnride?
+        destination_in_callnride, destination_callnride = trip.destination.within_callnride?
+
+        render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 
       end
 
@@ -370,44 +373,19 @@ module Api
       end
 
       def map_status
-        itinerary_ids = params[:itinerary_ids]
-        statuses = Itinerary.where(id: itinerary_ids).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
-        render json: statuses
+        itinerary_ids = [params[:id]]
+        statuses = Itinerary.where(id: itinerary_ids).collect{|i| {id: i.id, has_map: true, url: "/api/v1/itineraries/#{i.id}/create_map"}}
+        render json: {:itineraries => statuses}
       end
 
+      # This is unneeded since we are no longer using phantomjs
       def request_create_maps
-
-        itinerary_ids = []
-
-        if params[:trip_id].nil?
-          itinerary_ids = params[:itinerary_ids]
-        else
-          trip = Trip.find(params[:trip_id])
-          trip.selected_itineraries.each do |itin|
-            itinerary_ids.push(itin.id)
-          end
-        end
-
-        itinerary_ids.each do |itin|
-          print_url = Oneclick::Application.config.oneclick_url + create_map_api_v1_itinerary_path(itin)
-          Rails.logger.info "print_url is #{print_url}"
-          PrintMapWorker.perform_async(print_url, itin)
-        end
-
         render json: {result: 200}
       end
 
       def create_map
-        @itinerary = Itinerary.find(params[:id])
-        @legs = @itinerary.get_legs
-        if @itinerary.is_mappable
-          @markers = create_itinerary_markers(@itinerary).to_json
-          @polylines = create_itinerary_polylines(@legs).to_json
-          @sidewalk_feedback_markers = create_itinerary_sidewalk_feedback_markers(@legs).to_json
-        end
-
-        @itinerary = ItineraryDecorator.decorate(@itinerary)
-        render "itineraries/create_map.html"
+        itinerary = Itinerary.find(params[:id])
+        send_data create_static_map(itinerary), {:type => 'image/png', :filename => "#{params[:id]}.png" }
       end
 
       def yes_or_no value

@@ -151,4 +151,18 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  def blacklist_failed_email(emails, message, row)
+    emails.each do |email|
+      @message = message
+      @row = row
+      mail(to: email, from: @@from, subject: 'Blacklisted Google Places Upload Failed')
+    end
+  end
+
+  def blacklist_succeeded_email(emails)
+    emails.each do |email|
+      mail(to: email, from: @@from, subject: 'Blacklisted Google Place Upload Succeeded')
+    end
+  end
+
 end

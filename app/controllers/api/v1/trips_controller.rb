@@ -30,17 +30,13 @@ module Api
         get_trip_details trip
       end
 
-
       def get_trip_status trip
-
         if trip
           hash = {modes: trip.desired_modes_raw, trip_status_report: {trip_token: trip.token, trip_id: trip.id, code: trip.status[:code], description: trip.status[:description]}}
         else
           hash = {modes: nil,trip_status_report: {trip_token: nil, trip_id: nil, code: "404", description: "Trip not found."}}
         end
-
         respond_with hash
-
       end
 
       def get_trip_details trip
