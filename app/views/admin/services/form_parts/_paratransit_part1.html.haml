@@ -17,14 +17,30 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :primary_coverage_recipe,
-      label: translate_helper(:pt_primary_coverage_area),
-      placeholder: translate_helper(:coverage_area_placeholder),
-      input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
-  = f.input :secondary_coverage_recipe,
-      label: translate_helper(:pt_secondary_coverage_area),
-      placeholder: translate_helper(:coverage_area_placeholder),
-      input_html: { value: service.secondary_coverage ? service.secondary_coverage.recipe : "" }
+  - custom_primary = service.primary_coverage && service.primary_coverage.custom_shape
+  - if custom_primary
+    = f.input :primary_coverage_custom,
+        label: translate_helper(:pt_primary_coverage_area),
+        placeholder: "(custom shape)",
+        input_html: { value: "", readonly: true }
+  - else
+    = f.input :primary_coverage_recipe,
+        label: translate_helper(:pt_primary_coverage_area),
+        placeholder: translate_helper(:coverage_area_placeholder),
+        input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
+
+  - custom_secondary = service.secondary_coverage && service.secondary_coverage.custom_shape
+  - if custom_secondary
+    = f.input :secondary_coverage_custom,
+        label: translate_helper(:pt_secondary_coverage_area),
+        placeholder: "(custom shape)",
+        input_html: { value: "", readonly: true }
+  - else
+    = f.input :secondary_coverage_recipe,
+        label: translate_helper(:pt_secondary_coverage_area),
+        placeholder: translate_helper(:coverage_area_placeholder),
+        input_html: { value: service.secondary_coverage ? service.secondary_coverage.recipe : "" }
+
   -if has_coverages
     = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
       :multipolygons => service.coverage_area_polygons,
