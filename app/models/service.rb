@@ -511,30 +511,25 @@ class Service < ActiveRecord::Base
     rel
   end
 
-  def is_valid_for_trip_area(from, to)
+  def is_valid_for_trip_area(trip_part)
+    origin_lat, origin_lon = trip_part.from_trip_place.lat.to_f, trip_part.from_trip_place.lon.to_f
+    destination_lat, destination_lon = trip_part.to_trip_place.lat.to_f, trip_part.to_trip_place.lon.to_f
 
-   #taken from def eligible_by_location(trip_part, itineraries)
-   #some day we may want to pass the whole object around and not just from/to
+    # Origin OR destination must lie within PRIMARY coverage
+    primary_coverage_test =
+      primary_coverage.nil? ||
+      primary_coverage.geom.nil? ||
+      primary_coverage_contains?(origin_lat, origin_lon) ||
+      primary_coverage_contains?(destination_lat, destination_lon)
 
-   mercator_factory = RGeo::Geographic.simple_mercator_factory
+    # Origin AND destination must lie within SECONDARY coverage
+    secondary_coverage_test =
+      secondary_coverage.nil? ||
+      secondary_coverage.geom.nil? ||
+      ( secondary_coverage_contains?(origin_lat, origin_lon) &&
+        secondary_coverage_contains?(destination_lat, destination_lon) )
 
-   service = self
-
-   Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
-
-   origin_point = mercator_factory.point(from[1], from[0])
-   destination_point = mercator_factory.point(to[1], to[0])
-
-   unless service.endpoint_area_geom.nil?
-      return false unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
-   end
-
-   unless service.coverage_area_geom.nil?
-     return false unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
-   end
-
-   return true
-
+    primary_coverage_test && secondary_coverage_test
   end
 
   # Returns whether or not trip part falls within service schedule times
@@ -557,6 +552,11 @@ class Service < ActiveRecord::Base
   # Returns true if passed lat, lng are within the service's primary coverage area
   def primary_coverage_contains?(lat, lng)
     primary_coverage && primary_coverage.contains?(lat, lng)
+  end
+
+  # Returns true if passed lat, lng are within the service's secondary coverage area
+  def secondary_coverage_contains?(lat, lng)
+    secondary_coverage && secondary_coverage.contains?(lat, lng)
   end
 
   # DEPRECATED

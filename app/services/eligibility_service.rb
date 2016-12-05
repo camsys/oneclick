@@ -193,69 +193,18 @@ class EligibilityService
     itineraries
   end
 
+  # Returns the subset of the given itinerary hashes that are eligible by location based on the trip part
   def eligible_by_location(trip_part, itineraries)
-
-    factory = RGeo::Geographic.simple_mercator_factory
-
-    eligible_itineraries  = []
-    itineraries.each do |itinerary|
+    itineraries.select do |itinerary|
       service = itinerary['service']
-
-      Rails.logger.info "eligible_by_location for service #{service.name rescue nil}"
-
-      origin_point = factory.point(trip_part.from_trip_place.lon.to_f, trip_part.from_trip_place.lat.to_f)
-      destination_point = factory.point(trip_part.to_trip_place.lon.to_f, trip_part.to_trip_place.lat.to_f)
-
-      origin_county = trip_part.from_trip_place.county
-      destination_county = trip_part.to_trip_place.county
-
-      #Match Endpoint County Names
-      unless service.county_endpoint_array.blank?
-        unless origin_county.in? service.county_endpoint_array or destination_county.in? service.county_endpoint_array
-          next
-        end
+      if service
+        test = service.is_valid_for_trip_area(trip_part)
+        puts "#{service.name} is #{"NOT " unless test}eligible by location"
+        test
+      else
+        false
       end
-
-      #Match Coverage County Names
-      unless service.county_coverage_array.blank?
-        unless origin_county.in? service.county_coverage_array and destination_county.in? service.county_coverage_array
-          next
-        end
-      end
-
-      #Match Endpoint Area
-      unless service.endpoint_area_geom.nil?
-        unless service.endpoint_area_geom.geom.contains? origin_point or service.endpoint_area_geom.geom.contains? destination_point
-          next
-        end
-      end
-
-      #Match Coverage Area
-      unless service.coverage_area_geom.nil?
-        unless service.coverage_area_geom.geom.contains? origin_point and service.coverage_area_geom.geom.contains? destination_point
-          next
-        end
-      end
-
-      # Match (New) Primary Coverage Area
-      unless service.primary_coverage.nil? || service.primary_coverage.geom.nil?
-        unless service.primary_coverage.geom.contains? origin_point or service.primary_coverage.geom.contains? destination_point
-          next
-        end
-      end
-
-      # Match (New) Secondary Coverage Area
-      unless service.secondary_coverage.nil? || service.secondary_coverage.geom.nil?
-        unless service.secondary_coverage.geom.contains? origin_point and service.secondary_coverage.geom.contains? destination_point
-          next
-        end
-      end
-
-      eligible_itineraries << itinerary
-      puts "#{service.name} is eligible by location"
-
     end
-    eligible_itineraries
   end
 
   def eligible_by_trip_purpose(trip_part, itineraries)
