@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161130175635) do
+ActiveRecord::Schema.define(version: 20161205201938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
   enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
@@ -126,7 +127,8 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
+    t.boolean  "custom_shape",                                       default: false
   end
 
   create_table "date_options", force: true do |t|
@@ -182,8 +184,8 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -308,6 +310,10 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.boolean  "assistant"
+    t.integer  "companions"
+    t.integer  "children"
+    t.integer  "other_passengers"
     t.text     "discounts"
     t.datetime "negotiated_pu_time"
     t.datetime "negotiated_do_time"
@@ -434,22 +440,22 @@ ActiveRecord::Schema.define(version: 20161130175635) do
   end
 
   create_table "pois", force: true do |t|
-    t.integer  "poi_type_id",                 null: false
-    t.string   "name",            limit: 256, null: false
+    t.integer  "poi_type_id",                                           null: false
+    t.string   "name",            limit: 256,                           null: false
     t.string   "address1",        limit: 128
     t.string   "address2",        limit: 128
     t.string   "city",            limit: 128
     t.string   "state",           limit: 64
     t.string   "zip",             limit: 10
-    t.float    "lat"
-    t.float    "lon"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.decimal  "lat",                         precision: 15, scale: 10
+    t.decimal  "lon",                         precision: 15, scale: 10
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.string   "county",          limit: 128
+    t.boolean  "old"
     t.string   "street_number"
     t.string   "route"
     t.string   "google_place_id"
-    t.string   "stop_code"
     t.text     "types"
   end
 
@@ -482,8 +488,10 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.string  "internal_contact_title"
     t.string  "internal_contact_phone"
     t.string  "internal_contact_email", limit: 128
+    t.string  "old_logo_url"
     t.text    "private_comments_old"
     t.text    "public_comments_old"
+    t.string  "icon"
     t.string  "logo"
     t.string  "disabled_comment"
     t.boolean "send_booking_emails"
@@ -590,6 +598,7 @@ ActiveRecord::Schema.define(version: 20161130175635) do
   end
 
   create_table "ridepilot_bookings", force: true do |t|
+    t.integer  "leg"
     t.integer  "guests"
     t.integer  "attendants"
     t.integer  "mobility_devices"
@@ -701,6 +710,7 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
     t.string   "internal_contact_phone"
+    t.string   "logo_url"
     t.integer  "endpoint_area_geom_id"
     t.integer  "coverage_area_geom_id"
     t.integer  "residence_area_geom_id"
@@ -711,8 +721,8 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
     t.string   "fare_user"
     t.text     "disallowed_purposes"
     t.integer  "booking_profile"
@@ -832,14 +842,14 @@ ActiveRecord::Schema.define(version: 20161130175635) do
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
-    t.integer  "sequence",                    null: false
+    t.integer  "sequence",                                              null: false
     t.integer  "place_id"
     t.integer  "poi_id"
     t.string   "raw_address"
-    t.float    "lat"
-    t.float    "lon"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.decimal  "lat",                         precision: 15, scale: 10
+    t.decimal  "lon",                         precision: 15, scale: 10
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.string   "address1",        limit: 128
     t.string   "address2",        limit: 128
     t.string   "city",            limit: 128
@@ -974,8 +984,8 @@ ActiveRecord::Schema.define(version: 20161130175635) do
     t.string   "external_user_id",                                        null: false
     t.boolean  "disabled",                default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",              default: '2014-08-25 14:17:34', null: false
-    t.datetime "created_at",              default: '2014-08-25 14:17:34', null: false
+    t.datetime "updated_at",              default: '2014-08-26 14:30:52', null: false
+    t.datetime "created_at",              default: '2014-08-26 14:30:52', null: false
     t.string   "external_user_password"
     t.string   "encrypted_user_password"
   end
