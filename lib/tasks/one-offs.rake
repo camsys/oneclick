@@ -180,38 +180,48 @@ namespace :oneclick do
           puts " #{service.fare_structures.length} new fare structures created."
         end
 
+        # Initialize service with a primary_coverage & secondary if it doesn't have
+        service.update_attributes(primary_coverage: CoverageZone.build_coverage_area("")) unless service.primary_coverage
+        service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area("")) unless service.secondary_coverage
+
         ######
         # Build Coverage Zones by parsing Endpoint Array and Coverage Array as recipes and joining to existing coverage recipes.
         unless service.county_endpoint_array.nil?
-          recipe = service.county_endpoint_array.join(', ') + (service.primary_coverage.nil? ? "" : ", #{service.primary_coverage.recipe}")
           print "Parsing county_endpoint_array to Primary Coverage Area..."
-          service.update_attributes(primary_coverage: CoverageZone.build_coverage_area(recipe))
+          service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(service.county_endpoint_array))
           puts " #{service.primary_coverage.recipe} added as primary coverage."
         end
 
         # Only build secondary coverage zones for paratransit:
         unless service.county_coverage_array.nil? || service.service_type.code != "paratransit"
-          recipe = service.county_coverage_array.join(', ') + (service.secondary_coverage.nil? ? "" : ", #{service.secondary_coverage.recipe}")
-          puts "Parsing county_coverage_array to Secondary Coverage Area..."
-          service.update_attributes(secondary_coverage: CoverageZone.build_coverage_area(recipe))
+          print "Parsing county_coverage_array to Secondary Coverage Area..."
+          service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
           puts " #{service.secondary_coverage.recipe} added as secondary coverage."
         end
         ######
 
         ######
-        # Build Coverage Zones by copying over old Endpoint and Coverage Areas
-        puts "Converting Old Endpoint and Coverage Areas..."
+        # Build Coverage Zones by parsing county arrays and copying over old Endpoint and Coverage Areas
 
-        # If service has endpoints, get their geo coverages' names
+        # If service has endpoints, get their geo coverages' names and add as a recipe
         unless service.endpoints.nil? || service.endpoints.empty?
-          puts service.endpoints.map{ |area| area.geo_coverage.value }.ai
+          print "Converting old endpoints to Primary Coverage Area..."
+          old_primary = CoverageZone.clean_recipe(service.endpoints.map{ |area| area.geo_coverage && area.geo_coverage.value })
+          service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(old_primary))
+          puts " #{service.primary_coverage.recipe} added as primary coverage."
         end
 
-        # If service has coverages, get their geo coverages' names
-        unless service.coverages.nil? || service.coverages.empty?
-          puts service.coverages.map{ |area| area.geo_coverage.value }.ai
+        # If service has coverages, get their geo coverages' names and add as a recipe
+        unless service.coverages.nil? || service.coverages.empty? || service.service_type.code != "paratransit"
+          print "Converting old coverages to Secondary Coverage Area..."
+          old_secondary = CoverageZone.clean_recipe(service.coverages.map{ |area| area.geo_coverage && area.geo_coverage.value })
+          service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
+          puts " #{service.secondary_coverage.recipe} added as secondary coverage."
         end
+        ######
 
+        ######
+        # Build Coverage Zones by directly copying over custom area shape files?
         ######
 
       end
