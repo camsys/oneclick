@@ -10,8 +10,11 @@ namespace :update do
   desc "v1.8.2"
   task "v1.8.2" => :environment do
     Rake::Task["db:migrate"].invoke
+
+    # Transfering Data from old to new geoms occurs in drop_geo_coverages migration
+    # Rake::Task["oneclick:one_offs:migrate_to_new_service_data_ui"].invoke
+
     Rake::Task["oneclick:load_locales"].invoke
-    Rake::Task["oneclick:one_offs:migrate_to_new_service_data_ui"].invoke #This version implements the streamlined Provider and Service Data Admin UI. In order to do this without breaking things, run the following (after db:migrate):
     Rake::Task["oneclick:one_offs:clean_up_user_services"].invoke #Not necessary for the new Service-Data UI, but running the following may fix broken User Profiles:
 
     ### Create Booked Trips Report

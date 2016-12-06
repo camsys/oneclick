@@ -202,46 +202,49 @@ namespace :oneclick do
         end
         ######
 
-        ######
-        # Build Coverage Zones by parsing county arrays and copying over old Endpoint and Coverage Areas
+        # Check if Service Coverage Maps table still exists before proceeding
+        if ActiveRecord::Base.connection.table_exists? 'service_coverage_maps'
+          ######
+          # Build Coverage Zones by parsing county arrays and copying over old Endpoint and Coverage Areas
 
-        # If service has endpoints, get their geo coverages' names and add as a recipe
-        unless service.endpoints.nil? || service.endpoints.empty?
-          print "Converting old endpoints to Primary Coverage Area..."
-          old_primary = CoverageZone.clean_recipe(service.endpoints.map{ |area| area.geo_coverage && area.geo_coverage.value })
-          service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(old_primary))
-          puts " #{service.primary_coverage.recipe} added as primary coverage."
-        end
-
-        # If service has coverages, get their geo coverages' names and add as a recipe
-        unless service.coverages.nil? || service.coverages.empty? || service.service_type.code != "paratransit"
-          print "Converting old coverages to Secondary Coverage Area..."
-          old_secondary = CoverageZone.clean_recipe(service.coverages.map{ |area| area.geo_coverage && area.geo_coverage.value })
-          service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
-          puts " #{service.secondary_coverage.recipe} added as secondary coverage."
-        end
-        ######
-
-        ######
-        # Build Coverage Zones by directly copying over custom area shape files
-        if service.service_coverage_maps
-
-          # If service has a custom endpoint area, replace its primary_coverage with this
-          if (service.service_coverage_maps.where(rule: 'endpoint_area').empty? && !service.endpoint_area_geom.nil?)
-            print "Converting old custom endpoint geom to Primary Coverage Area..."
-            service.update_attributes(primary_coverage: CoverageZone.build_custom_coverage_area(service.endpoint_area_geom.geom))
-            puts " custom primary coverage added."
+          # If service has endpoints, get their geo coverages' names and add as a recipe
+          unless service.endpoints.nil? || service.endpoints.empty?
+            print "Converting old endpoints to Primary Coverage Area..."
+            old_primary = CoverageZone.clean_recipe(service.endpoints.map{ |area| area.geo_coverage && area.geo_coverage.value })
+            service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(old_primary))
+            puts " #{service.primary_coverage.recipe} added as primary coverage."
           end
 
-          # If service has a custom coverage area, replace its secondary_coverage with this
-          if (service.service_coverage_maps.where(rule: 'coverage_area').empty? && !service.coverage_area_geom.nil?)
-            print "Converting old custom coverage geom to Secondary Coverage Area..."
-            service.update_attributes(secondary_coverage: CoverageZone.build_custom_coverage_area(service.coverage_area_geom.geom))
-            puts " custom secondary coverage added."
+          # If service has coverages, get their geo coverages' names and add as a recipe
+          unless service.coverages.nil? || service.coverages.empty? || service.service_type.code != "paratransit"
+            print "Converting old coverages to Secondary Coverage Area..."
+            old_secondary = CoverageZone.clean_recipe(service.coverages.map{ |area| area.geo_coverage && area.geo_coverage.value })
+            service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
+            puts " #{service.secondary_coverage.recipe} added as secondary coverage."
           end
+          ######
 
+          ######
+          # Build Coverage Zones by directly copying over custom area shape files
+          if service.service_coverage_maps
+
+            # If service has a custom endpoint area, replace its primary_coverage with this
+            if (service.service_coverage_maps.where(rule: 'endpoint_area').empty? && !service.endpoint_area_geom.nil?)
+              print "Converting old custom endpoint geom to Primary Coverage Area..."
+              service.update_attributes(primary_coverage: CoverageZone.build_custom_coverage_area(service.endpoint_area_geom.geom))
+              puts " custom primary coverage added."
+            end
+
+            # If service has a custom coverage area, replace its secondary_coverage with this
+            if (service.service_coverage_maps.where(rule: 'coverage_area').empty? && !service.coverage_area_geom.nil?)
+              print "Converting old custom coverage geom to Secondary Coverage Area..."
+              service.update_attributes(secondary_coverage: CoverageZone.build_custom_coverage_area(service.coverage_area_geom.geom))
+              puts " custom secondary coverage added."
+            end
+
+          end
+          ######
         end
-        ######
 
       end
 
