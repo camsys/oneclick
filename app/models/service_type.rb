@@ -4,7 +4,11 @@ class ServiceType < ActiveRecord::Base
 
   scope :available, -> { where(active: true)}
 
+  PARATRANSIT_MODE_NAMES = ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"]
+  TAXI_MODE_NAMES = ["taxi"]
+  TRANSIT_MODE_NAMES = ["transit", "rail", "bus", "ferry", "cable_car", "gondola", "funicular", "subway", "tram"]
+
   def self.paratransit_ids
-    ServiceType.where(code: ["paratransit", "volunteer", "nemt", "tap", "dial_a_ride"]).pluck(:id)
+    ServiceType.where(code: PARATRANSIT_MODE_NAMES).pluck(:id)
   end
 end

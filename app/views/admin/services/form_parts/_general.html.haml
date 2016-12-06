@@ -31,12 +31,12 @@
         %span.subtle-text= translate_helper(:image_file_types)
 
   -# Show Phone input for Taxi and Paratransit Only
-  -if ["taxi", "paratransit"].include? mode
+  -if (ServiceType::PARATRANSIT_MODE_NAMES + ServiceType::TAXI_MODE_NAMES).include?(mode)
     = f.input :phone,
       label: translate_helper(:phone)
 
   -# Show URL input for Paratransit Only
-  -if mode == "paratransit"
+  -if ServiceType::PARATRANSIT_MODE_NAMES.include?(mode)
     = f.input :url
 
   -# Create a comment field for each active locale, or for each comment associated with this service

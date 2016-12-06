@@ -19,8 +19,7 @@
             %span= translate_helper(:show_more)
             .i.fa.fa-chevron-down
     .collapsible.collapse{id: "#{mode}-details-#{service_id}"}
-      -case mode
-      -when "paratransit"
+      - if ServiceType::PARATRANSIT_MODE_NAMES.include?(mode)
         = render partial: "admin/services/form_parts/paratransit_part1",
           locals: { new_service: new_service,
                     service: service,
@@ -41,11 +40,11 @@
           = render partial: "admin/services/form_parts/paratransit_part6",
             locals: { new_service: new_service,
                       service: service }
-      -when "transit"
+      - elsif ServiceType::TRANSIT_MODE_NAMES.include?(mode)
         = render partial: "admin/services/form_parts/transit_part1",
           locals: { new_service: new_service,
                     service: service }
-      -when "taxi"
+      - elsif ServiceType::TAXI_MODE_NAMES.include?(mode)
         = render partial: "admin/services/form_parts/taxi_part1",
           locals: { new_service: new_service,
                     service: service,
