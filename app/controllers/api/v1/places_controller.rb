@@ -94,7 +94,9 @@ module Api
 
       def blacklist
         blacklist = OneclickConfiguration.find_by(code: 'blacklisted_places')
-        unless blacklist.nil?
+        if blacklist.nil?
+          blacklist = []
+        else
           blacklist = blacklist.value
         end
         render status: 200, json: blacklist.as_json
