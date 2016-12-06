@@ -177,7 +177,7 @@ Oneclick::Application.configure do
   config.translation_tag_locale_text = 'Tags'
 
   # Config Variables for Building Service Area Polygons
-  config.coverage_area_tables = ["County", "Zipcode"]  # Coverage Area Tables to include when building polygons
+  config.coverage_area_tables = ["County", "Zipcode", "City"]  # Coverage Area Tables to include when building polygons
   config.states = [config.state]
 
 end

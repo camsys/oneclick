@@ -33,6 +33,10 @@ class CoverageZone < ActiveRecord::Base
         # Make a hash key for the area name, and fill it with an array of matching objects from the database
         match_hash[area_name] = [] unless match_hash.key?(area_name)
         search_tables.each do |table|
+          # Skip if table doesn't exist
+          next if !ActiveRecord::Base.connection.table_exists?(table.downcase.pluralize)
+
+          # Otherwise, add matches based on table
           case table
           when "County"
             match_hash[area_name] += County.where(name: area_name, state: state_filter)
