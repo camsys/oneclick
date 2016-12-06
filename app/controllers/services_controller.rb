@@ -80,6 +80,7 @@ class ServicesController < ApplicationController
     end
   end
 
+  # DEPRECATED - Services are now created via admin/services_controller
   # POST /services
   # POST /services.json
   def create
@@ -131,6 +132,7 @@ class ServicesController < ApplicationController
 
   end
 
+  # DEPRECATED - Services are now updated via admin/services_controller
   # PUT /services/1
   # PUT /services/1.json
   def update

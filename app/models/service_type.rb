@@ -11,4 +11,12 @@ class ServiceType < ActiveRecord::Base
   def self.paratransit_ids
     ServiceType.where(code: PARATRANSIT_MODE_NAMES).pluck(:id)
   end
+
+  def self.transit_ids
+    ServiceType.where(code: TRANSIT_MODE_NAMES).pluck(:id)
+  end
+
+  def self.taxi_ids
+    ServiceType.where(code: TAXI_MODE_NAMES).pluck(:id)
+  end
 end

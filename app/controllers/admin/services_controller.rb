@@ -284,8 +284,6 @@ class Admin::ServicesController < Admin::BaseController
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
                                       [ :id, :base, :rate, :fare_type, public_comments_attributes: COMMENT_ATTRIBUTES ] },
-                                    { service_coverage_maps_attributes:
-                                      [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
                                     comments_attributes: COMMENT_ATTRIBUTES,
                                     public_comments_attributes: COMMENT_ATTRIBUTES,
                                     private_comments_attributes: COMMENT_ATTRIBUTES

@@ -1,7 +1,9 @@
+- # FORM DEPRECATED - use admin/providers & admin/services #
+
 - is_transit = @service.is_transit?
-- transit_id = ServiceType.where(code: 'transit').first.try(:id) 
+- transit_id = ServiceType.where(code: 'transit').first.try(:id)
 - is_taxi = @service.is_taxi?
-- taxi_id = ServiceType.where(code: 'taxi').first.try(:id) 
+- taxi_id = ServiceType.where(code: 'taxi').first.try(:id)
 - is_paratransit = @service.is_demand_responsive?
 - paratransit_id = ServiceType.where(code: 'paratransit').first.try(:id)
 
@@ -116,7 +118,7 @@
                   - else
                     %input{type: "hidden", value: "#{day_of_week}",
                            name: "service[schedules_attributes][][day_of_week]"}
-  
+
     .col-sm-4#advanced-notice-panel
       .panel.panel-default.well2
         .panel-heading
@@ -196,7 +198,7 @@
                 item_wrapper_tag: 'div', wrapper: :inline_checkboxes
 
   .row
-  
+
     .col-sm-4#eligibility-panel
       .panel.panel-default.well1
         .panel-heading
@@ -314,7 +316,7 @@
                 = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
                 = comment.input :locale, as: :hidden
                 = comment.input :visibility, as: :hidden
-        
+
           .row_fluid.non-paratransit-fare{style: "#{is_paratransit && @service.fare_structures.count > 0 ? 'display:none;' : ''}"}
             = f.simple_fields_for :fare_structures do |fare|
               = fare.input :base, label: translate_helper(:base_rate), input_html: {class: "form-control"}

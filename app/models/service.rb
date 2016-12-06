@@ -23,7 +23,7 @@ class Service < ActiveRecord::Base
   has_many :service_accommodations
   has_many :service_characteristics
   has_many :service_trip_purpose_maps
-  has_many :service_coverage_maps
+  has_many :service_coverage_maps # DEPRECATED
   has_many :itineraries
   has_many :user_services
   has_and_belongs_to_many :users # primarily for internal contact
@@ -47,8 +47,8 @@ class Service < ActiveRecord::Base
 
   accepts_nested_attributes_for :fare_zones
 
-  accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true,
-  reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction.
+  # accepts_nested_attributes_for :service_coverage_maps, allow_destroy: true, # DEPRECATED
+  # reject_if: :check_reject_for_service_coverage_map # Also used to control record destruction. # DEPRECATED
 
   # attr_accessible :id, :name, :provider, :provider_id, :service_type, :advanced_notice_minutes, :external_id, :active
   # attr_accessible :contact, :contact_title, :phone, :url, :email
@@ -57,19 +57,19 @@ class Service < ActiveRecord::Base
   has_many :accommodations, through: :service_accommodations, source: :accommodation
   has_many :characteristics, through: :service_characteristics, source: :characteristic
   has_many :trip_purposes, through: :service_trip_purpose_maps, source: :trip_purpose
-  has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage
+  has_many :coverage_areas, through: :service_coverage_maps, source: :geo_coverage # DEPRECATED
 
   # New Coverage Area Models
   belongs_to :primary_coverage, class_name: "CoverageZone"
   belongs_to :secondary_coverage, class_name: "CoverageZone"
 
-  has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap"
+  has_many :endpoints, -> { where rule: 'endpoint_area' }, class_name: "ServiceCoverageMap" # DEPRECATED
 
-  has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap"
+  has_many :coverages, -> { where rule: 'coverage_area' }, class_name: "ServiceCoverageMap" # DEPRECATED
 
-  belongs_to :endpoint_area_geom, class_name: 'GeoCoverage'
-  belongs_to :coverage_area_geom, class_name: 'GeoCoverage'
-  belongs_to :residence_area_geom, class_name: 'GeoCoverage'
+  belongs_to :endpoint_area_geom, class_name: 'GeoCoverage' # DEPRECATED
+  belongs_to :coverage_area_geom, class_name: 'GeoCoverage' # DEPRECATED
+  belongs_to :residence_area_geom, class_name: 'GeoCoverage' # DEPRECATED
 
   has_many :user_profiles, through: :user_services, source: :user_profile
 
@@ -282,188 +282,196 @@ class Service < ActiveRecord::Base
     return nil
   end
 
-  def save_new_coverage_area_from_shp(rule, geom)
-    gc = GeoCoverage.create! coverage_type: rule, geom: geom
-    case rule
-    when 'endpoint_area'
-      self.endpoint_area_geom = gc
-    when 'coverage_area'
-      self.coverage_area_geom = gc
-    end
-    self.save!
-  end
+  # # DEPRECATED
+  # def save_new_coverage_area_from_shp(rule, geom)
+  #   gc = GeoCoverage.create! coverage_type: rule, geom: geom
+  #   case rule
+  #   when 'endpoint_area'
+  #     self.endpoint_area_geom = gc
+  #   when 'coverage_area'
+  #     self.coverage_area_geom = gc
+  #   end
+  #   self.save!
+  # end
 
-  def update_coverage_map(rule)
-    scms = self.service_coverage_maps.where(rule: rule)
-    scms.each do |scm|
-      polygon = polygon_from_attribute(scm)
-      if polygon.nil?
-        next
-      end
-      #Rails.logger.info "polygon is #{polygon.ai}"
-      case rule
-      when 'endpoint_area'
-        #Rails.logger.info  "Updating Endpoint Area"
-        if self.endpoint_area_geom
-          merged = self.endpoint_area_geom.geom.union(polygon)
-          if merged.nil?
-            next
-          end
-          self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-          self.endpoint_area_geom.save!
-        else
-          gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
-          self.endpoint_area_geom = gc
-          self.save!
-        end
-      when 'coverage_area'
-        #Rails.logger.info  "Updating Coverage Area"
-        if self.coverage_area_geom
-          merged = self.coverage_area_geom.geom.union(polygon)
-          if merged.nil?
-            next
-          end
-          self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
-          self.coverage_area_geom.save!
-        else
-          gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
-          self.coverage_area_geom = gc
-          self.save!
-        end
-      end
-    end
-    self.save!
-  end
+  # # DEPRECATED
+  # def update_coverage_map(rule)
+  #   scms = self.service_coverage_maps.where(rule: rule)
+  #   scms.each do |scm|
+  #     polygon = polygon_from_attribute(scm)
+  #     if polygon.nil?
+  #       next
+  #     end
+  #     #Rails.logger.info "polygon is #{polygon.ai}"
+  #     case rule
+  #     when 'endpoint_area'
+  #       #Rails.logger.info  "Updating Endpoint Area"
+  #       if self.endpoint_area_geom
+  #         merged = self.endpoint_area_geom.geom.union(polygon)
+  #         if merged.nil?
+  #           next
+  #         end
+  #         self.endpoint_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+  #         self.endpoint_area_geom.save!
+  #       else
+  #         gc = GeoCoverage.create! coverage_type: 'endpoint_area', geom: polygon
+  #         self.endpoint_area_geom = gc
+  #         self.save!
+  #       end
+  #     when 'coverage_area'
+  #       #Rails.logger.info  "Updating Coverage Area"
+  #       if self.coverage_area_geom
+  #         merged = self.coverage_area_geom.geom.union(polygon)
+  #         if merged.nil?
+  #           next
+  #         end
+  #         self.coverage_area_geom.geom = RGeo::Feature.cast(merged, :type => RGeo::Feature::MultiPolygon)
+  #         self.coverage_area_geom.save!
+  #       else
+  #         gc = GeoCoverage.create! coverage_type: 'coverage_area', geom: polygon
+  #         self.coverage_area_geom = gc
+  #         self.save!
+  #       end
+  #     end
+  #   end
+  #   self.save!
+  # end
 
-  def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
+  # # DEPRECATED
+  # def build_polygons(temp_endpoints_shapefile_path = nil, temp_coverages_shapefile_path = nil)
+  #
+  #   #endpoint area
+  #   endpoint_rule = 'endpoint_area'
+  #   endpoint_area_geom = get_shapefile_first_geometry(temp_endpoints_shapefile_path)
+  #   unless endpoint_area_geom.nil?
+  #     self.service_coverage_maps.where(rule: endpoint_rule).destroy_all
+  #     save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
+  #   else
+  #     unless temp_endpoints_shapefile_path.nil?
+  #       alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(endpoint_rule).to_s
+  #     end
+  #     if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
+  #       self.endpoint_area_geom = nil
+  #     end
+  #     update_coverage_map(endpoint_rule)
+  #   end
+  #
+  #   #coverage area
+  #   coverage_rule = 'coverage_area'
+  #   coverage_area_geom = get_shapefile_first_geometry(temp_coverages_shapefile_path)
+  #   unless coverage_area_geom.nil?
+  #     self.service_coverage_maps.where(rule: coverage_rule).destroy_all
+  #     save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
+  #   else
+  #     unless temp_coverages_shapefile_path.nil?
+  #       alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(coverage_rule).to_s
+  #     end
+  #     if self.service_coverage_maps.where(rule: coverage_rule).count > 0
+  #       self.coverage_area_geom = nil
+  #     end
+  #     update_coverage_map(coverage_rule)
+  #   end
+  #
+  #   alert_msg
+  # end
 
-    #endpoint area
-    endpoint_rule = 'endpoint_area'
-    endpoint_area_geom = get_shapefile_first_geometry(temp_endpoints_shapefile_path)
-    unless endpoint_area_geom.nil?
-      self.service_coverage_maps.where(rule: endpoint_rule).destroy_all
-      save_new_coverage_area_from_shp(endpoint_rule, endpoint_area_geom)
-    else
-      unless temp_endpoints_shapefile_path.nil?
-        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(endpoint_rule).to_s
-      end
-      if self.service_coverage_maps.where(rule: endpoint_rule).count > 0
-        self.endpoint_area_geom = nil
-      end
-      update_coverage_map(endpoint_rule)
-    end
+  # # DEPRECATED
+  # # Returns the service area polylines for use in map display_color
+  # def get_polylines
+  #   polylines = []
+  #
+  #   ['coverage_area', 'endpoint_area'].each do |rule|
+  #     case rule
+  #       when 'coverage_area'
+  #         geometry = self.coverage_area_geom.try(:geom)
+  #         color = 'red'
+  #         id = 1
+  #       when 'endpoint_area'
+  #         geometry = self.endpoint_area_geom.try(:geom)
+  #         color = 'green'
+  #         id = 0
+  #     end
+  #
+  #     unless geometry.nil?
+  #       polylines << {
+  #          "id" => id,
+  #          "geom" => self.wkt_to_array(rule),
+  #          "options" =>  {"color" => color, "width" => "2"}
+  #       }
+  #     end
+  #   end
+  #
+  #   polylines.to_json || nil
+  # end
 
-    #coverage area
-    coverage_rule = 'coverage_area'
-    coverage_area_geom = get_shapefile_first_geometry(temp_coverages_shapefile_path)
-    unless coverage_area_geom.nil?
-      self.service_coverage_maps.where(rule: coverage_rule).destroy_all
-      save_new_coverage_area_from_shp(coverage_rule, coverage_area_geom)
-    else
-      unless temp_coverages_shapefile_path.nil?
-        alert_msg = TranslationEngine.translate_text(:no_polygon_geometry_parsed).to_s.sub '%{area_type}', TranslationEngine.translate_text(coverage_rule).to_s
-      end
-      if self.service_coverage_maps.where(rule: coverage_rule).count > 0
-        self.coverage_area_geom = nil
-      end
-      update_coverage_map(coverage_rule)
-    end
+  # # DEPRECATED
+  # def polygon_from_attribute scm
+  #   #RGeo::Feature.cast(merged, :type => york.geom.geometry_type)
+  #   state = Oneclick::Application.config.state
+  #   case scm.geo_coverage.coverage_type
+  #     when 'county_name'
+  #       county = County.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
+  #       if county.length > 0
+  #         return county.first.geom
+  #       end
+  #     when 'zipcode'
+  #       zipcode = Zipcode.where(zipcode: scm.geo_coverage.value, state: state)
+  #       if zipcode.length > 0
+  #         return zipcode.first.geom
+  #       end
+  #     when 'city'
+  #       city = City.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
+  #       if city.length > 0
+  #         return city.first.geom
+  #       end
+  #     when 'polygon'
+  #       return scm.geo_coverage.geom
+  #   end
+  #   nil
+  # end
 
-    alert_msg
-  end
+  # # DEPRECATED
+  # def destroy_endpoint_geom
+  #   endpoint_area_geom.destroy if endpoint_area_geom
+  #   endpoint_area_geom = nil
+  # end
 
-  # Returns the service area polylines for use in map display_color
-  def get_polylines
-    polylines = []
+  # # DEPRECATED
+  # def destroy_coverage_geom
+  #   coverage_area_geom.destroy if coverage_area_geom
+  #   coverage_area_geom = nil
+  # end
 
-    ['coverage_area', 'endpoint_area'].each do |rule|
-      case rule
-        when 'coverage_area'
-          geometry = self.coverage_area_geom.try(:geom)
-          color = 'red'
-          id = 1
-        when 'endpoint_area'
-          geometry = self.endpoint_area_geom.try(:geom)
-          color = 'green'
-          id = 0
-      end
-
-      unless geometry.nil?
-        polylines << {
-           "id" => id,
-           "geom" => self.wkt_to_array(rule),
-           "options" =>  {"color" => color, "width" => "2"}
-        }
-      end
-    end
-
-    polylines.to_json || nil
-  end
-
-  def polygon_from_attribute scm
-    #RGeo::Feature.cast(merged, :type => york.geom.geometry_type)
-    state = Oneclick::Application.config.state
-    case scm.geo_coverage.coverage_type
-      when 'county_name'
-        county = County.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
-        if county.length > 0
-          return county.first.geom
-        end
-      when 'zipcode'
-        zipcode = Zipcode.where(zipcode: scm.geo_coverage.value, state: state)
-        if zipcode.length > 0
-          return zipcode.first.geom
-        end
-      when 'city'
-        city = City.where("lower(name) =? AND state=?", scm.geo_coverage.value.downcase, state)
-        if city.length > 0
-          return city.first.geom
-        end
-      when 'polygon'
-        return scm.geo_coverage.geom
-    end
-    nil
-  end
-
-  def destroy_endpoint_geom
-    endpoint_area_geom.destroy if endpoint_area_geom
-    endpoint_area_geom = nil
-  end
-
-  def destroy_coverage_geom
-    coverage_area_geom.destroy if coverage_area_geom
-    coverage_area_geom = nil
-  end
-
-  def wkt_to_array(rule = 'endpoint_area')
-    myArray = []
-    case rule
-      when 'endpoint_area'
-        geometry = self.endpoint_area_geom
-      when 'coverage_area'
-        geometry = self.coverage_area_geom
-    end
-    if geometry
-      geometry.geom.each do |polygon|
-        polygon_array = []
-        ring_array  = []
-        polygon.exterior_ring.points.each do |point|
-          ring_array << [point.y, point.x]
-        end
-        polygon_array << ring_array
-
-        polygon.interior_rings.each do |ring|
-          ring_array = []
-          ring.points.each do |point|
-            ring_array << [point.y, point.x]
-          end
-          polygon_array << ring_array
-        end
-        myArray << polygon_array
-      end
-    end
-    myArray
-  end
+  # # DEPRECATED
+  # def wkt_to_array(rule = 'endpoint_area')
+  #   myArray = []
+  #   case rule
+  #     when 'endpoint_area'
+  #       geometry = self.endpoint_area_geom
+  #     when 'coverage_area'
+  #       geometry = self.coverage_area_geom
+  #   end
+  #   if geometry
+  #     geometry.geom.each do |polygon|
+  #       polygon_array = []
+  #       ring_array  = []
+  #       polygon.exterior_ring.points.each do |point|
+  #         ring_array << [point.y, point.x]
+  #       end
+  #       polygon_array << ring_array
+  #
+  #       polygon.interior_rings.each do |ring|
+  #         ring_array = []
+  #         ring.points.each do |point|
+  #           ring_array << [point.y, point.x]
+  #         end
+  #         polygon_array << ring_array
+  #       end
+  #       myArray << polygon_array
+  #     end
+  #   end
+  #   myArray
+  # end
 
   # csv
   ransacker :id do
@@ -560,38 +568,39 @@ class Service < ActiveRecord::Base
     secondary_coverage && secondary_coverage.contains?(lat, lng)
   end
 
-  # DEPRECATED
-  def endpoint_contains?(lat,lng)
-    mercator_factory = RGeo::Geographic.simple_mercator_factory
-     test_point = mercator_factory.point(lng, lat)
-    unless self.endpoint_area_geom.nil?
-      return false unless self.endpoint_area_geom.geom.contains? test_point
-    end
-    return true
-  end
+  # # DEPRECATED
+  # def endpoint_contains?(lat,lng)
+  #   mercator_factory = RGeo::Geographic.simple_mercator_factory
+  #    test_point = mercator_factory.point(lng, lat)
+  #   unless self.endpoint_area_geom.nil?
+  #     return false unless self.endpoint_area_geom.geom.contains? test_point
+  #   end
+  #   return true
+  # end
+  #
+  # # DEPRECATED
+  # def county_endpoint_contains? county
+  #   #Match Endpoint County Names
+  #   unless self.county_endpoint_array.blank?
+  #     unless county.in? self.county_endpoint_array
+  #       return false
+  #     end
+  #   end
+  #
+  #   return true
+  #
+  # end
 
-  # DEPRECATED
-  def county_endpoint_contains? county
-    #Match Endpoint County Names
-    unless self.county_endpoint_array.blank?
-      unless county.in? self.county_endpoint_array
-        return false
-      end
-    end
-
-    return true
-
-  end
-
-  def coverage_area_contains?(lat, lng)
-
-    mercator_factory = RGeo::Geographic.simple_mercator_factory
-    test_point = mercator_factory.point(lng, lat)
-    unless self.coverage_area_geom.nil?
-      return false unless self.coverage_area_geom.geom.contains? test_point
-    end
-    return true
-  end
+  # # DEPRECATED
+  # def coverage_area_contains?(lat, lng)
+  #
+  #   mercator_factory = RGeo::Geographic.simple_mercator_factory
+  #   test_point = mercator_factory.point(lng, lat)
+  #   unless self.coverage_area_geom.nil?
+  #     return false unless self.coverage_area_geom.geom.contains? test_point
+  #   end
+  #   return true
+  # end
 
 
   def disallowed_purposes_array
@@ -622,66 +631,69 @@ class Service < ActiveRecord::Base
     end
   end
 
-  # Parses a coverage area "recipe" string into an array of matching County, Zipcode, and City objects
-  def parse_coverage_recipe(recipe)
-    parsed_recipe = recipe.split(',').map(&:strip)
+  # # DEPRECATED - NOW IN CoverageZone
+  # # Parses a coverage area "recipe" string into an array of matching County, Zipcode, and City objects
+  # def parse_coverage_recipe(recipe)
+  #   parsed_recipe = recipe.split(',').map(&:strip)
+  #
+  #   # Create a hash with an array of matches for each area name.
+  #   matched_areas = parsed_recipe.each_with_object({}) do |area_recipe, match_hash|
+  #
+  #     # Look for any bracketed specifiers in the recipe string, and if they exist separate them out
+  #     area_recipe = area_recipe.split(/[\[\]]/)
+  #     area_name = area_recipe.first.strip.titleize
+  #     specifiers = area_recipe.length > 1 ? area_recipe[1].split('-') : []
+  #     type_specifier = specifiers.length > 0 ? specifiers[0].strip.titleize : nil
+  #     state_specifier = specifiers.length > 1 ? specifiers[1].strip.upcase : nil
+  #
+  #     # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
+  #     search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
+  #     state_filter = state_specifier ? [state_specifier] : Oneclick::Application.config.states
+  #     # state_filter = state_specifier ? [state_specifier] : ["MA", "CT", "VA"]
+  #
+  #     # Make a hash key for the area name, and fill it with an array of matching objects from the database
+  #     match_hash[area_name] = [] unless match_hash.key?(area_name)
+  #     search_tables.each do |table|
+  #       case table
+  #       when "County"
+  #         # match_hash[area_name] += County.where(name: area_name, state: state_filter).map {|area| {id: area.id, name: area.name, state: area.state}}
+  #         match_hash[area_name] += County.where(name: area_name, state: state_filter)
+  #       when "Zipcode"
+  #         # match_hash[area_name] += Zipcode.where(zipcode: area_name).map {|area| {id: area.id, zipcode: area.zipcode, name: area.name, state: area.state}}
+  #         match_hash[area_name] += Zipcode.where(zipcode: area_name)
+  #       when "City"
+  #         match_hash[area_name] += City.where(name: area_name, state: state_filter)
+  #       end
+  #     end
+  #   end
+  #
+  #   # puts matched_areas.ai
+  #   return matched_areas
+  # end
 
-    # Create a hash with an array of matches for each area name.
-    matched_areas = parsed_recipe.each_with_object({}) do |area_recipe, match_hash|
+  # # DEPRECATED - NOW IN CoverageZone
+  # # Encodes a hash of matching coverage areas into an unambiguous recipe string
+  # def encode_coverage_recipe(matched_areas)
+  #   match_list = matched_areas.values.flatten
+  #   match_list.map! do |area|
+  #     case area.class.name
+  #     when "County"
+  #       "#{area.name} [#{area.class.name}-#{area.state}]"
+  #     when "Zipcode"
+  #       "#{area.zipcode} [#{area.class.name}]"
+  #     else
+  #       "#{area.name} [#{area.class.name}-#{area.state}]"
+  #     end
+  #   end.join(", ")
+  # end
 
-      # Look for any bracketed specifiers in the recipe string, and if they exist separate them out
-      area_recipe = area_recipe.split(/[\[\]]/)
-      area_name = area_recipe.first.strip.titleize
-      specifiers = area_recipe.length > 1 ? area_recipe[1].split('-') : []
-      type_specifier = specifiers.length > 0 ? specifiers[0].strip.titleize : nil
-      state_specifier = specifiers.length > 1 ? specifiers[1].strip.upcase : nil
-
-      # Set the search tables and state filter based on specifiers if they exist, or on config variables if not
-      search_tables = type_specifier ? [type_specifier] : Oneclick::Application.config.coverage_area_tables
-      state_filter = state_specifier ? [state_specifier] : Oneclick::Application.config.states
-      # state_filter = state_specifier ? [state_specifier] : ["MA", "CT", "VA"]
-
-      # Make a hash key for the area name, and fill it with an array of matching objects from the database
-      match_hash[area_name] = [] unless match_hash.key?(area_name)
-      search_tables.each do |table|
-        case table
-        when "County"
-          # match_hash[area_name] += County.where(name: area_name, state: state_filter).map {|area| {id: area.id, name: area.name, state: area.state}}
-          match_hash[area_name] += County.where(name: area_name, state: state_filter)
-        when "Zipcode"
-          # match_hash[area_name] += Zipcode.where(zipcode: area_name).map {|area| {id: area.id, zipcode: area.zipcode, name: area.name, state: area.state}}
-          match_hash[area_name] += Zipcode.where(zipcode: area_name)
-        when "City"
-          match_hash[area_name] += City.where(name: area_name, state: state_filter)
-        end
-      end
-    end
-
-    # puts matched_areas.ai
-    return matched_areas
-  end
-
-  # Encodes a hash of matching coverage areas into an unambiguous recipe string
-  def encode_coverage_recipe(matched_areas)
-    match_list = matched_areas.values.flatten
-    match_list.map! do |area|
-      case area.class.name
-      when "County"
-        "#{area.name} [#{area.class.name}-#{area.state}]"
-      when "Zipcode"
-        "#{area.zipcode} [#{area.class.name}]"
-      else
-        "#{area.name} [#{area.class.name}-#{area.state}]"
-      end
-    end.join(", ")
-  end
-
-  # Creates a coverage area out of a recipe
-  def build_coverage_area(recipe, coverage_area_type="primary_coverage")
-    parsed_recipe = self.parse_coverage_recipe(recipe)
-    geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
-    self.update_attribute(coverage_area_type, CoverageZone.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geoms.reduce { |combined_area, geom| combined_area.union(geom) }))
-  end
+  # # DEPRECATED - NOW IN CoverageZone
+  # # Creates a coverage area out of a recipe
+  # def build_coverage_area(recipe, coverage_area_type="primary_coverage")
+  #   parsed_recipe = self.parse_coverage_recipe(recipe)
+  #   geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
+  #   self.update_attribute(coverage_area_type, CoverageZone.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geoms.reduce { |combined_area, geom| combined_area.union(geom) }))
+  # end
 
   # Returns the coverage area polygons for display in Leaflet
   def coverage_area_polygons
@@ -709,15 +721,14 @@ class Service < ActiveRecord::Base
   #### End Booking Methods
 
   def build_fare_structures_by_mode
-    case service_type_id
-    when 1 # Paratransit
-      fare_structures.build(fare_type: 0)
-    when 4 # Transit
-      # TRANSIT ACTIONS
-    when 5 # Taxi
-      fare_structures.build(fare_type: 1)
+    if ServiceType.paratransit_ids.include?(service_type_id)
+      fare_structures.build(fare_type: 0) # Paratransit
+    elsif ServiceType.taxi_ids.include?(service_type_id)
+      fare_structures.build(fare_type: 1) # Taxi
+    elsif ServiceType.transit_ids.include?(service_type_id)
+      # transit actions
     else
-      # ELSE ACTIONS
+      # other actions
     end
   end
 
