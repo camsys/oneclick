@@ -79,6 +79,12 @@ class CoverageZone < ActiveRecord::Base
     return @coverage_zone
   end
 
+  # Builds a new CoverageZone based on a passed geom
+  def self.build_custom_coverage_area(geom)
+    geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon) unless geom.nil?
+    self.new(recipe: nil, geom: geom, custom_shape: true)
+  end
+
   # Returns an array of coverage zone polygon geoms
   def to_array
     myArray = []

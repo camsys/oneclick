@@ -147,7 +147,9 @@ namespace :oneclick do
       end
     end
 
-    # Transition to New Service Data UI
+    #####################################
+    # Transition to New Service Data UI #
+    #####################################
     task migrate_to_new_service_data_ui: :environment do
       puts "************************************************"
       puts "Preparing Database for New Service Data Interface."
@@ -221,7 +223,24 @@ namespace :oneclick do
         ######
 
         ######
-        # Build Coverage Zones by directly copying over custom area shape files?
+        # Build Coverage Zones by directly copying over custom area shape files
+        if service.service_coverage_maps
+
+          # If service has a custom endpoint area, replace its primary_coverage with this
+          if (service.service_coverage_maps.where(rule: 'endpoint_area').empty? && !service.endpoint_area_geom.nil?)
+            print "Converting old custom endpoint geom to Primary Coverage Area..."
+            service.update_attributes(primary_coverage: CoverageZone.build_custom_coverage_area(service.endpoint_area_geom.geom))
+            puts " custom primary coverage added."
+          end
+
+          # If service has a custom coverage area, replace its secondary_coverage with this
+          if (service.service_coverage_maps.where(rule: 'coverage_area').empty? && !service.coverage_area_geom.nil?)
+            print "Converting old custom coverage geom to Secondary Coverage Area..."
+            service.update_attributes(secondary_coverage: CoverageZone.build_custom_coverage_area(service.coverage_area_geom.geom))
+            puts " custom secondary coverage added."
+          end
+
+        end
         ######
 
       end
