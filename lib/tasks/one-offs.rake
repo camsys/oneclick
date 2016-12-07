@@ -195,7 +195,7 @@ namespace :oneclick do
         end
 
         # Only build secondary coverage zones for paratransit:
-        unless service.county_coverage_array.nil? || ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
+        unless service.county_coverage_array.nil? || !ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
           print "Parsing county_coverage_array to Secondary Coverage Area..."
           service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
           puts " #{service.secondary_coverage.recipe} added as secondary coverage."
@@ -216,7 +216,7 @@ namespace :oneclick do
           end
 
           # If service has coverages, get their geo coverages' names and add as a recipe
-          unless service.coverages.nil? || service.coverages.empty? || ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
+          unless service.coverages.nil? || service.coverages.empty? || !ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
             print "Converting old coverages to Secondary Coverage Area..."
             old_secondary = CoverageZone.clean_recipe(service.coverages.map{ |area| area.geo_coverage && area.geo_coverage.value })
             service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(old_secondary))
