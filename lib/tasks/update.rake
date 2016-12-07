@@ -8,7 +8,19 @@ namespace :update do
   end
 
   desc "v1.8.2"
-  task "v1.8.2" => :environment do
+  task "v1.8.2", [:state] => :environment do |t, args|
+    # Check if a state is passed as a parameter`
+    if args[:state].is_a?(String) &&
+        args[:state].length == 2 &&
+        OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: args[:state].upcase)
+      puts "Set State to #{OneclickConfiguration.find_by(code: 'state').value}..."
+    else # Break out of the rake task if not.
+      puts "Please provide a 2-letter state abbreviation as a parameter, and enclose rake task in quotations."
+      puts 'e.g. rake "update:v1.8.2[PA]".'
+      puts 'Aborting...'
+      next
+    end
+
     Rake::Task["db:migrate"].invoke
 
     # Transfering Data from old to new geoms occurs in drop_geo_coverages migration
@@ -28,7 +40,7 @@ namespace :update do
     puts "For GTC, set config.show_paratransit_fleet_size_and_trip_volume = true"
     puts "For every instance be sure to set the state config: OneclickConfiguration.where(code: 'state').first_or_initialize.update_attributes(value: 'MA')"
     puts "For every instance, in Heroku change scheduled task from oneclick:send_feedback_follow_up_emails to scheduled:send_feedback_follow_up_emails"
-
+    puts "Run rake oneclick:one_offs:migrate_to_new_service_data_ui if needed to re-copy data from services."
   end
 
 end
