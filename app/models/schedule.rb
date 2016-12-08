@@ -31,6 +31,10 @@ class Schedule < ActiveRecord::Base
     human_readable_24_hour end_seconds
   end
 
+  def day_string
+    return Date::DAYNAMES[self.day_of_week]
+  end
+
   alias_method :end_time, :end_string
   
   def human_readable(seconds)
