@@ -12,7 +12,7 @@ module Commentable
   end
 
   def filter_out_comments attributes
-    attributes['comment'].blank?
+    attributes['comment'].nil?
   end
 
 end
