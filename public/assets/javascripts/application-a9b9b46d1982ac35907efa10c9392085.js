@@ -53408,9 +53408,9 @@ function TripReviewPageRenderer(intervalStep, barHeight, tripResponse, filterCon
                 return;
             }
             var tripPlans = trip.itineraries;
-            var tripPartParantransitCount = $.grep(tripPlans, function(plan) { return plan.mode === 'mode_paratransit';}).length;
-            if(tripPartParantransitCount > maxParatransitCount) {
-                maxParatransitCount = tripPartParantransitCount;
+            var tripPartParatransitCount = $.grep(tripPlans, function(plan) { return plan.mode === 'mode_paratransit';}).length;
+            if(tripPartParatransitCount > maxParatransitCount) {
+                maxParatransitCount = tripPartParatransitCount;
             }
             tripPlans.forEach(function(tripPlan) {
                 if (typeof(tripPlan) != 'object' || tripPlan === null) {

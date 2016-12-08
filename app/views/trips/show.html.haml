@@ -81,6 +81,7 @@
         default_min_paratransit_count:0,
         default_max_paratransit_count: #{@max_paratransit_count || "null"},
         current_user_accommodations: #{@current_user_accommodations},
+        visible_accommodation_filters: #{Accommodation.all.map{|a| translate_helper(a.name) }},
         show_legend: #{Oneclick::Application.config.show_legend}
       };
 
@@ -251,7 +252,7 @@
         $.ajax({
           type: "POST",
           url: '/satisfaction_surveys',
-          data: {satisfaction_survey: 
+          data: {satisfaction_survey:
                   { 'trip_id': $('#satisfaction_survey_trip_id').val(),
                     'satisfied': $('#satisfaction_survey input:checked').val(),
                     'comment': $('#satisfaction_survey_comment').val()
