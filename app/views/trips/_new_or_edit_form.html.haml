@@ -280,10 +280,10 @@
     var bounds_hash = null;
     if(geocoder_bounds) {
       bounds_hash = {
-        xmin: geocoder_bounds[0][0],
-        ymin: geocoder_bounds[0][1],
-        xmax: geocoder_bounds[1][0],
-        ymax: geocoder_bounds[1][1]
+        ne_lat: geocoder_bounds[0][0],
+        ne_lng: geocoder_bounds[0][1],
+        sw_lat: geocoder_bounds[1][0],
+        sw_lng: geocoder_bounds[1][1]
       }
     }
     init_place_picker(

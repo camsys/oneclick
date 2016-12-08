@@ -183,8 +183,8 @@ function init_place_picker(dom_selector, query_bounds, query_restrictions) {
   var autocomplete_service_config = {};
   if (query_bounds)
     autocomplete_service_config.bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(query_bounds.xmin,query_bounds.ymin),
-      new google.maps.LatLng(query_bounds.xmax,query_bounds.ymax));
+      new google.maps.LatLng(query_bounds.sw_lat,query_bounds.sw_lng),
+      new google.maps.LatLng(query_bounds.ne_lat,query_bounds.ne_lng));
   if (query_restrictions)
     autocomplete_service_config.componentRestrictions = query_restrictions;
   var google_place_picker = new AddressPicker({
