@@ -749,6 +749,10 @@ class Service < ActiveRecord::Base
     self.accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.name), code: a.code, note: TranslationEngine.translate_text(a.note)}}
   end
 
+  def schedule_hash
+    self.schedules.order(:day_of_week).collect{ |s| {day: s.day_string, start: s.start_string, end: s.end_string} }
+  end
+
   private
 
   def human_readable_time_notice(time_in_mins)
