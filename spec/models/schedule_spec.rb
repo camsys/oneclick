@@ -29,7 +29,7 @@ describe Schedule do
 
     schedule.start_time_valid.should be_false
     schedule.end_time_valid.should be_false
-    
+
   end
 
   it 'should accept empty start and end times' do
@@ -39,7 +39,7 @@ describe Schedule do
   it 'should allow eight_to_five_wednesday' do
     FactoryGirl.build(:eight_to_five_wednesday).should be_valid
   end
-  
+
   it 'should require valid start and end time' do
     FactoryGirl.build(:schedule, start_time: '', end_time: '1pm').should have(1).errors_on(:"1start_time")
 
@@ -51,7 +51,6 @@ describe Schedule do
 
     FactoryGirl.build(:schedule, start_time: '2pm', end_time: '1pm').should have(1).errors_on(:"1start_time")
 
-    
   end
-  
+
 end

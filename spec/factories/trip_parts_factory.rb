@@ -20,6 +20,20 @@ FactoryGirl.define do
       # trip {FactoryGirl.create(:trip)}
     end
 
+    # Targeting Part 1 of Multipart Monday Schedule
+    factory :trip_part3 do
+      scheduled_date {Time.zone.local(2016,12,12,8)}
+      scheduled_time {Time.zone.local(2016,12,12,8)}
+      is_depart true
+    end
+
+    # Targeting Part 2 of Multipart Monday Schedule
+    factory :trip_part4 do
+      scheduled_date {Time.zone.local(2016,12,12,18)}
+      scheduled_time {Time.zone.local(2016,12,12,18)}
+      is_depart true
+    end
+
   end
 
 end

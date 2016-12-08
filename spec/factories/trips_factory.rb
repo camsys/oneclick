@@ -37,6 +37,22 @@ FactoryGirl.define do
       end
     end
 
+    factory :trip3 do |trip|
+      after(:build) do |trip|
+        trip_place1 = FactoryGirl.create(:trip_place1, sequence: 0)
+        trip_place2 = FactoryGirl.create(:trip_place2, sequence: 1)
+        trip.trip_parts << FactoryGirl.create(:trip_part3, sequence: 0, from_trip_place: trip_place1, to_trip_place: trip_place2)
+      end
+    end
+
+    factory :trip4 do |trip|
+      after(:build) do |trip|
+        trip_place1 = FactoryGirl.create(:trip_place1, sequence: 0)
+        trip_place2 = FactoryGirl.create(:trip_place2, sequence: 1)
+        trip.trip_parts << FactoryGirl.create(:trip_part4, sequence: 0, from_trip_place: trip_place1, to_trip_place: trip_place2)
+      end
+    end
+
     factory :trip_with_owner do
       association :owner, factory: :user_with_places
     end
