@@ -24,7 +24,7 @@
         placeholder: "(custom shape)",
         input_html: { value: "", readonly: true }
   - else
-    = f.input :primary_coverage_recipe,
+    = f.input :primary_coverage_recipe, as: :text,
         label: translate_helper(:pt_primary_coverage_area),
         placeholder: translate_helper(:coverage_area_placeholder),
         input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
@@ -36,7 +36,7 @@
         placeholder: "(custom shape)",
         input_html: { value: "", readonly: true }
   - else
-    = f.input :secondary_coverage_recipe,
+    = f.input :secondary_coverage_recipe, as: :text,
         label: translate_helper(:pt_secondary_coverage_area),
         placeholder: translate_helper(:coverage_area_placeholder),
         input_html: { value: service.secondary_coverage ? service.secondary_coverage.recipe : "" }

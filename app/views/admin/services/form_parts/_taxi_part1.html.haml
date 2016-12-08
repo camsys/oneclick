@@ -17,10 +17,18 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :primary_coverage_recipe,
-      label: translate_helper(:taxi_coverage_area),
-      placeholder: "List county names separated by commas",
-      input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
+  - custom_primary = service.primary_coverage && service.primary_coverage.custom_shape
+  - if custom_primary
+    = f.input :primary_coverage_custom,
+        label: translate_helper(:taxi_coverage_area),
+        placeholder: "(custom shape)",
+        input_html: { value: "", readonly: true }
+  - else
+    = f.input :primary_coverage_recipe, as: :text,
+        label: translate_helper(:taxi_coverage_area),
+        placeholder: translate_helper(:coverage_area_placeholder),
+        input_html: { value: service.primary_coverage ? service.primary_coverage.recipe : "" }
+
   -if has_coverages
     = LeafletMap({ :mapid => "lmap_service_area_#{service.id}",
       :multipolygons => service.coverage_area_polygons,

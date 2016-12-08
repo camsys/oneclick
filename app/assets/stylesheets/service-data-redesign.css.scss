@@ -66,7 +66,7 @@
   .form-control {
     border-radius: 0;
     box-shadow: none;
-    resize: none;
+    // resize: none;
 
     &:read-only:not(select) {
       border-color: transparent;
@@ -96,7 +96,7 @@ button#provider-logo-upload-btn {
 }
 
 textarea.form-control.text {
-  height: 28pt;
+  resize: vertical;
 }
 
 .logo-display-img {

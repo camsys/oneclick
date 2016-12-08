@@ -8,7 +8,7 @@
         authenticity_token: true,
         wrapper: :horizontal_form do |f|
   = f.error_notification message: print_messages(f)
-  = f.input :name, label: translate_helper(:provider_name)
+  = f.input :name, as: :string, label: translate_helper(:provider_name)
   .form-group.file.optional.provider_logo
     = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
     .col-sm-9

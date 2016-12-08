@@ -17,7 +17,9 @@
   -# Hidden Input tells the controller which partial to send back.
   %input.hidden{name: "service_details_partial", type: "text", value: this_path }
 
-  = f.input :name, label: translate_helper(:service_name), placeholder: translate_helper(:service_name_placeholder)
+  = f.input :name, as: :string,
+    label: translate_helper(:service_name),
+    placeholder: translate_helper(:service_name_placeholder)
 
   -if new_service # Hidden Input Sets Mode
     %input.hidden#service_service_type_id{value: ServiceType.where(code: mode)[0].id, name: "service[service_type_id]", type: "text"}
@@ -39,22 +41,29 @@
   -if ServiceType::PARATRANSIT_MODE_NAMES.include?(mode)
     = f.input :url
 
-  -# Create a comment field for each active locale, or for each comment associated with this service
-  -if new_service
-    - I18n.available_locales.map(&:to_s).each do |locale|
+  -# Display a comment field for each active locale, with existing comment if present
+  - I18n.available_locales.map(&:to_s).each do |locale|
+    - existing_comment = new_service ? nil : service.public_comments.find_by(locale: locale)
+    - if existing_comment
+      = f.simple_fields_for existing_comment do |comment|
+        = comment.input :id, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][id]" }
+        = comment.input :comment, as: :text,
+          label: [translate_helper("locales.#{locale}"), translate_helper(:comment)].join(' '),
+          input_html: {name: "service[public_comments_attributes][][comment]"}
+        = comment.input :locale, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][locale]"}
+        = comment.input :visibility, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][visibility]"}
+    - else
       = f.simple_fields_for :comment do |comment|
-        = comment.input :comment,
+        = comment.input :comment, as: :text,
           label: [translate_helper("locales.#{locale}"), translate_helper(:comment)].join(' '),
           input_html: {name: "service[public_comments_attributes][][comment]"}
         = comment.input :locale, as: :hidden,
           input_html: {name: "service[public_comments_attributes][][locale]", value: locale}
         = comment.input :visibility, as: :hidden,
           input_html: {name: "service[public_comments_attributes][][visibility]", value: "public"}
-  -else
-    = f.simple_fields_for :public_comments do |comment|
-      = comment.input :comment, label: [translate_helper("locales.#{comment.object.locale}"), translate_helper(:comment)].join(' ')
-      = comment.input :locale, as: :hidden
-      = comment.input :visibility, as: :hidden
 
 :javascript
   $(document).ready(function() {
