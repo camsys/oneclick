@@ -243,18 +243,32 @@ class EligibilityService
       service = itinerary['service']
       Rails.logger.info service.name
       unless service.nil? or service.schedules.count == 0
-        schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
-        if schedule.nil?
+        schedules = Schedule.where(day_of_week: wday, service_id: service.id)
+        if schedules.nil? || schedules.empty?
           itinerary['match_score'] += 1
           itinerary['date_mismatch'] = true
           Rails.logger.info 'date mismatch'
         else
-          unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+          unless schedules.any? { |sched| trip_part.valid_for_schedule?(sched) }
             itinerary['match_score'] += 1
             itinerary['time_mismatch'] = true
             Rails.logger.info 'time mismatch'
           end
         end
+
+        #
+        # schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
+        # if schedule.nil?
+        #   itinerary['match_score'] += 1
+        #   itinerary['date_mismatch'] = true
+        #   Rails.logger.info 'date mismatch'
+        # else
+        #   unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+        #     itinerary['match_score'] += 1
+        #     itinerary['time_mismatch'] = true
+        #     Rails.logger.info 'time mismatch'
+        #   end
+        # end
       end
 
       if itinerary['date_mismatch'] != true && itinerary['time_mismatch'] != true

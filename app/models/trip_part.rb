@@ -179,7 +179,7 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
-    
+
     modes.each do |mode|
 
       Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
@@ -200,7 +200,7 @@ class TripPart < ActiveRecord::Base
         timed "rideshare" do
           itins += create_rideshare_itineraries
         end
-      when Mode.ride_hailing 
+      when Mode.ride_hailing
         timed "ride_hailing" do
           itins += RideHailingItinerary.get_itineraries(self)
         end
@@ -629,5 +629,10 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
 
   def destination
     return self.to_trip_place
+  end
+
+  # Returns true/false if trip_part falls within bounds of passed schedule
+  def valid_for_schedule?(schedule)
+    self.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
   end
 end
