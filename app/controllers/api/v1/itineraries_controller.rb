@@ -141,6 +141,7 @@ module Api
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= itinerary.service.logo_url
+              i_hash[:url] = itinerary.service.url
               comment = itinerary.service.comments.where(locale: "en").first
               if comment
                 i_hash[:comment] = comment.comment

@@ -60,6 +60,7 @@ module Api
         render json: hash
 
       end
+
     end
   end
 end
