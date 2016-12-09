@@ -13,7 +13,11 @@ module Api
         params[:select_itineraries].each do |itin|
           itinerary = Itinerary.find(itin['itinerary_id'].to_i)
           itineraries.append(itinerary)
-          trip = Trip.find(itin['trip_id'].to_i)
+          if itin['trip_id']
+            trip = Trip.find(itin['trip_id'].to_i)
+          else
+            trip = itinerary.trip_part.trip
+          end
           trip.unselect_all
         end
 
@@ -33,7 +37,6 @@ module Api
         if user_profile
           @traveler.update_profile user_profile
         end
-
 
         #Unpack params
         modes = params['modes'] || ['mode_transit', 'mode_paratransit', 'mode_taxi', 'mode_ride_hailing']
@@ -134,7 +137,7 @@ module Api
             if itinerary.service
               relevant_purposes += itinerary.service.purposes_hash
               relevant_characteristics += itinerary.service.characteristics_hash
-              i_hash[:schedule = itinerary.service.schedule_hash
+              i_hash[:schedule] = itinerary.service.schedule_hash
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= itinerary.service.logo_url

@@ -400,7 +400,7 @@ class User < ActiveRecord::Base
       accommodation = Accommodation.find_by(code: key)
       if accommodation
         user_accommodation = self.user_accommodations.where(user_profile: self.user_profile, accommodation: accommodation).first_or_initialize
-        user_accommodation.value = value
+        user_accommodation.value = value.to_s
         user_accommodation.save
       end
     end
