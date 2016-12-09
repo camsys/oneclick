@@ -178,8 +178,6 @@ module Api
 
             final_itineraries.append(i_hash)
 
-
-
           end
 
         end

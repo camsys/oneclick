@@ -411,7 +411,7 @@ class User < ActiveRecord::Base
   end
 
   def accommodations_hash
-    self.user_accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.accommodation.name), code: a.accommodation.code, note: TranslationEngine.translate_text(a.accommodation.note), value: a.value}}
+    self.user_accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.accommodation.name), code: a.accommodation.code, note: TranslationEngine.translate_text(a.accommodation.note), value: (a.value == "true")}}
   end
 
   def walk_speed_to_code(walk_speed)
