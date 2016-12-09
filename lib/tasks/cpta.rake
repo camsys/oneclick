@@ -46,7 +46,8 @@ namespace :oneclick do
       {name: "Shared Ride", external_id: "blair"},
       {name: "Shared Ride", external_id: "monroe"},
       {name: "Shared Ride", external_id: "carbon"},
-      {name: "Shared Ride", external_id: "lanta"},
+      {name: "Lehigh Shared Ride", external_id: "lanta"},
+      {name: "Northampton Shared Ride", external_id: "lanta"},
       {name: "Shared Ride", external_id: "columbia"}
     ]
 
@@ -55,7 +56,7 @@ namespace :oneclick do
     service_type = ServiceType.find_by(code: "paratransit")
 
     ecolane_services.each do |ecolane_service|
-      service = Service.find_or_create_by(service_type: service_type, external_id: ecolane_service[:external_id]) do |service|
+      service = Service.find_or_create_by(name: ecolane_service[:name], service_type: service_type, external_id: ecolane_service[:external_id]) do |service|
         puts 'Creating a new service for ' + ecolane_service.as_json.to_s
         service.service_type = service_type
         service.name = ecolane_service[:name]
@@ -403,21 +404,31 @@ namespace :oneclick do
         when 'carbon'
 
           #Counties
-          service.county_endpoint_array = []
-          # service.county_endpoint_array = ['Carbon']
+          # service.county_endpoint_array = []
+          service.county_endpoint_array = ['Carbon']
           service.county_coverage_array = ['Carbon']
 
           #Funding Sources
-          funding_source_array = [['Test', 0, false, 'Test Funding Source']]
+          funding_source_array = [
+            ['Lottery', 0, false, 'Riders 65 or older'],
+            ['PwD', 1, false, "Riders with disabilities"],
+            ['MATP', 2, false, "Medical Transportation"],
+            ['AAA Carbon', 3, false, "AAA Eligible"],
+            ["ADA", 4, false, "Eligible for ADA"]
+          ]
 
           #Sponsors
-          sponsor_array = []
+          sponsor_array = [
+            ['AAA Carbon', 0],
+            ['MATP', 1],
+            ['PDA Waiver Carbon', 2]
+          ]
 
           #Dummy User
-          service.fare_user = "1864"
+          service.fare_user = "test4"
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
-          service.active = false
+          service.active = true
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
@@ -429,28 +440,91 @@ namespace :oneclick do
           #Booking System Id
           ecolane_profile.system = 'carbon'
           ecolane_profile.api_version = "8"
-          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.default_trip_purpose = 'Miscellaneous'
           ecolane_profile.save
 
         when 'lanta'
 
           #Counties
-          service.county_endpoint_array = []
-          # service.county_endpoint_array = ['Lehigh', 'Northampton']
+          # service.county_endpoint_array = []
+          service.county_endpoint_array = ['Lehigh', 'Northampton']
           service.county_coverage_array = ['Lehigh', 'Northampton']
 
-          #Funding Sources
-          funding_source_array = [['Test', 0, false, 'Test Funding Source']]
+          # Lehigh or Northampton?
+          if service.name == "Lehigh Shared Ride"
 
-          #Sponsors
-          sponsor_array = []
+            #Funding Sources - Lehigh
+            funding_source_array = [
+              ['Lottery', 0, false, 'Riders 65 or older'],
+              ['PwD', 1, false, "Riders with disabilities"],
+              ['MATP', 2, false, "Medical Transportation"],
+              ['AAA Lehigh', 3, false, "AAA Eligible"],
+              ["ADA", 4, false, "Eligible for ADA"],
+              ["NUR", 5, false, "Eligible for NUR"],
+              ["LANtaFlex", 6, false, "Eligible for LANtaFlex"],
+              ["LANtaFlex 65 plus", 7, false, "Eligible for LANtaFlex 65 plus"],
+              ["BTGFlex", 8, false, "Eligible for BTGFlex"],
+              ["BTGFlex 65 plus", 9, false, "Eligible for BTGFlex 65 plus"],
+              ["MATP OOC", 10, false, "Eligible for MATP OOC"],
+              ["SB Flex", 11, false, "Eligible for SB Flex"],
+              ["SB Flex 65+", 12, false, "Eligible for SB Flex 65+"],
+              ["MATP OOC CC", 13, false, "Eligible for MATP OOC CC"],
+              ["Flex 504", 14, false, "Eligible for Flex 504"],
+              ["Flex 504 65+", 15, false, "Eligible for Flex 504 65+"],
+              ['Gen Pub', 20, true, "Full Fare"]
+            ]
 
-          #Dummy User
-          service.fare_user = "10847"
+            #Sponsors - Lehigh
+            sponsor_array = [
+              ['MATP', 0],
+              ['PDA Waiver - Lehigh', 1],
+              ['MHMR Lehigh', 2],
+              ['LANtaFlex', 3],
+              ['AAA Lehigh', 4]
+            ]
 
+            #Dummy User - Lehigh
+            service.fare_user = "72405"
+
+          elsif service.name == "Northampton Shared Ride"
+
+            #Funding Sources - Northampton
+            funding_source_array = [
+              ['Lottery', 0, false, 'Riders 65 or older'],
+              ['PwD', 1, false, "Riders with disabilities"],
+              ['MATP', 2, false, "Medical Transportation"],
+              ['AAA Northampton', 3, false, "AAA Eligible"],
+              ["ADA", 4, false, "Eligible for ADA"],
+              ["NUR", 5, false, "Eligible for NUR"],
+              ["LANtaFlex", 6, false, "Eligible for LANtaFlex"],
+              ["LANtaFlex 65 plus", 7, false, "Eligible for LANtaFlex 65 plus"],
+              ["BTGFlex", 8, false, "Eligible for BTGFlex"],
+              ["BTGFlex 65 plus", 9, false, "Eligible for BTGFlex 65 plus"],
+              ["MATP OOC", 10, false, "Eligible for MATP OOC"],
+              ["SB Flex", 11, false, "Eligible for SB Flex"],
+              ["SB Flex 65+", 12, false, "Eligible for SB Flex 65+"],
+              ["MATP OOC CC", 13, false, "Eligible for MATP OOC CC"],
+              ["Flex 504", 14, false, "Eligible for Flex 504"],
+              ["Flex 504 65+", 15, false, "Eligible for Flex 504 65+"],
+              ['Gen Pub', 20, true, "Full Fare"]
+            ]
+
+            #Sponsors - Northampton
+            sponsor_array = [
+              ['MATP', 0],
+              ['PDA Waiver - Northampton', 1],
+              ['MHMR Northampton', 2],
+              ['LANtaFlex', 3],
+              ['AAA Northampton', 4]
+            ]
+
+            #Dummy User - Northampton
+            service.fare_user = "72406"
+
+          end
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
-          service.active = false
+          service.active = true
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
@@ -462,7 +536,7 @@ namespace :oneclick do
           #Booking System Id
           ecolane_profile.system = 'lanta'
           ecolane_profile.api_version = "8"
-          ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.default_trip_purpose = 'Miscellaneous'
           ecolane_profile.save
 
         when 'columbia'
@@ -524,6 +598,7 @@ namespace :oneclick do
         #Confirm API Token is set
         if service.ecolane_profile.token.nil?
           puts 'Be sure to setup a token for ' + service.name  + ' ' + external_id + ', service_id = ' + service.id.to_s
+          puts 'In console, run: Service.find(<id>).ecolane_profile.update_attributes(token: "<token>") '
         end
 
         service.save
@@ -617,7 +692,7 @@ namespace :oneclick do
 
   desc "Turn Off the Rabbit Test Service and Turn on the Rabbit Shared Ride Service"
   task turn_off_test_service: :environment do
-    s = Service.find_by(external_id: "cambridge_test")
+    s = Service.find_by(external_id: "cambridge-test")
     if s.nil?
       puts 'The test service does not exist'
     else
