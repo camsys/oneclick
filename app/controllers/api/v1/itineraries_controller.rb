@@ -13,7 +13,7 @@ module Api
         params[:select_itineraries].each do |itin|
           itinerary = Itinerary.find(itin['itinerary_id'].to_i)
           itineraries.append(itinerary)
-          trip = Trip.find(itin['trip_id'].to_i)
+          trip = Trip.find(itin['trip_id'].to_i) || itinerary.trip_part.trip
           trip.unselect_all
         end
 
