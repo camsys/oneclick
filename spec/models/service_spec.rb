@@ -37,13 +37,18 @@ describe Service do
     @service.internal_contact.should be_nil
   end
 
-  it 'should allow multi-part schedules in a given day' do
-    @trip = FactoryGirl.create(:trip)
+  context "trips with multipart schedules" do
+    before do
+      @trip = FactoryGirl.create(:trip)
+    end
 
-    puts @trip.ai
+    it 'is valid for trips booked during first part of the day' do
+      true.should be_false
+    end
 
-    true.should be_false
-    puts "Write Test Here"
+    it 'is valid for trips booked during the second part of the day' do
+      true.should be_false
+    end
   end
 
 end
