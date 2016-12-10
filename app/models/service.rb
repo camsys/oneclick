@@ -750,7 +750,23 @@ class Service < ActiveRecord::Base
   end
 
   def schedule_hash
-    self.schedules.order(:day_of_week).collect{ |s| {day: s.day_string, start: s.start_string, end: s.end_string} }
+    hash = {}
+    self.schedules.order(:day_of_week).each do |s|
+      if hash[s.day_string]
+        hash[s.day_string][:start] << s.start_string
+        hash[s.day_string][:end] << s.end_string
+      else
+        hash[s.day_string] ={start: [s.start_string], end: [s.end_string]}
+      end
+    end
+
+    schedule_array  = []
+    hash.each do |k,v|
+      schedule_array << {day: k, start: v[:start], end: v[:end]}
+    end
+
+    return schedule_array
+
   end
 
   private
