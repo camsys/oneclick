@@ -2,6 +2,7 @@ module Api
   module V1
     class ItinerariesController < Api::V1::ApiController
       include MapHelper, ItineraryHelper
+      require 'benchmark'
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
@@ -64,7 +65,8 @@ module Api
         trip.min_transfer_time = min_transfer_time.nil? ? nil : min_transfer_time.to_i
         trip.max_transfer_time = max_transfer_time.nil? ? nil : max_transfer_time.to_i
         trip.source_tag = source_tag
-        trip.save
+        puts "trip.save"
+        benchmark { trip.save }
 
         #Build the Trip Places
         from_trip_place = TripPlace.new
@@ -77,8 +79,10 @@ module Api
         first_part = (trip_parts.select { |part| part[:segment_index] == 0}).first
         from_trip_place.from_place_details first_part[:start_location]
         to_trip_place.from_place_details first_part[:end_location]
-        from_trip_place.save
-        to_trip_place.save
+        puts "from_trip_place.save"
+        benchmark { from_trip_place.save }
+        puts "to_trip_place.save"
+        benchmark { to_trip_place.save }
 
         final_itineraries = []
 
@@ -141,7 +145,8 @@ module Api
           if tp.sequence == 0
             trip.scheduled_date = tp.scheduled_date
             trip.scheduled_time = tp.scheduled_time
-            trip.save
+            puts "trip.save (2)"
+            benchmark { trip.save }
           end
 
           #Build the itineraries
@@ -227,7 +232,8 @@ module Api
 
               end
               itinerary.legs = yaml_legs.to_yaml
-              itinerary.save
+              puts "itinerary.save"
+              benchmark { itinerary.save }
             end
 
 
@@ -390,6 +396,11 @@ module Api
 
       def yes_or_no value
         value.to_bool ? 1 : 0
+      end
+      
+      def benchmark 
+        puts "  user     system      total        real"
+        puts Benchmark.measure { yield }
       end
 
     end #Itineraries Controller
