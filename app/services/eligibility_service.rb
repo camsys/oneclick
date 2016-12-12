@@ -360,12 +360,8 @@ class EligibilityService
   #For guest api users, don't consider every service,  Only consider the service that covers their origin
   def service_from_trip_part trip_part
     county = trip_part.trip.origin.county || trip_part.trip.origin.get_county
-    Service.paratransit.each do |service|
-      if county.in? service.county_endpoint_array || []
-        return [service]
-      end
-    end
-    return []
+    service = BookingServices.new.county_to_service(county)
+    return service ? [service] : []
   end
 
 end

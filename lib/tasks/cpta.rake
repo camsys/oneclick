@@ -90,7 +90,6 @@ namespace :oneclick do
 
     services.each do |service|
 
-
       #Funding source array cheat sheet
       # 0: code
       # 1: index (lower gives higher priority when trying to match funding sources to trip purposes)
@@ -103,6 +102,8 @@ namespace :oneclick do
 
       funding_source_array = []
       sponsor_array = []
+      primary_coverage_counties = []
+      secondary_coverage_counties = []
 
       if service
         external_id = service.external_id
@@ -112,8 +113,8 @@ namespace :oneclick do
         when 'rabbit'
 
           #Counties
-          service.county_endpoint_array = ['York', 'Adams', 'Cumberland']
-          service.county_coverage_array = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
+          primary_coverage_counties = ['York', 'Adams', 'Cumberland']
+          secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -135,13 +136,14 @@ namespace :oneclick do
           ecolane_profile.system = 'rabbit'
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.api_version = "8"
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'lebanon'
 
           #Counties
-          service.county_endpoint_array = ['Lebanon']
-          service.county_coverage_array = ['Lebanon']
+          primary_coverage_counties = ['Lebanon']
+          secondary_coverage_counties = ['Lebanon']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADA", 4, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -159,13 +161,14 @@ namespace :oneclick do
           ecolane_profile.system= 'lebanon'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'cambria'
 
           #Counties
-          service.county_endpoint_array = ['Cambria']
-          service.county_coverage_array = ['Cambria']
+          primary_coverage_counties = ['Cambria']
+          secondary_coverage_counties = ['Cambria']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -187,13 +190,14 @@ namespace :oneclick do
           ecolane_profile.system = 'cambria'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Misc'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'franklin'
 
           #Counties
-          service.county_endpoint_array = ['Franklin']
-          service.county_coverage_array = ['Franklin']
+          primary_coverage_counties = ['Franklin']
+          secondary_coverage_counties = ['Franklin']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -211,11 +215,12 @@ namespace :oneclick do
           ecolane_profile.system = 'franklin'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'dauphin'
 
-          service.county_endpoint_array = ['Dauphin']
+          primary_coverage_counties = ['Dauphin']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"],['MATP', 2, false, "Medical Transportation"], ["ADA", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -236,12 +241,13 @@ namespace :oneclick do
           ecolane_profile.system = 'dauphin'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Medical'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'northumberland'
 
-          service.county_endpoint_array = ['Northumberland']
-          service.county_coverage_array = ['Northumberland']
+          primary_coverage_counties = ['Northumberland']
+          secondary_coverage_counties = ['Northumberland']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -262,13 +268,14 @@ namespace :oneclick do
           ecolane_profile.system = 'northumberland'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'unionsnyder'
 
           #Counties
-          service.county_endpoint_array = ['Union', 'Snyder']
-          service.county_coverage_array = ['Union', 'Snyder']
+          primary_coverage_counties = ['Union', 'Snyder']
+          secondary_coverage_counties = ['Union', 'Snyder']
 
           #Funding Sources
           funding_source_array = [['Lottery - US', 0, false, 'Riders 65 or older'], ['PwD-US', 1, false, "Riders with disabilities"], ['MATP - US', 2, false, "Medical Transportation"], ["Gen Public-US", 5, true, "Full Fare"]]
@@ -290,13 +297,14 @@ namespace :oneclick do
           ecolane_profile.system = 'northumberland'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Medical'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'montour'
 
           #Counties
-          service.county_endpoint_array = ['Montour']
-          service.county_coverage_array = ['Montour']
+          primary_coverage_counties = ['Montour']
+          secondary_coverage_counties = ['Montour']
 
           #Funding Sources
           funding_source_array = [['Lottery-MC', 0, false, 'Riders 65 or older'], ['MATP-MC', 2, false, "Medical Transportation"], ["Gen Pub - MC", 5, true, "Full Fare"]]
@@ -318,13 +326,14 @@ namespace :oneclick do
           ecolane_profile.system = 'northumberland'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'blair'
 
           #Counties
-          service.county_endpoint_array = ['Blair']
-          service.county_coverage_array = ['Blair']
+          primary_coverage_counties = ['Blair']
+          secondary_coverage_counties = ['Blair']
 
           #Funding Sources
           funding_source_array = [
@@ -362,13 +371,14 @@ namespace :oneclick do
           ecolane_profile.system = 'blair'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'monroe'
 
           #Counties
-          service.county_endpoint_array = ['Monroe']
-          service.county_coverage_array = ['Monroe', 'Carbon']
+          primary_coverage_counties = ['Monroe']
+          secondary_coverage_counties = ['Monroe', 'Carbon']
 
           #Funding Sources
           funding_source_array = [
@@ -399,14 +409,15 @@ namespace :oneclick do
           ecolane_profile.system = 'monroe'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'carbon'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Carbon']
-          service.county_coverage_array = ['Carbon']
+          # primary_coverage_counties = []
+          primary_coverage_counties = ['Carbon']
+          secondary_coverage_counties = ['Carbon']
 
           #Funding Sources
           funding_source_array = [
@@ -441,14 +452,15 @@ namespace :oneclick do
           ecolane_profile.system = 'carbon'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Miscellaneous'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
         when 'lanta'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Lehigh', 'Northampton']
-          service.county_coverage_array = ['Lehigh', 'Northampton']
+          # primary_coverage_counties = []
+          primary_coverage_counties = ['Lehigh', 'Northampton']
+          secondary_coverage_counties = ['Lehigh', 'Northampton']
 
           # Lehigh or Northampton?
           if service.name == "Lehigh Shared Ride"
@@ -537,14 +549,15 @@ namespace :oneclick do
           ecolane_profile.system = 'lanta'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Miscellaneous'
+          ecolane_profile.booking_counties = (service.name == "Lehigh Shared Ride" ? ["Lehigh"] : ["Northampton"])
           ecolane_profile.save
 
         when 'columbia'
 
           #Counties
-          # service.county_endpoint_array = []
-          service.county_endpoint_array = ['Columbia']
-          service.county_coverage_array = ['Columbia']
+          # primary_coverage_counties = []
+          primary_coverage_counties = ['Columbia']
+          secondary_coverage_counties = ['Columbia']
 
           #Funding Sources
           funding_source_array = [['Lottery - US', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"],["Gen Pub - MC", 3, true, "Full Fare"]]
@@ -569,6 +582,7 @@ namespace :oneclick do
           ecolane_profile.system = 'northumberland'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
+          ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
 
@@ -601,6 +615,10 @@ namespace :oneclick do
           puts 'In console, run: Service.find(<id>).ecolane_profile.update_attributes(token: "<token>") '
         end
 
+        # Build Service Coverage Area Geometries
+        service.primary_coverage = CoverageZone.build_coverage_area(primary_coverage_counties)
+        service.secondary_coverage = CoverageZone.build_coverage_area(secondary_coverage_counties)
+
         service.save
 
       else
@@ -628,8 +646,8 @@ namespace :oneclick do
     #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
     #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page
     #Counties
-    service.county_endpoint_array = ['York', 'Adams', 'Cumberland']
-    service.county_coverage_array = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
+    primary_coverage_counties = ['York', 'Adams', 'Cumberland']
+    secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
 
     #Funding Sources
     funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]

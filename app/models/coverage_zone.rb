@@ -2,6 +2,10 @@ class CoverageZone < ActiveRecord::Base
 
   has_one :service
 
+  #################
+  # CLASS METHODS #
+  #################
+
   # Converts a recipe into a well-formed array
   def self.clean_recipe(recipe)
     if recipe.is_a?(Array)
@@ -73,20 +77,26 @@ class CoverageZone < ActiveRecord::Base
     geoms = parsed_recipe.values.flatten.map {|obj| obj.geom}
     geom = geoms.reduce { |combined_area, geom| combined_area.union(geom) }
     geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon) unless geom.nil?
-    @coverage_zone = self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom)
-
-    # Add errors for no matches and multiple matches
-    errors = { no_matches: parsed_recipe.select {|k,v| v.empty? }.keys, multiple_matches: parsed_recipe.select {|k,v| v.length > 1 }.keys }
-    @coverage_zone.errors.add(:no_matches, " found for: " + errors[:no_matches].join(", ")) unless errors[:no_matches].empty?
-    @coverage_zone.errors.add(:multiple_matches, " found for: " + errors[:multiple_matches].join(", ")) unless errors[:multiple_matches].empty?
-
-    return @coverage_zone
+    self.new(recipe: self.encode_coverage_recipe(parsed_recipe), geom: geom).catch_parse_errors(parsed_recipe)
   end
 
   # Builds a new CoverageZone based on a passed geom
   def self.build_custom_coverage_area(geom)
     geom = RGeo::Feature.cast(geom, :type => RGeo::Feature::MultiPolygon) unless geom.nil?
     self.new(recipe: nil, geom: geom, custom_shape: true)
+  end
+
+  ####################
+  # INSTANCE METHODS #
+  ####################
+
+  # Attaches parse error messages to the CoverageZone object, then returns the object with attached errors
+  def catch_parse_errors(parsed_recipe)
+    # Add errors for no matches and multiple matches
+    error_hash = { no_matches: parsed_recipe.select {|k,v| v.empty? }.keys, multiple_matches: parsed_recipe.select {|k,v| v.length > 1 }.keys }
+    self.errors.add(:no_matches, " found for: " + error_hash[:no_matches].join(", ")) unless error_hash[:no_matches].empty?
+    self.errors.add(:multiple_matches, " found for: " + error_hash[:multiple_matches].join(", ")) unless error_hash[:multiple_matches].empty?
+    return self
   end
 
   # Returns an array of coverage zone polygon geoms
@@ -122,6 +132,11 @@ class CoverageZone < ActiveRecord::Base
   def add_to_recipe(recipe_to_add)
     new_recipe = CoverageZone.clean_recipe(recipe_to_add) + CoverageZone.clean_recipe(self.recipe)
     CoverageZone.build_coverage_area(new_recipe)
+  end
+
+  # Returns recipe as a cleaned up array
+  def recipe_array
+    CoverageZone.clean_recipe(recipe)
   end
 
 end

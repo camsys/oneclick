@@ -45,6 +45,13 @@ namespace :update do
 
   desc "v1.8.3"
   task "v1.8.3" => :environment do
+    # This task is run as part of the migration that destroys county_endpoint_array:
+    # Rake::Task["onelick:one_offs:transfer_endpoint_counties_to_ecolane_profiles"].invoke # Copies over county_endpoint_array data
+
+    # Migrate and Load Locales
+    Rake::Task["db:migrate"].invoke
+    Rake::Task["oneclick:load_locales"].invoke
+
     Rake::Task["oneclick:one_offs:add_comment_to_uber_service"].invoke #Make sure that Uber Services have a public comment.
   end
 
