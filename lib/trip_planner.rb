@@ -9,6 +9,7 @@ class TripPlanner
   METERS_TO_MILES = 0.000621371192
   
   include ServiceAdapters::RideshareAdapter
+  require 'benchmark'
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil, try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
@@ -96,7 +97,10 @@ class TripPlanner
     Rails.logger.info URI.parse(url)
     t = Time.now
     begin
-      resp = Net::HTTP.get_response(URI.parse(url))
+      puts "OTP call"
+      puts "  user     system      total        real"
+      resp = nil
+      puts Benchmark.measure { resp = Net::HTTP.get_response(URI.parse(url)) }
       Rails.logger.info(resp.ai)
     rescue Exception=>e
       return false, {'id'=>500, 'msg'=>e.to_s}
