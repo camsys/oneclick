@@ -30,7 +30,7 @@ class Service < ActiveRecord::Base
   has_many :fare_zones
   has_many :funding_sources
   has_many :sponsors
-  has_one  :ecolane_profile
+  has_one  :ecolane_profile, :dependent => :destroy
 
   has_one :trapeze_profile
   has_one :ridepilot_profile
