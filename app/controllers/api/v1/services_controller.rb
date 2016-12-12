@@ -66,7 +66,6 @@ module Api
         else # This is not a guest, check to see if the traveler is registered with a service
 
           if @traveler.user_profile.user_services.count > 0 #This user is registered with a service
-
             service = @traveler.user_profile.user_services.first.service
             min_notice_days = (service.advanced_notice_minutes || 1440).to_i / 1440 #Minimum notice in days
             max_notice_days = [(service.max_advanced_book_minutes || 20160).to_i / 1440, 28].min #Max advanced notice (up to 28 days)

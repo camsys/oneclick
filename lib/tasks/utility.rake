@@ -7,3 +7,16 @@ namespace :utility do
   end
 
 end
+
+namespace :cleanup do
+
+  desc 'Destroys Orphaned Records'
+  task :destroy_orphaned_records => :environment do
+    user_services = UserService.where(["service_id NOT IN (?)", Service.pluck("id")]).destroy_all
+    puts "Destroyed #{user_services.count} orphaned user_services..."
+
+    ecolane_profiles = EcolaneProfile.where(["service_id NOT IN (?)", Service.pluck("id")]).destroy_all
+    puts "Destroyed #{ecolane_profiles.count} orphaned ecolane_profiles..."
+  end
+
+end

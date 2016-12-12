@@ -9,7 +9,6 @@ module Api
         user_service = nil
         if @traveler
           user_service = UserService.where(user_profile_id: @traveler.user_profile).first
-          puts @traveler.ai
         end
 
         #If the user is registered with a service, use his/her trip purposes

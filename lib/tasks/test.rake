@@ -17,4 +17,4 @@ namespace :db do
       Rails.env = "test"
     end
   end
-end 
+end
