@@ -53,7 +53,8 @@ module Api
         trip.user = @traveler
         trip.trip_purpose_raw = purpose
         trip.desired_modes_raw = modes
-        trip.desired_modes = Mode.where(code: modes)
+        puts 'Reading Modes'
+        benchmark { trip.desired_modes = Mode.where(code: modes) }
 
         trip.token = trip_token
         trip.optimize = optimize || "TIME"
@@ -152,7 +153,8 @@ module Api
           #Build the itineraries
           tp.create_itineraries
 
-          my_itins = Itinerary.where(trip_part: tp).order('created_at')
+          puts 'Reading Itinerary.where #line 156'
+          benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
           #my_itins = tp.itineraries
           my_itins.each do |itin|
             Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
@@ -183,7 +185,8 @@ module Api
 
             #Open up the legs returned by OTP and augment the information
             unless itinerary.legs.nil?
-              yaml_legs = YAML.load(itinerary.legs)
+              puts 'Load itinerary legs'
+              benchmark { yaml_legs = YAML.load(itinerary.legs) }
 
               yaml_legs.each do |leg|
                 #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
@@ -198,7 +201,8 @@ module Api
 
                 #2 Check to see if this route_type is classified as a special route_type
                 begin
-                  specials = Oneclick::Application.config.gtfs_special_route_types
+                  puts 'Reading DB Config gtfs_special_route_types'
+                  benchmark { specials = Oneclick::Application.config.gtfs_special_route_types }
                 rescue Exception=>e
                   specials = []
                 end
@@ -236,9 +240,6 @@ module Api
               benchmark { itinerary.save }
             end
 
-
-
-
             if itinerary.legs
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
             else
@@ -251,8 +252,11 @@ module Api
 
         end
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
-        origin_in_callnride, origin_callnride = trip.origin.within_callnride?
-        destination_in_callnride, destination_callnride = trip.destination.within_callnride?
+
+        puts 'Checking to see if origin is in a CallNRide Zone'
+        benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
+        puts 'Checking to see if destination is in a CallNRide Zone'
+        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
 
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 

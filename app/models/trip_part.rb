@@ -283,12 +283,14 @@ class TripPart < ActiveRecord::Base
       end
     end
 
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes)
+    puts 'Calling OTP:'
+    benchmark { result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes) }
 
     #If this is a transit trip, save the response
     if mode_code.to_s == "mode_transit_name"
       self.otp_response = response
-      self.save
+      puts 'Saving trip part'
+      benchmark { self.save }
     end
 
     #TODO: Save errored results to an event log
@@ -635,5 +637,10 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
     end
     trip_times = self.otp_response['tripTimes']
     return trip_times.detect{|hash| hash['tripId'] == trip_id}
+  end
+
+  def benchmark
+    puts "  user     system      total        real"
+    puts Benchmark.measure { yield }
   end
 end
