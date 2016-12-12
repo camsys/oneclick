@@ -266,6 +266,25 @@ namespace :oneclick do
 
     end
 
+    # Copy Endpoint County Arrays to Ecolane Profile Booking Counties
+    task transfer_endpoint_counties_to_ecolane_profiles: :environment do
+      puts "Transfering County Endpoint Arrays to Ecolane Booking Profiles..."
+
+      Service.where.not(county_endpoint_array: nil).each do |service|
+        if service.ecolane_profile
+          if service.ecolane_profile.booking_counties.nil? || service.ecolane_profile.booking_counties.empty?
+            puts "Copying #{service.county_endpoint_array} for #{service.name}..."
+            service.ecolane_profile.update_attributes(booking_counties: service.county_endpoint_array)
+          else
+            puts "#{service.name} already has #{service.ecolane_profile.booking_counties} set as its booking counties array."
+          end
+        else
+          puts "#{service.name} has no ecolane profile."
+        end
+      end
+
+    end
+
   end
 
 end

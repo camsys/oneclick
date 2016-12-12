@@ -10,8 +10,8 @@ class Service < ActiveRecord::Base
   resourcify
 
   #Serialize
-  serialize :county_endpoint_array #Optionaly use county names as endpoints instead of geometry
-  serialize :county_coverage_array #Optionaly use county names as coverage area instead of geometry
+  serialize :county_endpoint_array #Optionaly use county names as endpoints instead of geometry # DEPRECATED
+  serialize :county_coverage_array #Optionaly use county names as coverage area instead of geometry # DEPRECATED
 
   #associations
   belongs_to :provider

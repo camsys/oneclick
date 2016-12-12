@@ -3,26 +3,34 @@ module Api
     class ServicesController < Api::V1::ApiController
 
       def ids
-        external_id_array = []
 
-        Service.paratransit.active.each do |service|
-          external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
-        end
+        external_id_array = Service.paratransit.active.map do |service|
+          if service.ecolane_profile && service.ecolane_profile.booking_counties
+            service.ecolane_profile.booking_counties
+          else
+            []
+          end
+        end.flatten.sort
 
-        hash = {service_ids: external_id_array.sort}
+        hash = {service_ids: external_id_array}
+
         respond_with hash
 
       end
 
+      # Returns a hash containing an array of prettified county names available for service booking
       def ids_humanized
 
-        external_id_array = []
+        external_id_array = Service.paratransit.active.map do |service|
+          if service.ecolane_profile && service.ecolane_profile.booking_counties
+            service.ecolane_profile.booking_counties
+          else
+            []
+          end
+        end.flatten.map(&:humanize).uniq.sort
 
-        Service.paratransit.active.each do |service|
-          external_id_array += (service.county_endpoint_array || [] ).map!(&:humanize)
-        end
+        hash = {service_ids: external_id_array}
 
-        hash = {service_ids: external_id_array.sort}
         respond_with hash
 
       end
@@ -31,9 +39,11 @@ module Api
 
         external_ids = {}
         Service.paratransit.active.each do |service|
-          counties = service.county_endpoint_array || []
-          counties.each do |county|
-            external_ids[county] = service.external_id
+          if service.ecolane_profile
+            counties = service.ecolane_profile.booking_counties || []
+            counties.each do |county|
+              external_ids[county] = service.external_id
+            end
           end
         end
 

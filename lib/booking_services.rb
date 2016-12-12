@@ -724,10 +724,17 @@ class BookingServices
     return response_array # Return an array of successfully updated Ecolane Booking ids
   end
 
+  # Finds the first service it can set to book trips in the given county
   def county_to_service(county)
-    Service.find_by(external_id: county_to_external_id(county).downcase.strip)
+    ep = EcolaneProfile.where("booking_counties like ?", "% #{county.humanize}\n%").first
+    if ep
+      return ep.service
+    else
+      return nil
+    end
   end
 
+  # DEPRECATED?
   def county_to_external_id county
     Service.paratransit.active.each do |service|
       counties = service.county_endpoint_array || []
