@@ -9,9 +9,9 @@ module Api
       require 'json'
 
       skip_before_filter :get_traveler
-      before_action :confirm_api_activated
-      before_action :confirm_user_token
-      before_action :get_api_traveler
+      before_action :confirm_api_activated, :except => :ping
+      before_action :confirm_user_token, :except => :ping
+      before_action :get_api_traveler, :except => :ping
 
       protected
 

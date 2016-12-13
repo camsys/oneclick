@@ -2,6 +2,10 @@ module Api
   module V1
     class TripsController < Api::V1::ApiController
 
+      skip_before_filter :confirm_api_activated, :only => :ping
+      skip_before_filter :confirm_user_token, :only => :ping
+      skip_before_filter :get_api_traveler, :only => :ping
+
       def status_from_token
         #Get the itineraries
         trip_token = params[:trip_token]
@@ -122,6 +126,14 @@ module Api
 
       def index
         list
+      end
+
+      def ping
+        hash = {status: "ok"}
+        respond_to do |format|
+          format.html { render html: "ok" }
+          format.json { render json: hash }
+        end
       end
     end
   end

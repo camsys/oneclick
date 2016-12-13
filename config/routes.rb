@@ -4,7 +4,7 @@ Oneclick::Application.routes.draw do
 
   scope "(:locale)", locale: oneclick_available_locales do
 
-    root to: 'home#index'
+    root to: 'api/v1/trips#ping'
 
     authenticated :user do
       root :to => 'trips#new', as: :authenticated_root
@@ -330,6 +330,7 @@ Oneclick::Application.routes.draw do
           get 'details_from_token'
           get 'list'
           get 'index'
+          get 'ping'
         end
 
         member do
