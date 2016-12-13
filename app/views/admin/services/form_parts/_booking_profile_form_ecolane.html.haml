@@ -1,2 +1,16 @@
 .booking-profile-form-container.ecolane.agency-0{ class: service.booking_profile == 0 ? "" : "hidden" }
-  %p Ecolane Profile Form
+  = f.simple_fields_for :ecolane_profile do |ep|
+    -if service.ecolane_profile
+      = ep.input :system, input_html: {value: service.ecolane_profile.system, class: "input-ecolane-profile-system"}
+      = ep.input :token, input_html: {value: service.ecolane_profile.token, class: "input-ecolane-api-token"}
+      = ep.input :disallowed_purposes, as: :text,
+        input_html: { value: service.ecolane_profile.disallowed_purposes_text,
+                      class: "input-ecolane-disallowed-purposes",
+                      placeholder: translate_helper(:ecolane_disallowed_purposes_placeholder)}
+      = ep.input :api_version, as: :hidden, input_html: {value: "9"} # Default to API Version 9
+    -else
+      = ep.input :system
+      = ep.input :token
+      = ep.input :disallowed_purposes, as: :text,
+        input_html: {placeholder: translate_helper(:ecolane_disallowed_purposes_placeholder)}
+      = ep.input :api_version, as: :hidden, input_html: {value: "9"} # Default to API Version 9

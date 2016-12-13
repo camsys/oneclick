@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212203350) do
+ActiveRecord::Schema.define(version: 20161213202330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 20161212203350) do
     t.string   "token"
     t.string   "api_version",          default: "8", null: false
     t.text     "booking_counties"
+    t.text     "disallowed_purposes"
   end
 
   create_table "fare_structures", force: true do |t|
@@ -701,7 +702,6 @@ ActiveRecord::Schema.define(version: 20161212203350) do
     t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
     t.string   "fare_user"
-    t.text     "disallowed_purposes"
     t.integer  "booking_profile"
     t.integer  "fleet_size"
     t.integer  "trip_volume"

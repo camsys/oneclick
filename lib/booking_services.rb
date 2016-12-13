@@ -369,7 +369,14 @@ class BookingServices
 
        ecolane_profile = service.ecolane_profile
         es = EcolaneServices.new
-        purposes =  es.get_trip_purposes(es.get_customer_id(user_service.external_user_id, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, user_service.service.disallowed_purposes_array)
+        purposes = es.get_trip_purposes(es.get_customer_id( user_service.external_user_id,
+                                                            ecolane_profile.system,
+                                                            ecolane_profile.token
+                                                            ),
+                                        ecolane_profile.system,
+                                        ecolane_profile.token,
+                                        ecolane_profile.disallowed_purposes
+                                        )
 
         #This creates a hash for the purposes.  For Ecolane the description/name and id are the same.
         purposes_hash = {}
@@ -808,7 +815,7 @@ class BookingServices
   def get_dummy_trip_purposes(service)
     customer_number = service.fare_user #String of the Dummy customer_number
     ecolane_profile = service.ecolane_profile
-    disallowed_purposes_array = service.disallowed_purposes
+    disallowed_purposes_array = ecolane_profile.disallowed_purposes
     es = EcolaneServices.new
     es.get_trip_purposes(es.get_customer_id(customer_number, ecolane_profile.system, ecolane_profile.token), ecolane_profile.system, ecolane_profile.token, disallowed_purposes_array)
   end

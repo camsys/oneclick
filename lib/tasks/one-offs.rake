@@ -285,6 +285,25 @@ namespace :oneclick do
 
     end
 
+    # Move disallowed_purposes from service to ecolane_profile
+    task transfer_disallowed_purposes_to_ecolane_profiles: :environment do
+      puts "Transfering Disallowed Purpose Arrays to Ecolane Booking Profiles..."
+
+      Service.where.not(disallowed_purposes: nil).each do |service|
+        if service.ecolane_profile
+          if service.ecolane_profile.disallowed_purposes.nil? || service.ecolane_profile.disallowed_purposes.empty?
+            puts "Copying #{service.disallowed_purposes_array} for #{service.name}..."
+            service.ecolane_profile.update_attributes(disallowed_purposes: service.disallowed_purposes_array)
+          else
+            puts "#{service.name} already has #{service.ecolane_profile.disallowed_purposes} set as its disallowed purposes array."
+          end
+        else
+          puts "#{service.name} has no ecolane profile."
+        end
+      end
+
+    end
+
   end
 
 end
