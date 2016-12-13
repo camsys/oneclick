@@ -57,7 +57,7 @@ class BookedTripsReport < AbstractReport
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)
     booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
     selected_itins = itinerary_base.selected
-    data = {} # Object for holding results tables
+    data = {} # Object for holding result
 
     ##########################
     # All Booked Trips Count #

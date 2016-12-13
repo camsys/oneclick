@@ -107,7 +107,7 @@ class Admin::ServicesController < Admin::BaseController
     when BookingServices::AGENCY[:ridepilot]
       update_ridepilot_profile(params[:service][:ridepilot_profile])
     when BookingServices::AGENCY[:ecolane]
-      puts "Ecolane!"
+      update_ecolane_profile(params[:service][:ecolane_profile])
     else
       puts "Invalid Booking Service"
     end
@@ -132,6 +132,16 @@ class Admin::ServicesController < Admin::BaseController
     rp.endpoint = ridepilot_params[:endpoint]
     rp.api_token = ridepilot_params[:api_token]
     rp.save
+  end
+
+  def update_ecolane_profile(ecolane_params)
+    puts "Updating Ecolane Profile", ecolane_params.ai
+    ep = EcolaneProfile.where(service: @service).first_or_initialize
+    ep.system = ecolane_params[:system]
+    ep.token = ecolane_params[:token]
+    ep.disallowed_purposes_text = ecolane_params[:disallowed_purposes]
+    ep.api_version = ecolane_params[:api_version]
+    ep.save
   end
 
   def authenticate_booking_settings

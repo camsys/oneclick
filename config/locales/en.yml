@@ -381,6 +381,7 @@ en:
   service_name_placeholder: 'Enter a service name'
   no_service_schedules_message: 'No service hours have been set for this service.'
   no_svc_chars_message: 'All riders are eligible for this service.'
+  ecolane_disallowed_purposes_placeholder: "Enter disallowed Ecolane trip purposes, separated by commas."
 
   # application logo upload
   not_authorized: 'You are not authorized.'

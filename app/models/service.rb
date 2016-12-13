@@ -602,7 +602,7 @@ class Service < ActiveRecord::Base
   #   return true
   # end
 
-
+  # DEPRECATED
   def disallowed_purposes_array
     return self.disallowed_purposes.nil? ? [] : self.disallowed_purposes.split(',')
   end
