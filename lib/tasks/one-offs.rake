@@ -84,6 +84,22 @@ namespace :oneclick do
       end
     end
 
+    desc "Create API Guest User"
+    task create_api_guest: :environment do
+
+      user = User.find_or_create_by(api_guest: true) do |api_guest|
+        api_guest.first_name = "API"
+        api_guest.last_name = "Guest"
+        api_guest.email = "APIGuest@camsys.com"
+        new_password = SecureRandom.hex
+        api_guest.password = new_password
+        api_guest.password_confirmation = new_password
+      end
+
+      user.save
+
+    end
+
   end
 
 end

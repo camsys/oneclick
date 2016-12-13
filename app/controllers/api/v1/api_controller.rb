@@ -3,7 +3,7 @@ module Api
     ## Version 1 of this API makes 2 key assumptions
     ## 1) All bookings are done with via Ecolane
     ## 2) All users are registered to book with only 1 service
-    class ApiController < ApplicationController
+    class ApiController < ActionController::Base
 
       respond_to :json
       require 'json'
@@ -38,7 +38,7 @@ module Api
           @traveler = User.find_by(email: request.headers['X-User-Email'])
           Rails.logger.info("Traveler Id: " + @traveler.id.to_s)
         else
-          @traveler = guest_user
+          @traveler = User.find_by(api_guest: true)
         end
       end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122011528) do
+ActiveRecord::Schema.define(version: 20161213002848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -901,11 +901,11 @@ ActiveRecord::Schema.define(version: 20161122011528) do
   create_table "users", force: :cascade do |t|
     t.string   "nickname",                    limit: 64
     t.string   "prefix",                      limit: 4
-    t.string   "first_name",                  limit: 64,                 null: false
-    t.string   "last_name",                   limit: 64,                 null: false
+    t.string   "first_name",                  limit: 64,                  null: false
+    t.string   "last_name",                   limit: 64,                  null: false
     t.string   "suffix",                      limit: 4
-    t.string   "email",                       limit: 128,                null: false
-    t.string   "encrypted_password",          limit: 64,                 null: false
+    t.string   "email",                       limit: 128,                 null: false
+    t.string   "encrypted_password",          limit: 64,                  null: false
     t.string   "reset_password_token",        limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -914,8 +914,8 @@ ActiveRecord::Schema.define(version: 20161122011528) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",          limit: 16
     t.string   "last_sign_in_ip",             limit: 16
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "agency_id"
     t.string   "preferred_locale",                        default: "en"
     t.string   "authentication_token"
@@ -927,6 +927,7 @@ ActiveRecord::Schema.define(version: 20161122011528) do
     t.datetime "deleted_at"
     t.integer  "maximum_wait_time"
     t.string   "disabled_comment"
+    t.boolean  "api_guest",                               default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

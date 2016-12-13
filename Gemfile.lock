@@ -73,7 +73,7 @@ GIT
       simple_form
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     CFPropertyList (2.3.3)
     Indirizzo (0.1.7)
@@ -766,9 +766,6 @@ DEPENDENCIES
   uber-ruby
   uglifier (>= 1.0.3)
   yard
-
-RUBY VERSION
-   ruby 2.1.7p400
 
 BUNDLED WITH
    1.13.0
