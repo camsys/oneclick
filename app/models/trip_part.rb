@@ -284,6 +284,8 @@ class TripPart < ActiveRecord::Base
     end
 
     puts 'Calling OTP:'
+    result = nil
+    response = nil
     benchmark { result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes) }
 
     #If this is a transit trip, save the response

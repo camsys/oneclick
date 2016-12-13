@@ -154,6 +154,7 @@ module Api
           tp.create_itineraries
 
           puts 'Reading Itinerary.where #line 156'
+          my_itins = nil
           benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
           #my_itins = tp.itineraries
           my_itins.each do |itin|
@@ -186,6 +187,7 @@ module Api
             #Open up the legs returned by OTP and augment the information
             unless itinerary.legs.nil?
               puts 'Load itinerary legs'
+              yaml_legs = nil
               benchmark { yaml_legs = YAML.load(itinerary.legs) }
 
               yaml_legs.each do |leg|
@@ -202,6 +204,7 @@ module Api
                 #2 Check to see if this route_type is classified as a special route_type
                 begin
                   puts 'Reading DB Config gtfs_special_route_types'
+                  specials = nil
                   benchmark { specials = Oneclick::Application.config.gtfs_special_route_types }
                 rescue Exception=>e
                   specials = []
@@ -254,8 +257,12 @@ module Api
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
 
         puts 'Checking to see if origin is in a CallNRide Zone'
+        origin_in_callnride = nil
+        origin_callnride = nil
         benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
         puts 'Checking to see if destination is in a CallNRide Zone'
+        destination_in_callnride = nil
+        destination_callnride = nil
         benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
 
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
