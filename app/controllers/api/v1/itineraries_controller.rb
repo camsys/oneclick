@@ -279,6 +279,8 @@ module Api
 
         end
 
+        puts 'Total Legs Stuff ######################'
+        puts total_legs_stuff
 
         puts 'Itins Loop  #######################################################################################################'
         puts Time.now - itins_loop_start
