@@ -157,7 +157,7 @@ module Api
             trip.scheduled_date = tp.scheduled_date
             trip.scheduled_time = tp.scheduled_time
             puts "trip.save (2)"
-            benchmark { trip.save }
+            #benchmark { trip.save }
           end
 
 
