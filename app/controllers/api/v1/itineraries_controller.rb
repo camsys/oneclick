@@ -31,6 +31,7 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        start = Time.now
         #Unpack params
         modes = params['modes'] || ['mode_transit']
         trip_parts = params[:itinerary_request]
@@ -150,6 +151,10 @@ module Api
             puts "trip.save (2)"
             benchmark { trip.save }
           end
+
+
+          puts 'Phase 1 ###########################################################################################################'
+          puts Time.now - start
 
           #Build the itineraries
 
