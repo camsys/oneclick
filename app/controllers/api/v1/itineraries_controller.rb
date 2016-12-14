@@ -255,7 +255,10 @@ module Api
             end
 
             if itinerary.legs
+              start = Time.now
               i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
+              puts 'Load Legs #######################################################################################################'
+              puts Time.now - start
             else
               i_hash[:json_legs] = nil
             end
