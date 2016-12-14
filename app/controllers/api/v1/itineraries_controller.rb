@@ -31,6 +31,7 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        ultimate_start = Time.now
         total_legs_stuff  = 0
 
         itins_loop_start = nil
@@ -316,6 +317,9 @@ module Api
         puts Time.now - start
         puts 'Phase 3 ###########################################################################################################'
         puts Time.now - start_phase_3
+
+        puts 'TOTAL TIME ###########################################################################################################'
+        puts Time.now - ultimate_start
 
       end
 
