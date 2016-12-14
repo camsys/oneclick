@@ -88,6 +88,7 @@ module Api
 
         final_itineraries = []
 
+        start_phase_2 = nil
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
