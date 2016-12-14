@@ -279,9 +279,12 @@ module Api
         puts Time.now - start
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
 
+        start = Time.now
         trip.save
         from_trip_place.save
         to_trip_place.save
+        puts 'FINAL SAVE BEFORE SENDING #######################################################################################################'
+        puts Time.now - start
 
       end
 
