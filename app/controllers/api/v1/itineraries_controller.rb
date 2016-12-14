@@ -31,7 +31,7 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
-        start = Time.now
+        start_phase_1 = Time.now
         #Unpack params
         modes = params['modes'] || ['mode_transit']
         trip_parts = params[:itinerary_request]
@@ -154,7 +154,8 @@ module Api
 
 
           puts 'Phase 1 ###########################################################################################################'
-          puts Time.now - start
+          puts Time.now - start_phase_1
+          start_phase_2 = Time.now
 
           #Build the itineraries
 
@@ -265,6 +266,11 @@ module Api
           end
 
         end
+
+        puts 'Phase 2 ###########################################################################################################'
+        puts Time.now - start_phase_2
+        start_phase_3 = Time.now
+
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
 
         puts 'Checking to see if origin is in a CallNRide Zone'
@@ -290,6 +296,8 @@ module Api
         to_trip_place.save
         puts 'FINAL SAVE BEFORE SENDING #######################################################################################################'
         puts Time.now - start
+        puts 'Phase 3 ###########################################################################################################'
+        puts Time.now - start_phase_3
 
       end
 
