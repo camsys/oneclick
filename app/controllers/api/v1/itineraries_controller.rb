@@ -202,6 +202,7 @@ module Api
               yaml_legs = nil
               benchmark { yaml_legs = YAML.load(itinerary.legs) }
 
+              legs_stuff_start = Time.now
               yaml_legs.each do |leg|
                 #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
                 unless leg['agencyId'].nil?
@@ -253,6 +254,8 @@ module Api
               itinerary.legs = yaml_legs.to_yaml
               puts "itinerary.save"
               benchmark { itinerary.save }
+              puts 'Legs Stuff #########################################################'
+              puts Time.now - legs_stuff_start
             end
 
             if itinerary.legs
