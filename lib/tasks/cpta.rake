@@ -125,12 +125,12 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "79109"
 
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
-
-          #Get or create the ecolane_profile
-          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
           #Booking System Id
           ecolane_profile.system = 'rabbit'
@@ -179,12 +179,12 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "7832"
 
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           ecolane_profile.disallowed_purposes = 'special approved trips'
-
-          #Get or create the ecolane_profile
-          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
           #Booking System Id
           ecolane_profile.system = 'cambria'
@@ -231,11 +231,11 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "79109"
 
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           ecolane_profile.disallowed_purposes = 'adult day care,human services,mental health,self determination,sheltered workshop'
-
-          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
           #Booking System Id
           ecolane_profile.system = 'dauphin'
@@ -257,10 +257,6 @@ namespace :oneclick do
 
           #Dummy User
           service.fare_user = "1000004063"
-
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          #ecolane_profile.disallowed_purposes = 'special approved trips'
 
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
@@ -286,10 +282,6 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "1000004065"
 
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          #ecolane_profile.disallowed_purposes = 'number1,number2'
-
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
@@ -314,10 +306,6 @@ namespace :oneclick do
 
           #Dummy User
           service.fare_user = "1000004064"
-
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          #ecolane_profile.disallowed_purposes = 'number1,number2'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -360,12 +348,12 @@ namespace :oneclick do
           #CHANGE TO TRUE WHEN THIS GOES LIVE
           service.active = false
 
+          #Get or create the ecolane_profile
+          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
           ecolane_profile.disallowed_purposes = 'ada,no charge bss,trust,lexington for matp'
-
-          #Get or create the ecolane_profile
-          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
           #Booking System Id
           ecolane_profile.system = 'blair'
@@ -397,10 +385,6 @@ namespace :oneclick do
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
           service.active = true
-
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -538,10 +522,6 @@ namespace :oneclick do
           #CHANGE TO TRUE WHEN THIS GOES LIVE
           service.active = true
 
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
-
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
@@ -570,10 +550,6 @@ namespace :oneclick do
 
           #CHANGE TO TRUE WHEN THIS GOES LIVE
           service.active = true
-
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
