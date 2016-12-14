@@ -56,13 +56,19 @@ namespace :oneclick do
     service_type = ServiceType.find_by(code: "paratransit")
 
     ecolane_services.each do |ecolane_service|
-      service = Service.find_or_create_by(name: ecolane_service[:name], service_type: service_type, external_id: ecolane_service[:external_id]) do |service|
+      service = Service.find_or_create_by(name: ecolane_service[:name],
+                                          service_type: service_type,
+                                          external_id: ecolane_service[:external_id]) do |service|
         puts 'Creating a new service for ' + ecolane_service.as_json.to_s
         service.service_type = service_type
         service.name = ecolane_service[:name]
-        provider = Provider.find_or_create_by(name: ecolane_service[:name])
-        service.provider = provider
       end
+
+      provider = Provider.find_or_create_by(name: "#{ecolane_service[:external_id].titleize} Shared Ride") do |provider|
+        puts "Creating a new provider for service, called #{provider.name}."
+      end
+
+      service.provider = provider
       service.booking_profile = BookingServices::AGENCY[:ecolane]
       service.save
     end

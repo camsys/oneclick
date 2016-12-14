@@ -58,6 +58,7 @@ namespace :update do
     puts 'Additional Release Notes:'
     puts "Run rake db:seed to enable Booked Trips Report and/or Planned Trips Report"
     puts 'For IEUW, set appropriate modes to active so that they show up in Planned Trips Report'
+    puts "For CPTA, may want to run 'Provider.where('id NOT IN (?)', Service.all.pluck(:provider_id)).destroy_all' after running create_ecolane_services, to destroy orphaned providers."
   end
 
 end
