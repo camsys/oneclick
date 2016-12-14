@@ -291,7 +291,7 @@ namespace :oneclick do
 
       Service.where.not(disallowed_purposes: nil).each do |service|
         if service.ecolane_profile
-          if service.ecolane_profile.disallowed_purposes.nil? || service.ecolane_profile.disallowed_purposes.empty?
+          if service.ecolane_profile.disallowed_purposes.nil?
             puts "Copying #{service.disallowed_purposes_array} for #{service.name}..."
             service.ecolane_profile.update_attributes(disallowed_purposes: service.disallowed_purposes_array)
           else
