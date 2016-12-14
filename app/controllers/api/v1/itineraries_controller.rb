@@ -164,19 +164,17 @@ module Api
 
           start = Time.now
           otp_response = tp.create_itineraries
-          puts '#######################################################################################################'
+          puts 'Create Itineraries #######################################################################################################'
           puts Time.now - start
 
           my_itins = nil
           benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
           #my_itins = tp.itineraries
-          my_itins.each do |itin|
-            Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
-          end
 
           Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
           Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
+          itins_loop_start = Time.now
           my_itins.each do |itinerary|
             i_hash = itinerary.as_json(except: 'legs')
             mode = itinerary.mode
@@ -267,6 +265,10 @@ module Api
           end
 
         end
+
+
+        puts 'Itines Loop  #######################################################################################################'
+        puts Time.now - itins_loop_start
 
         puts 'Phase 2 ###########################################################################################################'
         puts Time.now - start_phase_2
