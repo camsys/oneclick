@@ -53,7 +53,7 @@ class EcolaneServices
     resp_xml.xpath("customer").xpath("funding").xpath("funding_source").each do |funding_source|
       funding_source.xpath("allowed").each do |allowed|
         purpose = allowed.xpath("purpose").text
-        unless purpose.in? purposes or purpose.downcase.strip.in? (disallowed_purposes || "")
+        unless purpose.in? purposes or purpose.downcase.strip.in? (disallowed_purposes.map { |p| p.downcase.strip } || "")
           purposes.append(purpose)
         end
       end
