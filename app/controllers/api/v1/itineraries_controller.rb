@@ -31,8 +31,13 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        total_legs_stuff  = 0
+
         itins_loop_start = nil
         start_phase_1 = Time.now
+
+
+
         #Unpack params
         modes = params['modes'] || ['mode_transit']
         trip_parts = params[:itinerary_request]
@@ -256,6 +261,7 @@ module Api
               benchmark { itinerary.save }
               puts 'Legs Stuff #########################################################'
               puts Time.now - legs_stuff_start
+              total_legs_stuff += (Time.now - legs_stuff_start)
             end
 
             if itinerary.legs
