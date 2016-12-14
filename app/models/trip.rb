@@ -16,17 +16,17 @@ class Trip < ActiveRecord::Base
 
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
-  scope :with_role, lambda {|role_name| 
+  scope :with_role, lambda {|role_name|
     includes(user: :roles)
     .where(roles: {name: role_name})
     .references(user: :roles)
   }
-  scope :without_role, lambda {|role_name| 
+  scope :without_role, lambda {|role_name|
     includes(user: :roles)
     .where.not(roles: {name: role_name})
     .references(user: :roles)
   }
-  
+
   scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
@@ -38,24 +38,15 @@ class Trip < ActiveRecord::Base
   scope :future, -> { joins(:itineraries).where('itineraries.start_time > ?', Time.now).uniq }
   scope :future_not_paratransit, -> { joins(:itineraries).where('itineraries.mode_id <> ? AND itineraries.selected = true AND itineraries.start_time > ?', Mode.paratransit.id, Time.now).uniq }
   scope :during_not_paratransit, -> (end_time = Time.now) { joins(:itineraries).where('itineraries.mode_id <> ? AND itineraries.selected = true AND itineraries.start_time > ? AND itineraries.start_time < ?', Mode.paratransit.id, Time.now-365.days, end_time).uniq }
+  scope :planned, -> { where(is_planned: true) }
 
   #Constants
   QUICK = 'QUICK'
   TRANSFERS = 'TRANSFERS'
   WALK = 'WALK'
 
-
   def self.planned_between(start_time = nil, end_time = nil)
-    base_trips = Trip.where(is_planned: true)
-
-    start_time = start_time.at_beginning_of_day if start_time
-    end_time = end_time.at_end_of_day if end_time
-
-    base_trips = base_trips.where("trips.created_at >= ?", start_time) if start_time
-    base_trips = base_trips.where("trips.created_at <= ?", end_time) if end_time
-
-    base_trips
-   
+    Trip.created_between(start_time, end_time).planned
   end
 
   # Returns a set of trips that are scheduled between the start and end time
@@ -110,7 +101,7 @@ class Trip < ActiveRecord::Base
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center, traveler)
-    
+
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
       trip_proxy.to_place, trip_proxy.map_center, traveler)
     # bubble up any errors finding places
