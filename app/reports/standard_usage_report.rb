@@ -6,7 +6,7 @@ class StandardUsageReport < AbstractReport
 
   def initialize(effective_date, date_option)
     @effective_date = if effective_date.blank?
-      Date.today 
+      Date.today
     else
       effective_date
     end
@@ -54,7 +54,7 @@ class StandardUsageReport < AbstractReport
       :phone
     ]
 
-    @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
+    # @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
   end
 
   def self.available_date_option_collections
@@ -77,13 +77,13 @@ class StandardUsageReport < AbstractReport
       [get_empty_data_row]
     ].flatten(1)
   end
-  
+
   def get_columns
     @totals_cols.map {|col| col[:name]}
   end
 
   def get_localized_columns
-    @totals_cols.map {|col| 
+    @totals_cols.map {|col|
       col_name = col[:name]
       if col_name.is_a? Integer
         col_name
@@ -272,9 +272,9 @@ class StandardUsageReport < AbstractReport
     n = 0
     start_date = @effective_date
     while start_date >= launch_date && n < last_n
-      name = if n>0 
+      name = if n>0
         -n
-      else 
+      else
         :current
       end
 
@@ -315,5 +315,5 @@ class StandardUsageReport < AbstractReport
     }
 
   end
-  
+
 end

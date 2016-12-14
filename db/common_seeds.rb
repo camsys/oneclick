@@ -39,8 +39,9 @@ end
   {name: 'Feedback', description: 'List of all ratings.', exportable: true,
     view_name: 'ratings_report', class_name: 'RatingsReport', active: true},
   {name: 'Booked Trips', description: 'Dashboard of trips booked through OneClick',
-    view_name: 'booked_trips_report', class_name: 'BookedTripsReport', active: true}
-
+    view_name: 'booked_trips_report', class_name: 'BookedTripsReport', active: true},
+  {name: 'Planned Trips', description: 'Dashboard of trips created, planned, and booked through OneClick',
+    view_name: 'planned_trips_report', class_name: 'PlannedTripsReport', active: true}
 ].each do |rep|
   # Need to correctly handle updating active state; match everything except that.
   is_active = rep[:active]

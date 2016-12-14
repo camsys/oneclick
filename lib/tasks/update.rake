@@ -54,6 +54,10 @@ namespace :update do
 
     Rake::Task["oneclick:one_offs:add_comment_to_uber_service"].invoke #Make sure that Uber Services have a public comment.
     Rake::Task["cleanup:destroy_orphaned_records"].invoke # Destroys orphaned records that could cause issues with updated code.
+
+    puts 'Additional Release Notes:'
+    puts "Run rake db:seed to enable Booked Trips Report and/or Planned Trips Report"
+    puts 'For IEUW, set appropriate modes to active so that they show up in Planned Trips Report'
   end
 
 end

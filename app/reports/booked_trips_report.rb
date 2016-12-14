@@ -1,55 +1,13 @@
 class BookedTripsReport < AbstractReport
-  attr_reader :totals_class_names, :totals_cols, :user_cols, :trip_cols, :rating_cols
   include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
   AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
-  def initialize(attributes = {})
-    # Set up four arrays of column names: Totals, User, Trips, and Ratings
-    @totals_cols = []
-    @totals_class_names = ['Service', 'Provider', 'Agency']
-    @totals_class_names.each do |name|
-      @totals_cols << "#{name}_total".to_sym
-    end
-    @user_cols = [:total_users, :active_users, :total_logins_by_active_users, :totals_by_locale]
-    @trip_cols = [:total_trips, :trips_by_ui_mode, :total_itineraries_generated, :total_itineraries_selected,
-                  :generated_itineraries_by_mode, :selected_itineraries_by_mode]
-    if Oneclick::Application.config.allows_booking
-      @trip_cols.insert(3, :bookings) # add in Bookings if bookings are allowed in this instance
-    end
-
-    @rating_cols = [:total_ratings, :average_rating]
-  end
-
-  # Helper Method sets up tick marks based on time unit
-  def setup_tick_marks(date_range, time_unit)
-    ticks = []
-    year_range = date_range.begin.year..date_range.end.year
-    case time_unit
-    when :year
-      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
-    when :month
-      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: "Jan #{y}"} } +
-              year_range.map {|y| {v: Date.new(y,7,1), f: "Jul #{y}"} }
-    when :week
-      days_in_range = date_range.count
-      date_range.step( [days_in_range / 28 * 7, 7].max ) do |d|
-        ticks << {v: d, f: d}
-      end
-    when :day
-      ticks = date_range.map do |d|
-        [d.year, d.month]
-      end.uniq.map {|d| {v: Date.new(d[0],d[1],1), f: Date.new(d[0],d[1],1)} }
-    else
-    end
-    ticks
-  end
-
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
-    @from_date = Chronic.parse(report.from_date).to_date
-    @to_date = Chronic.parse(report.to_date).to_date
+    @from_date = Chronic.parse(report.from_date).to_date.in_time_zone.utc
+    @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
     @date_range = @from_date..@to_date
     @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
 
@@ -68,11 +26,16 @@ class BookedTripsReport < AbstractReport
       columns: [],
       rows: [],
       visualization: 'ColumnChart',
+      totals: {
+        count: booked_itins.count,
+        descriptor: "trips booked"
+      },
       options: {
         title: "Total Trips Booked, by #{@time_unit.to_s.titleize}",
         width: 1000,
         height: 600,
-        hAxis: { ticks: [] }
+        hAxis: { ticks: [] },
+        chartArea: {height: '80%'}
       }
     }
 
@@ -100,12 +63,17 @@ class BookedTripsReport < AbstractReport
       columns: [],
       rows: [],
       visualization: 'ColumnChart',
+      totals: {
+        count: selected_itins.count,
+        descriptor: "trips selected"
+      },
       options: {
         title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
         width: 1000,
         height: 600,
         isStacked: true,
-        hAxis: { ticks: [] }
+        hAxis: { ticks: [] },
+        chartArea: {height: '80%'}
       }
     }
 
@@ -142,7 +110,8 @@ class BookedTripsReport < AbstractReport
       options: {
         title: "Purpose of Trips Selected",
         width: 1000,
-        height: 600
+        height: 600,
+        chartArea: {height: '80%'}
       }
     }
 
@@ -177,7 +146,8 @@ class BookedTripsReport < AbstractReport
       options: {
         title: "Status of Booked Trips",
         width: 1000,
-        height: 600
+        height: 600,
+        chartArea: {height: '80%'}
       }
     }
 
