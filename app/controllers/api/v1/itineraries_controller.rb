@@ -81,11 +81,12 @@ module Api
         from_trip_place.from_place_details first_part[:start_location]
         to_trip_place.from_place_details first_part[:end_location]
         puts "from_trip_place.save"
-        benchmark { from_trip_place.save }
+        #benchmark { from_trip_place.save }
         puts "to_trip_place.save"
-        benchmark { to_trip_place.save }
+        #benchmark { to_trip_place.save }
 
         final_itineraries = []
+
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
@@ -109,7 +110,7 @@ module Api
           end
 
           #If not feed ID is sent, assume the first feed id.  It's almost always 1
-          first_feed_id = TripPlanner.new.get_first_feed_id
+          first_feed_id = Oneclick::Application.config.first_feed_id || TripPlanner.new.get_first_feed_id
 
           #Set Banned Routes
           unless banned_routes.blank?
@@ -151,9 +152,14 @@ module Api
           end
 
           #Build the itineraries
-          tp.create_itineraries
 
-          puts 'Reading Itinerary.where #line 156'
+          puts 'Creating Itineraries'
+
+          start = Time.now
+          otp_response = tp.create_itineraries
+          puts '#######################################################################################################'
+          puts Time.now - start
+
           my_itins = nil
           benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
           #my_itins = tp.itineraries
@@ -217,7 +223,7 @@ module Api
 
                 #3 Check to see if real-time is available for node stops
                 unless leg['intermediateStops'].blank?
-                  trip_time = tp.get_trip_time leg['tripId']
+                  trip_time = tp.get_trip_time leg['tripId'], otp_response
                   unless trip_time.blank?
                     stop_times = trip_time['stopTimes']
                     leg['intermediateStops'].each do |stop|
@@ -259,13 +265,23 @@ module Api
         puts 'Checking to see if origin is in a CallNRide Zone'
         origin_in_callnride = nil
         origin_callnride = nil
+        start = Time.now
         benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
         puts 'Checking to see if destination is in a CallNRide Zone'
+        puts 'Checking to see if destination is in a CallNRide##################################################################'
+        puts Time.now - start
         destination_in_callnride = nil
         destination_callnride = nil
-        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
 
+        start = Time.now
+        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
+        puts 'Checking to see if destination is in a CallNRide##################################################################'
+        puts Time.now - start
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+
+        trip.save
+        from_trip_place.save
+        to_trip_place.save
 
       end
 
