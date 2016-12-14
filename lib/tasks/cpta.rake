@@ -127,7 +127,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -181,7 +181,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          service.disallowed_purposes = 'special approved trips'
+          ecolane_profile.disallowed_purposes = 'special approved trips'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -233,7 +233,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          service.disallowed_purposes = 'adult day care,human services,mental health,self determination,sheltered workshop'
+          ecolane_profile.disallowed_purposes = 'adult day care,human services,mental health,self determination,sheltered workshop'
 
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
@@ -260,7 +260,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          #service.disallowed_purposes = 'special approved trips'
+          #ecolane_profile.disallowed_purposes = 'special approved trips'
 
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
@@ -288,7 +288,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          #service.disallowed_purposes = 'number1,number2'
+          #ecolane_profile.disallowed_purposes = 'number1,number2'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -317,7 +317,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          #service.disallowed_purposes = 'number1,number2'
+          #ecolane_profile.disallowed_purposes = 'number1,number2'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -362,7 +362,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          service.disallowed_purposes = 'ada,no charge bss,trust,lexington for matp'
+          ecolane_profile.disallowed_purposes = 'ada,no charge bss,trust,lexington for matp'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -400,7 +400,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -443,7 +443,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -540,7 +540,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -573,7 +573,7 @@ namespace :oneclick do
 
           #Optional: Disallowed Trip Purposes
           #this is a comma separated string with no spaces around the commas, and all lower-case
-          # service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+          # ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
@@ -660,7 +660,7 @@ namespace :oneclick do
 
     #Optional: Disallowed Trip Purposes
     #this is a comma separated string with no spaces around the commas, and all lower-case
-    service.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+    ecolane_profile.disallowed_purposes = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
 
     #Get or create the ecolane_profile
     ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
