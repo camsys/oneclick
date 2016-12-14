@@ -373,18 +373,12 @@ class TripPart < ActiveRecord::Base
     end
 
     start = Time.now
-    #Check to see special fare rules exist
-    fh = FareHelper.new
-    itins.each do |itin|
-      fh.calculate_fixed_route_fare(self, itin)
-    end
-
     #Filter impractical routes
-    if mode == 'TRANSIT,WALK' and result
-      itins = check_for_long_walks(itins)
-    elsif (mode == 'CAR,TRANSIT,WALK' or mode == 'CAR_PARK,TRANSIT,WALK') and result
-      itins = check_for_short_drives(itins)
-    end
+    #if mode == 'TRANSIT,WALK' and result
+    ##  itins = check_for_long_walks(itins)
+    #elsif (mode == 'CAR,TRANSIT,WALK' or mode == 'CAR_PARK,TRANSIT,WALK') and result
+    #  itins = check_for_short_drives(itins)
+    #end
 
     puts 'Other Checking ###########################################################################################################'
     puts Time.now - start
