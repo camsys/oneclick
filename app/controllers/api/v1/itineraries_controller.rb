@@ -207,18 +207,10 @@ module Api
               puts 'Load itinerary legs'
               yaml_legs = nil
               benchmark { yaml_legs = YAML.load(itinerary.legs) }
-
+              i_hash[:json_legs] = yaml_legs
               legs_stuff_start = Time.now
               yaml_legs.each do |leg|
-                #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
-                unless leg['agencyId'].nil?
-                  service = Service.where(external_id: leg['agencyId']).first
-                  unless service.nil?
-                    leg['serviceName'] = service.name
-                  else
-                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
-                  end
-                end
+
 
                 #2 Check to see if this route_type is classified as a special route_type
                 begin
@@ -265,15 +257,6 @@ module Api
               total_legs_stuff += (Time.now - legs_stuff_start)
             end
 
-            if itinerary.legs
-              start = Time.now
-              i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
-              puts 'Load Legs #######################################################################################################'
-              puts Time.now - start
-            else
-              i_hash[:json_legs] = nil
-            end
-
             final_itineraries.append(i_hash)
 
           end
@@ -296,7 +279,7 @@ module Api
         origin_in_callnride = nil
         origin_callnride = nil
         start = Time.now
-        benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
+        benchmark { origin_in_callnride, origin_callnride = from_trip_place.within_callnride? }
         puts 'Checking to see if destination is in a CallNRide Zone'
         puts 'Checking to see if destination is in a CallNRide##################################################################'
         puts Time.now - start
@@ -304,7 +287,7 @@ module Api
         destination_callnride = nil
 
         start = Time.now
-        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
+        benchmark { destination_in_callnride, destination_callnride = to_trip_place.within_callnride? }
         puts 'Checking to see if destination is in a CallNRide##################################################################'
         puts Time.now - start
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
