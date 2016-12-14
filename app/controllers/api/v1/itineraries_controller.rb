@@ -67,7 +67,7 @@ module Api
         trip.max_transfer_time = max_transfer_time.nil? ? nil : max_transfer_time.to_i
         trip.source_tag = source_tag
         puts "trip.save"
-        benchmark { trip.save }
+        #benchmark { trip.save }
 
         #Build the Trip Places
         from_trip_place = TripPlace.new
