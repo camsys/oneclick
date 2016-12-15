@@ -31,6 +31,14 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        ultimate_start = Time.now
+        total_legs_stuff  = 0
+
+        itins_loop_start = nil
+        start_phase_1 = Time.now
+
+
+
         #Unpack params
         modes = params['modes'] || ['mode_transit']
         trip_parts = params[:itinerary_request]
@@ -67,7 +75,7 @@ module Api
         trip.max_transfer_time = max_transfer_time.nil? ? nil : max_transfer_time.to_i
         trip.source_tag = source_tag
         puts "trip.save"
-        benchmark { trip.save }
+        #benchmark { trip.save }
 
         #Build the Trip Places
         from_trip_place = TripPlace.new
@@ -81,11 +89,13 @@ module Api
         from_trip_place.from_place_details first_part[:start_location]
         to_trip_place.from_place_details first_part[:end_location]
         puts "from_trip_place.save"
-        benchmark { from_trip_place.save }
+        #benchmark { from_trip_place.save }
         puts "to_trip_place.save"
-        benchmark { to_trip_place.save }
+        #benchmark { to_trip_place.save }
 
         final_itineraries = []
+
+        start_phase_2 = nil
 
         #Build the trip_parts (i.e., segments)
         trip_parts.each do |trip_part|
@@ -109,7 +119,7 @@ module Api
           end
 
           #If not feed ID is sent, assume the first feed id.  It's almost always 1
-          first_feed_id = TripPlanner.new.get_first_feed_id
+          first_feed_id = Oneclick::Application.config.first_feed_id || TripPlanner.new.get_first_feed_id
 
           #Set Banned Routes
           unless banned_routes.blank?
@@ -147,23 +157,31 @@ module Api
             trip.scheduled_date = tp.scheduled_date
             trip.scheduled_time = tp.scheduled_time
             puts "trip.save (2)"
-            benchmark { trip.save }
+            #benchmark { trip.save }
           end
 
-          #Build the itineraries
-          tp.create_itineraries
 
-          puts 'Reading Itinerary.where #line 156'
+          puts 'Phase 1 ###########################################################################################################'
+          puts Time.now - start_phase_1
+          start_phase_2 = Time.now
+
+          #Build the itineraries
+
+          puts 'Creating Itineraries'
+
+          start = Time.now
+          otp_response = tp.create_itineraries
+          puts 'Create Itineraries #######################################################################################################'
+          puts Time.now - start
+
           my_itins = nil
           benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
           #my_itins = tp.itineraries
-          my_itins.each do |itin|
-            Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
-          end
 
           Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
           Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
+          itins_loop_start = Time.now
           my_itins.each do |itinerary|
             i_hash = itinerary.as_json(except: 'legs')
             mode = itinerary.mode
@@ -189,17 +207,10 @@ module Api
               puts 'Load itinerary legs'
               yaml_legs = nil
               benchmark { yaml_legs = YAML.load(itinerary.legs) }
-
+              i_hash[:json_legs] = yaml_legs
+              legs_stuff_start = Time.now
               yaml_legs.each do |leg|
-                #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
-                unless leg['agencyId'].nil?
-                  service = Service.where(external_id: leg['agencyId']).first
-                  unless service.nil?
-                    leg['serviceName'] = service.name
-                  else
-                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
-                  end
-                end
+
 
                 #2 Check to see if this route_type is classified as a special route_type
                 begin
@@ -217,7 +228,7 @@ module Api
 
                 #3 Check to see if real-time is available for node stops
                 unless leg['intermediateStops'].blank?
-                  trip_time = tp.get_trip_time leg['tripId']
+                  trip_time = tp.get_trip_time leg['tripId'], otp_response
                   unless trip_time.blank?
                     stop_times = trip_time['stopTimes']
                     leg['intermediateStops'].each do |stop|
@@ -241,12 +252,9 @@ module Api
               itinerary.legs = yaml_legs.to_yaml
               puts "itinerary.save"
               benchmark { itinerary.save }
-            end
-
-            if itinerary.legs
-              i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
-            else
-              i_hash[:json_legs] = nil
+              puts 'Legs Stuff #########################################################'
+              puts Time.now - legs_stuff_start
+              total_legs_stuff += (Time.now - legs_stuff_start)
             end
 
             final_itineraries.append(i_hash)
@@ -254,18 +262,47 @@ module Api
           end
 
         end
+
+        puts 'Total Legs Stuff ######################'
+        puts total_legs_stuff
+
+        puts 'Itins Loop  #######################################################################################################'
+        puts Time.now - itins_loop_start
+
+        puts 'Phase 2 ###########################################################################################################'
+        puts Time.now - start_phase_2
+        start_phase_3 = Time.now
+
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
 
         puts 'Checking to see if origin is in a CallNRide Zone'
         origin_in_callnride = nil
         origin_callnride = nil
-        benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
+        start = Time.now
+        benchmark { origin_in_callnride, origin_callnride = from_trip_place.within_callnride? }
         puts 'Checking to see if destination is in a CallNRide Zone'
+        puts 'Checking to see if destination is in a CallNRide##################################################################'
+        puts Time.now - start
         destination_in_callnride = nil
         destination_callnride = nil
-        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
 
+        start = Time.now
+        benchmark { destination_in_callnride, destination_callnride = to_trip_place.within_callnride? }
+        puts 'Checking to see if destination is in a CallNRide##################################################################'
+        puts Time.now - start
         render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+
+        start = Time.now
+        trip.save
+        from_trip_place.save
+        to_trip_place.save
+        puts 'FINAL SAVE BEFORE SENDING #######################################################################################################'
+        puts Time.now - start
+        puts 'Phase 3 ###########################################################################################################'
+        puts Time.now - start_phase_3
+
+        puts 'TOTAL TIME ###########################################################################################################'
+        puts Time.now - ultimate_start
 
       end
 

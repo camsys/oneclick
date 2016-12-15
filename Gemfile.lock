@@ -767,5 +767,8 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   yard
 
+RUBY VERSION
+   ruby 2.1.7p400
+
 BUNDLED WITH
    1.13.0
