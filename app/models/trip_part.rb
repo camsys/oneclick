@@ -171,13 +171,14 @@ class TripPart < ActiveRecord::Base
 
   # Generates itineraries for this trip part. Any existing itineraries should have been removed
   # before this method is called.
-  def create_itineraries(modes = trip.desired_modes.prioritized)
+  def create_itineraries(params)
 
-    Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
+    transit_response = nil
+    Rails.logger.info "CREATE: " + params[:modes].collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
     
-    modes.each do |mode|
+    params[:modes].each do |mode|
 
       Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
       Rails.logger.info(mode)
@@ -204,24 +205,35 @@ class TripPart < ActiveRecord::Base
       else
         # OTP modes
         if (!mode.otp_mode.blank?)
-          # Transit modes + Bike, Drive, Walk
+          # Transit modes + Bike, Drive,
           timed "fixed" do
-            new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
+            start = Time.now
+            new_itins, response = create_fixed_route_itineraries({otp_mode: mode.otp_mode, mode: mode.code, walk_mph: params[:walk_speed], max_walk_miles: params[:max_walk_miles], max_walk_seconds: params[:max_walk_seconds], optimize: params[:optimize], num_itineraries: params[:num_itineraries], min_transfer_time: params[:min_transfer_time], max_transfer_time: params[:max_transfer_time], banned_routes: params[:banned_routes], preferred_routes: params[:preferred_routes]})
+
+            if mode.code == "mode_transit"
+              puts 'in here'
+              transit_response = response
+            end
+
+            puts 'CREATE FIXED_ ROUTE ITINERARIES ###'
+            puts Time.now - start
             non_duplicate_itins = []
+            start = Time.now
             new_itins.each do |itin|
               unless self.check_for_duplicates(itin, self.itineraries + itins)
                 non_duplicate_itins << itin
               end
             end
+            puts 'Check for Duplicates ###'
+            puts Time.now - start
+
             itins += non_duplicate_itins
           end
         end
       end
     end
-    Rails.logger.info('Adding NEW ITINERARIES TO THIS TRIP PART')
-    Rails.logger.info(itins.inspect)
-    self.itineraries << itins
-    itins
+    #self.itineraries << itins
+    return itins, transit_response
   end
 
   def check_for_duplicates(new_i, existing_itins)
@@ -246,58 +258,59 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "TIMING: #{label} #{s2 - s} #{s} #{s2}"
   end
 
-  def create_fixed_route_itineraries(mode="TRANSIT,WALK", mode_code='mode_transit')
+  def create_fixed_route_itineraries(params)
+    transit_response = nil
+
     itins = []
     tp = TripPlanner.new
     arrive_by = !is_depart
-    wheelchair = (trip.user.requires_wheelchair_access? and Oneclick::Application.config.transit_respects_ada).to_s
+    wheelchair = false.to_s
 
-    default_walk_speed = WalkingSpeed.where(is_default:true).first
-    default_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
-    walk_speed = default_walk_speed ? default_walk_speed.value : 3.0
-    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2.0
+    walk_speed = 3.0
+    max_walk_distance = 2.0
 
     # SET THE WALKING SPEED
     #Check to see if the trip has a walking_speed
-    if trip.walk_mph
-      walk_speed = trip.walk_mph
+    if params[:walk_mph]
+      walk_speed = params[:walk_mph]
     #If the trip doesn't have a walk speed, check to see if the user does
-    elsif trip.user.walking_speed
-      walk_speed = trip.user.walking_speed.value
     end
 
     # SET MAX WALK DISTANCE
     #Check to see if the trip has a maximum distance
-    if trip.max_walk_miles
-      max_walk_distance = trip.max_walk_miles
-    #If the trip doesn't have a max walk distance, check to see if the user does
-    elsif trip.user.walking_maximum_distance
-      max_walk_distance = trip.user.walking_maximum_distance.value
+    if params[:max_walk_miles]
+      max_walk_distance = params[:max_walk_miles]
     end
 
     # If the max walk time is shorter than the distance allows, override the distance
     # Check to see if the trip has a maximum walk time
-    if trip.max_walk_seconds
-      if (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f) < max_walk_distance
-        max_walk_distance = (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f)
+    if params[:max_walk_seconds]
+      if (params[:max_walk_seconds].to_f * (1.0/3600.0) * walk_speed.to_f) < max_walk_distance
+        max_walk_distance = (params[:max_walk_seconds].to_f * (1.0/3600.0) * walk_speed.to_f)
       end
     end
 
     puts 'Calling OTP:'
     result = nil
     response = nil
-    benchmark { result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.trip.max_transfer_time, self.banned_routes, self.preferred_routes) }
+    start = Time.now
 
-    #If this is a transit trip, save the response
-    if mode_code.to_s == "mode_transit_name"
-      self.otp_response = response
-      puts 'Saving trip part'
-      benchmark { self.save }
-    end
+    puts params.ai
+
+    benchmark { result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, params[:otp_mode], wheelchair, walk_speed, max_walk_distance, params[:max_bike_miles], params[:optimize], params[:num_itineraries], params[:min_transfer_time], params[:max_transfer_time], params[:banned_routes], params[:preferred_routes]) }
+    puts 'ACTUAL OTP CALL ###'
+    puts Time.now - start
+
+
+    start = Time.now
+
+    puts 'SAVE THE OTP RESPONSE ###'
+    puts Time.now - start
 
     #TODO: Save errored results to an event log
     if result
-      tp.convert_itineraries(response['plan'], mode_code).each do |itinerary|
+      start = Time.now
+      tp.convert_itineraries(response['plan'], params[:mode]).each do |itinerary|
         serialized_itinerary = {}
 
         itinerary.each do |k,v|
@@ -311,10 +324,13 @@ class TripPart < ActiveRecord::Base
         itins << Itinerary.new(serialized_itinerary)
 
       end
+
+      puts 'Convert itineraries ###'
+      puts Time.now - start
     elsif response['error']
       itinerary = Itinerary.create(server_status: response['error']['id'], server_message: response['error']['msg'])
 
-      case mode_code.to_s
+      case params[:mode_code].to_s
         when 'mode_car'
           itinerary.mode = Mode.car
         when 'mode_bicycle'
@@ -330,7 +346,7 @@ class TripPart < ActiveRecord::Base
     elsif !response['plan']['id'].blank?
       itinerary = Itinerary.create(server_status: response['plan']['id'], server_message: response['plan']['msg'])
 
-      case mode_code.to_s
+      case params[:mode_code].to_s
         when 'mode_car'
           itinerary.mode = Mode.car
         when 'mode_bicycle'
@@ -345,20 +361,8 @@ class TripPart < ActiveRecord::Base
 
     end
 
-    #Check to see special fare rules exist
-    fh = FareHelper.new
-    itins.each do |itin|
-      fh.calculate_fixed_route_fare(self, itin)
-    end
+    return itins, response
 
-    #Filter impractical routes
-    if mode == 'TRANSIT,WALK' and result
-      itins = check_for_long_walks(itins)
-    elsif (mode == 'CAR,TRANSIT,WALK' or mode == 'CAR_PARK,TRANSIT,WALK') and result
-      itins = check_for_short_drives(itins)
-    end
-
-    itins
   end
 
   # TODO refactor following 4 methods
@@ -395,127 +399,6 @@ class TripPart < ActiveRecord::Base
           if leg.mode == 'WALK' and leg.duration > Oneclick::Application.config.max_walk_seconds and (long_first_leg or long_last_leg)
             multiple_long_walks = true
             break
-          end
-        end
-      end
-
-      # Handle multiple long walks
-      if multiple_long_walks
-        if Oneclick::Application.config.replace_long_walks
-          itinerary.hide
-        end
-
-        if Mode.car.active? and not replaced
-          filtered += create_fixed_route_itineraries("CAR")
-          replaced = true
-        end
-
-      # Handle long walks on the first leg
-      elsif long_first_leg
-        if Oneclick::Application.config.replace_long_walks
-          itinerary.hide
-        end
-
-        if Mode.car_transit.active?
-          tp = TripPlanner.new
-          new_itinerary = itinerary.dup
-
-          legs = new_itinerary.get_legs
-          replaced_leg = legs.first
-
-          ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
-                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries, self.trip.min_transfer_time, self.max_transfer_time, self.banned_routes, self.preferred_routes)
-
-          #TODO: Save errored results to an event log
-          if result
-            tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
-              serialized_itinerary = {}
-
-              itinerary.each do |k,v|
-                if v.is_a? Array
-                  serialized_itinerary[k] = v.to_yaml
-                else
-                  serialized_itinerary[k] = v
-                end
-              end
-
-              #Adjust itinerary
-              car_itin = Itinerary.new(serialized_itinerary)
-
-              #walk_time, walk duration, total duration
-              first_leg = new_itinerary.get_legs.first
-              new_itinerary.walk_time -= first_leg.duration
-              new_itinerary.walk_distance -= first_leg.distance
-              new_itinerary.duration -= (first_leg.duration - car_itin.duration)
-              new_itinerary.start_time = new_itinerary.start_time + (first_leg.duration - car_itin.duration)
-
-              #legs
-              yaml_legs = YAML.load(new_itinerary.legs)
-              yaml_legs = yaml_legs.drop(1)
-              yaml_car = YAML.load(car_itin.legs)
-              yaml_legs = yaml_car + yaml_legs
-              new_itinerary.legs = yaml_legs.to_yaml
-              new_itinerary.update_legs
-
-              filtered << new_itinerary
-
-            end
-          end
-        end
-
-      # Handle long walks on the last leg
-      elsif long_last_leg
-        if Oneclick::Application.config.replace_long_walks
-          itinerary.hide
-        end
-
-        if Mode.car_transit.active?
-          tp = TripPlanner.new
-          new_itinerary = itinerary.dup
-
-          legs = new_itinerary.get_legs
-          replaced_leg = legs.last
-          legs = legs[0...-1]
-
-          ##Build a short drive itinerary
-          result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
-                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries, self.min_transfer_time, self.max_transfer_time)
-
-          #TODO: Save errored results to an event log
-          if result
-            tp.convert_itineraries(response['plan'], Mode.car.code).each do |itinerary|
-              serialized_itinerary = {}
-
-              itinerary.each do |k,v|
-                if v.is_a? Array
-                  serialized_itinerary[k] = v.to_yaml
-                else
-                  serialized_itinerary[k] = v
-                end
-              end
-
-              #Adjust itinerary
-              car_itin = Itinerary.new(serialized_itinerary)
-
-              #walk_time, walk duration, total duration
-              last_leg = new_itinerary.get_legs.last
-              new_itinerary.walk_time -= last_leg.duration
-              new_itinerary.walk_distance -= last_leg.distance
-              new_itinerary.duration -= (last_leg.duration - car_itin.duration)
-              new_itinerary.end_time = new_itinerary.end_time - (last_leg.duration - car_itin.duration)
-
-              #legs
-              yaml_legs = YAML.load(new_itinerary.legs)
-              yaml_legs = yaml_legs[0...-1]
-              yaml_car = YAML.load(car_itin.legs)
-              yaml_legs += yaml_car
-              new_itinerary.legs = yaml_legs.to_yaml
-              new_itinerary.update_legs
-
-              filtered << new_itinerary
-
-            end
           end
         end
       end
@@ -633,11 +516,14 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
   end
 
   #Get the list of stops for this trip with realtime info
-  def get_trip_time trip_id
-    if self.otp_response.nil? or self.otp_response['tripTimes'].nil?
+  def get_trip_time trip_id, otp_response=nil
+
+    otp_response = otp_response || self.otp_response
+
+    if otp_response.nil? or otp_response['tripTimes'].nil?
       return nil
     end
-    trip_times = self.otp_response['tripTimes']
+    trip_times = otp_response['tripTimes']
     return trip_times.detect{|hash| hash['tripId'] == trip_id}
   end
 

@@ -332,13 +332,13 @@ class Trip < ActiveRecord::Base
 
   # Shortcut to identify the place where the trip leaves from
   def from_place
-    trip_places.first
+    self.outbound_part.from_trip_place
   end
 
   # Shortcut to identify the last place the trip visits. If the trip is a round
   # trip this is the last place before heading back to the starting place
   def to_place
-    trip_places.last
+    self.outbound_part.to_trip_place
   end
 
   def cache_trip_places_georaw

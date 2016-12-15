@@ -31,6 +31,14 @@ module Api
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
 
+        ultimate_start = Time.now
+        total_legs_stuff  = 0
+
+        itins_loop_start = nil
+        start_phase_1 = Time.now
+
+        my_itins = []
+
         #Unpack params
         modes = params['modes'] || ['mode_transit']
         trip_parts = params[:itinerary_request]
@@ -40,7 +48,7 @@ module Api
         max_walk_miles = params[:max_walk_miles]
         max_bike_miles = params[:max_bicycle_miles] # Miles
         max_walk_seconds = params[:max_walk_seconds] # Seconds
-        walk_mph = params[:walk_mph] || (@traveler.walking_speed ? @traveler.walking_speed.value : 3.0)
+        walk_mph = params[:walk_mph] || 3
         min_transfer_time = params[:min_transfer_time]
         max_transfer_time = params[:max_transfer_time]
         banned_routes = params[:banned_routes]
@@ -66,14 +74,12 @@ module Api
         trip.min_transfer_time = min_transfer_time.nil? ? nil : min_transfer_time.to_i
         trip.max_transfer_time = max_transfer_time.nil? ? nil : max_transfer_time.to_i
         trip.source_tag = source_tag
-        puts "trip.save"
-        benchmark { trip.save }
 
         #Build the Trip Places
         from_trip_place = TripPlace.new
         to_trip_place = TripPlace.new
-        from_trip_place.trip = trip
-        to_trip_place.trip = trip
+        #from_trip_place.trip = trip
+        #to_trip_place.trip = trip
         from_trip_place.sequence = 0
         to_trip_place.sequence = 1
 
@@ -87,11 +93,14 @@ module Api
 
         final_itineraries = []
 
+        start_phase_2 = nil
+
         #Build the trip_parts (i.e., segments)
+        tp = nil
         trip_parts.each do |trip_part|
           # Create the outbound trip part
           tp = TripPart.new
-          tp.trip = trip
+          #tp.trip = trip
 
           tp.sequence = trip_part[:segment_index]
           tp.is_depart = (trip_part[:departure_type].downcase == 'depart')
@@ -109,11 +118,11 @@ module Api
           end
 
           #If not feed ID is sent, assume the first feed id.  It's almost always 1
-          first_feed_id = TripPlanner.new.get_first_feed_id
+          first_feed_id = Oneclick::Application.config.first_feed_id || TripPlanner.new.get_first_feed_id
 
           #Set Banned Routes
+          banned_routes_string = ""
           unless banned_routes.blank?
-            banned_routes_string = ""
             banned_routes.each do |banned_route|
               if banned_route['id'].blank?
                 banned_routes_string +=  first_feed_id.to_s + '_' + banned_route['short_name'] + ','
@@ -121,10 +130,13 @@ module Api
                 banned_routes_string += banned_route['id'].split(':').first + '_' + banned_route['short_name'] + ','
               end
             end
-            tp.banned_routes = banned_routes_string.chop
+            banned_routes_string = banned_routes_string.chop
+            tp.banned_routes = banned_routes_string
           end
 
+
           #Set Preferred Routes
+          preferred_routes_string = ""
           unless preferred_routes.blank?
             preferred_routes_string = ""
             preferred_routes.each do |preferred_route|
@@ -135,7 +147,8 @@ module Api
               end
 
             end
-            tp.preferred_routes = preferred_routes_string.chop
+            preferred_routes_string = preferred_routes_string.chop
+            tp.preferred_routes = preferred_routes_string
           end
 
           #Save Trip Part
@@ -146,43 +159,38 @@ module Api
           if tp.sequence == 0
             trip.scheduled_date = tp.scheduled_date
             trip.scheduled_time = tp.scheduled_time
-            puts "trip.save (2)"
-            benchmark { trip.save }
           end
+
+          trip.save
+          tp.trip = trip
+          tp.save
+
+          puts 'Phase 1 ###'
+          puts Time.now - start_phase_1
+          start_phase_2 = Time.now
 
           #Build the itineraries
-          tp.create_itineraries
 
-          puts 'Reading Itinerary.where #line 156'
-          my_itins = nil
-          benchmark { my_itins = Itinerary.where(trip_part: tp).order('created_at') }
-          #my_itins = tp.itineraries
-          my_itins.each do |itin|
-            Rails.logger.info("ITINERARY NUMBER : " + itin.id.to_s)
-          end
+          puts 'Creating Itineraries'
 
+          start = Time.now
+          itins, otp_response = tp.create_itineraries({modes: trip.desired_modes, walk_speed: walk_mph, max_walk_miles: max_walk_miles, max_walk_seconds: max_walk_seconds, optimize: optimize, num_itineraries: trip.num_itineraries, min_transfer_time: min_transfer_time, max_transfer_time: max_transfer_time, banned_routes: banned_routes_string, preferred_routes: preferred_routes_string})
+
+          puts 'Create Itineraries ###'
+          puts Time.now - start
+
+          my_itins = itins
           Rails.logger.info('Trip part ' + tp.id.to_s + ' generated ' + tp.itineraries.count.to_s + ' itineraries')
           Rails.logger.info(tp.itineraries.inspect)
           #Append data for API
+          itins_loop_start = Time.now
           my_itins.each do |itinerary|
             i_hash = itinerary.as_json(except: 'legs')
             mode = itinerary.mode
             i_hash[:mode] = {name: TranslationEngine.translate_text(mode.name), code: mode.code}
-            i_hash[:segment_index] = itinerary.trip_part.sequence
-            i_hash[:start_location] = itinerary.trip_part.trip.origin.build_place_details_hash
-            i_hash[:end_location] = itinerary.trip_part.trip.destination.build_place_details_hash
-            i_hash[:prebooking_questions] = itinerary.prebooking_questions
-            i_hash[:bookable] = itinerary.is_bookable?
-            if itinerary.service
-              i_hash[:service_name] = itinerary.service.name
-            else
-              i_hash[:service_name] = ""
-            end
-
-            if itinerary.discounts
-              i_hash[:discounts] = JSON.parse(itinerary.discounts)
-            end
-
+            i_hash[:segment_index] = tp.sequence
+            i_hash[:start_location] = from_trip_place.build_place_details_hash
+            i_hash[:end_location] = to_trip_place.build_place_details_hash
 
             #Open up the legs returned by OTP and augment the information
             unless itinerary.legs.nil?
@@ -190,16 +198,9 @@ module Api
               yaml_legs = nil
               benchmark { yaml_legs = YAML.load(itinerary.legs) }
 
+              legs_stuff_start = Time.now
               yaml_legs.each do |leg|
-                #1 Add Service Names to Legs if a service exists in the DB that matches the agencyId
-                unless leg['agencyId'].nil?
-                  service = Service.where(external_id: leg['agencyId']).first
-                  unless service.nil?
-                    leg['serviceName'] = service.name
-                  else
-                    leg['serviceName'] = leg['agencyName'] || leg['agencyId']
-                  end
-                end
+
 
                 #2 Check to see if this route_type is classified as a special route_type
                 begin
@@ -215,21 +216,36 @@ module Api
                   leg['specialService'] = leg['routeType'].in? specials
                 end
 
+
                 #3 Check to see if real-time is available for node stops
                 unless leg['intermediateStops'].blank?
-                  trip_time = tp.get_trip_time leg['tripId']
-                  unless trip_time.blank?
-                    stop_times = trip_time['stopTimes']
-                    leg['intermediateStops'].each do |stop|
-                      stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
-                      stop['realtimeArrival'] = stop_time['realtimeArrival']
-                      stop['realtimeDeparture'] = stop_time['realtimeDeparture']
-                      stop['arrivalDelay'] = stop_time['arrivalDelay']
-                      stop['departureDelay'] = stop_time['departureDelay']
-                      stop['realtime'] = stop_time['realtime']
 
-                    end
+                  puts '###############################################################################'
+
+                  trip_time = tp.get_trip_time leg['tripId'], otp_response
+
+                  if trip_time.blank?
+                    break
                   end
+                  stop_times = trip_time['stopTimes']
+                  puts stop_times.first['realtimeState']
+                  #if stop_times.first and stop_times.first['realtimeState'] == 'SCHEDULED'
+                  #  break
+                  #end
+                  start_updating = Time.now
+
+                  leg['intermediateStops'].each do |stop|
+                    stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
+                    stop['realtimeArrival'] = stop_time['realtimeArrival']
+                    stop['realtimeDeparture'] = stop_time['realtimeDeparture']
+                    stop['arrivalDelay'] = stop_time['arrivalDelay']
+                    stop['departureDelay'] = stop_time['departureDelay']
+                    stop['realtime'] = stop_time['realtime']
+                  end
+
+                  puts "Updating Realtime for Intermediate Stops ###"
+                  puts Time.now - start_updating
+
                 end
 
                 #4 If a location is a ParkNRide Denote it
@@ -238,34 +254,50 @@ module Api
                 end
 
               end
+              i_hash[:json_legs] = yaml_legs
               itinerary.legs = yaml_legs.to_yaml
               puts "itinerary.save"
+              itinerary.trip_part = tp
               benchmark { itinerary.save }
+              i_hash[:id]=itinerary.id
+              puts 'Legs ###'
+              puts Time.now - legs_stuff_start
+              total_legs_stuff += (Time.now - legs_stuff_start)
             end
-
-            if itinerary.legs
-              i_hash[:json_legs] = (YAML.load(itinerary.legs)).as_json
-            else
-              i_hash[:json_legs] = nil
-            end
-
             final_itineraries.append(i_hash)
-
           end
-
         end
+
+        puts 'Total Legs Stuff ###'
+        puts total_legs_stuff
+
+        puts 'Itins Loop  ###'
+        puts Time.now - itins_loop_start
+
+        puts 'Phase 2 ###'
+        puts Time.now - start_phase_2
+        start_phase_3 = Time.now
+
         Rails.logger.info('Sending ' + final_itineraries.count.to_s + ' in the response.')
 
         puts 'Checking to see if origin is in a CallNRide Zone'
         origin_in_callnride = nil
         origin_callnride = nil
-        benchmark { origin_in_callnride, origin_callnride = trip.origin.within_callnride? }
-        puts 'Checking to see if destination is in a CallNRide Zone'
+        start = Time.now
+        benchmark { origin_in_callnride, origin_callnride = from_trip_place.within_callnride? }
+        puts 'Checking to see if origin is in a CallNRide ###'
+        puts Time.now - start
         destination_in_callnride = nil
         destination_callnride = nil
-        benchmark { destination_in_callnride, destination_callnride = trip.destination.within_callnride? }
 
-        render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: trip.desired_modes_raw, itineraries: final_itineraries}
+        start = Time.now
+        benchmark { destination_in_callnride, destination_callnride = to_trip_place.within_callnride? }
+        puts 'Checking to see if destination is in a CallNRide ###'
+        puts Time.now - start
+
+        puts 'TOTAL TIME ###'
+        puts Time.now - ultimate_start
+        render json: {trip_id: trip.id, origin_in_callnride: origin_in_callnride, origin_callnride: origin_callnride, destination_in_callnride: destination_in_callnride, destination_callnride: destination_callnride, trip_token: trip.token, modes: modes, itineraries: final_itineraries}
 
       end
 
@@ -274,14 +306,12 @@ module Api
         puts 'Viewing Booking Params'
         puts params.ai
 
-
         booking_request = params[:booking_request]
         booked_itineraries = []
 
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
-          puts 'viewing itinerary'
           puts itinerary.ai
 
           ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
