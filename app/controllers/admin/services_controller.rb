@@ -140,6 +140,7 @@ class Admin::ServicesController < Admin::BaseController
     ep.system = ecolane_params[:system]
     ep.token = ecolane_params[:token]
     ep.disallowed_purposes_text = ecolane_params[:disallowed_purposes]
+    ep.booking_counties_text = ecolane_params[:booking_counties]
     ep.api_version = ecolane_params[:api_version]
     ep.save
   end

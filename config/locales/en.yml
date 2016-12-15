@@ -382,6 +382,7 @@ en:
   no_service_schedules_message: 'No service hours have been set for this service.'
   no_svc_chars_message: 'All riders are eligible for this service.'
   ecolane_disallowed_purposes_placeholder: "Enter disallowed Ecolane trip purposes, separated by commas."
+  ecolane_booking_counties_placeholder: "Enter counties whose residents should book through this service, separated by commas."
 
   # application logo upload
   not_authorized: 'You are not authorized.'

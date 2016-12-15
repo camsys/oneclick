@@ -13,4 +13,12 @@ class EcolaneProfile < ActiveRecord::Base
     write_attribute(:disallowed_purposes, new_value.split(',').map(&:strip))
   end
 
+  def booking_counties_text
+    (booking_counties || []).join(", ")
+  end
+
+  def booking_counties_text=(new_value)
+    write_attribute(:booking_counties, new_value.split(',').map(&:strip))
+  end
+
 end

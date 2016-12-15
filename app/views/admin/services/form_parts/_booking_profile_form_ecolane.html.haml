@@ -7,10 +7,15 @@
         input_html: { value: service.ecolane_profile.disallowed_purposes_text,
                       class: "input-ecolane-disallowed-purposes",
                       placeholder: translate_helper(:ecolane_disallowed_purposes_placeholder)}
+      = ep.input :booking_counties, as: :text,
+        input_html: { value: service.ecolane_profile.booking_counties_text,
+                      class: "input-ecolane-booking-counties",
+                      placeholder: translate_helper(:ecolane_booking_counties_placeholder)}
       = ep.input :api_version, as: :hidden, input_html: {value: "9"} # Default to API Version 9
     -else
       = ep.input :system
       = ep.input :token
       = ep.input :disallowed_purposes, as: :text,
         input_html: {placeholder: translate_helper(:ecolane_disallowed_purposes_placeholder)}
+      = ep.input :booking_counties, as: :text
       = ep.input :api_version, as: :hidden, input_html: {value: "9"} # Default to API Version 9
