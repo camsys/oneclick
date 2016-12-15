@@ -1,12 +1,12 @@
 class EcolaneProfile < ActiveRecord::Base
   belongs_to :service
 
-  serialize :booking_counties # List of counties whose residents can book through this service
-  serialize :disallowed_purposes # List of trip purposes to not provide to users
+  serialize :booking_counties, Array # List of counties whose residents can book through this service
+  serialize :disallowed_purposes, Array # List of trip purposes to not provide to users
 
   # Get and set disallowed purposes using a string of comma separated values
   def disallowed_purposes_text
-    (disallowed_purposes || []).join(", ")
+    disallowed_purposes.join(", ")
   end
 
   def disallowed_purposes_text=(new_value)
@@ -14,7 +14,7 @@ class EcolaneProfile < ActiveRecord::Base
   end
 
   def booking_counties_text
-    (booking_counties || []).join(", ")
+    booking_counties.join(", ")
   end
 
   def booking_counties_text=(new_value)
