@@ -209,38 +209,38 @@ Oneclick::Application.configure do
     "bikeOnlyMode" => "false",
     "parkAndRideMode" => "false",
     "bikeTransitMode" => "false",
-    "maxWalkTime" => "15",
-    "maxWalkDistance" => "0.5",
+    "maxWalkTime" => 15,
+    "maxWalkDistance" => 0.5,
     "maxWalkPace" => "medium",
-    "maxBikeTime" => "15",
-    "maxBikeDistance" => "3.0",
+    "maxBikeTime" => 15,
+    "maxBikeDistance" => 3.0,
     "maxBikePace" => "fast",
-    "minTransferTime" => "5",
-    "maxTransferTime" => "30",
-    "allowDeparturesTime" => "5",
+    "minTransferTime" => 5,
+    "maxTransferTime" => 30,
+    "allowDeparturesTime" => 5,
     "defaultPosition" => "39.7392, -104.9903",
     "priority" => "TIME",
     "includeRoutes" => "",
     "excludeRoutes" => "",
-    "defaultLayoverTime" => "45",
+    "defaultLayoverTime" => 45,
     "showRealtime" => "true",
-    "routesToShow" => "3"
+    "routesToShow" => 3
   }
 
   config.otp_external_defaults_json = {
     "mode" => "mode_transit",
-    "maxWalkTime" => "15",
-    "maxWalkDistance" => "0.5",
+    "maxWalkTime" => 15,
+    "maxWalkDistance" => 0.5,
     "maxWalkPace" => "medium",
-    "maxBikeTime" => "15",
-    "maxBikeDistance" => "3.0",
+    "maxBikeTime" => 15,
+    "maxBikeDistance" => 3.0,
     "maxBikePace" => "medium",
-    "minTransferTime" => "10",
-    "maxTransferTime" => "30",
+    "minTransferTime" => 10,
+    "maxTransferTime" => 30,
     "showRealtime" => "true",
-    "allowDeparturesTime" => "5",
+    "allowDeparturesTime" => 5,
     "defaultPosition" => "39.7392, -104.9903",
-    "routesToShow" => "3"
+    "routesToShow" => 3
   }
 
 
