@@ -114,6 +114,7 @@ GEM
       activemodel (= 4.2.1)
       activesupport (= 4.2.1)
       arel (~> 6.0)
+    activerecord-oracle_enhanced-adapter (1.6.7)
     activerecord-postgis-adapter (3.1.4)
       activerecord (~> 4.2)
       rgeo-activerecord (>= 4.0.4)
@@ -575,6 +576,7 @@ GEM
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
     ruby-graphviz (1.2.2)
+    ruby-oci8 (2.2.2)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
@@ -680,6 +682,7 @@ DEPENDENCIES
   active_model_serializers (= 0.8.1)
   activemdb
   activemodel
+  activerecord-oracle_enhanced-adapter (~> 1.6.0)
   activerecord-postgis-adapter
   ajax-datatables-rails (> 0.1.2)
   attr_encrypted
@@ -746,6 +749,7 @@ DEPENDENCIES
   rolify
   rspec-core (~> 2.14.0)
   rspec-rails
+  ruby-oci8
   rubyzip
   sass-rails!
   savon
