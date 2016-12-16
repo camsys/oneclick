@@ -17,23 +17,23 @@ class Service < ActiveRecord::Base
   belongs_to :provider
   belongs_to :service_type
   belongs_to :mode
-  has_many :fare_structures
-  has_many :schedules, -> { order(day_of_week: :asc) }
-  has_many :booking_cut_off_times
-  has_many :service_accommodations
-  has_many :service_characteristics
-  has_many :service_trip_purpose_maps
-  has_many :service_coverage_maps # DEPRECATED
+  has_many :fare_structures, :dependent => :destroy
+  has_many :schedules, -> { order(day_of_week: :asc) }, :dependent => :destroy
+  has_many :booking_cut_off_times, :dependent => :destroy
+  has_many :service_accommodations, :dependent => :destroy
+  has_many :service_characteristics, :dependent => :destroy
+  has_many :service_trip_purpose_maps, :dependent => :destroy
+  has_many :service_coverage_maps, :dependent => :destroy # DEPRECATED
   has_many :itineraries
-  has_many :user_services
+  has_many :user_services, :dependent => :destroy
   has_and_belongs_to_many :users # primarily for internal contact
   has_many :fare_zones
   has_many :funding_sources
   has_many :sponsors
   has_one  :ecolane_profile, :dependent => :destroy
+  has_one :trapeze_profile, :dependent => :destroy
+  has_one :ridepilot_profile, :dependent => :destroy
 
-  has_one :trapeze_profile
-  has_one :ridepilot_profile
   accepts_nested_attributes_for :schedules, allow_destroy: true,
   reject_if: proc { |attributes| attributes['start_time'].blank? && attributes['end_time'].blank? }
 
