@@ -1,6 +1,7 @@
 module Api
   module V1
     class ItinerariesController < Api::V1::ApiController
+      include CsHelpers
 
       #Todo: Ensure that trip matches the itinerary
       #Todo: Gracefully handle errors
@@ -140,7 +141,7 @@ module Api
               i_hash[:schedule] = itinerary.service.schedule_hash
               i_hash[:service_name] = itinerary.service.name
               i_hash[:phone] = itinerary.service.phone
-              i_hash[:logo_url]= itinerary.service.logo_url
+              i_hash[:logo_url]= logo_url_helper(itinerary)
               i_hash[:url] = itinerary.service.url
               comment = itinerary.service.comments.where(locale: "en").first
               if comment
