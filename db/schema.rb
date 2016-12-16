@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161215222357) do
+ActiveRecord::Schema.define(version: 20161216021602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -973,4 +973,6 @@ ActiveRecord::Schema.define(version: 20161215222357) do
   add_foreign_key "itineraries", "trip_parts"
   add_foreign_key "trip_parts", "trips"
   add_foreign_key "trip_places", "trips"
+  add_foreign_key "trips_desired_modes", "modes", column: "desired_mode_id"
+  add_foreign_key "trips_desired_modes", "trips"
 end
