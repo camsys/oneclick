@@ -733,7 +733,7 @@ class BookingServices
 
   # Finds the first service it can set to book trips in the given county
   def county_to_service(county)
-    ep = EcolaneProfile.where("booking_counties like ?", "% #{county.humanize}\n%").first
+    ep = EcolaneProfile.where("booking_counties ~* ?", ".* #{county}\n.*").first # the ~* is a POSTGRESQL query matching regex, case-insensitively
     if ep
       return ep.service
     else
