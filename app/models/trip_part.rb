@@ -211,7 +211,6 @@ class TripPart < ActiveRecord::Base
             new_itins, response = create_fixed_route_itineraries({otp_mode: mode.otp_mode, mode: mode.code, walk_mph: params[:walk_speed], max_walk_miles: params[:max_walk_miles], max_walk_seconds: params[:max_walk_seconds], optimize: params[:optimize], num_itineraries: params[:num_itineraries], min_transfer_time: params[:min_transfer_time], max_transfer_time: params[:max_transfer_time], banned_routes: params[:banned_routes], preferred_routes: params[:preferred_routes]})
 
             if mode.code == "mode_transit"
-              puts 'in here'
               transit_response = response
             end
 
@@ -327,10 +326,11 @@ class TripPart < ActiveRecord::Base
 
       puts 'Convert itineraries ###'
       puts Time.now - start
+
     elsif response['error']
       itinerary = Itinerary.create(server_status: response['error']['id'], server_message: response['error']['msg'])
 
-      case params[:mode_code].to_s
+      case params[:mode].to_s
         when 'mode_car'
           itinerary.mode = Mode.car
         when 'mode_bicycle'
@@ -346,7 +346,7 @@ class TripPart < ActiveRecord::Base
     elsif !response['plan']['id'].blank?
       itinerary = Itinerary.create(server_status: response['plan']['id'], server_message: response['plan']['msg'])
 
-      case params[:mode_code].to_s
+      case params[:mode].to_s
         when 'mode_car'
           itinerary.mode = Mode.car
         when 'mode_bicycle'
