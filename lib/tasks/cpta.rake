@@ -709,6 +709,7 @@ namespace :oneclick do
     # Build Service Coverage Area Geometries
     service.primary_coverage = CoverageZone.build_coverage_area(primary_coverage_counties)
     service.secondary_coverage = CoverageZone.build_coverage_area(secondary_coverage_counties)
+    service.active = true
 
     puts "The Rabbit Test Service has been Turned On"
     service.save
