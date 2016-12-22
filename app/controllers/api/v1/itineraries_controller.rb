@@ -403,7 +403,9 @@ module Api
           # for subject, get first trip
           trip = itineraries.first.trip_part.trip
 
-          if !email_itinerary[:subject].nil?
+          if !email_itinerary[:subjectLine].nil?
+            subject = email_itinerary[:subjectLine]
+          elsif !email_itinerary[:subject].nil?
             subject = email_itinerary[:subject]
           elsif trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")
