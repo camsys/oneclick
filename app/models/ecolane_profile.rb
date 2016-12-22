@@ -4,6 +4,8 @@ class EcolaneProfile < ActiveRecord::Base
   serialize :booking_counties, Array # List of counties whose residents can book through this service
   serialize :disallowed_purposes, Array # List of trip purposes to not provide to users
 
+  scope :active, -> { joins(:service).where("services.active = ?", true) }
+
   # Get and set disallowed purposes using a string of comma separated values
   def disallowed_purposes_text
     disallowed_purposes.join(", ")
