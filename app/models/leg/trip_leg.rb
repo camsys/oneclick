@@ -44,6 +44,8 @@ module Leg
     attr_accessor :display_color
 
     attr_accessor :agency_id
+    attr_accessor :trip_block_id
+
 
     def route
       "n/a"
