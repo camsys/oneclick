@@ -58,8 +58,7 @@ namespace :update do
 
     puts 'Additional Release Notes:'
     puts "If this instance uses a booking service, run 'rake oneclick:one_offs:create_booked_trips_report' to setup the Booked Trips Report."
-    puts "For CPTA, may want to run 'Provider.where('id NOT IN (?)', Service.all.pluck(:provider_id)).destroy_all' after running create_ecolane_services, to destroy orphaned providers."
-    puts '^^^^^^ Why might I want to do this, and is it required? Also, create_ecolane_services is NOT run during this release.  If you need to run that, please note it.'
+    puts "For CPTA, destroy the Provider named 'Shared Ride', and then run 'rake oneclick:create_ecolane_services' and 'rake oneclick:setup_ecolane_services'"
   end
 
 end
