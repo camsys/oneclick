@@ -117,35 +117,23 @@ class EligibilityService
   def get_accommodating_services_for_traveler(itineraries, user_profile)
 
     if user_profile.nil?
-      return []
+      return itineraries
     end
 
-    #user accommodations
-    accommodations_maps = user_profile.user_accommodations.where('value = ? ', 'true')
-    user_accommodations = []
-    accommodations_maps.each do |map|
-      user_accommodations << map.accommodation
-    end
+    user = user_profile.user
 
-    #service accommodations
-    accommodating_itineraries = []
-    itineraries.each do |itinerary|
-      service = itinerary['service']
-      accommodations_maps = service.service_accommodations
-      service_accommodations  = []
-      accommodations_maps.each do |map|
-        service_accommodations << map.accommodation
+    user_needs = user.user_accommodations.where(value: "true").pluck(:accommodation_id)
+
+    itineraries.each do |itin|
+      service = itin["service"]
+      service_provides = service.service_accommodations.where(active: "true").pluck(:accommodation_id)
+      #The line below checks to see if all the elements in the user_needs array are contained in the service_provides array
+      if not (user_needs - service_provides).blank?
+        itin["hidden"] = true
       end
-
-      missing_service_count = (user_accommodations.count - (service_accommodations & user_accommodations).count)
-
-      if missing_service_count == 0
-        accommodating_itineraries << itinerary
-      end
-
     end
 
-    accommodating_itineraries
+    return itineraries
 
   end
 
@@ -159,6 +147,8 @@ class EligibilityService
 
     Rails.logger.debug "Get eligible services"
     eligible = get_eligible_services_for_traveler(user_profile, trip_part)
+    accommodating = get_accommodating_services_for_traveler(eligible, user_profile)
+    return accommodating
   end
 
   def remove_ineligible_itineraries(trip_part, itineraries)
