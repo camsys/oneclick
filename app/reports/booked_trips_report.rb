@@ -58,6 +58,8 @@ class BookedTripsReport < AbstractReport
     # Trips Selected by Mode #
     ##########################
 
+    selected_modes = selected_itins.group("returned_mode_code").count.keys.map {|m| Mode.unscoped.find_by(code: m)}.select {|m| m }
+
     # Prepare Data Table
     data[:selected_trips_by_mode] = {
       columns: [],
@@ -71,22 +73,23 @@ class BookedTripsReport < AbstractReport
         title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
         width: 1000,
         height: 600,
+        chartArea: {height: '80%'},
         isStacked: true,
-        hAxis: { ticks: [] },
-        chartArea: {height: '80%'}
+        hAxis: { ticks: [] }
       }
     }
 
     # Create Column Headers
     data[:selected_trips_by_mode][:columns] = [{heading: @time_unit.to_s, type: 'date'}]
-    data[:selected_trips_by_mode][:columns] += Mode.all.map do |m|
+    data[:selected_trips_by_mode][:columns] += selected_modes.map do |m|
       { heading: TranslationEngine.translate_text(m.name), type: 'number' }
     end
 
     # Add Data to the Table
     data[:selected_trips_by_mode][:rows] =
     selected_itins.parcel_by(@date_range, @time_unit) do |seg, data|
-      [seg] + Mode.all.map {|m| data.where(mode_id: m.id).count }
+      grouped_data = data.group("returned_mode_code").count
+      [seg] + selected_modes.map{ |m| grouped_data[m.code] }
     end
 
     # Set up Tick Marks on hAxis
