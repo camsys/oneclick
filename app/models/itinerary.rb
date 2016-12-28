@@ -264,20 +264,16 @@ class Itinerary < ActiveRecord::Base
     return status
   end
 
+  # Cancel the trip through external booking service if appropriate, and unselect it
   def cancel
-    if self.booking_confirmation.nil?
-      self.save
-      return true
+    # If itinerary is booked, cancel it via the appropriate service
+    if is_booked?
+      # Set booked confirmation to nil and unselect if cancellation is successful, and return true when update is successful
+      return update_attributes(booking_confirmation: nil, selected: false) if BookingServices.new.cancel self
+    else
+      # If is not booked, unselect and return true when successful
+      return update_attributes(selected: false)
     end
-
-    bs = BookingServices.new
-    result = bs.cancel self
-    if result
-      self.booking_confirmation = nil
-      self.save
-    end
-
-    result
   end
 
   #Booking Information
