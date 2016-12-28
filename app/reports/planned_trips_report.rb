@@ -97,6 +97,9 @@ class PlannedTripsReport < AbstractReport
     # Trips Selected by Mode #
     ##########################
 
+    # Build a list of modes that are both active and have a non-zero count of itineraries
+    selected_modes = selected_itins.group("returned_mode_code").count.keys.map {|m| Mode.unscoped.find_by(code: m)}.select {|m| m }
+
     # Prepare Data Table
     data[:selected_trips_by_mode] = {
       columns: [],
@@ -118,14 +121,15 @@ class PlannedTripsReport < AbstractReport
 
     # Create Column Headers
     data[:selected_trips_by_mode][:columns] = [{heading: @time_unit.to_s, type: 'date'}]
-    data[:selected_trips_by_mode][:columns] += Mode.all.map do |m|
+    data[:selected_trips_by_mode][:columns] += selected_modes.map do |m|
       { heading: TranslationEngine.translate_text(m.name), type: 'number' }
     end
 
     # Add Data to the Table
     data[:selected_trips_by_mode][:rows] =
     selected_itins.parcel_by(@date_range, @time_unit) do |seg, data|
-      [seg] + Mode.all.map {|m| data.with_mode(m.code).count }
+      grouped_data = data.group("returned_mode_code").count
+      [seg] + selected_modes.map{ |m| grouped_data[m.code] }
     end
 
     # Set up Tick Marks on hAxis
