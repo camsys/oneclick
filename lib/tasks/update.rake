@@ -54,15 +54,10 @@ namespace :update do
 
     Rake::Task["oneclick:one_offs:add_comment_to_uber_service"].invoke #Make sure that Uber Services have a public comment.
     Rake::Task["cleanup:destroy_orphaned_records"].invoke # Destroys orphaned records that could cause issues with updated code.
+    Rake::Task["oneclick:one_offs:create_planned_trips_report"].invoke # Create the Planned Trips Report for all instances
 
     puts 'Additional Release Notes:'
-
-    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-    puts 'RED FLAG: NEVER RUN DB:SEED FOR AN EXISTING SERVER.  SEEDS ARE THE BARE MINIUM DATA REQUIRED OR A NEW SERVER'
-    puts "Run rake db:seed to enable Booked Trips Report and/or Planned Trips Report"
-    puts "DON'T DO THIS ^^^^^^^"
-    puts 'For IEUW, set appropriate modes to active so that they show up in Planned Trips Report'
-    puts '^^^^^Can you tell me which modes are appopriate? There needs to be enough info in here that someone can update thee server from these notes alone. Also why are we marking modes as active/inactive for a report.  Wont that change the behavior of trip planning?'
+    puts "If this instance uses a booking service, run 'rake oneclick:one_offs:create_booked_trips_report' to setup the Booked Trips Report."
     puts "For CPTA, may want to run 'Provider.where('id NOT IN (?)', Service.all.pluck(:provider_id)).destroy_all' after running create_ecolane_services, to destroy orphaned providers."
     puts '^^^^^^ Why might I want to do this, and is it required? Also, create_ecolane_services is NOT run during this release.  If you need to run that, please note it.'
   end

@@ -1,13 +1,10 @@
 #encoding: utf-8
+
+require 'tasks/task_helpers'
+include TaskHelper
+
 namespace :oneclick do
   namespace :one_offs do
-
-    desc "Create Booked Trips Report"
-    task :create_booked_trips_report => :environment do
-      r = Report.where(name: "Booked Trips").first_or_initialize
-      r.update(description: "Dashboard of trips booked through OneClick", view_name: "booked_trips_report", class_name: "BookedTripsReport", active: true)
-      r.save
-    end
 
     desc "Add Comment to Uber Service"
     task :add_comment_to_uber_service => :environment do
@@ -302,6 +299,26 @@ namespace :oneclick do
         end
       end
 
+    end
+
+    # Add Booked Trips Report
+    desc "Create Booked Trips Report"
+    task :create_booked_trips_report => :environment do
+      setup_report  name: 'Booked Trips',
+                    description: 'Dashboard of trips booked through OneClick',
+                    view_name: 'booked_trips_report',
+                    class_name: 'BookedTripsReport',
+                    active: true
+    end
+
+    # Add Planned Trips Report
+    desc "Create Planned Trips Report"
+    task :create_planned_trips_report => :environment do
+      setup_report  name: 'Planned Trips',
+                    description: 'Dashboard of trips created, planned, and booked through OneClick',
+                    view_name: 'planned_trips_report',
+                    class_name: 'PlannedTripsReport',
+                    active: true
     end
 
   end
