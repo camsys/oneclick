@@ -946,10 +946,13 @@ class BookingServices
 
   def build_api_trip_hash_from_non_paratransit_trip trip
 
+    puts trip.ai
+
     itineraries = trip.selected_itineraries
     trip_hash = {}
 
     itineraries.each do |itinerary|
+      puts itinerary.ai
       itinerary_hash = {}
       itinerary_hash[:trip_id] = itinerary.trip_part.trip.id
       itinerary_hash[:id] = itinerary.id
@@ -979,8 +982,6 @@ class BookingServices
       else
         itinerary_hash[:service_name] = ""
       end
-
-
 
       unless itinerary.legs.blank?
         itinerary_hash[:json_legs] = (YAML.load(itinerary.legs || "")).as_json

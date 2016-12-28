@@ -278,44 +278,82 @@ class User < ActiveRecord::Base
   def future_trips
     bs = BookingServices.new
 
-    #Get Paratransit Trips that have Been Booked
-    # This gets all trips, even thouse that were not booked through 1-click
-    trips_array = bs.future_trips self
-    trips_array = bs.group_trips trips_array
+    # If this is an ecolane user, get trips from Ecolane, otherwise, get all the trips from 1-Click
+    if self.ecolane_user?
 
-    #Get all future NON-Paratransit Trips that have been booked/selected
-    self.trips.future_not_paratransit.each do |trip|
-      trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+      #Get Paratransit Trips that have Been Booked
+      # This gets all trips, even thouse that were not booked through 1-click
+      trips_array = bs.future_trips self
+      trips_array = bs.group_trips trips_array
+
+      #Get all future NON-Paratransit Trips that have been booked/selected
+      self.trips.future_not_paratransit.each do |trip|
+        trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+      end
+
+      #Sort all of these trips by date
+      return trips_array.sort_by{ |trip| trip[0][:departure]}
+    else
+      trips_array  = []
+      #Get all future NON-Paratransit Trips that have been booked/selected
+      self.trips.future.selected.each do |trip|
+        trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+      end
+
+      #Sort all of these trips by date
+      if trips_array.count > 0
+        puts trips_array.ai
+
+        return trips_array.sort_by{ |trip| trip[0][:departure]}
+      else
+        return []
+      end
     end
 
-    #Sort all of these trips by date
-    trips_array.sort_by{ |trip| trip[0][:departure]}
   end
 
   def past_trips end_time = Time.now, max_results = 10
-    bs = BookingServices.new
 
+    bs = BookingServices.new
     unless end_time.kind_of? String
       end_time = end_time.iso8601
     end
 
-    #Get Paratransit Trips that have Been Booked
-    # This gets all trips, even thouse that were not booked through 1-click
-    trips_array = bs.past_trips(self, max_results, end_time)
+    if self.ecolane_user?
 
-    trips_array = bs.group_trips trips_array
-    #Get past NON-Paratransit Trips that have been booked/selected
+      #Get Paratransit Trips that have Been Booked
+      # This gets all trips, even thouse that were not booked through 1-click
+      trips_array = bs.past_trips(self, max_results, end_time)
 
-    self.trips.during_not_paratransit(end_time).each do |trip|
-      trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
-    end
+      trips_array = bs.group_trips trips_array
+      #Get past NON-Paratransit Trips that have been booked/selected
 
-    #Sort all of these trips by date
-    if trips_array.count > 0
-      trips_array = trips_array.sort_by{ |trip| trip[0][:departure]}.reverse
-      return trips_array[0..max_results-1]
+      self.trips.during_not_paratransit(end_time).each do |trip|
+        trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+      end
+
+      #Sort all of these trips by date
+      if trips_array.count > 0
+        trips_array = trips_array.sort_by{ |trip| trip[0][:departure]}.reverse
+        return trips_array[0..max_results-1]
+      else
+        return []
+      end
     else
-      return []
+
+      trips_array = []
+
+      self.trips.during(end_time).each do |trip|
+        trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
+      end
+
+      #Sort all of these trips by date
+      if trips_array.count > 0
+        trips_array = trips_array.sort_by{ |trip| trip[0][:departure]}.reverse
+        return trips_array[0..max_results-1]
+      else
+        return []
+      end
     end
   end
 
@@ -438,6 +476,15 @@ class User < ActiveRecord::Base
     self.age = (now.year - dob.year - (dob.to_date.change(:year => now.year) > now ? 1 : 0)).to_s
     self.save
 
+  end
+
+  def ecolane_user?
+    self.user_profile.user_services.each do |us|
+      if us.service.ecolane_profile
+        return true
+      end
+    end
+    return false
   end
 
 end
