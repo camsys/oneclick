@@ -23,7 +23,7 @@ class Service < ActiveRecord::Base
   has_many :service_accommodations, :dependent => :destroy
   has_many :service_characteristics, :dependent => :destroy
   has_many :service_trip_purpose_maps, :dependent => :destroy
-  has_many :service_coverage_maps, :dependent => :destroy # DEPRECATED
+  has_many :service_coverage_maps # DEPRECATED
   has_many :itineraries
   has_many :user_services, :dependent => :destroy
   has_and_belongs_to_many :users # primarily for internal contact
