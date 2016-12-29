@@ -391,6 +391,7 @@ Oneclick::Application.routes.draw do
         collection do
           post 'update'
           get  'profile'
+          get  'get_guest_token'
         end
       end
 

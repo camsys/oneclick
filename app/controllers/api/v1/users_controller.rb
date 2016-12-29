@@ -61,6 +61,15 @@ module Api
 
       end
 
+      def get_guest_token
+        guest = create_guest_user
+        guest.reset_authentication_token!
+        guest.save
+        render json: {email: guest.email, authentication_token: guest.authentication_token}
+        return
+      end
+
+
     end
   end
 end

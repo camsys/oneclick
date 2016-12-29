@@ -63,6 +63,19 @@ module Api
         end
       end
 
+      def create_guest_user
+        random_string = SecureRandom.urlsafe_base64(16)
+        u = User.new
+        u.first_name = "Visitor"
+        u.last_name = "Guest"
+        u.password = random_string
+        u.email = "guest_#{random_string}@example.com"
+        u.save!(:validate => false)
+        u.add_role :anonymous_traveler
+        session[:guest_user_id] = u.id
+        u
+      end
+
     end
   end
 end
