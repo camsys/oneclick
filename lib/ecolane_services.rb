@@ -392,8 +392,16 @@ class EcolaneServices
   # Unpack fare response from query_preferred_fare_call.  Return the Fare with the HIGHEST (Largest Number) Priority
   def unpack_fare_response_v9 (resp)
     fare_hash = Hash.from_xml(resp.body)
+
     fares = fare_hash['fares']['fare']
+
     highest_priority_fare = []
+
+    #When there is only one option in the fares table, it is  not returned as an array.  Turn it into an array
+    unless fares.kind_of? Array
+      fares = [fares]
+    end
+
     fares.each do |fare|
       if highest_priority_fare.empty? or highest_priority_fare[3] < fare['priority']
         highest_priority_fare = [fare['client_copay'], fare['funding']['funding_source'], fare['funding']['sponsor'], fare['priority']]
