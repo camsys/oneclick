@@ -119,37 +119,8 @@ namespace :oneclick do
         when 'rabbit'
 
           #Counties
-          primary_coverage_counties = ['York', 'Adams', 'Cumberland']
-          secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
-
-          #Funding Sources
-          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
-
-          #Sponsors
-          sponsor_array = [['MATP', 0],['YCAAA', 1]]
-
-          #Dummy User
-          service.fare_user = "79109"
-
-          #Get or create the ecolane_profile
-          ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
-
-          #Optional: Disallowed Trip Purposes
-          #this is a comma separated string with no spaces around the commas, and all lower-case
-          ecolane_profile.disallowed_purposes_text = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
-
-          #Booking System Id
-          ecolane_profile.system = 'rabbit'
-          ecolane_profile.default_trip_purpose = 'Other'
-          ecolane_profile.api_version = "8"
-          ecolane_profile.booking_counties = primary_coverage_counties
-          ecolane_profile.save
-
-        when 'rabbit'
-
-          #Counties
-          primary_coverage_counties = ['York', 'Adams', 'Cumberland']
-          secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
+          primary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Perry']
+          secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon', 'Perry']
 
           #Funding Sources
           funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
@@ -657,8 +628,8 @@ namespace :oneclick do
     #Before running this task:  For each service with ecolane booking, set the Service Id to the lowercase county name
     #and set the Booking Service Code to 'ecolane' These fields are found on the service profile page
     #Counties
-    primary_coverage_counties = ['York', 'Adams', 'Cumberland']
-    secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon']
+    primary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Perry']
+    secondary_coverage_counties = ['York', 'Adams', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon', 'Perry']
 
     #Funding Sources
     funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['Lottery [21]', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"], ["ADAYORK1", 3, false, "Eligible for ADA"], ["Gen Pub", 5, true, "Full Fare"]]
