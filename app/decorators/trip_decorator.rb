@@ -1,5 +1,5 @@
 class TripDecorator < Draper::Decorator
-  decorates_association :itineraries  
+  decorates_association :itineraries
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through
@@ -15,7 +15,7 @@ class TripDecorator < Draper::Decorator
     super
     @elig_svc = EligibilityService.new
   end
-  
+
   def created
     I18n.l created_at, format: :isoish
   end
@@ -31,7 +31,7 @@ class TripDecorator < Draper::Decorator
   def assisted_by
     (object.user == object.creator) ? '' : creator
   end
-  
+
   def creator
     object.creator.name if object.creator
   end
@@ -55,15 +55,15 @@ class TripDecorator < Draper::Decorator
   def out_arrive_or_depart
     outbound_part.is_depart ? TranslationEngine.translate_text(:departing_at) : TranslationEngine.translate_text(:arriving_by)
   end
-  
+
   def out_datetime
     I18n.l outbound_part.scheduled_time, format: :isoish
   end
-  
+
   def to_lat
     to_place.lat
   end
-  
+
   def to_lon
     to_place.lon
   end
@@ -73,17 +73,17 @@ class TripDecorator < Draper::Decorator
       return_part.is_depart ? TranslationEngine.translate_text(:departing_at) : TranslationEngine.translate_text(:arriving_by)
     end
   end
-  
+
   def in_datetime
     if is_return_trip
       I18n.l return_part.scheduled_time, format: :isoish
     end
   end
-  
+
   def round_trip
     is_return_trip ? TranslationEngine.translate_text(:yes_str) : TranslationEngine.translate_text(:no_str)
   end
-  
+
   def booked
     is_booked? ? TranslationEngine.translate_text(:yes_str) : TranslationEngine.translate_text(:no_str)
   end
@@ -91,11 +91,11 @@ class TripDecorator < Draper::Decorator
   def eligibility
     get_eligibility(outbound_part.selected_itinerary, object.user.user_profile)
   end
-  
+
   def accommodations
     get_accomodations(outbound_part.selected_itinerary)
   end
-  
+
   def outbound_itinerary_count
     outbound_part.itineraries.count
   end
@@ -125,26 +125,26 @@ class TripDecorator < Draper::Decorator
       strings << "#{key_name}: #{val}"
     end
   end
-  
+
   def outbound_selected_short
     get_trip_summary(outbound_part.selected_itinerary) if outbound_part.selected_itinerary
   end
-  
+
   def return_selected
     if is_return_trip
       get_trip_summary(return_part.selected_itinerary) if return_part.selected_itinerary
     end
   end
-  
+
   def status
   end
-  
+
   def device
   end
-  
+
   def location
   end
-  
+
   def trip_purpose
     I18n.t object.trip_purpose.name if object.trip_purpose
   end
@@ -177,7 +177,7 @@ class TripDecorator < Draper::Decorator
       else
         code = itinerary.mode.code
       end
-      
+
       case code
       when 'mode_transit', 'mode_bus', 'mode_rail'
         itinerary.get_legs(false).each do |leg|
@@ -199,10 +199,12 @@ class TripDecorator < Draper::Decorator
             summary += "#{TranslationEngine.translate_text(:paratransit)} #{TranslationEngine.translate_text(a)}: #{h.sanitize_nil_to_na b};"
           end
         end
-        
+
       when 'mode_taxi'
-        YAML.load(itinerary.server_message).each do |business|
-          summary += "#{TranslationEngine.translate_text(:taxi)} #{business['name']}: #{business['phone']};"
+        if itinerary.server_message
+          YAML.load(itinerary.server_message).each do |business|
+            summary += "#{TranslationEngine.translate_text(:taxi)} #{business['name']}: #{business['phone']};"
+          end
         end
       when 'mode_rideshare'
         if itinerary.server_message
@@ -211,7 +213,7 @@ class TripDecorator < Draper::Decorator
           end
         else
           # TODO: this should be generalized here and in _rideshare_details.html.haml
-          summary += 'Georgia Commute Options'
+          summary += ''
         end
       when 'skip'
         # do nothing
@@ -250,6 +252,5 @@ class TripDecorator < Draper::Decorator
     end
     result
   end
-  
-end
 
+end
