@@ -81,6 +81,7 @@ module Reporting::ReportHelper
   def setup_tick_marks(date_range, time_unit)
     ticks = []
     year_range = date_range.begin.year..date_range.end.year
+    date_range = date_range.begin.to_date..date_range.end.to_date
     case time_unit
     when :year
       ticks = year_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
