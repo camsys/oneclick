@@ -239,6 +239,9 @@ module Api
 
                   leg['intermediateStops'].each do |stop|
                     stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
+                    if stop_time.nil?
+                      next
+                    end
                     stop['realtimeArrival'] = stop_time['realtimeArrival']
                     stop['realtimeDeparture'] = stop_time['realtimeDeparture']
                     stop['arrivalDelay'] = stop_time['arrivalDelay']
