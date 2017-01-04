@@ -4,15 +4,7 @@
       %tr
       %td.trip_summary{style: "valign: middle; font-family: 'Helvetica Neue', Arial; font-size: 0.88em;"}
 
-        = image_tag(logo_url_helper(itinerary), height: 20, width: 20, style: 'vertical-align: middle; padding-right: 10px;')
-        -if itinerary.mode.code == 'mode_paratransit'
-          %span=itinerary.service.name + ' - ' + itinerary.service.provider.name
-        -else
-          %span=get_trip_summary_title(itinerary)
-
-
         -if itinerary.cost
-          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | '
           %span{style: "font-weight: bold;"}= 'Fare'
           %span=' : '
           -if itinerary.mode.code == 'mode_taxi'
@@ -22,9 +14,9 @@
               %span=number_to_currency(itinerary.cost)
             -else
               %span=translate_helper(:no_cost_for_service)
+          %span{style: "font-size: 0.6em; padding: 0px 12px; color: #b1b1b1;"}= ' | '
 
         -if itinerary.start_time
-          %span{style: "font-size: 0.6em; padding-left:12px; padding-right: 12px; color: grey;"}=' | '
           %span{style: "font-weight: bold;"}= translate_helper(:depart_at)
           %span=' : '
           %span=format_time(itinerary.start_time.in_time_zone)
