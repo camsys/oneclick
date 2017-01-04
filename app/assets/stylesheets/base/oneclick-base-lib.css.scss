@@ -84,7 +84,7 @@ $single-plan-height: 50px !default; //the height of each itinerary chart contain
 $trip-leg-bus: getenv("TRIP_LEG_BUS_COLOR", #00C000);
 $trip-leg-drive: getenv("TRIP_LEG_DRIVE_COLOR", #F5BBAF);
 $trip-leg-rideshare: getenv("TRIP_LEG_RIDESHARE_COLOR", #92D692);
-$trip-leg-paratransit: getenv("TRIP_LEG_SUBWAY_COLOR", #FFCE81);
+$trip-leg-paratransit: getenv("TRIP_LEG_PARATRANSIT_COLOR", #FFCE81);
 $trip-leg-subway: getenv("TRIP_LEG_SUBWAY_COLOR", orange);
 $trip-leg-tram: getenv("TRIP_LEG_TRAM_COLOR", orange);
 $trip-leg-rail: getenv("TRIP_LEG_RAIL_COLOR", #5D8794);
