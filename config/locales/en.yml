@@ -577,7 +577,7 @@ en:
   rail: 'Rail'
   rail_and_bus: 'Rail and Bus'
   subway: 'Subway'
-  tram: 'Tram'
+  tram: 'Rail'
   vehicle: 'Vehicle'
   wait: 'Wait'
   mode_transfer: 'Transfer'

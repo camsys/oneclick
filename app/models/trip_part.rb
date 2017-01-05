@@ -294,8 +294,6 @@ class TripPart < ActiveRecord::Base
     response = nil
     start = Time.now
 
-    puts params.ai
-
     benchmark { result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, params[:otp_mode], wheelchair, walk_speed, max_walk_distance, params[:max_bike_miles], params[:optimize], params[:num_itineraries], params[:min_transfer_time], params[:max_transfer_time], params[:banned_routes], params[:preferred_routes]) }
     puts 'ACTUAL OTP CALL ###'
     puts Time.now - start

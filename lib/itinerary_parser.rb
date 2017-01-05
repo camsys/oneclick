@@ -16,8 +16,12 @@ class ItineraryParser
       legs.each do |leg|
         leg_itin = parse_leg(leg, include_geometry)
 
-        Rails.logger.debug leg_itin.inspect
+        if self.same_block? itin.last, leg_itin
 
+          last = itin.pop
+          itin << merge_legs(last, leg_itin)
+          next
+        end
         itin << leg_itin unless leg_itin.nil?
       end
     end
@@ -27,6 +31,26 @@ class ItineraryParser
   end
 
 protected
+
+  def self.merge_legs leg1, leg2
+    return leg1
+  end
+
+  def self.same_block? leg1, leg2
+    if leg1.nil? or leg2.nil?
+      return false
+    end
+
+    if leg1.trip_block_id.blank? or leg2.trip_block_id.blank?
+      return false
+    end
+
+    if leg1.trip_block_id == leg2.trip_block_id
+      return true
+    end
+
+    return false
+  end
 
   def self.parse_leg(leg, include_geometry = true)
 
@@ -48,6 +72,7 @@ protected
     # parse the common properties
     if obj.present?
 
+      obj.trip_block_id = leg['tripBlockId']
       obj.distance = leg['distance'].to_f
       obj.start_time = convert_time(leg['startTime'])
       obj.end_time = convert_time(leg['endTime'])

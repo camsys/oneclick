@@ -196,7 +196,12 @@ module Api
             unless itinerary.legs.nil?
               puts 'Load itinerary legs'
               yaml_legs = nil
-              benchmark { yaml_legs = YAML.load(itinerary.legs) }
+              #benchmark { yaml_legs = YAML.load(itinerary.legs) }
+              puts 'MERGING LEGS'
+              start_merging = Time.now
+              yaml_legs = itinerary.merged_legs
+              puts 'Done Merging Legs ###'
+              puts Time.now - start_merging
 
               legs_stuff_start = Time.now
               yaml_legs.each do |leg|
@@ -220,8 +225,6 @@ module Api
                 #3 Check to see if real-time is available for node stops
                 unless leg['intermediateStops'].blank?
 
-                  puts '###############################################################################'
-
                   trip_time = tp.get_trip_time leg['tripId'], otp_response
 
                   if trip_time.blank?
@@ -236,6 +239,9 @@ module Api
 
                   leg['intermediateStops'].each do |stop|
                     stop_time = stop_times.detect{|hash| hash['stopId'] == stop['stopId']}
+                    if stop_time.nil?
+                      next
+                    end
                     stop['realtimeArrival'] = stop_time['realtimeArrival']
                     stop['realtimeDeparture'] = stop_time['realtimeDeparture']
                     stop['arrivalDelay'] = stop_time['arrivalDelay']
@@ -403,7 +409,9 @@ module Api
           # for subject, get first trip
           trip = itineraries.first.trip_part.trip
 
-          if !email_itinerary[:subject].nil?
+          if !email_itinerary[:subjectLine].nil?
+            subject = email_itinerary[:subjectLine]
+          elsif !email_itinerary[:subject].nil?
             subject = email_itinerary[:subject]
           elsif trip.scheduled_time > Time.now
             subject = "Your Upcoming Ride on " + trip.scheduled_time.strftime('%_m/%e/%Y').gsub(" ","")

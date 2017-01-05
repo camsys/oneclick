@@ -4,6 +4,8 @@ class UserMailer < ActionMailer::Base
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
+  before_filter :add_logo_attachment
+
   @@from = Oneclick::Application.config.email_sender
   @@trip_link = Oneclick::Application.config.email_trip_planner_url
 
@@ -163,6 +165,13 @@ class UserMailer < ActionMailer::Base
     emails.each do |email|
       mail(to: email, from: @@from, subject: 'Blacklisted Google Place Upload Succeeded')
     end
+  end
+
+  private
+
+  def add_logo_attachment
+    url = ActionController::Base.helpers.asset_path(Oneclick::Application.config.ui_logo)
+    attachments.inline['header_logo.png'] = open(url, 'rb').read
   end
 
 end
