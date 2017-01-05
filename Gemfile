@@ -75,8 +75,8 @@ gem 'uber-ruby', require: 'uber'
 
 #group :production do
   #Needed for Oracle DB Connection
-  #gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
-  #gem 'ruby-oci8'
+  gem 'activerecord-oracle_enhanced-adapter', '~> 1.6.0'
+  gem 'ruby-oci8'
 #end
 
 group :development do
