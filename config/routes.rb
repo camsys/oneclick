@@ -392,6 +392,7 @@ Oneclick::Application.routes.draw do
           post 'update'
           get  'profile'
           get  'get_guest_token'
+          get  'lookup'
         end
       end
 

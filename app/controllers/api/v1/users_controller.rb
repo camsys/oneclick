@@ -69,6 +69,12 @@ module Api
         return
       end
 
+      # Looks up user profile via an external booking service
+      # booking_agency param determines if using Ecolane, RidePilot, etc.
+      def lookup
+        booking_agency = params[:booking_agency] || nil
+        render json: BookingServices.new.query_user_external_id(booking_agency, params)
+      end
 
     end
   end

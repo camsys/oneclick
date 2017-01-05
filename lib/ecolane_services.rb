@@ -18,7 +18,7 @@ class EcolaneServices
   # This takes in a customer_number (the number that the passenger knows)
   # and converts to a customer_id (the database id for that passenger)
   def get_customer_id(customer_number, system, token)
-    resp = search_for_customers(terms = {customer_number: customer_number}, system, token)
+    resp = search_for_customers(system, token, customer_number: customer_number)
     resp_xml = Nokogiri::XML(resp.body)
 
     status = resp_xml.xpath("status")
@@ -34,6 +34,23 @@ class EcolaneServices
     else
       return nil
     end
+  end
+
+  # Parses an ecolane search response into an array of customer hashes
+  def parse_customer_query_array(response)
+    resp = Hash.from_xml(response.body)
+    customer = (resp["search_results"] && resp["search_results"]["customer"]) || [] # Return an empty array if there are no results
+    return customer.class == Array ? customer : [customer] # If a single hash is returned, pack into an array
+  end
+
+  # Returns Ecolane customer number (not id) based on ssn, last name, and county system name.
+  def query_customer_number(system, token, params={})
+    resp = search_for_customers(system, token, params)
+    return nil unless resp.code[0] == "2" # Return nil if get a failure (non-2xx code) HTML response
+    customers = parse_customer_query_array(resp).select do |customer| # select only responses that match ssn
+      customer["ssn"] && customer["ssn"].last(4) == params[:ssn_last_4].to_s
+    end
+    return customers.count == 1 ? customers.first["customer_number"] : nil # Return nil if not exactly one result
   end
 
   # Get orders for a customer
@@ -80,13 +97,13 @@ class EcolaneServices
   end
 
   # Get a list of customers
-  def search_for_customers(terms = {}, system, token)
+  def search_for_customers(system, token, terms = {})
     url_options = "/api/customer/" + system.to_s + '/search?'
     terms.each do |term|
       url_options += "&" + term[0].to_s + '=' + term[1].to_s
     end
     url = Oneclick::Application.config.ecolane_base_url + url_options
-    resp = send_request(url, token)
+    send_request(url, token)
   end
 
   # Check to see if a passenger's DOB matches
@@ -96,7 +113,7 @@ class EcolaneServices
     if iso_dob.nil?
       return false, "", ""
     end
-    resp = search_for_customers({"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s}, system_id, token)
+    resp = search_for_customers(system_id, token, {"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
     resp = unpack_validation_response(resp)
     return resp[0], resp[2][0], resp[2][1]
   end

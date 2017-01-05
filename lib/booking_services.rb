@@ -690,6 +690,22 @@ class BookingServices
     end
   end
 
+  # Searches for a user based on passed parameters, and returns that user's booking service id
+  def query_user_external_id agency=AGENCY[:ecolane], params={}
+    case agency
+    when AGENCY[:ecolane], "ecolane", :ecolane
+      return nil unless params[:county]
+      service = county_to_service(params[:county])
+      customer_number = EcolaneServices.new.query_customer_number( service.external_id,
+                                                 service.ecolane_profile.token,
+                                                 ssn_last_4: params[:ssn_last_4],
+                                                 last_name: params[:last_name])
+      return {customer_number: customer_number}
+    else
+      return {error: "Booking agency #{agency} does not exist."}
+    end
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
