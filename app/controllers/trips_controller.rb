@@ -5,6 +5,7 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
+  include ItineraryHelper
   before_action :detect_ui_mode, :get_trip_purposes, :get_ecolane_trip_purposes
 
   def index
@@ -249,6 +250,12 @@ class TripsController < PlaceSearchingController
       session[:current_trip_id] = nil
     end
 
+    @trip.selected_itineraries.each do |itin|
+      itin.map_image = create_static_map(itin)
+      puts itin.map_image
+      itin.save
+    end
+
     respond_to do |format|
       format.html {
         if @trip.nil?
@@ -266,9 +273,13 @@ class TripsController < PlaceSearchingController
     email_address = params[:email][:email_addresses]
     comments = params[:email][:email_comments]
 
-    UserMailer.user_trip_email([email_address], @trip, comments, @traveler).deliver
-
     notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', email_address.split(/[ ,]+/).to_sentence)
+    begin
+      UserMailer.user_trip_email([email_address], @trip, comments, @traveler).deliver
+    rescue Net::SMTPSyntaxError
+      notice_text = TranslationEngine.translate_text(:invalid_email)
+    end
+
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
         :notice => notice_text  }

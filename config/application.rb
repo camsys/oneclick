@@ -41,6 +41,8 @@ end
 
 module Oneclick
   class Application < Rails::Application
+    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|

@@ -1,6 +1,7 @@
 class UserMailer < ActionMailer::Base
   # Default sender account set in application.yml
   @@from = ENV["SYSTEM_SEND_FROM_ADDRESS"]
+  include ItineraryHelper
   layout "user_mailer"
   helper :application, :trips, :services, :users, :map
 
@@ -10,6 +11,10 @@ class UserMailer < ActionMailer::Base
     @user = current_user
     subject = 'Your Trip Details'
     @itineraries = trip.selected_itineraries
+    @itineraries.each do |itin|
+      itin.map_image = create_static_map(itin)
+      attachments.inline[itin.id.to_s + ".png"] = open(itin.map_image, 'rb').read
+    end
     mail(to: addresses, subject: subject, from: @@from)
   end
 

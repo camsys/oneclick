@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161213202330) do
+ActiveRecord::Schema.define(version: 20170106030614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,7 +298,7 @@ ActiveRecord::Schema.define(version: 20161213202330) do
     t.boolean  "is_bookable",                                         default: false, null: false
     t.string   "booking_confirmation"
     t.boolean  "duration_estimated",                                  default: false
-    t.string   "map_image"
+    t.text     "map_image"
     t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"

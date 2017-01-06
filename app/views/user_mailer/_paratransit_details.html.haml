@@ -38,6 +38,6 @@
         = format_time(itinerary.trip_part.scheduled_time.in_time_zone)
   %tr
     %td{style: "text-align: center;", colspan: 2}
-      -if itinerary.map_image.url
+      -if itinerary.map_image
         %div{style: "width:100%;background: white; border-radius: 5px; padding: 10px;"}
-          %img{src: asset_url(itinerary.map_image.url)}
+          =image_tag(attachments[itinerary.id.to_s + ".png"].url)
