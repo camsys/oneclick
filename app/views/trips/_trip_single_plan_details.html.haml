@@ -13,12 +13,14 @@
   - else
     .col-sm-5.trip_itinerary_mappable{class: "#{local_assigns[:printer_friendly] ? 'printer_friendly' : ''}"}
       = render :partial => get_trip_partial(itinerary), :locals => { :itinerary => itinerary }
-    - if map_type=='delayed_static'
-      .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
-    - elsif map_type=='static' and itinerary.map_image.url
+    - if map_type=='delayed_static' and itinerary.map_image
       - # this option is actually not used as there is a separate template for email
       .col-sm-7{id: "print_map_#{itinerary.id}", class: 'print_map'}
-        %img{src: itinerary.map_image.url}
+        %img{src: itinerary.map_image}
+      :javascript
+        $(document).ready(function() {
+          window.print();
+        });
     - else
       .sr-only{aria: {label: 'Map.'}} Map.
       .col-sm-7{style: "height: 550px; background: white; border-radius: 5px; padding: 0px;", aria: {hidden: 'true'}}
@@ -41,3 +43,6 @@
               }
             }
           });
+
+
+

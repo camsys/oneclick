@@ -2,6 +2,7 @@
 
 es:
   ## Need Translations ##############
+  invalid_email: "Invalid Email Address Used"
   origin_placeholder: "Starting Address"
   destination_placeholder: "Destination Address"
   welcome_message: "Find Your Ride"

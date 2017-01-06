@@ -3,7 +3,7 @@ class ItinerariesController < ApplicationController
   include MapHelper
 
   def map_status
-    statuses = Itinerary.where(id: params[:id].split(',')).collect{|i| {id: i.id, has_map: !i.map_image.url.nil?, url: i.map_image.url}}
+    statuses = Itinerary.where(id: params[:id].split(',')).collect{|i| {id: i.id, has_map: true, url: i.map_image}}
     render json: statuses
   end
 

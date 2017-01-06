@@ -40,15 +40,6 @@
 
 - if TranslationEngine.translation_exists?("printer_friendly_footer")
   = translate_helper(:printer_friendly_footer)
-- else
-  %table
-    %tbody
-      %tr
-        %td="Thank you for using " + Oneclick::Application.config.name + " Software"
-      %tr
-        %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140"
-
-= render partial: 'prepare_print_maps', locals: {trip: @trip}
 
 - content_for :head do
   %meta{name: 'user_id', content: @trip.user.id}
