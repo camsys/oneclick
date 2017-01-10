@@ -17,7 +17,7 @@ module ItineraryHelper
         'maptype' => 'roadmap',
         'client_id' =>  ENV['GOOGLE_GEOCODER_ACCOUNT'],
         'channel' => ENV['GOOGLE_GEOCODER_CHANNEL'],
-        'key' => ENV['GOOGLE_MAPS_API_KEY']
+        'key' => ENV['GOOGLE_STATIC_MAPS_API_KEY']
     }
 
     iconUrls = {
