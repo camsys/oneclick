@@ -9,7 +9,14 @@ class TaxiItinerary < Itinerary
   end
 
   def estimate_duration passed_trip_part
-    base_duration = TripPlanner.new.get_drive_time(!passed_trip_part.is_depart, passed_trip_part.trip_time, passed_trip_part.from_trip_place.location.first, passed_trip_part.from_trip_place.location.last, passed_trip_part.to_trip_place.location.first, passed_trip_part.to_trip_place.location.last)[0]
+    base_duration = nil
+    begin
+      base_duration = TripPlanner.new.get_drive_time(!passed_trip_part.is_depart, passed_trip_part.trip_time, passed_trip_part.from_trip_place.location.first, passed_trip_part.from_trip_place.location.last, passed_trip_part.to_trip_place.location.first, passed_trip_part.to_trip_place.location.last)[0]
+    rescue Exception => e
+      Rails.logger.error "Exception #{e} while getting trip duration."
+      base_duration = nil
+    end
+    return base_duration
   end
 
   def self.get_taxi_itineraries(passed_trip_part, from, to, trip_datetime, trip_user)
