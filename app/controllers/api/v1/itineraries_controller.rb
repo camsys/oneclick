@@ -55,6 +55,7 @@ module Api
         trip.creator = @traveler
         trip.user = @traveler
         trip.trip_purpose_raw = purpose
+        trip.trip_purpose = TripPurpose.find_by(code: purpose)
         trip.desired_modes = Mode.where(code: modes)
 
         trip.token = trip_token
