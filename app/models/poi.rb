@@ -194,12 +194,12 @@ class Poi < GeocodedAddress
 
     #State
     if self.state
-      address_components << {long_name: self.state, short_name: self.state, types: ["postal_code"]}
+      address_components << {long_name: self.zip, short_name: self.zip, types: ["postal_code"]}
     end
 
     #Zip
     if self.zip
-      address_components << {long_name: self.zip, short_name: self.zip, types: ["administrative_area_level_1","political"]}
+      address_components << {long_name: self.state, short_name: self.state, types: ["administrative_area_level_1","political"]}
     end
 
     return address_components
