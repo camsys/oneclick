@@ -17,11 +17,11 @@
 
   .service-details-container
     %label.control-label= translate_helper(:service_schedule_heading)
-    -if service.schedules.any?
+    - if service.schedules.any?
       - service.schedules.each do |sched|
         = render partial: "admin/services/form_parts/schedule_row",
           locals: {f:f, sched:sched}
-    -else
+    - else
       %label.sub-label.label-no-schedules= translate_helper(:no_service_schedules_message)
     - 7.times do
       = render partial: "admin/services/form_parts/schedule_row",
@@ -32,6 +32,10 @@
         sched: Schedule.new(day_of_week: service.schedules.any? ? (service.schedules.last.day_of_week + 1) % 7 : 1,
           start_time: service.schedules.any? ? service.schedules.last.start_time : "8:00 AM",
           end_time: service.schedules.any? ? service.schedules.last.end_time : "8:00 PM")}
+    -# %datalist#schedule-times
+    -#   %option 8:00 AM
+    -#   %option TIME 2
+    -#   %option TIME 3
 
   .service-details-container
     %label.control-label= translate_helper(:service_booking_cutoff_header)
