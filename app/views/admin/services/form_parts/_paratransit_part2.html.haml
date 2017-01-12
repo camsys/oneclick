@@ -43,7 +43,7 @@
       .col-xs-12
         %span= translate_helper(:booking_cutoff_sentence_pt1)
         = select_tag(:day_of_week,
-          options_for_select(Rails.application.config.times_of_day, service.booking_cut_off_times.empty? ? "8:00 PM" : service.booking_cut_off_times.first.cut_off_time),
+          options_for_select(Rails.application.config.times_of_day, service.booking_cut_off_times.empty? ? "8:00 PM" : service.booking_cut_off_times.first.cut_off_seconds),
           {class: "select form-control service-bct-master-select"})
         %span= translate_helper(:booking_cutoff_sentence_pt2)
         %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
@@ -84,7 +84,7 @@
             wrapper_html: {class: "col-xs-3"},
             label: false
           = f.input :booking_cut_off_times,
-            collection: Rails.application.config.times_of_day, selected: bct.cut_off_time,
+            collection: Rails.application.config.times_of_day, selected: bct.cut_off_seconds,
             input_html: {name: input_name(f, :booking_cut_off_times, :cut_off_time), class: "cutoff-time-select"},
             wrapper_html: {class: "col-xs-3"},
             label: false

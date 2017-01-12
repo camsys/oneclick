@@ -8,7 +8,7 @@ class Schedule < ActiveRecord::Base
   attr_reader :start_time_present, :start_time_valid, :end_time_present, :end_time_valid
 
   validate :times_valid_present_and_start_before_end
-  
+
   validates :day_of_week, :presence => true
   # 0=Sunday
   validates_numericality_of :day_of_week, greater_than_or_equal_to: 0,
@@ -18,7 +18,7 @@ class Schedule < ActiveRecord::Base
     human_readable(start_seconds)
   end
   alias_method :start_time, :start_string
-  
+
   def end_string
     human_readable(end_seconds)
   end
@@ -36,10 +36,10 @@ class Schedule < ActiveRecord::Base
   end
 
   alias_method :end_time, :end_string
-  
+
   def human_readable(seconds)
     return '' if seconds.nil?
-    
+
     hour = seconds/3600
     minute = (seconds - (hour*3600))/60
     ampm = 'AM'
@@ -70,20 +70,26 @@ class Schedule < ActiveRecord::Base
 
 
   # Handle validation
-  @start_time_valid = false      
-  @end_time_valid = false      
+  @start_time_valid = false
+  @end_time_valid = false
   @start_time_present = false
   @end_time_present = false
 
+  # Takes either a time string (e.g. "10:00 PM"), or an integer of seconds since midnight
   def start_time= t
+    puts "Setting time to #{t}"
     self.start_seconds = nil
     if t.blank?
       @start_time_present = false
-      @start_time_valid = false      
+      @start_time_valid = false
     else
       @start_time_present = true
       begin
-        self.start_seconds = Time.parse(t).seconds_since_midnight
+        if t.is_a?(Integer) || /\A\d+\z/ === t # Check if it's an integer or an integer in quotes
+          self.start_seconds = t.to_i
+        else
+          self.start_seconds = Time.parse(t).seconds_since_midnight
+        end
         @start_time_valid = true
       rescue
         @start_time_valid = false
@@ -95,17 +101,21 @@ class Schedule < ActiveRecord::Base
     self.end_seconds = nil
     if t.blank?
       @end_time_present = false
-      @end_time_valid = false      
+      @end_time_valid = false
     else
       @end_time_present = true
       begin
-        self.end_seconds = Time.parse(t).seconds_since_midnight
+        if t.is_a?(Integer) || /\A\d+\z/ === t # Check if it's an integer or an integer in quotes
+          self.end_seconds = t.to_i
+        else
+          self.end_seconds = Time.parse(t).seconds_since_midnight
+        end
         @end_time_valid = true
       rescue
-        @end_time_valid = false      
+        @end_time_valid = false
       end
     end
-    
+
   end
 
   # simplify debugging
@@ -114,17 +124,17 @@ class Schedule < ActiveRecord::Base
   end
 
 protected
-  
+
   def times_valid_present_and_start_before_end
     errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:presence_msg)) if !@start_time_present && @end_time_present
     errors.add(:"#{day_of_week}end_time", TranslationEngine.translate_text(:presence_msg)) if !@end_time_present && @start_time_present
     errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:valid_time_msg)) if @start_time_present && !@start_time_valid
     errors.add :"#{day_of_week}end_time", TranslationEngine.translate_text(:valid_time_msg) if @end_time_present && !@end_time_valid
-      
+
     if @start_time_valid && @end_time_valid
       errors.add(:"#{day_of_week}start_time", TranslationEngine.translate_text(:before_msg) + TranslationEngine.translate_text(:end_time)) if (start_seconds > end_seconds)
 
     end
   end
-  
+
 end

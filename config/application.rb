@@ -75,7 +75,7 @@ module Oneclick
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = ENV['TIME_ZONE'] || "Eastern Time (US & Canada)"
-    config.times_of_day = (0..23).map{|h| [(Time.new(0) + h * 3600).strftime("%l:%M %p").strip, (Time.new(0) + h * 3600).strftime("%l:%M %p").strip] } << ["12:00 AM", "11:59 PM"]
+    config.times_of_day = (0..48).map{|hh| [(Time.new(0) + hh * 1800).strftime("%l:%M %p").strip, hh * 1800]}# << ["12:00 AM", "11:59 PM"]
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]

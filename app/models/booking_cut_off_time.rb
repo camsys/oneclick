@@ -52,7 +52,11 @@ class BookingCutOffTime < ActiveRecord::Base
     else
       @cut_off_time_present = true
       begin
-        self.cut_off_seconds = Time.parse(t).seconds_since_midnight
+        if t.is_a?(Integer) || /\A\d+\z/ === t # Check if it's an integer or an integer in quotes
+          self.cut_off_seconds = t
+        else
+          self.cut_off_seconds = Time.parse(t).seconds_since_midnight
+        end
         @cut_off_time_valid = true
       rescue
         @cut_off_time_valid = false

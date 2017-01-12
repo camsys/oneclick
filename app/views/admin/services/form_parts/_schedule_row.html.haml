@@ -13,16 +13,12 @@
     wrapper_html: {class: "col-xs-3"},
     label: false
   = f.input :schedules,
-    collection: Rails.application.config.times_of_day, selected: sched.start_time,
+    collection: Rails.application.config.times_of_day, selected: sched.start_seconds,
     input_html: {name: input_name(f, :schedules, :start_time), class: "select-schedule-start-time"},
     wrapper_html: {class: "col-xs-3"},
     label: false
-  -# = f.input :schedules, as: :string,
-  -#   input_html: {name: "service[schedules_attributes][start_time]", class: "select-schedule-start-time", list: "schedule-times"}, value: nil,
-  -#   wrapper_html: {class: "col-xs-3"},
-  -#   label: false
   = f.input :schedules,
-    collection: Rails.application.config.times_of_day, selected: sched.end_time,
+    collection: Rails.application.config.times_of_day, selected: sched.end_seconds,
     input_html: {name: input_name(f, :schedules, :end_time), class: "select-schedule-end-time"},
     wrapper_html: {class: "col-xs-3"},
     label: false
