@@ -700,9 +700,10 @@ class BookingServices
                                                  service.ecolane_profile.token,
                                                  ssn_last_4: params[:ssn_last_4],
                                                  last_name: params[:last_name])
-      return {customer_number: customer_number}
+      return {customer_number: customer_number,
+              message: customer_number.nil? ? "No unique match found." : nil}
     else
-      return {error: "Booking agency #{agency} does not exist."}
+      return {message: "Booking agency #{agency} does not exist."}
     end
   end
 

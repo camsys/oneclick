@@ -73,7 +73,12 @@ module Api
       # booking_agency param determines if using Ecolane, RidePilot, etc.
       def lookup
         booking_agency = params[:booking_agency] || nil
-        render json: BookingServices.new.query_user_external_id(booking_agency, params)
+        result = BookingServices.new.query_user_external_id(booking_agency, params)
+        if result[:customer_number]
+          render json: result
+        else
+          render json: {message: result[:message] }, status: 404
+        end
       end
 
     end
