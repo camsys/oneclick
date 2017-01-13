@@ -56,6 +56,7 @@ module Api
         hash[:lang] = @traveler.preferred_locale
         hash[:characteristics] = @traveler.characteristics_hash
         hash[:accommodations] = @traveler.accommodations_hash
+        hash[:preferred_modes] = @traveler.preferred_modes_hash
 
         render json: hash
 

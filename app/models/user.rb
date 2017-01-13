@@ -388,6 +388,10 @@ class User < ActiveRecord::Base
       update_user_accommodations params[:accommodations]
     end
 
+    if params[:preferred_modes]
+      update_preferred_modes params[:preferred_modes]
+    end
+
     if params[:lang]
       self.preferred_locale = params[:lang]
       self.save
@@ -444,12 +448,27 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_preferred_modes params
+    self.user_mode_preferences.destroy_all
+    params.each do |p|
+      mode = Mode.unscoped.find_by(code: p)
+      if mode.nil?
+        next
+      end
+      UserModePreference.where(user: self, mode: mode).first_or_create!
+    end
+  end
+
   def characteristics_hash
     self.user_characteristics.collect{ |c| {name: TranslationEngine.translate_text(c.characteristic.name), code: c.characteristic.code, note: TranslationEngine.translate_text(c.characteristic.note), value: c.value}}
   end
 
   def accommodations_hash
     self.user_accommodations.collect{ |a| {name: TranslationEngine.translate_text(a.accommodation.name), code: a.accommodation.code, note: TranslationEngine.translate_text(a.accommodation.note), value: (a.value == "true")}}
+  end
+
+  def preferred_modes_hash
+    self.preferred_modes.collect{ |m| m.code}
   end
 
   def walk_speed_to_code(walk_speed)
