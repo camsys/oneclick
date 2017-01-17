@@ -212,7 +212,7 @@ class BookingServices
       when AGENCY[:ridepilot]
         ridepilot_profile = itinerary.service.ridepilot_profile
         rs = RidepilotServices.new
-        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profilqe.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
+        result, body = rs.cancel_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, user_service.external_user_id, user_service.user_password, itinerary.booking_confirmation)
         return result
 
     end
