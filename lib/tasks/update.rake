@@ -61,6 +61,12 @@ namespace :update do
     puts "For CPTA, destroy the Provider named 'Shared Ride', and then run 'rake oneclick:create_ecolane_services' and 'rake oneclick:setup_ecolane_services'"
   end
 
+  desc "v1.8.4"
+  task "v1.8.4" => :environment do
+    puts 'Additional Release Notes:'
+    puts "Look through services and check to see if any have schedules ending at 12:00am. If so, make sure the last 12:00am in the list is selected, rather than the first one."
+  end
+
 end
 task :update do
   Rake::Task["update:default"].invoke
