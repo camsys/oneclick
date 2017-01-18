@@ -77,31 +77,6 @@ module Reporting::ReportHelper
     end
   end
 
-  # Helper Method sets up tick marks based on time unit
-  def setup_tick_marks(date_range, time_unit)
-    ticks = []
-    year_range = date_range.begin.year..date_range.end.year
-    date_range = date_range.begin.to_date..date_range.end.to_date
-    case time_unit
-    when :year
-      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: y.to_s} }
-    when :month
-      ticks = year_range.map {|y| {v: Date.new(y,1,1), f: "Jan #{y}"} } +
-              year_range.map {|y| {v: Date.new(y,7,1), f: "Jul #{y}"} }
-    when :week
-      days_in_range = date_range.count
-      date_range.step( [days_in_range / 28 * 7, 7].max ) do |d|
-        ticks << {v: d, f: d}
-      end
-    when :day
-      ticks = date_range.map do |d|
-        [d.year, d.month]
-      end.uniq.map {|d| {v: Date.new(d[0],d[1],1), f: Date.new(d[0],d[1],1)} }
-    else
-    end
-    ticks
-  end
-
   # format output field value if formatter is configured
   def format_output(raw_value, field_type, formatter = nil, formatter_option = nil)
     unless raw_value.blank? || field_type.blank?

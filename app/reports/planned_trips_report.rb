@@ -1,5 +1,5 @@
 class PlannedTripsReport < AbstractReport
-  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable
+  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable, Reporting::GoogleChartsHelper
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
   AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
@@ -24,21 +24,12 @@ class PlannedTripsReport < AbstractReport
     ###########################
 
     # Prepare Data Table
-    data[:all_created_trips] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: trip_base.count,
-        descriptor: "trips created"
-      },
-      options: {
-        title: "Total Trips Created, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        hAxis: { ticks: [] }
-      }
+    data[:all_created_trips] = build_google_charts_hash(title: "Total Trips Created, by #{@time_unit.to_s.titleize}")
+
+    # Add totals
+    data[:all_created_trips][:totals] = {
+      count: trip_base.count,
+      descriptor: "trips created"
     }
 
     # Add columns
@@ -61,21 +52,12 @@ class PlannedTripsReport < AbstractReport
     ###########################
 
     # Prepare Data Table
-    data[:all_planned_trips] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: planned_trips.count,
-        descriptor: "trips planned"
-      },
-      options: {
-        title: "Total Trips Planned, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        hAxis: { ticks: [] }
-      }
+    data[:all_planned_trips] = build_google_charts_hash(title: "Total Trips Planned, by #{@time_unit.to_s.titleize}")
+
+    # Add Totals
+    data[:all_planned_trips][:totals] = {
+      count: planned_trips.count,
+      descriptor: "trips planned"
     }
 
     # Add columns
@@ -101,22 +83,12 @@ class PlannedTripsReport < AbstractReport
     selected_modes = selected_itins.group("returned_mode_code").count.keys.map {|m| Mode.unscoped.find_by(code: m)}.select {|m| m }
 
     # Prepare Data Table
-    data[:selected_trips_by_mode] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: selected_itins.count,
-        descriptor: "trips selected"
-      },
-      options: {
-        title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        isStacked: true,
-        hAxis: { ticks: [] }
-      }
+    data[:selected_trips_by_mode] = build_google_charts_hash(title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}")
+
+    # Add Totals
+    data[:selected_trips_by_mode][:totals] = {
+      count: selected_itins.count,
+      descriptor: "trips selected"
     }
 
     # Create Column Headers
