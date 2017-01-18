@@ -1,7 +1,7 @@
 class Report < ActiveRecord::Base
-  
+
   # attr_accessible :string, :description, :name, :view_name, :class_name, :active
-  
+
   # default scope
   default_scope {where(:active => true).order(:id)}
 
@@ -19,14 +19,14 @@ class Report < ActiveRecord::Base
     usage_report.id if usage_report
   end
 
-  # if standard usage report available, then check if it's the first 
-  # this is to do with report filter UI display 
+  # if standard usage report available, then check if it's the first
+  # this is to do with report filter UI display
   # as the standard usage report is associated with different set of components
   def self.usage_report_is_first
     first_report = Report.first
     system_usage_report_id = Report.system_usage_report_id
     if first_report && system_usage_report_id
-      first_report.id == system_usage_report_id 
+      first_report.id == system_usage_report_id
     else
       false
     end

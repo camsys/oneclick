@@ -41,9 +41,13 @@
               id: "to_trip_date", autocomplete: 'off'
           .row
             .col-sm-6
-              = f.input :booked_trips_date_option,
+              = f.input :date_option,
                 collection: BookedTripsReport.available_date_option_collections,
                 include_blank: false, label: translate_helper(:date_option)
+            .col-sm-6
+              = f.input :county_filters, as: :check_boxes, wrapper: :vertical_radio_and_checkboxes,
+                collection: County.where(state: Oneclick::Application.config.state).pluck(:name).sort,
+                include_blank: false, label: "County Filter"
       - else
         .row
           .col-sm-12

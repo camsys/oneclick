@@ -727,7 +727,7 @@ class BookingServices
   # Updates the status of booked trips by making a call to external booking services
   def update_booked_trip_statuses user_service
     # Is there an ecolane profile associated with this service?
-    return false if user_service.service.ecolane_profile.nil?
+    return false unless user_service.service && user_service.service.ecolane_profile
 
     customer_id = user_service.external_user_id
     booking_system = user_service.service.ecolane_profile.system
@@ -738,10 +738,20 @@ class BookingServices
     return false unless orders[0] # Return false if ecolane call returns an error.
     response_array = []
     orders.each do |order|
+      puts "Unpacking order...", order.ai
+      puts "Order Status is canceled" if order["status"] == "canceled"
       # Find itinerary based on ecolane booking confirmation id
       itin = Itinerary.joins(:ecolane_booking).find_by(ecolane_bookings: {confirmation_number: order["id"]})
+
       unless itin.nil?
         eb = EcolaneBooking.where(itinerary: itin).first_or_create
+
+        # Update status code based on whether order was cancelled via this version of 1-Click (i.e. has no booking confirmation)
+        if order["status"] == "canceled"
+          order["status"] = itin.booking_confirmation ? "canceled via agent" : "canceled via FindMyRide"
+          puts "Updating order status to #{order["status"]}"
+        end
+
         response_array << eb.id if itin.ecolane_booking.update_attributes(booking_status_code: order["status"])
       end
     end

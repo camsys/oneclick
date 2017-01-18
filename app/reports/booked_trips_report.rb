@@ -1,18 +1,21 @@
 class BookedTripsReport < AbstractReport
-  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable
+  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable, Reporting::GoogleChartsHelper
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
   AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
-    @from_date = Chronic.parse(report.from_date).to_date.in_time_zone.utc
-    @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
-    @date_range = @from_date..@to_date
-    @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
+    setup_date_attributes(report)
 
     # Base query -- all valid itineraries, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)
+
+    # Filter base by counties
+    @county_filters = report.county_filters.select {|f| !f.blank? }
+    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+
+    # Additional queries based on base query
     booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
     selected_itins = itinerary_base.selected
     data = {} # Object for holding result
@@ -22,21 +25,12 @@ class BookedTripsReport < AbstractReport
     ##########################
 
     # Prepare Data Table
-    data[:all_booked_trips] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: booked_itins.count,
-        descriptor: "trips booked"
-      },
-      options: {
-        title: "Total Trips Booked, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        hAxis: { ticks: [] },
-        chartArea: {height: '80%'}
-      }
+    data[:all_booked_trips] = build_google_charts_hash(title: "Total Trips Booked, by #{@time_unit.to_s.titleize}")
+
+    # Add totals
+    data[:all_booked_trips][:totals] = {
+      count: booked_itins.count,
+      descriptor: "trips booked"
     }
 
     # Add columns
@@ -61,22 +55,12 @@ class BookedTripsReport < AbstractReport
     selected_modes = selected_itins.group("returned_mode_code").count.keys.map {|m| Mode.unscoped.find_by(code: m)}.select {|m| m }
 
     # Prepare Data Table
-    data[:selected_trips_by_mode] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: selected_itins.count,
-        descriptor: "trips selected"
-      },
-      options: {
-        title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        isStacked: true,
-        hAxis: { ticks: [] }
-      }
+    data[:selected_trips_by_mode] = build_google_charts_hash(title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}")
+
+    # Add Totals
+    data[:selected_trips_by_mode][:totals] = {
+      count: selected_itins.count,
+      descriptor: "trips selected"
     }
 
     # Create Column Headers
@@ -106,17 +90,7 @@ class BookedTripsReport < AbstractReport
     itins_without_external_purpose = itins_with_purpose.where(trips: {trip_purpose_raw: nil})
 
     # Prepare Data Table
-    data[:trip_purposes] = {
-      columns: [],
-      rows: [],
-      visualization: 'PieChart',
-      options: {
-        title: "Purpose of Trips Selected",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'}
-      }
-    }
+    data[:trip_purposes] = build_google_charts_hash(title: "Purpose of Trips Selected", visualization: 'PieChart')
 
     # Create Column Headers
     data[:trip_purposes][:columns] = [
@@ -141,18 +115,7 @@ class BookedTripsReport < AbstractReport
     ##########################
 
     # Prepare Data Table
-    data[:booked_trip_status] = {
-      columns: [],
-      rows: [],
-      table: [],
-      visualization: 'PieChart',
-      options: {
-        title: "Status of Booked Trips",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'}
-      }
-    }
+    data[:booked_trip_status] = build_google_charts_hash(title: "Status of Booked Trips", visualization: 'PieChart')
 
     # Create Column Headers
     data[:booked_trip_status][:columns] = [

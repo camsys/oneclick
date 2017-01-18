@@ -13,6 +13,17 @@ namespace :scheduled do
       updated_results[us.id] = bs.update_booked_trip_statuses(us)
     end
 
+    # Capture any "canceled" statuses that weren't categorized:
+    puts
+    puts "Categorizing canceled Ecolane Bookings..."
+    canceled_ecolane_bookings = EcolaneBooking.joins(:itinerary).where(booking_status_code: "canceled")
+    internal_canceled_ebs = canceled_ecolane_bookings.where(:itineraries => {booking_confirmation: nil}).references(:itineraries)
+    external_canceled_ebs = canceled_ecolane_bookings.where.not(:itineraries => {booking_confirmation: nil}).references(:itineraries)
+    internal_count = internal_canceled_ebs.update_all(booking_status_code: "canceled via FindMyRide")
+    external_count = external_canceled_ebs.update_all(booking_status_code: "canceled via agent")
+    puts "#{internal_count} statuses updated to 'canceled via FindMyRide'"
+    puts "#{external_count} statuses updated to 'canceled via agent'"
+
     puts
     puts "The following user_services and their associated itineraries were updated: ", updated_results.ai
   end

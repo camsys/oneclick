@@ -1,44 +1,38 @@
 class PlannedTripsReport < AbstractReport
-  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable
+  include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable, Reporting::GoogleChartsHelper
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
   AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
-    @from_date = Chronic.parse(report.from_date).to_date.in_time_zone.utc
-    @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
-    @date_range = @from_date..@to_date
-    @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
+    setup_date_attributes(report)
 
-    # Base query -- all valid itineraries, joined with ecolane bookings
+    # Base queries -- all valid itineraries and trips, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range)
     trip_base = Trip.created_between(@from_date, @to_date)
+
+    # Filter bases by counties
+    @county_filters = report.county_filters.select {|f| !f.blank? }
+    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+    trip_base = trip_base.includes(trip_parts: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+
+    # Additional queries based on base query
     planned_trips = trip_base.planned
     selected_itins = itinerary_base.selected
     data = {} # Object for holding result
-
 
     ###########################
     # All Created Trips Count #
     ###########################
 
     # Prepare Data Table
-    data[:all_created_trips] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: trip_base.count,
-        descriptor: "trips created"
-      },
-      options: {
-        title: "Total Trips Created, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        hAxis: { ticks: [] }
-      }
+    data[:all_created_trips] = build_google_charts_hash(title: "Total Trips Created, by #{@time_unit.to_s.titleize}")
+
+    # Add totals
+    data[:all_created_trips][:totals] = {
+      count: trip_base.count,
+      descriptor: "trips created"
     }
 
     # Add columns
@@ -61,21 +55,12 @@ class PlannedTripsReport < AbstractReport
     ###########################
 
     # Prepare Data Table
-    data[:all_planned_trips] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: planned_trips.count,
-        descriptor: "trips planned"
-      },
-      options: {
-        title: "Total Trips Planned, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        hAxis: { ticks: [] }
-      }
+    data[:all_planned_trips] = build_google_charts_hash(title: "Total Trips Planned, by #{@time_unit.to_s.titleize}")
+
+    # Add Totals
+    data[:all_planned_trips][:totals] = {
+      count: planned_trips.count,
+      descriptor: "trips planned"
     }
 
     # Add columns
@@ -101,22 +86,12 @@ class PlannedTripsReport < AbstractReport
     selected_modes = selected_itins.group("returned_mode_code").count.keys.map {|m| Mode.unscoped.find_by(code: m)}.select {|m| m }
 
     # Prepare Data Table
-    data[:selected_trips_by_mode] = {
-      columns: [],
-      rows: [],
-      visualization: 'ColumnChart',
-      totals: {
-        count: selected_itins.count,
-        descriptor: "trips selected"
-      },
-      options: {
-        title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}",
-        width: 1000,
-        height: 600,
-        chartArea: {height: '80%'},
-        isStacked: true,
-        hAxis: { ticks: [] }
-      }
+    data[:selected_trips_by_mode] = build_google_charts_hash(title: "Mode of Trips Selected, by #{@time_unit.to_s.titleize}")
+
+    # Add Totals
+    data[:selected_trips_by_mode][:totals] = {
+      count: selected_itins.count,
+      descriptor: "trips selected"
     }
 
     # Create Column Headers
