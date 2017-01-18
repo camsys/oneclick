@@ -41,7 +41,7 @@
               id: "to_trip_date", autocomplete: 'off'
           .row
             .col-sm-6
-              = f.input :booked_trips_date_option,
+              = f.input :date_option,
                 collection: BookedTripsReport.available_date_option_collections,
                 include_blank: false, label: translate_helper(:date_option)
       - else

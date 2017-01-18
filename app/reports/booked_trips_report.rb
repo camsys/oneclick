@@ -6,10 +6,7 @@ class BookedTripsReport < AbstractReport
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
-    @from_date = Chronic.parse(report.from_date).to_date.in_time_zone.utc
-    @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
-    @date_range = @from_date..@to_date
-    @time_unit = UNITS_OF_TIME[report.booked_trips_date_option.to_sym]
+    setup_date_attributes(report)
 
     # Base query -- all valid itineraries, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)

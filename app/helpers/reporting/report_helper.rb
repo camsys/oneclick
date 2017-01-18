@@ -206,4 +206,12 @@ module Reporting::ReportHelper
     role_check
   end
 
+  # Sets up from_date, to_date, date_range, and time_unit instance variables
+  def setup_date_attributes(report)
+    @from_date = Chronic.parse(report.from_date).to_date.in_time_zone.utc
+    @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
+    @date_range = @from_date..@to_date
+    @time_unit = Parcelable::UNITS_OF_TIME[report.date_option.to_sym]
+  end
+
 end
