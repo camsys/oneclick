@@ -1143,6 +1143,7 @@ private
 
   end
 
+  #Deprecated, but not removed because it is currently used by the FindMyRide UI
   def get_ecolane_trip_purposes
     # GENERIC_BOOKING
     @trip_purpose_raw = nil

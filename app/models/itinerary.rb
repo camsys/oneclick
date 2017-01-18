@@ -327,26 +327,12 @@ class Itinerary < ActiveRecord::Base
 
   def prebooking_questions
 
-    funding_source = self.funding_source
-
-    if funding_source.in? Oneclick::Application.config.ada_funding_sources
-
-      questions =
-        [
-          {question: "Will you be traveling with an ADA-approved escort?", choices: [true, false], code: "assistant"},
-          {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
-        ]
-
+    if self.service and self.service.booking_profile
+      bs = BookingServices.new
+      return bs.prebooking_questions self
     else
-      questions =
-        [
-          {question: "Will you be traveling with an approved escort?", choices: [true, false], code: "assistant"},
-          {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
-        ]
-
+      return []
     end
-
-    questions
 
   end
 
@@ -374,6 +360,26 @@ class Itinerary < ActiveRecord::Base
       return false
     end
     self.service.is_bookable?
+  end
+
+  # Is the user registered to book with this service?
+  # If this is false, then we will need to ask the user to provide credentials before booking
+  def is_registered?
+
+    unless self.is_bookable?
+      return false
+    end
+
+    if self.service.nil?
+      return false
+    end
+
+    if self.trip_part.trip.user.nil?
+      return false
+    end
+
+    bs = BookingServices.new
+    return bs.check_association(self.service, self.trip_part.trip.user)
   end
 
   def update_booking_status

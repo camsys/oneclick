@@ -707,6 +707,48 @@ class BookingServices
     end
   end
 
+  # Ecolane and Ridepilot Require certain questions to be answere prior to booking
+  # this returns those questions and the possible answers as json for the fron-end to present to the user
+  def prebooking_questions itinerary
+
+    case itinerary.service.booking_profile
+      when AGENCY[:ecolane]
+
+        funding_source = self.funding_source
+
+        if funding_source.in? Oneclick::Application.config.ada_funding_sources
+
+          questions =
+              [
+                  {question: "Will you be traveling with an ADA-approved escort?", choices: [true, false], code: "assistant"},
+              {question: "How many other companions are traveling with you?", choices: (0..10).to_a, code: "companions"}
+          ]
+
+        else
+          questions =
+              [
+                  {question: "Will you be traveling with an approved escort?", choices: [true, false], code: "assistant"},
+              {question: "How many children or family members will be traveling with you?", choices: (0..2).to_a, code: "children"}
+          ]
+
+        end
+
+        return questions
+
+      when AGENCY[:trapeze]
+        return []
+
+      when AGENCY[:ridepilot]
+
+        return [{question: "How many guests will be riding with you?", choices: [0,1,2,3], code: "guests"},
+        {question: "How many attendants will be riding with you?", choices: [0,1,2,3], code: "attendants"},
+        {question: "How many mobility devices will you be bringing?", choices: [0,1,2,3], code: "mobility_devices"}]
+
+    end
+
+
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
