@@ -10,6 +10,12 @@ class BookedTripsReport < AbstractReport
 
     # Base query -- all valid itineraries, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range).includes(:ecolane_booking).references(:ecolane_booking)
+
+    # Filter base by counties
+    @county_filters = report.county_filters.select {|f| !f.blank? }
+    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+
+    # Additional queries based on base query
     booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
     selected_itins = itinerary_base.selected
     data = {} # Object for holding result

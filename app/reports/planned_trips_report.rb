@@ -8,9 +8,16 @@ class PlannedTripsReport < AbstractReport
   def get_data(current_user, report)
     setup_date_attributes(report)
 
-    # Base query -- all valid itineraries, joined with ecolane bookings
+    # Base queries -- all valid itineraries and trips, joined with ecolane bookings
     itinerary_base = Itinerary.valid.visible.where(created_at: @date_range)
     trip_base = Trip.created_between(@from_date, @to_date)
+
+    # Filter bases by counties
+    @county_filters = report.county_filters.select {|f| !f.blank? }
+    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+    trip_base = trip_base.includes(trip_parts: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+
+    # Additional queries based on base query
     planned_trips = trip_base.planned
     selected_itins = itinerary_base.selected
     data = {} # Object for holding result
