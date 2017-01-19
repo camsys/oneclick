@@ -546,10 +546,10 @@ namespace :oneclick do
           secondary_coverage_counties = ['Columbia']
 
           #Funding Sources
-          funding_source_array = [['Lottery - US', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"],["Gen Pub - MC", 3, true, "Full Fare"]]
+          funding_source_array = [['Lottery', 0, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 2, false, "Medical Transportation"],["Gen Pub", 3, true, "Full Fare"]]
 
           #Sponsors
-          sponsor_array = [['MATP', 0],['CCAAA', 1],['NCAAA', 2],['USAAA', 3]]
+          sponsor_array = [['MATP', 0],['CCAAA', 1]]
 
           #Dummy User
           service.fare_user = "1000004436"
