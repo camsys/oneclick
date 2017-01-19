@@ -633,6 +633,19 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
 
   # Returns true/false if trip_part falls within bounds of passed schedule
   def valid_for_schedule?(schedule)
-    self.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
+    tt = trip_time.seconds_since_midnight
+    tdow = trip_time.wday
+    sdow = schedule.day_of_week
+
+    # Handles special case for midnight trips--check previous day's schedule as necessary.
+    (tdow == sdow && schedule.contains?(tt)) ||
+    (tt == 0 && tdow == (sdow + 1) % 7 && schedule.contains?(tt + 24 * 3600))
+  end
+
+  # Returns true/false if trip_part is valid for any of the passed service's schedules
+  # Returns true if passed a nil service, or a service with no schedules
+  def valid_for_service_time?(service)
+    return true if service.nil? or service.schedules.count == 0
+    service.schedules.any? { |sched| valid_for_schedule?(sched) }
   end
 end

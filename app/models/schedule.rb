@@ -123,6 +123,12 @@ class Schedule < ActiveRecord::Base
     "<#{day_of_week}: #{start_string} - #{end_string}>"
   end
 
+  # Returns true/false if passed time is within schedule's window, inclusive
+  def contains?(time)
+    time = time.seconds_since_midnight if time.is_a? Time # Convert to seconds since midnight if necessary
+    time.between?(start_seconds, end_seconds)
+  end
+
 protected
 
   def times_valid_present_and_start_before_end

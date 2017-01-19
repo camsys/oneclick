@@ -222,52 +222,11 @@ class EligibilityService
 
   end
 
+  # Returns an array of itineraries eligible by schedule
   def eligible_by_service_time(trip_part, itineraries)
-    #TODO: This does not handle services with 24 hour operations well.
-    eligible_itineraries = []
-    wday = trip_part.trip_time.wday
-    itineraries.each do |itinerary|
-
-      itinerary['date_mismatch'] = false
-      itinerary['time_mismatch'] = false
-      service = itinerary['service']
-      Rails.logger.info service.name
-      unless service.nil? or service.schedules.count == 0
-        schedules = Schedule.where(day_of_week: wday, service_id: service.id)
-        if schedules.nil? || schedules.empty?
-          itinerary['match_score'] += 1
-          itinerary['date_mismatch'] = true
-          Rails.logger.info 'date mismatch'
-        else
-          unless schedules.any? { |sched| trip_part.valid_for_schedule?(sched) }
-            itinerary['match_score'] += 1
-            itinerary['time_mismatch'] = true
-            Rails.logger.info 'time mismatch'
-          end
-        end
-
-        #
-        # schedule = Schedule.where(day_of_week: wday, service_id: service.id).first
-        # if schedule.nil?
-        #   itinerary['match_score'] += 1
-        #   itinerary['date_mismatch'] = true
-        #   Rails.logger.info 'date mismatch'
-        # else
-        #   unless trip_part.trip_time.seconds_since_midnight.between?(schedule.start_seconds,schedule.end_seconds)
-        #     itinerary['match_score'] += 1
-        #     itinerary['time_mismatch'] = true
-        #     Rails.logger.info 'time mismatch'
-        #   end
-        # end
-      end
-
-      if itinerary['date_mismatch'] != true && itinerary['time_mismatch'] != true
-        eligible_itineraries << itinerary
-      end
-    end
-
-    eligible_itineraries
-
+    # For each itinerary passed, identify the service and its schedules
+    # Check if the trip part is eligible for any of these schedules; select only those itineraries for which this is true
+    itineraries.select { |itin| trip_part.valid_for_service_time?(itin['service']) }
   end
 
   def eligible_by_advanced_notice_and_booking_cut_off_time(trip_part, itineraries)
