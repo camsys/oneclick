@@ -308,10 +308,13 @@ class BookingServices
 
     case service.booking_profile
       when AGENCY[:ecolane]
-        ecolane_profile = service.ecolane_profile
-        es = EcolaneServices.new
-        result, first_name, last_name = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
-        return result
+        return true # For FindMyRide, user will already be logged in to service at this point; don't need to make another call to check.
+        # Will have to make a call though if we want to implement Ecolane with the new UI.
+
+        # ecolane_profile = service.ecolane_profile
+        # es = EcolaneServices.new
+        # result, first_name, last_name = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        # return result
       when AGENCY[:trapeze]
         trapeze_profile = service.trapeze_profile
         ts = TrapezeServices.new
@@ -714,7 +717,7 @@ class BookingServices
     case itinerary.service.booking_profile
       when AGENCY[:ecolane]
 
-        funding_source = self.funding_source
+        funding_source = itinerary.ecolane_booking.funding_source if itinerary.ecolane_booking
 
         if funding_source.in? Oneclick::Application.config.ada_funding_sources
 

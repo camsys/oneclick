@@ -224,7 +224,7 @@ class EligibilityService
 
   # Returns an array of itineraries eligible by schedule
   def eligible_by_service_time(trip_part, itineraries)
-    # For each itinerary passed, identify the service and its schedules
+    # For each itinerary passed, identify service and its schedules
     # Check if the trip part is eligible for any of these schedules; select only those itineraries for which this is true
     itineraries.select { |itin| trip_part.valid_for_service_time?(itin['service']) }
   end
