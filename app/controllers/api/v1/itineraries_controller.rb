@@ -145,6 +145,7 @@ module Api
               i_hash[:phone] = itinerary.service.phone
               i_hash[:logo_url]= logo_url_helper(itinerary)
               i_hash[:url] = itinerary.service.url
+              i_hash["hidden"] ||= i_hash["missing_information"] # Set hidden to true if missing information about user characteristics
               comment = itinerary.service.comments.where(locale: "en").first
               if comment
                 i_hash[:comment] = comment.comment
