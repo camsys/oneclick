@@ -6,7 +6,13 @@ module Api
         @traveler.update_profile params
         valid = @traveler.valid?
         #Update accommodations and characteristics
-
+        bs = BookingServices.new
+        # If booking params are sent, run associate user with that info.
+        if params["booking"]
+          params["booking"].each do |booking|
+            bs.associate_user(Service.find(booking["service_id"]), @traveler, booking["user_name"], booking["password"])
+          end
+        end
 
         if !valid
           Rails.logger.error(@traveler.errors.messages)
