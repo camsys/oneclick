@@ -429,6 +429,37 @@ class Itinerary < ActiveRecord::Base
     end
   end
 
+  # From this return_time create a return trip_part and an itinerary
+  def create_return_itinerary return_time
+    return_time = return_time.to_datetime
+    outbound_part = self.trip_part
+    trip = self.trip_part.trip
+    if trip.trip_parts.count == 2
+      return_part = trip.return_part
+    else
+      return_part = TripPart.new
+      return_part.trip = trip
+      return_part.from_trip_place = outbound_part.to_trip_place
+      return_part.to_trip_place = outbound_part.from_trip_place
+      return_part.sequence = 1
+      return_part.is_return_trip = true
+      return_part.scheduled_date = return_time.to_date
+      return_part.scheduled_time = return_time
+      return_part.is_depart = true
+      return_part.save
+    end
+
+    return_itinerary = self.dup
+    return_itinerary.trip_part = return_part
+    return_itinerary.start_time = return_time
+    return_itinerary.end_time = return_itinerary.start_time + (self.end_time - self.start_time)
+    return_itinerary.save
+
+    return return_itinerary
+
+  end
+
+
   ##################################
 
   def origin

@@ -198,10 +198,22 @@ module Api
       end
 
       def book
-        puts params.ai
-
         booking_request = params[:booking_request]
         booked_itineraries = []
+
+        #Support the ability to create return itineraries when booking an outbound itinerary via the API
+        return_itineraries  = []
+        booking_request.each do |itinerary_hash|
+          itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
+          if itinerary_hash[:return_time]
+            return_itinerary = itinerary.create_return_itinerary itinerary_hash[:return_time]
+            new_itinerary_hash = itinerary_hash.dup
+            new_itinerary_hash[:itinerary_id] = return_itinerary.id
+            return_itineraries << new_itinerary_hash
+          end
+        end
+        booking_request = booking_request + return_itineraries
+
 
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
@@ -212,10 +224,6 @@ module Api
 
 
 
-             #if itinerary_hash[:return_time]
-             #  return_itinerary = itinerary.create_return_itinerary itinerary_hash[:return_time]
-             #end
-
              when BookingServices::AGENCY[:ecolane]
                 ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
                 ecolane_booking.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
@@ -225,17 +233,12 @@ module Api
                 ecolane_booking.note_to_driver = itinerary_hash[:note]
                 ecolane_booking.save
               when BookingServices::AGENCY[:ridepilot]
-                puts 'RidePilot'
                 ridepilot_booking = RidepilotBooking.where(itinerary: itinerary).first_or_create
                 ridepilot_booking.guests = itinerary_hash[:guests] || 0
                 ridepilot_booking.attendants = itinerary_hash[:attendants] || 0
                 ridepilot_booking.mobility_devices = itinerary_hash[:mobility_devices] || 0
                 ridepilot_booking.trip_purpose_code = itinerary_hash[:purpose]
                 ridepilot_booking.save
-
-                puts ridepilot_booking.ai
-
-
             end
 
           result, message = itinerary.book
