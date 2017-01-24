@@ -357,6 +357,32 @@ class BookingServices
   end
 
 
+  # Get purposes from service
+  def get_purposes_array service
+
+    purposes_array = []
+
+    if service.nil?
+      return purposes_array
+    end
+
+    case service.booking_profile
+
+      when AGENCY[:ridepilot]
+        ridepilot_profile = service.ridepilot_profile
+        rs = RidepilotServices.new
+        result, body = rs.trip_purposes(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id)
+        if result
+          body["trip_purposes"].each do |purpose|
+            purposes_array << [purpose["name"], purpose["code"]]
+          end
+        end
+
+        return purposes_array
+
+    end
+  end
+
   # Get purposes returns a list of valid purpuoses for the user to select from when booking.
   # The format of the purposes is {purpose_description_1: purpose_code_1, purpose_description_2: purpose_code_2, etc. }
   def get_purposes(user_service)
@@ -745,7 +771,8 @@ class BookingServices
 
         return [{question: "How many guests will be riding with you?", choices: [0,1,2,3], code: "guests"},
         {question: "How many attendants will be riding with you?", choices: [0,1,2,3], code: "attendants"},
-        {question: "How many mobility devices will you be bringing?", choices: [0,1,2,3], code: "mobility_devices"}]
+        {question: "How many mobility devices will you be bringing?", choices: [0,1,2,3], code: "mobility_devices"},
+        {question: "What is your trip purpose?", choices: get_purposes_array(itinerary.service), code: "purpose"}]
 
     end
 
