@@ -198,6 +198,7 @@ module Api
       end
 
       def book
+        puts params.ai
 
         booking_request = params[:booking_request]
         booked_itineraries = []
@@ -205,15 +206,37 @@ module Api
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
-          ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
+          puts itinerary.ai
 
-          #Set Companions
-          ecolane_booking.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
-          ecolane_booking.children = itinerary_hash[:children].to_i
-          ecolane_booking.companions = itinerary_hash[:companions].to_i
-          ecolane_booking.other_passengers = itinerary_hash[:other_passengers].to_i
-          ecolane_booking.note_to_driver = itinerary_hash[:note]
-          ecolane_booking.save
+          case itinerary.service.booking_profile
+
+
+
+             #if itinerary_hash[:return_time]
+             #  return_itinerary = itinerary.create_return_itinerary itinerary_hash[:return_time]
+             #end
+
+             when BookingServices::AGENCY[:ecolane]
+                ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
+                ecolane_booking.assistant = yes_or_no(itinerary_hash[:assistant].to_bool || itinerary_hash[:escort].to_bool)
+                ecolane_booking.children = itinerary_hash[:children].to_i
+                ecolane_booking.companions = itinerary_hash[:companions].to_i
+                ecolane_booking.other_passengers = itinerary_hash[:other_passengers].to_i
+                ecolane_booking.note_to_driver = itinerary_hash[:note]
+                ecolane_booking.save
+              when BookingServices::AGENCY[:ridepilot]
+                puts 'RidePilot'
+                ridepilot_booking = RidepilotBooking.where(itinerary: itinerary).first_or_create
+                ridepilot_booking.guests = itinerary_hash[:guests] || 0
+                ridepilot_booking.attendants = itinerary_hash[:attendants] || 0
+                ridepilot_booking.mobility_devices = itinerary_hash[:mobility_devices] || 0
+                ridepilot_booking.trip_purpose_code = itinerary_hash[:purpose]
+                ridepilot_booking.save
+
+                puts ridepilot_booking.ai
+
+
+            end
 
           result, message = itinerary.book
 
@@ -226,6 +249,7 @@ module Api
             booked_itineraries = []
             break
           end
+
         end
 
         results_array = []
@@ -249,7 +273,12 @@ module Api
             end
 
             negotiated_do_time = bi.negotiated_do_time.nil? ? bi.end_time : bi.negotiated_do_time
-            negotiated_duration = negotiated_do_time - negotiated_pu_time
+            if negotiated_do_time.nil? or negotiated_pu_time.nil?
+              negotiated_duration = nil
+            else
+              negotiated_duration = negotiated_do_time - negotiated_pu_time
+            end
+
             negotiated_do_time = negotiated_do_time.iso8601
             results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
 
@@ -259,7 +288,7 @@ module Api
           booked_provider = booked_itineraries.first.service.provider
           if booked_provider && booked_provider.send_booking_emails
             email_for_update = booked_provider.admin_user ? booked_provider.admin_user.email : nil
-            UserMailer.booked_trip_update_email(email_for_update, Trip.find(booked_itineraries.first.trip_part.trip.id), "Ecolane").deliver
+            UserMailer.booked_trip_update_email(email_for_update, Trip.find(booked_itineraries.first.trip_part.trip.id), "Online Booking").deliver
           end
 
         #Build Failure Response
