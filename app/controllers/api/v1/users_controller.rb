@@ -7,11 +7,17 @@ module Api
         valid = @traveler.valid?
         response = {}
         #Update accommodations and characteristics
-        bs = BookingServices.new
         # If booking params are sent, run associate user with that info.
         if params["booking"]
+          bs = BookingServices.new
           booking_authenticated = params["booking"].all? do |booking|
-            bs.associate_user(Service.find(booking["service_id"]), @traveler, booking["user_name"], booking["password"])[0]
+            begin
+              service = Service.find(booking["service_id"])
+              bs.associate_user(service, @traveler, booking["user_name"], booking["password"])[0]
+            rescue => err
+              @traveler.errors.messages[:booking] = err.to_s
+              false
+            end
           end
           booking_message = booking_authenticated ? "Third-party booking profile(s) successfully authenticated." : "Third-party booking authentication failed."
           response[:booking] = {result: booking_authenticated, message: booking_message}
