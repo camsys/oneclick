@@ -5,6 +5,7 @@ module Api
       def update
         @traveler.update_profile params
         valid = @traveler.valid?
+        response = {}
         #Update accommodations and characteristics
         bs = BookingServices.new
         # If booking params are sent, run associate user with that info.
@@ -12,23 +13,21 @@ module Api
           booking_authenticated = params["booking"].all? do |booking|
             bs.associate_user(Service.find(booking["service_id"]), @traveler, booking["user_name"], booking["password"])[0]
           end
-          if booking_authenticated
-            booking_message = " Third-party booking profile(s) successfully authenticated."
-          else
-            valid = false # set to invalid if booking authentication failed
-            @traveler.errors.messages[:booking_authenticated] = "Third-party booking authentication failed."
-          end
+          booking_message = booking_authenticated ? "Third-party booking profile(s) successfully authenticated." : "Third-party booking authentication failed."
+          response[:booking] = {result: booking_authenticated, message: booking_message}
         end
 
         if !valid
           Rails.logger.error(@traveler.errors.messages)
-          hash = {result: false, message: "Unable to update user profile due the following error: #{@traveler.errors.messages}"}
+          response[:result] = false
+          response[:message] = "Unable to update user profile due the following error: #{@traveler.errors.messages}"
         else
           @traveler.save
-          hash = {result: true, message: "User updated.#{booking_message}"}
+          response[:result] = true
+          response[:message] = "User updated."
         end
 
-        render json: hash and return
+        render json: response and return
       end
 
       def profile
