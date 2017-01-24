@@ -15,19 +15,20 @@ module Api
           end
           booking_message = booking_authenticated ? "Third-party booking profile(s) successfully authenticated." : "Third-party booking authentication failed."
           response[:booking] = {result: booking_authenticated, message: booking_message}
+          valid &&= booking_authenticated
         end
 
         if !valid
           Rails.logger.error(@traveler.errors.messages)
-          response[:result] = false
+          status = 400
           response[:message] = "Unable to update user profile due the following error: #{@traveler.errors.messages}"
         else
           @traveler.save
-          response[:result] = true
+          status = 200
           response[:message] = "User updated."
         end
 
-        render json: response and return
+        render json: response, status: status and return
       end
 
       def profile
