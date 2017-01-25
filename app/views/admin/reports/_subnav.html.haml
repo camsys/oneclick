@@ -47,7 +47,7 @@
             .col-sm-6
               = f.input :county_filters, as: :check_boxes, wrapper: :vertical_radio_and_checkboxes,
                 collection: County.where(state: Oneclick::Application.config.state).pluck(:name).sort,
-                include_blank: false, label: "County Filter"
+                include_blank: false, label: "Filter by Trip County of Origin"
       - else
         .row
           .col-sm-12
