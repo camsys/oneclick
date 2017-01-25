@@ -321,6 +321,20 @@ namespace :oneclick do
                     active: true
     end
 
+    #Delete duplicate modes (Only deletes inactive modes when there is a duplicate mode that is active)
+    desc "Delete inactive modes that have an active duplicate"
+    task :delete_duplicate_modes => :environment do
+      active_codes = Mode.all.pluck(:code)
+      Mode.unscoped.each do |mode|
+        if mode.active == false and mode.code.in? active_codes
+          puts 'deleting'
+          puts mode.ai
+          mode.destroy
+        end
+
+      end
+    end
+
   end
 
 end

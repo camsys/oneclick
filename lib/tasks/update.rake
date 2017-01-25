@@ -65,6 +65,9 @@ namespace :update do
   task "v1.8.4" => :environment do
     puts 'Additional Release Notes:'
     puts "Look through services and check to see if any have schedules ending at 12:00am. If so, make sure the last 12:00am in the list is selected, rather than the first one."
+
+    #Delete duplicate modes.  Don't delete all the duplicate modes because it might cause issues.  But if there is a mode that is inactive and a duplicate of that mode that is active, then delete the inactive mode
+    Rake::Task["oneclick:one_offs:delete_duplicate_modes"].invoke
   end
 
 end
