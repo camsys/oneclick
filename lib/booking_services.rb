@@ -1072,6 +1072,7 @@ class BookingServices
       itinerary_hash[:walk_distance] = itinerary.walk_distance
       itinerary_hash[:transfers] = itinerary.transfers
       itinerary_hash[:product_id] = itinerary.product_id
+      itinerary_hash[:booking_confirmation] = itinerary.booking_confirmation
 
       if itinerary.service
         itinerary_hash[:service_name] = itinerary.service.name
