@@ -204,8 +204,8 @@ module Api
         #Support the ability to create return itineraries when booking an outbound itinerary via the API
         return_itineraries  = []
         booking_request.each do |itinerary_hash|
-          itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
           if itinerary_hash[:return_time]
+            itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
             return_itinerary = itinerary.create_return_itinerary itinerary_hash[:return_time]
             new_itinerary_hash = itinerary_hash.dup
             new_itinerary_hash[:itinerary_id] = return_itinerary.id
@@ -218,11 +218,7 @@ module Api
         booking_request.each do |itinerary_hash|
           itinerary = Itinerary.find(itinerary_hash[:itinerary_id].to_i)
 
-          puts itinerary.ai
-
           case itinerary.service.booking_profile
-
-
 
              when BookingServices::AGENCY[:ecolane]
                 ecolane_booking = EcolaneBooking.where(itinerary: itinerary).first_or_create
@@ -241,9 +237,9 @@ module Api
                 ridepilot_booking.save
             end
 
-          result, message = itinerary.book
+          result = itinerary.book
 
-          if result
+          if result[:booked]
             booked_itineraries.append(itinerary)
           else
             booked_itineraries.each do |booked_itinerary|
@@ -259,10 +255,8 @@ module Api
         #Build Success Response
         if booked_itineraries.count > 0
           booked_itineraries.each do |bi|
+
             status  = bi.status
-            bi.trip_part.unselect
-            bi.selected = true
-            bi.save
             puts 'Itinerary ' + bi.id.to_s + " has been booked and marked as selected. "
 
             negotiated_pu_time = bi.negotiated_pu_time
@@ -285,6 +279,11 @@ module Api
             negotiated_do_time = negotiated_do_time.iso8601
             results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
 
+            #Select the itinerary
+            bi.reload
+            bi.selected = true
+            bi.save
+
           end
 
           # If staff email updates are configured, send one for the booked trip.
@@ -293,6 +292,10 @@ module Api
             email_for_update = booked_provider.admin_user ? booked_provider.admin_user.email : nil
             UserMailer.booked_trip_update_email(email_for_update, Trip.find(booked_itineraries.first.trip_part.trip.id), "Online Booking").deliver
           end
+
+          ## test
+
+
 
         #Build Failure Response
         else

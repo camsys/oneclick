@@ -244,8 +244,12 @@ class Itinerary < ActiveRecord::Base
   end
 
   def book
+    self.trip_part.unselect
+    self.selected = true
+    self.save
     bs = BookingServices.new
-    bs.book self
+    result = bs.book self
+    return result
   end
 
   def query_fare
@@ -450,6 +454,7 @@ class Itinerary < ActiveRecord::Base
     end
 
     return_itinerary = self.dup
+    return_itinerary.selected = true
     return_itinerary.trip_part = return_part
     return_itinerary.start_time = return_time
     return_itinerary.end_time = return_itinerary.start_time + (self.end_time - self.start_time)
