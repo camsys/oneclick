@@ -116,6 +116,7 @@ module Api
         if new_user.save
           new_user.reset_authentication_token!
           new_user.sign_in_count += 1
+          new_user.add_role :registered_traveler
           new_user.save
           render status: 201, json: {email: new_user.email, authentication_token: new_user.authentication_token}
           return
