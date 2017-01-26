@@ -729,6 +729,7 @@ class BookingServices
       service = county_to_service(params[:county])
       customer_number = EcolaneServices.new.query_customer_number( service.external_id,
                                                  service.ecolane_profile.token,
+                                                 date_of_birth: params[:date_of_birth],
                                                  ssn_last_4: params[:ssn_last_4],
                                                  last_name: params[:last_name])
       return {customer_number: customer_number,

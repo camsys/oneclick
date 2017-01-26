@@ -47,9 +47,8 @@ class EcolaneServices
   def query_customer_number(system, token, params={})
     resp = search_for_customers(system, token, params)
     return nil unless resp.code[0] == "2" # Return nil if get a failure (non-2xx code) HTML response
-    customers = parse_customer_query_array(resp).select do |customer| # select only responses that match ssn
-      customer["ssn"] && customer["ssn"].last(4) == params[:ssn_last_4].to_s
-    end
+    customers = parse_customer_query_array(resp)
+    customers.select! {|c| c["ssn"] && c["ssn"].last(4) == params[:ssn_last_4].to_s} if params[:ssn_last_4] # Filter by SSN if provided.
     return customers.count == 1 ? customers.first["customer_number"] : nil # Return nil if not exactly one result
   end
 
