@@ -297,6 +297,9 @@ class TripPart < ActiveRecord::Base
           next
         end
 
+        # Discard if it's associated with an inactive service
+        next if itinerary['service'] && !itinerary['service']['active']
+
         serialized_itinerary = {}
         itinerary.each do |k,v|
           if v.is_a? Array

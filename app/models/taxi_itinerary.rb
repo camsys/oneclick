@@ -24,7 +24,7 @@ class TaxiItinerary < Itinerary
     itineraries = []
 
     taxi_mode = Mode.find_by_code("mode_taxi")
-    taxi_services = TaxiService.where("mode_id = ?", taxi_mode.id)
+    taxi_services = TaxiService.active.where("mode_id = ?", taxi_mode.id)
 
     api_key = Oneclick::Application.config.taxi_fare_finder_api_key
 
@@ -44,6 +44,7 @@ class TaxiItinerary < Itinerary
           new_itinerary = TaxiItinerary.new
           new_itinerary.trip_part = passed_trip_part
           new_itinerary.duration = new_itinerary.estimate_duration(passed_trip_part)
+          next if new_itinerary.duration.nil? # Discard if OTP sends an error on drive time estimate.
         end
 
         if new_itinerary.present?
