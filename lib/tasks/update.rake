@@ -68,6 +68,7 @@ namespace :update do
 
     #Delete duplicate modes.  Don't delete all the duplicate modes because it might cause issues.  But if there is a mode that is inactive and a duplicate of that mode that is active, then delete the inactive mode
     Rake::Task["oneclick:one_offs:delete_duplicate_modes"].invoke
+    Rake::Task['oneclick:load_locales'].invoke
   end
 
 end
