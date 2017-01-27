@@ -38,6 +38,7 @@ en:
   hide_steps: "Hide steps"
   return_time: "Return time"
   how_long_to_stay: "How long do you want to stay?"
+  no_return_trip: "No return trip"
 
   invalid_email: "Invalid Email Address Used"
   unit_number: "Apartment or Unit Number"

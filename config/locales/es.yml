@@ -68,6 +68,7 @@ es:
   hide_steps: "Hide steps"
   return_time: "Return time"
   how_long_to_stay: "How long do you want to stay?"
+  no_return_trip: "No return trip"
 
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'
