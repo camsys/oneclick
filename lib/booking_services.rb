@@ -170,7 +170,9 @@ class BookingServices
 
         ridepilot_booking = itinerary.ridepilot_booking
         result, body = rs.create_trip(ridepilot_profile.endpoint, ridepilot_profile.api_token, ridepilot_profile.provider_id, user_service.external_user_id, user_service.user_password, ridepilot_booking.trip_purpose_code, leg = itinerary.trip_part.sequence + 1, from, to, guests = ridepilot_booking.guests, attendants = ridepilot_booking.attendants, mobility_devices = ridepilot_booking.mobility_devices, itinerary.start_time.iso8601, itinerary.end_time.iso8601)
+        puts 'BODY'
         puts body.ai
+        puts body["error"]
 
         if result
           itinerary.booking_confirmation = body["trip_id"]
