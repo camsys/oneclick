@@ -1048,49 +1048,50 @@ class BookingServices
 
   def build_api_trip_hash_from_non_paratransit_trip trip
 
-    puts trip.ai
-
     itineraries = trip.selected_itineraries
     trip_hash = {}
 
     itineraries.each do |itinerary|
-      puts itinerary.ai
-      itinerary_hash = {}
-      itinerary_hash[:trip_id] = itinerary.trip_part.trip.id
-      itinerary_hash[:id] = itinerary.id
-      itinerary_hash[:mode] = itinerary.returned_mode_code || itinerary.mode.code
-      itinerary_hash[:departure] = itinerary.start_time.iso8601
-      itinerary_hash[:arrival] = itinerary.end_time.iso8601
-      itinerary_hash[:fare] = itinerary.cost.to_f
-      itinerary_hash[:cost] = itinerary.cost.to_f
-      itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
-      itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
-      itinerary_hash[:duration] = itinerary.duration
-      itinerary_hash[:walk_time] =  itinerary.walk_time
-      itinerary_hash[:transit_time] = itinerary.transit_time
-      itinerary_hash[:wait_time] = itinerary.wait_time
-      itinerary_hash[:walk_distance] = itinerary.walk_distance
-      itinerary_hash[:transfers] = itinerary.transfers
-      itinerary_hash[:product_id] = itinerary.product_id
-      itinerary_hash[:booking_confirmation] = itinerary.booking_confirmation
+      begin
+        itinerary_hash = {}
+        itinerary_hash[:trip_id] = itinerary.trip_part.trip.id
+        itinerary_hash[:id] = itinerary.id
+        itinerary_hash[:mode] = itinerary.returned_mode_code || itinerary.mode.code
+        itinerary_hash[:departure] = itinerary.start_time.iso8601
+        itinerary_hash[:arrival] = itinerary.end_time.iso8601
+        itinerary_hash[:fare] = itinerary.cost.to_f
+        itinerary_hash[:cost] = itinerary.cost.to_f
+        itinerary_hash[:origin] = itinerary.origin.build_place_details_hash
+        itinerary_hash[:destination] = itinerary.destination.build_place_details_hash
+        itinerary_hash[:duration] = itinerary.duration
+        itinerary_hash[:walk_time] =  itinerary.walk_time
+        itinerary_hash[:transit_time] = itinerary.transit_time
+        itinerary_hash[:wait_time] = itinerary.wait_time
+        itinerary_hash[:walk_distance] = itinerary.walk_distance
+        itinerary_hash[:transfers] = itinerary.transfers
+        itinerary_hash[:product_id] = itinerary.product_id
+        itinerary_hash[:booking_confirmation] = itinerary.booking_confirmation
 
-      if itinerary.service
-        itinerary_hash[:service_name] = itinerary.service.name
-        itinerary_hash[:phone] = itinerary.service.phone
-        itinerary_hash[:logo_url]= itinerary.service.logo_url
-        comment = itinerary.service.comments.where(locale: "en").first
-        if comment
-          itinerary_hash[:comment] = comment.comment
+        if itinerary.service
+          itinerary_hash[:service_name] = itinerary.service.name
+          itinerary_hash[:phone] = itinerary.service.phone
+          itinerary_hash[:logo_url]= itinerary.service.logo_url
+          comment = itinerary.service.comments.where(locale: "en").first
+          if comment
+            itinerary_hash[:comment] = comment.comment
+          end
+        else
+          itinerary_hash[:service_name] = ""
         end
-      else
-        itinerary_hash[:service_name] = ""
-      end
 
-      unless itinerary.legs.blank?
-        itinerary_hash[:json_legs] = (YAML.load(itinerary.legs || "")).as_json
+        unless itinerary.legs.blank?
+          itinerary_hash[:json_legs] = (YAML.load(itinerary.legs || "")).as_json
+        end
+        itinerary_hash[:status] = itinerary.selected ? "active" : "canceled"
+        trip_hash[itinerary.trip_part.sequence] =  itinerary_hash
+      rescue
+        next
       end
-      itinerary_hash[:status] = itinerary.selected ? "active" : "canceled"
-      trip_hash[itinerary.trip_part.sequence] =  itinerary_hash
     end
 
     return trip_hash
