@@ -239,7 +239,7 @@ module Api
 
           result = itinerary.book
 
-          if result[:booked]
+          if result
             booked_itineraries.append(itinerary)
           else
             booked_itineraries.each do |booked_itinerary|
