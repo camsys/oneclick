@@ -180,12 +180,12 @@ class BookingServices
           ridepilot_booking.booking_status_message = body["status"]["message"]
           itinerary.save
           ridepilot_booking.save
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: true, negotiated_pu_time:  (itinerary.negotiated_pu_time.blank? ? "n/a" : itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")), confirmation: body["trip_id"], fare: nil, message: body["status"]["code"], booking_status_message: ridepilot_booking.booking_status_message}
+          return true
         else
-          return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: body["error"]}
+          return false
         end
       else
-        return {trip_id: itinerary.trip_part.trip.id, itinerary_id: itinerary.id, booked: false, negotiated_pu_time: nil, negotiated_pu_window_start: nil, negotiated_pu_window_end: nil, confirmation: nil, fare: nil, message: "No Booking Service Found"}
+        return false
     end
 
   end
