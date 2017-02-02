@@ -302,8 +302,8 @@ class User < ActiveRecord::Base
 
       #Sort all of these trips by date
       if trips_array.count > 0
-        puts trips_array.ai
-
+        trips_array = trips_array.reject { |trip| trip.nil? }
+        trips_array = trips_array.reject { |trip| trip[0].nil? }
         return trips_array.sort_by{ |trip| trip[0][:departure]}
       else
         return []
@@ -349,6 +349,8 @@ class User < ActiveRecord::Base
 
       #Sort all of these trips by date
       if trips_array.count > 0
+        trips_array = trips_array.reject { |trip| trip.nil? }
+        trips_array = trips_array.reject { |trip| trip[0].nil? }
         trips_array = trips_array.sort_by{ |trip| trip[0][:departure]}.reverse
         return trips_array[0..max_results-1]
       else
