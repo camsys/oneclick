@@ -1020,6 +1020,7 @@ class BookingServices
       new_itinerary[:walk_distance] = 0
       new_itinerary[:transfers] = 0
       new_itinerary[:json_legs]= nil
+      new_itinerary[:estimated_pickup_time] = hash['pickup']['estimated']
 
       if hash['pickup'].nil? || hash['pickup']['negotiated'].nil?
         wait_start = nil
