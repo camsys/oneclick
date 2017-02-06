@@ -69,6 +69,15 @@ es:
   return_time: "Return time"
   how_long_to_stay: "How long do you want to stay?"
   no_return_trip: "No return trip"
+  free: "free"
+  get_off: "get off"
+  address_not_found: "address not found"
+  no_street_address: "The location you selected does not have have a street associated with it, please select another location."
+  outside_service_area: "The location you selected is outside the service area."
+  location_information_unavailable: "Location information is unavailable."
+  location_request_timed_out: "The request to get user location timed out."
+  unkown_error: "An unknown error occurred."
+  your_email_was_sent: "Your email was sent"
 
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'
