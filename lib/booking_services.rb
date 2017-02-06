@@ -1077,6 +1077,7 @@ class BookingServices
           itinerary_hash[:service_name] = itinerary.service.name
           itinerary_hash[:phone] = itinerary.service.phone
           itinerary_hash[:logo_url]= itinerary.service.logo_url
+          itinerary_hash[:url] = itinerary.service.url
           comment = itinerary.service.comments.where(locale: "en").first
           if comment
             itinerary_hash[:comment] = comment.comment
