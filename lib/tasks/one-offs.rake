@@ -335,6 +335,15 @@ namespace :oneclick do
       end
     end
 
+    desc "Update cancel trip translations"
+    task :update_cancel_trip_translation => :environment do
+      t = Translation.find_by(key: "cancel_trip", locale: "en")
+      if t
+        t.value = "Cancel Trip"
+        t.save
+      end
+    end
+
   end
 
 end
