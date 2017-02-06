@@ -78,6 +78,11 @@ es:
   location_request_timed_out: "The request to get user location timed out."
   unkown_error: "An unknown error occurred."
   your_email_was_sent: "Your email was sent"
+  keep_trip: "Keep Trip"
+  saved_places: "Saved Places"
+  recently_searched: "Recently Searched"
+  suggestions: "Suggestions"
+
 
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'

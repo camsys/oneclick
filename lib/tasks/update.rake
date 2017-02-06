@@ -67,8 +67,10 @@ namespace :update do
     puts "Look through services and check to see if any have schedules ending at 12:00am. If so, make sure the last 12:00am in the list is selected, rather than the first one."
 
     #Delete duplicate modes.  Don't delete all the duplicate modes because it might cause issues.  But if there is a mode that is inactive and a duplicate of that mode that is active, then delete the inactive mode
+    Rake::Task["oneclick:one_offs:update_cancel_trip_translation"].invoke
     Rake::Task["oneclick:one_offs:delete_duplicate_modes"].invoke
     Rake::Task['oneclick:load_locales'].invoke
+
   end
 
 end
