@@ -10,7 +10,9 @@ module Api
 
         translations.each do |translation|
           trans = Translation.find_by(locale: locale, key: translation)
-          translated[translation] = trans.nil? ? nil : trans.value
+
+          #The gsub finds all instances of %{xyz} and replaces then with {{xyz}} The {{xyz}} string is used by Angular for interpolation
+          translated[translation] = trans.nil? ? nil : trans.value.gsub(/%\{[a-zA-Z_]+\}/) { |s| '{{' + s[2..-2] + '}}' }
         end
 
         render status: 200, json: translated
@@ -25,12 +27,16 @@ module Api
         if params[:lang]
           locale = Locale.find_by_name(params[:lang])
           dictionary = {} #Translation.where(locale: locale).each {|t| {t.key => t.value}}
-          Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value }
+
+          #The gsub finds all instances of %{xyz} and replaces then with {{xyz}} The {{xyz}} string is used by Angular for interpolation
+          Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value.gsub(/%\{[a-zA-Z_]+\}/) { |s| '{{' + s[2..-2] + '}}' } }
           dictionaries = dictionary
         else
           Locale.all.each do |locale|
             dictionary = {} #Translation.where(locale: locale).map {|t| {t.key => t.value}}
-            Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value }
+
+            #The gsub finds all instances of %{xyz} and replaces then with {{xyz}} The {{xyz}} string is used by Angular for interpolation
+            Translation.where(locale: locale).each {|translation| dictionary[translation.key] = translation.value.gsub(/%\{[a-zA-Z_]+\}/) { |s| '{{' + s[2..-2] + '}}' } }
             dictionaries[locale.name] = dictionary
           end
         end
