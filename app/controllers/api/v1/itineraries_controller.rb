@@ -148,10 +148,12 @@ module Api
               i_hash[:logo_url]= logo_url_helper(itinerary)
               i_hash[:url] = itinerary.service.url
               i_hash["hidden"] ||= i_hash["missing_information"] # Set hidden to true if missing information about user characteristics
-              comment = itinerary.service.comments.where(locale: "en").first
-              if comment
-                i_hash[:comment] = comment.comment
-              end
+
+              # Return a hash of {locale: comment} key-value pairs.
+              i_hash[:service_comments] =
+                Hash[ itinerary.service.comments
+                      .public.where.not(comment: nil)
+                      .index_by(&:locale).map{|l,c| [l,c.comment]} ]
             else
               i_hash[:service_name] = ""
             end
