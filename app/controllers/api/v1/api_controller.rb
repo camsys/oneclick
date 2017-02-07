@@ -5,6 +5,12 @@ module Api
     ## 2) All users are registered to book with only 1 service
     class ApiController < ActionController::Base
 
+      force_ssl if: :ssl_configured?
+
+      def ssl_configured?
+        ENV["ENABLE_HTTPS"] == "true"
+      end
+
       respond_to :json
       require 'json'
 
