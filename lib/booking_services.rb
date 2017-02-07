@@ -1081,6 +1081,12 @@ class BookingServices
           if comment
             itinerary_hash[:comment] = comment.comment
           end
+
+          # Return a hash of {locale: comment} key-value pairs.
+          itinerary_hash[:service_comments] =
+            Hash[ itinerary.service.comments
+                  .public.where.not(comment: nil)
+                  .index_by(&:locale).map{|l,c| [l,c.comment]} ]
         else
           itinerary_hash[:service_name] = ""
         end
