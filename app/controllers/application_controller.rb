@@ -2,7 +2,11 @@ class ApplicationController < ActionController::Base
   include CsHelpers
 
   # acts_as_token_authentication_handler_for User
+  force_ssl if: :ssl_configured?
 
+  def ssl_configured?
+    ENV["ENABLE_HTTPS"] == "true"
+  end
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
   helper_method :mobile?
