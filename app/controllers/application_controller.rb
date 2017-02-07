@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   def ssl_configured?
     ENV["ENABLE_HTTPS"] == "true"
   end
+
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
   helper_method :mobile?
