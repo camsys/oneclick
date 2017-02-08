@@ -782,6 +782,21 @@ class BookingServices
 
   end
 
+  # Get a list of all the points of interset in a service's databse
+  def get_pois_for_service service
+    case service.booking_profile
+    when AGENCY[:ecolane]
+      es = EcolaneServices.new
+      locations = es.fetch_system_poi_list({system: service.ecolane_profile.system, token: service.ecolane_profile.token})
+      #Convert the Ecolane Locations to a Hash that Matches 1-Click Schema
+      hashes = []
+      locations.each do |location|
+        hashes << {name: location["name"], address1: (location["street_number"].to_s + ' ' + location["street"].to_s).strip, city: location["city"], state: location["state"], zip: location["postcode"], lat: location["latitude"], lon: location["longitude"], county: location["county"], street_number: location["street_number"], route: location["street"]}
+      end
+      return hashes
+    end
+  end
+
   ####################################
   # Ecolane Specific Functions
   # Find the default funding source for a customer id.  Used by Ecolane
