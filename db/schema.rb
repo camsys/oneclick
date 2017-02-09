@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170106030614) do
+ActiveRecord::Schema.define(version: 20170209151643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -445,6 +445,7 @@ ActiveRecord::Schema.define(version: 20170106030614) do
     t.string   "google_place_id"
     t.string   "stop_code"
     t.text     "types"
+    t.boolean  "old"
   end
 
   create_table "profile_types", force: true do |t|
