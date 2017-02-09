@@ -17,6 +17,7 @@ Oneclick::Application.configure do
   config.ada_funding_sources = []
   config.top_ecolane_purposes = ['Medical', 'Grocery', 'Senior Center', 'Shopping', 'Recreation', 'Other']
   config.restrict_services_to_origin_county = false
+  config.support_emails = "oneclick@camsys.com"
 
   #TRAPEZE CONFIGS
   config.ada_funding_sources = ['ADA']

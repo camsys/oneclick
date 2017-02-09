@@ -29,6 +29,12 @@ class UserMailer < ActionMailer::Base
     mail(to: addresses, subject: subject, from: @@from)
   end
 
+  def poi_upload_results(addresses, subject, messages)
+    @messages = messages
+    mail(to: addresses, subject: subject, from: @@from)
+  end
+
+
   def booked_trip_update_email(addresses, trip, booking_service=nil)
     @trip = trip
     @booking_service = booking_service

@@ -528,6 +528,30 @@ class EcolaneServices
 
   end
 
+  ################################################################################
+  ## Handle POIs
+  ################################################################################
+
+  # Get all the Ecolane POIS
+  def fetch_system_poi_list params
+    url_options = "/api/location/" + params[:system] + '/pois'
+    url = Oneclick::Application.config.ecolane_base_url + url_options
+    resp = send_request(url, params[:token], 'GET')
+
+    begin
+      resp_code = resp.code
+      body = Hash.from_xml(resp.body)
+    rescue
+      return []
+    end
+
+    if resp_code == "200"
+      return body["locations"]["location"]
+    else
+      return []
+    end
+
+  end
 
   ################################################################################
   ## Utility functions
