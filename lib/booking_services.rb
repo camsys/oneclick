@@ -788,6 +788,10 @@ class BookingServices
     when AGENCY[:ecolane]
       es = EcolaneServices.new
       locations = es.fetch_system_poi_list({system: service.ecolane_profile.system, token: service.ecolane_profile.token})
+      if locations.nil?
+        return nil
+      end
+
       #Convert the Ecolane Locations to a Hash that Matches 1-Click Schema
       hashes = []
       locations.each do |location|

@@ -34,6 +34,16 @@ namespace :ecolane do
         # Get a Hash of new POIs from Ecolane
         new_poi_hashes = booking_services.get_pois_for_service service
 
+        if new_poi_hashes.nil?
+          #If anything goes wrong, delete the new pois and reinstate the old_pois
+          Poi.where(poi_type: poi_type, old: false).delete_all
+          old_pois.update_all(old: false)
+          messages << "Error loading POIs for System: #{system}, service_id: #{service.id}. Unable to retrieve POIs"
+          global_error = true
+          local_error = true
+          next
+        end
+
         new_poi_hashes.each do |hash|
           new_poi = Poi.new hash
           new_poi.poi_type = poi_type

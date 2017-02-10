@@ -542,13 +542,13 @@ class EcolaneServices
       resp_code = resp.code
       body = Hash.from_xml(resp.body)
     rescue
-      return []
+      return nil
     end
 
     if resp_code == "200"
       return body["locations"]["location"]
     else
-      return []
+      return nil
     end
 
   end
