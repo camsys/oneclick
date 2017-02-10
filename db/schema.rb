@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209151643) do
+ActiveRecord::Schema.define(version: 20170210203533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20170209151643) do
     t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
     t.boolean  "custom_shape",                                       default: false
+    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "date_options", force: true do |t|
@@ -447,6 +447,8 @@ ActiveRecord::Schema.define(version: 20170209151643) do
     t.text     "types"
     t.boolean  "old"
   end
+
+  add_index "pois", ["name"], :name => "index_pois_on_name"
 
   create_table "profile_types", force: true do |t|
     t.string "name",        limit: 64
