@@ -795,7 +795,7 @@ class BookingServices
       #Convert the Ecolane Locations to a Hash that Matches 1-Click Schema
       hashes = []
       locations.each do |location|
-        hashes << {name: location["name"], address1: (location["street_number"].to_s + ' ' + location["street"].to_s).strip, city: location["city"], state: location["state"], zip: location["postcode"], lat: location["latitude"], lon: location["longitude"], county: location["county"], street_number: location["street_number"], route: location["street"]}
+        hashes << {name: location["name"].to_s.strip, address1: (location["street_number"].to_s.strip + ' ' + location["street"].to_s).strip, city: location["city"].to_s.strip, state: location["state"].to_s.strip, zip: location["postcode"].to_s.strip, lat: location["latitude"], lon: location["longitude"], county: location["county"].to_s.strip, street_number: location["street_number"].to_s.strip, route: location["street"].to_s.strip}
       end
       return hashes
     end
