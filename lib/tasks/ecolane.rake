@@ -45,8 +45,17 @@ namespace :ecolane do
         end
 
         new_poi_hashes.each do |hash|
+
+
+          if Poi.is_new.where('lower(address1) = ? AND lower(city) = ?', hash[:address1].downcase, hash[:city].downcase).count > 0
+            puts 'DUPLICATE '
+            puts hash.ai
+            next
+          end
+
           new_poi = Poi.new hash
           new_poi.poi_type = poi_type
+          new_poi.state = new_poi.state_code
           new_poi.old = false
           #All POIs need a name, if Ecolane doesn't define one, then name it after the Address
           new_poi.name = new_poi.name || new_poi.address1

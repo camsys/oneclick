@@ -8,10 +8,12 @@ class Poi < GeocodedAddress
   
   # Updatable attributes
   # attr_accessible :name
+  include PlaceHelper
 
   # set the default scope
   default_scope {order('pois.name')}
   scope :has_address, -> { where.not(:address1 => nil) }
+  scope :is_new, -> {where(old: false)}
 
   def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)
@@ -192,13 +194,13 @@ class Poi < GeocodedAddress
       address_components << {long_name: self.city, short_name: self.city, types: ["locality", "political"]}
     end
 
-    #State
-    if self.state
+    #Zip
+    if self.zip
       address_components << {long_name: self.zip, short_name: self.zip, types: ["postal_code"]}
     end
 
-    #Zip
-    if self.zip
+    #State
+    if self.state
       address_components << {long_name: self.state, short_name: self.state, types: ["administrative_area_level_1","political"]}
     end
 
