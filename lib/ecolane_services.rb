@@ -257,10 +257,10 @@ class EcolaneServices
     url_options = "/api/customer/" + system + '/'
     url_options += customer_id.to_s
     url_options += "/orders"
-    url_options += "?start=" + Time.now.iso8601[0...-6]
+    url_options += "?start=" + (Time.now - 1.hour).iso8601[0...-6]
     url = BASE_URL + url_options
     response = send_request(url, token)
-    unpack_orders(response)
+    unpack_orders(response).select{|o| ["ordered", "dispatch"].include?(o["status"])}
   end
 
   # Return a Hash of previous Trips
@@ -270,11 +270,12 @@ class EcolaneServices
     url_options += customer_id.to_s
     url_options += "/orders"
     url_options += "?end=" + end_time[0...-6]
-    # url_options += "&limit=" + (max_results || 10).to_s
+    # url_options += "&start=" + (Time.now - 1.month).iso8601[0...-6]
+    url_options += "&limit=" + (max_results || 100).to_s
     url = BASE_URL + url_options
 
     response = send_request(url, token)
-    unpack_orders(response)
+    unpack_orders(response).select{|o| !["ordered", "dispatch"].include?(o["status"])}
   end
 
   # Unpack the Response from the Future/Past Orders Call
