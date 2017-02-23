@@ -270,7 +270,7 @@ class EcolaneServices
     url_options += customer_id.to_s
     url_options += "/orders"
     url_options += "?end=" + end_time[0...-6]
-    url_options += "&limit=" + (max_results || 10).to_s
+    # url_options += "&limit=" + (max_results || 10).to_s
     url = BASE_URL + url_options
 
     response = send_request(url, token)
