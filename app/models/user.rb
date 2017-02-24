@@ -142,8 +142,8 @@ class User < ActiveRecord::Base
     wheelchair_accoms = user_profile.user_accommodations
         .includes(:accommodation).references(:accommodation)
         .where(
-          accommodations: 
-            { code: ['folding_wheelchair_accessible', 'motorized_wheelchair_accessible'] }, 
+          accommodations:
+            { code: ['folding_wheelchair_accessible', 'motorized_wheelchair_accessible'] },
           value: 'true')
 
     !wheelchair_accoms.empty?
@@ -312,7 +312,7 @@ class User < ActiveRecord::Base
 
   end
 
-  def past_trips end_time = Time.now, max_results = 10
+  def past_trips end_time = Time.current, max_results = 10
 
     bs = BookingServices.new
     unless end_time.kind_of? String

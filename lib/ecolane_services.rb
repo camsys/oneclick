@@ -87,7 +87,7 @@ class EcolaneServices
     url_options += "?funding=" + funding.to_s + "&locations=" + locations.to_s
     url = BASE_URL + url_options
     Rails.logger.debug URI.parse(url)
-    t = Time.now
+    t = Time.current
     resp = send_request(url, token )
     if resp.code != "200"
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
@@ -257,7 +257,7 @@ class EcolaneServices
     url_options = "/api/customer/" + system + '/'
     url_options += customer_id.to_s
     url_options += "/orders"
-    url_options += "?start=" + (Time.now - 1.hour).iso8601[0...-6]
+    url_options += "?start=" + (Time.current - 1.hour).iso8601[0...-6]
     url = BASE_URL + url_options
     response = send_request(url, token)
     unpack_orders(response).select{|o| ["ordered", "dispatch"].include?(o["status"])}
@@ -270,8 +270,8 @@ class EcolaneServices
     url_options += customer_id.to_s
     url_options += "/orders"
     url_options += "?end=" + end_time[0...-6]
-    # url_options += "&start=" + (Time.now - 1.month).iso8601[0...-6]
-    url_options += "&limit=" + (max_results || 100).to_s
+    url_options += "&start=" + (Time.current - 1.month).iso8601[0...-6]
+    url_options += "&limit=" + (100).to_s
     url = BASE_URL + url_options
 
     response = send_request(url, token)

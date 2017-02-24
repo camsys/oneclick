@@ -73,8 +73,8 @@ module Api
 
       def past_trips
 
-        max_results = (params[:max_results] || 50).to_i
-        end_time = params[:end_time].nil? ? Time.now.iso8601 : Time.parse(params[:end_time]).iso8601
+        max_results = (params[:max_results] || 10).to_i
+        end_time = params[:end_time].nil? ? Time.current.iso8601 : Time.parse(params[:end_time]).iso8601
 
         trips_hash = {}
 
