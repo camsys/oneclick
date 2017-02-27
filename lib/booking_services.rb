@@ -726,9 +726,9 @@ class BookingServices
     case agency
     when AGENCY[:ecolane], "ecolane", :ecolane
       return nil unless params[:county]
-      service = county_to_service(params[:county])
-      customer_number = EcolaneServices.new.query_customer_number( service.external_id,
-                                                 service.ecolane_profile.token,
+      ep = county_to_ecolane_profile(params[:county])
+      customer_number = EcolaneServices.new.query_customer_number( ep.system,
+                                                 ep.token,
                                                  date_of_birth: params[:date_of_birth],
                                                  ssn_last_4: params[:ssn_last_4],
                                                  last_name: params[:last_name])
@@ -854,12 +854,17 @@ class BookingServices
 
   # Finds the first service it can set to book trips in the given county
   def county_to_service(county)
-    ep = EcolaneProfile.active.where("booking_counties ~* ?", ".* #{county}\n.*").first # the ~* is a POSTGRESQL query matching regex, case-insensitively
+    ep = county_to_ecolane_profile(county)
     if ep
       return ep.service
     else
       return nil
     end
+  end
+
+  # Finds an ecolane profile based on a county name
+  def county_to_ecolane_profile(county)
+    EcolaneProfile.active.where("booking_counties ~* ?", ".* #{county}\n.*").first # the ~* is a POSTGRESQL query matching regex, case-insensitively
   end
 
   # DEPRECATED?
