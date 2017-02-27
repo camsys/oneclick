@@ -53,10 +53,11 @@ class EcolaneServices
   end
 
   # Get orders for a customer
-  def fetch_customer_orders(customer_id, system_id, token)
+  def fetch_customer_orders(customer_id, system_id, token, options={})
     url_options = "/api/customer/" + system_id + '/'
     url_options += customer_id.to_s
     url_options += "/orders"
+    url_options += ("/?" + options.map{|k,v| "#{k}=#{v}"}.join("&"))
     url = BASE_URL + url_options
     send_request(url, token)
   end
@@ -252,30 +253,31 @@ class EcolaneServices
   ################################################################################
 
   # Return a hash of all upcoming trips
-  def get_future_orders customer_number, system, token
+  def get_future_orders(customer_number, system, token)
     customer_id = get_customer_id(customer_number, system, token)
-    url_options = "/api/customer/" + system + '/'
-    url_options += customer_id.to_s
-    url_options += "/orders"
-    url_options += "?start=" + (Time.current - 1.hour).iso8601[0...-6]
-    url = BASE_URL + url_options
-    response = send_request(url, token)
-    unpack_orders(response).select{|o| ["ordered", "dispatch"].include?(o["status"])}
+    options = {
+      start: (Time.current - 1.day).iso8601[0...-6],
+      end: (Time.current + 1.month).iso8601[0...-6]
+    }
+    response = fetch_customer_orders(customer_id, system, token, options)
+    orders = unpack_orders(response)
+    orders.select{|o| order_is_live?(o)}
   end
 
   # Return a Hash of previous Trips
-  def get_past_orders(customer_number, max_results, end_time, system, token)
+  def get_past_orders(customer_number, system, token)
     customer_id = get_customer_id(customer_number, system, token)
-    url_options = "/api/customer/" + system + '/'
-    url_options += customer_id.to_s
-    url_options += "/orders"
-    url_options += "?end=" + end_time[0...-6]
-    url_options += "&start=" + (Time.current - 1.month).iso8601[0...-6]
-    url_options += "&limit=" + (100).to_s
-    url = BASE_URL + url_options
+    options = {
+      start: (Time.current - 1.month).iso8601[0...-6],
+      end: (Time.current + 1.day).iso8601[0...-6]
+    }
+    response = fetch_customer_orders(customer_id, system, token, options)
+    orders = unpack_orders(response)
+    orders.select{|o| !order_is_live?(o)}
+  end
 
-    response = send_request(url, token)
-    unpack_orders(response).select{|o| !["ordered", "dispatch"].include?(o["status"])}
+  def order_is_live?(order)
+    ["ordered", "dispatch", "active"].include? order["status"]
   end
 
   # Unpack the Response from the Future/Past Orders Call

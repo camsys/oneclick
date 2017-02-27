@@ -701,7 +701,7 @@ class BookingServices
         es = EcolaneServices.new
 
         #Why is max_results doubled?  Because, ecolane sends back round trips as two trips.
-        past_trips = es.get_past_orders(customer_number, max_results*2, end_time, system, token)
+        past_trips = es.get_past_orders(customer_number, system, token)
         build_api_trips_hash_array_from_ecolane_hash past_trips
 
       else
@@ -1045,6 +1045,7 @@ class BookingServices
       new_itinerary[:transfers] = 0
       new_itinerary[:json_legs]= nil
       new_itinerary[:estimated_pickup_time] = hash['pickup']['estimated']
+      new_itinerary[:actual_pickup_time] = hash['pickup']['actual']
 
       if hash['pickup'].nil? || hash['pickup']['negotiated'].nil?
         wait_start = nil
