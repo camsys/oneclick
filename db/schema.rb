@@ -15,9 +15,8 @@ ActiveRecord::Schema.define(version: 20170210203533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "pg_stat_statements"
-  enable_extension "tablefunc"
+  enable_extension "postgis"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -68,11 +67,6 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.integer  "cut_off_seconds",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "boolean_lookup", force: true do |t|
-    t.string "name", limit: 16
-    t.string "note", limit: 16
   end
 
   create_table "boundaries", force: true do |t|
@@ -126,8 +120,8 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "custom_shape",                                       default: false
     t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
+    t.boolean  "custom_shape",                                       default: false
   end
 
   create_table "date_options", force: true do |t|
@@ -137,11 +131,6 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.string   "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "day_of_week", force: true do |t|
-    t.string "name", limit: 16
-    t.string "note", limit: 16
   end
 
   create_table "ecolane_bookings", force: true do |t|
@@ -185,8 +174,8 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_id"
     t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
+    t.integer  "service_id"
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
