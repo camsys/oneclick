@@ -10,6 +10,7 @@ module Api
       def select
         #Get the itineraries
         itineraries = []
+        trips = []
 
         params[:select_itineraries].each do |itin|
           itinerary = Itinerary.find(itin['itinerary_id'].to_i)
@@ -20,11 +21,17 @@ module Api
             trip = itinerary.trip_part.trip
           end
           trip.unselect_all
+          trips << trip
         end
 
         #Select these itineraries
         itineraries.each do |itinerary|
           itinerary.update_attribute :selected, true
+        end
+
+        #Mark the trips as planned
+        trips.each do |trip|
+          trip.update_attribute :is_planned, true
         end
 
         render json: {result: 200}
