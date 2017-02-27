@@ -164,7 +164,7 @@ class Poi < GeocodedAddress
     },
 
         id: self.id,
-        name: self.name,
+        name: self.name == self.address1 ? "" : self.name,
         scope: "user",
         stop_code: self.stop_code,
         types: self.types
