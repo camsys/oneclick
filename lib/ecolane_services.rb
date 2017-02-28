@@ -256,8 +256,7 @@ class EcolaneServices
   def get_future_orders(customer_number, system, token)
     customer_id = get_customer_id(customer_number, system, token)
     options = {
-      start: (Time.current - 1.day).iso8601[0...-6],
-      end: (Time.current + 1.month).iso8601[0...-6]
+      start: (Time.current - 1.day).iso8601[0...-6]
     }
     response = fetch_customer_orders(customer_id, system, token, options)
     orders = unpack_orders(response)
