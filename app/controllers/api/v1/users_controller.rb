@@ -84,7 +84,12 @@ module Api
         @traveler.password = params[:password]
         @traveler.password_confirmation = params[:password_confirmation]
         result = @traveler.save
-        render json: {result: result}
+        if result
+          render status: 200, json: {result: result}
+        else
+          render status: 406, json: {result: result}
+        end
+
         return
       end
 
