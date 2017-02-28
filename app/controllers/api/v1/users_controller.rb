@@ -80,6 +80,14 @@ module Api
 
       end
 
+      def password
+        @traveler.password = params[:password]
+        @traveler.password_confirmation = params[:password_confirmation]
+        result = @traveler.save
+        render json: {result: result}
+        return
+      end
+
       def get_guest_token
         guest = create_guest_user
         guest.reset_authentication_token!

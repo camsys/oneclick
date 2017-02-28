@@ -390,6 +390,7 @@ Oneclick::Application.routes.draw do
       resources :users do
         collection do
           post 'update'
+          post 'password'
           get  'profile'
           get  'get_guest_token'
           get  'lookup'
