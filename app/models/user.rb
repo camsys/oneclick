@@ -399,6 +399,12 @@ class User < ActiveRecord::Base
       self.save
     end
 
+    if params[:password]
+      self.password = params[:password]
+      self.password_confirmation = params[:password_confirmation]
+      self.save
+    end
+
   end
 
   def update_attributes params
