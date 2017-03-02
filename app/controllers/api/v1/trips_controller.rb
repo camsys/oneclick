@@ -74,13 +74,12 @@ module Api
       def past_trips
 
         max_results = (params[:max_results] || 10).to_i
-        end_time = params[:end_time].nil? ? Time.current.iso8601 : Time.parse(params[:end_time]).iso8601
 
         trips_hash = {}
 
         bs = BookingServices.new
         if @traveler
-          trips_hash = @traveler.past_trips(end_time, max_results)
+          trips_hash = @traveler.past_trips(max_results)
         end
 
         respond_with trips_hash

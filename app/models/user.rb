@@ -312,23 +312,19 @@ class User < ActiveRecord::Base
 
   end
 
-  def past_trips end_time = Time.current, max_results = 10
-
+  def past_trips max_results = 10
     bs = BookingServices.new
-    unless end_time.kind_of? String
-      end_time = end_time.iso8601
-    end
 
     if self.ecolane_user?
 
       #Get Paratransit Trips that have Been Booked
       # This gets all trips, even thouse that were not booked through 1-click
-      trips_array = bs.past_trips(self, max_results, end_time)
+      trips_array = bs.past_trips(self, max_results)
 
       trips_array = bs.group_trips trips_array
       #Get past NON-Paratransit Trips that have been booked/selected
 
-      self.trips.during_not_paratransit(end_time).each do |trip|
+      self.trips.during_not_paratransit.each do |trip|
         trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
       end
 
@@ -343,7 +339,7 @@ class User < ActiveRecord::Base
 
       trips_array = []
 
-      self.trips.during(end_time).each do |trip|
+      self.trips.during.each do |trip|
         trips_array << bs.build_api_trip_hash_from_non_paratransit_trip(trip)
       end
 
