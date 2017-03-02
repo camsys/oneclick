@@ -81,13 +81,27 @@ module Api
       end
 
       def password
+
+        if params[:password].nil? or params[:password_confirmation].nil?
+          render status: 400, json: {result: false, message: "Missing password or password confirmation."}
+          return
+        end
+
+        if params[:password] != params[:password_confirmation]
+          render status: 406, json: {result: false, message: 'Passwords do not match.'}
+          return
+        end
+
+
         @traveler.password = params[:password]
         @traveler.password_confirmation = params[:password_confirmation]
+
         result = @traveler.save
+
         if result
-          render status: 200, json: {result: result}
+          render status: 200, json: {result: result, message: 'Success'}
         else
-          render status: 406, json: {result: result}
+          render status: 406, json: {result: result, message: 'Unacceptable Password'}
         end
 
         return
