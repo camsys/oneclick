@@ -108,14 +108,13 @@ class EcolaneServices
 
   # Check to see if a passenger's DOB matches
   def validate_passenger(customer_number, dob, system_id, token)
-
     iso_dob = iso8601ify(dob)
     if iso_dob.nil?
       return false, "", ""
     end
     resp = search_for_customers(system_id, token, {"customer_number" => customer_number, "date_of_birth" => iso_dob.to_s})
     resp = unpack_validation_response(resp)
-    return resp[0], resp[2][0], resp[2][1]
+    return resp[0], resp[2][0], resp[2][1], resp[2][2] # response body, first_name, last_name, customer_id
   end
 
   # Unpack the validate_passenger call
@@ -132,7 +131,8 @@ class EcolaneServices
     if resp_xml.xpath("search_results").xpath("customer").count == 1
       first_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("first_name").text
       last_name = resp_xml.xpath("search_results").xpath("customer")[0].xpath("last_name").text
-      return true, "Success!", [first_name, last_name]
+      customer_id = resp_xml.xpath("search_results").xpath("customer").attribute("id").value
+      return true, "Success!", [first_name, last_name, customer_id]
     else
       return false, "Invalid Date of Birth or Client Id.", ['', '']
     end

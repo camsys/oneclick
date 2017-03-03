@@ -344,6 +344,34 @@ namespace :oneclick do
       end
     end
 
+    desc "Populate Ecolane Customer ID in UserServices"
+    task :populate_ecolane_customer_id => :environment do
+      puts "****************************"
+      puts "Populating Ecolane Customer IDs..."
+      es = EcolaneServices.new
+      user_services = UserService.where(customer_id: nil).where.not(external_user_id: nil)
+      user_services.each do |user_service|
+        puts "****************************"
+        puts
+        puts "Attempting to update User Service #{user_service.id}..."
+        ecolane_profile = user_service.service && user_service.service.ecolane_profile
+        if ecolane_profile
+          server = ecolane_profile[:system]
+          token = ecolane_profile.token
+          customer_number = user_service.external_user_id
+          resp = es.search_for_customers(server, token, customer_number: customer_number)
+          resp = es.unpack_validation_response(resp)
+          if user_service.update_attributes(customer_id: resp[2][2])
+            puts "Successfully updated customer id to #{user_service.customer_id}"
+          else
+            puts "Failed to update customer id"
+          end
+        else
+          puts "No Ecolane Profile for User Service"
+        end
+      end
+    end
+
   end
 
 end

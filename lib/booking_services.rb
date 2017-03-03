@@ -260,16 +260,15 @@ class BookingServices
   # a user_service to link the service and the user.  This user_service contains all the information necessary to allow the user to book trips with the given service
   # This method returns a boolean
   def associate_user(service, user, external_user_id, external_user_password)
-
     case service.booking_profile
       when AGENCY[:ecolane]
         ecolane_profile = service.ecolane_profile
 
         es = EcolaneServices.new
-        result, first_name, last_name, home = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
+        result, first_name, last_name, customer_id = es.validate_passenger(external_user_id, external_user_password, ecolane_profile.system, ecolane_profile.token)
         if result
           #For Ecolane, we create a new user if the user doesn't exist
-          user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service, first_name, last_name)
+          user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service, first_name, last_name, customer_id)
         end
         return result, user_service
 
@@ -823,7 +822,7 @@ class BookingServices
     # Is there an ecolane profile associated with this service?
     return false unless user_service.service && user_service.service.ecolane_profile
 
-    customer_id = user_service.external_user_id
+    customer_id = user_service.customer_id
     booking_system = user_service.service.ecolane_profile.system
     token = user_service.service.ecolane_profile.token
     es = EcolaneServices.new
@@ -879,7 +878,7 @@ class BookingServices
     return county
   end
 
-  def get_or_create_ecolane_traveler(external_user_id, dob, service, first_name, last_name)
+  def get_or_create_ecolane_traveler(external_user_id, dob, service, first_name, last_name, customer_id)
     user_service = UserService.where(external_user_id: external_user_id, service: service).order('created_at').last
     booking_system = service.ecolane_profile.nil? ? nil : service.ecolane_profile.system.to_s
     if user_service
@@ -908,7 +907,14 @@ class BookingServices
     if new_user #Create User Service
       user_service = UserService.where(user_profile_id: user_profile.id, service_id: service.id).first_or_initialize
       user_service.external_user_id = external_user_id
+      user_service.customer_id = customer_id
       user_service.save
+    end
+
+    # update customer_id if it doesn't exist
+    if user_service.customer_id.nil? && customer_id
+      "USER SERVICE NIL CUSTOMER ID"
+      user_service.update_attributes(customer_id: customer_id)
     end
 
     #Create Home from Ecolane If it Exists
