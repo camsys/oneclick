@@ -1,13 +1,9 @@
 # For regularly scheduled tasks
 namespace :scheduled do
 
-  desc "Update Booked Trip Status Code through Ecolane"
-  task update_booked_trip_statuses: :environment do
-    puts "Updating Status of all Booked Ecolane Trips..."
-    puts
-
-    puts "First, cleaning up test user trips..."
-    puts
+  desc "Clean Up Ecolane Test Trips"
+  task clean_up_ecolane_test_trips: :environment do
+    puts "Cleaning up test user trips..."
     ecolane_test_users = [
       '79109',      '7832',       '2581',
       '79110',      '18226',      'test4',
@@ -24,7 +20,15 @@ namespace :scheduled do
       puts "...#{TripPart.destroy(trip_parts.pluck(:id)).count} trip_parts destroyed"
       puts "...#{Itinerary.destroy(itineraries.pluck(:id)).count} itineraries destroyed"
     end
+  end
 
+  desc "Update Booked Trip Status Code through Ecolane"
+  task update_booked_trip_statuses: :environment do
+    puts "Updating Status of all Booked Ecolane Trips..."
+    puts
+
+    # Destroy test trips if in production environment
+    Rake::Task["scheduled:clean_up_ecolane_test_trips"].invoke if Rails.env == "production"
 
     bs = BookingServices.new
 
