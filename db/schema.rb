@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20170210203533) do
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
     t.string  "name",                  limit: 64,                 null: false
@@ -67,6 +68,11 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.integer  "cut_off_seconds",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "boolean_lookup", force: true do |t|
+    t.string "name", limit: 16
+    t.string "note", limit: 16
   end
 
   create_table "boundaries", force: true do |t|
@@ -131,6 +137,11 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.string   "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "day_of_week", force: true do |t|
+    t.string "name", limit: 16
+    t.string "note", limit: 16
   end
 
   create_table "ecolane_bookings", force: true do |t|
