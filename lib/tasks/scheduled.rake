@@ -5,6 +5,27 @@ namespace :scheduled do
   task update_booked_trip_statuses: :environment do
     puts "Updating Status of all Booked Ecolane Trips..."
     puts
+
+    puts "First, cleaning up test user trips..."
+    puts
+    ecolane_test_users = [
+      '79109',      '7832',       '2581',
+      '79110',      '18226',      'test4',
+      '1000004436', 'test1',      '0001',
+      '1000004064', 'test2',      '1000004063'
+    ].map {|id| UserService.where(external_user_id: id)}.flatten.map {|us| us.user_profile.user}
+
+    ecolane_test_users.each do |user|
+      puts "Cleaning up trips for #{user.email}..."
+      trips = user.trips
+      trip_parts = TripPart.where(trip_id: trips.pluck(:id))
+      itineraries = Itinerary.where(trip_part_id: trip_parts.pluck(:id))
+      puts "...#{Trip.destroy(trips.pluck(:id)).count} trips destroyed"
+      puts "...#{TripPart.destroy(trip_parts.pluck(:id)).count} trip_parts destroyed"
+      puts "...#{Itinerary.destroy(itineraries.pluck(:id)).count} itineraries destroyed"
+    end
+
+
     bs = BookingServices.new
 
     updated_results = {}
