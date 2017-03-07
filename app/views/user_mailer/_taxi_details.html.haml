@@ -14,7 +14,7 @@
           = itinerary.service.name
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em; padding: 16px 10px;"}
-      = image_tag("start.png", height: 26, width: 26, style: 'vertical-align: top;')
+      =image_tag(attachments["start.png"].url, height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container{style: "padding-left: 5px;"}
       .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:start) + itinerary.trip_part.from_trip_place.name
@@ -30,7 +30,7 @@
         = format_time(itinerary.trip_part.scheduled_time.in_time_zone - itinerary.duration) + ' ' + translate_helper(:to) + ' ' + format_time(itinerary.trip_part.scheduled_time.in_time_zone)
   %tr
     %td.itinerary_icons{style: "text-align: center;line-height: normal;font-size: 2.25em;padding: 16px 10px;"}
-      = image_tag("stop.png", height: 26, width: 26, style: 'vertical-align: top;')
+      =image_tag(attachments["stop.png"].url, height: 26, width: 26, style: 'vertical-align: top;')
     %td.itin_text_container{style: "padding: 16px 10px;"}
       .itinerary_text{style: "text-align: left;font-family: 'Helvetica Neue', Arial; line-height: 1em; padding-left: 8px; strong {top: 0; position: absolute;}"}
         = translate_helper(:arrive) + itinerary.trip_part.to_trip_place.name
