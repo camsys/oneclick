@@ -7,7 +7,7 @@ class TripPlanner
   MAX_REQUEST_TIMEOUT = Rails.application.config.remote_request_timeout_seconds
   MAX_READ_TIMEOUT    = Rails.application.config.remote_read_timeout_seconds
   METERS_TO_MILES = 0.000621371192
-  
+
   include ServiceAdapters::RideshareAdapter
 
   def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, try_count=Oneclick::Application.config.OTP_retry_count)
@@ -181,11 +181,11 @@ class TripPlanner
 
     t = Time.now
     query = create_rideshare_query(from, to, trip_datetime)
-    
+
     agent = Mechanize.new
     agent.keep_alive=false
     agent.open_timeout = MAX_REQUEST_TIMEOUT
-    agent.read_timeout = MAX_READ_TIMEOUT    
+    agent.read_timeout = MAX_READ_TIMEOUT
 
 
     begin
@@ -197,7 +197,7 @@ class TripPlanner
       Rails.logger.warn "URL was #{service_url}"
       Rails.logger.warn e.backtrace.join("\n")
       return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
-    end    
+    end
     if results.size > 0
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
@@ -233,8 +233,12 @@ class TripPlanner
     tp = TripPlanner.new
     result, response = get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
-    itinerary = response['itineraries'].first
-    return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
+    if response["itineraries"]
+      itinerary = response['itineraries'].first
+      return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
+    else
+      return nil
+    end
   end
 
   def get_routes
