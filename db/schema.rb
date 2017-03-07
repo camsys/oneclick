@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20170210203533) do
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "postgis_topology"
   enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
@@ -702,8 +703,8 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "disabled_comment"
     t.string   "fare_user"
     t.integer  "booking_profile"
     t.integer  "fleet_size"
@@ -962,8 +963,8 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.string   "external_user_id",                                        null: false
     t.boolean  "disabled",                default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",              default: '2014-08-25 14:17:34', null: false
-    t.datetime "created_at",              default: '2014-08-25 14:17:34', null: false
+    t.datetime "updated_at",              default: '2014-09-19 16:24:36', null: false
+    t.datetime "created_at",              default: '2014-09-19 16:24:36', null: false
     t.string   "external_user_password"
     t.string   "encrypted_user_password"
   end

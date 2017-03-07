@@ -15,6 +15,10 @@ class UserMailer < ActionMailer::Base
       itin.map_image = create_static_map(itin)
       attachments.inline[itin.id.to_s + ".png"] = open(itin.map_image, 'rb').read
     end
+    # Attach icons
+    ["start.png", "stop.png"].each do |icon|
+      attach_image(icon)
+    end
     mail(to: addresses, subject: subject, from: @@from)
   end
 
@@ -130,6 +134,15 @@ class UserMailer < ActionMailer::Base
     @from_email = from_email
 
     mail(to: @to_email, from: @@from, subject: TranslationEngine.translate_text(:agency_now_assisting, agency: agency.name))
+  end
+
+  private
+
+  # Attaches an asset to the email based on its filename (including extension)
+  def attach_image(filename)
+    url = "#{Rails.root}/app/assets/images/#{filename}"
+    puts "ATTACHING FILE: #{url}"
+    attachments.inline[filename] = File.read(url)
   end
 
 end

@@ -62,6 +62,8 @@ class FareStructure < ActiveRecord::Base
       trip_part.to_trip_place.lat,
       trip_part.to_trip_place.lon)
 
+    return nil unless mileage
+
     if mileage_fare.mileage_rate
       mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
     else
