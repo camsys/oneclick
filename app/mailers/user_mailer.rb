@@ -16,7 +16,9 @@ class UserMailer < ActionMailer::Base
       attachments.inline[itin.id.to_s + ".png"] = open(itin.map_image, 'rb').read
     end
     # Attach icons
-    attach_image("start.png")
+    ["start.png", "stop.png"].each do |icon|
+      attach_image(icon)
+    end
     mail(to: addresses, subject: subject, from: @@from)
   end
 
