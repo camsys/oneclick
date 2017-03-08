@@ -218,7 +218,7 @@ namespace :oneclick do
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
 
           #Booking System Id
-          ecolane_profile.system = 'franklin'
+          ecolane_profile.system = 'rabbit'
           ecolane_profile.api_version = "8"
           ecolane_profile.default_trip_purpose = 'Other'
           ecolane_profile.booking_counties = primary_coverage_counties
@@ -389,8 +389,8 @@ namespace :oneclick do
           #Dummy User
           service.fare_user = "12152"
 
-          #CHANGE TO TRUE WHEN THIS GOES LIVE
-          service.active = true
+          #CHANGE TO TRUE WHEN THIS GOES LIVE (I.E. WHEN THE GEOCODING ISSUE IS RESOLVED)
+          service.active = false
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
