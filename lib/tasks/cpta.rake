@@ -212,7 +212,7 @@ namespace :oneclick do
           sponsor_array = [['MATP', 0],['AAA', 1]]
 
           #Dummy User
-          service.fare_user = "2581"
+          service.fare_user = "102581"
 
           #Get or create the ecolane_profile
           ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
