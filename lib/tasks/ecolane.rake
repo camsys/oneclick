@@ -58,7 +58,7 @@ namespace :ecolane do
           new_poi.state = new_poi.state_code
           new_poi.old = false
           #All POIs need a name, if Ecolane doesn't define one, then name it after the Address
-          if new_poi.name.blank?
+          if new_poi.name.blank? or new_poi.name.downcase == 'home'
             new_poi.name = new_poi.address1
           end
           new_poi.save
