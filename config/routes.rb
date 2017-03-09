@@ -394,6 +394,8 @@ Oneclick::Application.routes.draw do
           get  'profile'
           get  'get_guest_token'
           get  'lookup'
+          post 'reset'
+          post 'request_reset'
         end
       end
 
@@ -408,8 +410,6 @@ Oneclick::Application.routes.draw do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
         post 'sign_up' => 'sessions#sign_up'
-        post 'reset' => 'sessions#reset'
-        post 'edit' => 'sessions#edit'
       end
 
     end

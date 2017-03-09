@@ -127,53 +127,6 @@ module Api
 
       end
 
-      def reset
-        email = params[:email]
-        user = User.find_by(email: email)
-        if user.nil?
-          render status: 404, json: {message: "User not found"}
-          return
-        else
-          user.send_api_user_reset_password_instructions
-          render status: 200, json: {message: "Password reset instructions send to #{email}."}
-          return
-        end
-      end
-
-      def edit
-
-        token = Devise.token_generator.digest(User, :reset_password_token, params[:reset_password_token])
-        user = resource_class.find_by_reset_password_token(token)
-        unless (user && user.reset_password_period_valid?)
-          render status: 403, json: {message: "Invalid password reset token."}
-          return
-        end
-
-        if params[:password].nil? or params[:password_confirmation].nil?
-          render status: 400, json: {result: false, message: "Missing password or password confirmation."}
-          return
-        end
-
-        if params[:password] != params[:password_confirmation]
-          render status: 406, json: {result: false, message: 'Passwords do not match.'}
-          return
-        end
-
-
-        user.password = params[:password]
-        user.password_confirmation = params[:password_confirmation]
-
-        result = user.save
-
-        if result
-          render status: 200, json: {result: result, message: 'Success'}
-        else
-          render status: 406, json: {result: result, message: 'Unacceptable Password'}
-        end
-
-        return
-      end
-
       protected
 
       def set_access_control_headers
