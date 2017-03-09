@@ -247,7 +247,7 @@ class User < ActiveRecord::Base
           ur.relationship_status_id = RelationshipStatus::PENDING
         end
         request_message.recipients << rel.delegate
-        UserMailer.buddy_request_email(rel.delegate.email, rel.traveler).deliver
+      UserMailer.buddy_request_email(rel.delegate.email, rel.traveler).deliver
       end
       request_message.save rescue nil
     end
@@ -508,6 +508,23 @@ class User < ActiveRecord::Base
       end
     end
     return false
+  end
+
+  # Overwrites Devise Method
+  def set_reset_password_token
+    raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+
+    self.reset_password_token   = enc
+    self.reset_password_sent_at = Time.now.utc
+    save(validate: false)
+    raw
+  end
+
+  # Sends Rest Instructions for API Users
+  def send_api_user_reset_password_instructions
+    token = self.set_reset_password_token
+    UserMailer.reset_api_user_password(self, token).deliver
+    token
   end
 
 end

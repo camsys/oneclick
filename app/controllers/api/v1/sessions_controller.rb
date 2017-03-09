@@ -134,7 +134,7 @@ module Api
           render status: 404, json: {message: "User not found"}
           return
         else
-          user.send_reset_password_instructions
+          user.send_api_user_reset_password_instructions
           render status: 200, json: {message: "Password reset instructions send to #{email}."}
           return
         end

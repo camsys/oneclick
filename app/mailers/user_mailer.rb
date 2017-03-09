@@ -136,6 +136,13 @@ class UserMailer < ActionMailer::Base
     mail(to: @to_email, from: @@from, subject: TranslationEngine.translate_text(:agency_now_assisting, agency: agency.name))
   end
 
+  def reset_api_user_password(user, token)
+    @user = user
+    @reset_password_path = "#{Oneclick::Application.config.ui_url}?reset_password_token=#{token}"
+    mail(to: @user.email, from: @@from, subject: 'Password Reset Instructions')
+  end
+
+
   private
 
   # Attaches an asset to the email based on its filename (including extension)

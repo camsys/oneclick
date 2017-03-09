@@ -10,6 +10,9 @@ Oneclick::Application.configure do
 
   ActiveRecord::Base.logger.level = 1
 
+  #Location of UI (If using custom UI)
+  config.ui_url='https://www.utahridelink.com'
+
   #ECOLANE CONFIGS
   config.ecolane_base_url = "https://apiserver.ecolane.com"
   config.get_fares_from_ecolane = false
