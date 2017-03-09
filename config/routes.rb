@@ -409,6 +409,7 @@ Oneclick::Application.routes.draw do
         post 'sign_out' => 'sessions#destroy'
         post 'sign_up' => 'sessions#sign_up'
         post 'reset' => 'sessions#reset'
+        post 'edit' => 'sessions#edit'
       end
 
     end
