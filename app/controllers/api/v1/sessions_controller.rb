@@ -127,6 +127,19 @@ module Api
 
       end
 
+      def reset
+        email = params[:email]
+        user = User.find_by(email: email)
+        if user.nil?
+          render status: 404, json: {message: "User not found"}
+          return
+        else
+          user.send_reset_password_instructions
+          render status: 200, json: {message: "Password reset instructions send to #{email}."}
+          return
+        end
+      end
+
       protected
 
       def set_access_control_headers
