@@ -2,6 +2,7 @@ class TaxiRestService
 
   def self.call_out_to_taxi_fare_finder(city, api_key, from, to)
 
+
     base_url = "https://api.taxifarefinder.com/"
 
   	entity = '&entity_handle=' + city
@@ -16,7 +17,13 @@ class TaxiRestService
   	Rails.logger.info "TripPlanner#get_taxi_itineraries-fare: url: #{url}"
 
     begin
-      resp = Net::HTTP.get_response(URI.parse(url))
+      resp = nil
+      timeout(3) do
+        resp = Net::HTTP.get_response(URI.parse(url))
+      end
+      if resp.nil?
+        return nil
+      end
     rescue Exception=>e
       return
     end
@@ -35,7 +42,13 @@ class TaxiRestService
     Rails.logger.info "TripPlanner#get_taxi_itineraries-business: url: #{url}"
 
     begin
-      resp = Net::HTTP.get_response(URI.parse(url))
+      resp = nil
+      timeout(3) do
+        resp = Net::HTTP.get_response(URI.parse(url))
+      end
+      if resp.nil?
+        return nil
+      end
     rescue Exception=>e
       return
     end
