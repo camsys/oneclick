@@ -567,7 +567,6 @@ namespace :oneclick do
           ecolane_profile.booking_counties = primary_coverage_counties
           ecolane_profile.save
 
-
           else
           puts 'Cannot find service with external_id: ' +  external_id
           next
@@ -716,6 +715,91 @@ namespace :oneclick do
       s.save
       puts 'The Rabbit service has been turned on.'
     end
+
+  end
+
+  ############### Add Washington County ################
+  desc "Add Washington County"
+  task set_washington: :environment do
+
+    puts 'Creating the following services'
+    ecolane_service = {name: "Shared Ride", external_id: "washington"}
+
+    puts ecolane_service.ai
+
+    service_type = ServiceType.find_by(code: "paratransit")
+
+    # Look up service by external id and create if none exists
+    service = Service.find_or_create_by(external_id: ecolane_service[:external_id]) do |service|
+      puts 'Creating a new service for ' + ecolane_service.as_json.to_s
+      service.service_type = service_type
+      service.name = ecolane_service[:name]
+    end
+
+    # Create a new provider for service if none exists
+    service.provider ||= Provider.find_or_create_by(name: "#{ecolane_service[:external_id].titleize}") do |provider|
+      puts "Creating a new provider for service, called #{provider.name}."
+    end
+
+    service.booking_profile = BookingServices::AGENCY[:ecolane]
+    service.save
+
+    #Counties
+    primary_coverage_counties = ['Washington']
+    secondary_coverage_counties = ['Washington']
+
+    #Funding Sources
+    funding_source_array = [['Lottery', 2, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 3, false, "Medical Transportation"], ["WCT - FREEDOM", 4, false, "Eligible for ADA"], ["WCT - HOPPER", 4, false, "Eligible for ADA"],["Gen Pub", 5, true, "Full Fare"]]
+
+    #Sponsors
+    sponsor_array = [['MATP', 0],['AAA', 1]]
+
+    #Dummy User
+    service.fare_user = "29648"
+
+    #Get or create the ecolane_profile
+    ecolane_profile = EcolaneProfile.find_or_create_by(service: service)
+
+    #Optional: Disallowed Trip Purposes
+    #this is a comma separated string with no spaces around the commas, and all lower-case
+    #ecolane_profile.disallowed_purposes_text = 'ma urgent care,day care (16),outpatient program (14),psycho-social rehab (17),comm based employ (18),partial prog (12),sheltered workshop/cit (11),social rehab (13)'
+
+    #Booking System Id
+    ecolane_profile.system = 'washington'
+    ecolane_profile.default_trip_purpose = 'Other'
+    ecolane_profile.api_version = "8"
+    ecolane_profile.booking_counties = primary_coverage_counties
+    ecolane_profile.save
+
+    #Clear and set Funding Sources
+    service.funding_sources.destroy_all
+    funding_source_array.each do |fs|
+      new_funding_source = FundingSource.where(service: service, code: fs[0]).first_or_create
+      new_funding_source.index = fs[1]
+      new_funding_source.general_public = fs[2]
+      new_funding_source.comment = fs[3]
+      new_funding_source.save
+    end
+
+    #Clear and set Sponsors
+    service.sponsors.destroy_all
+    sponsor_array.each do |s|
+      new_sponsor = Sponsor.where(service: service, code: s[0]).first_or_create
+      new_sponsor.index = s[1]
+      new_sponsor.save
+    end
+
+    #Confirm API Token is set
+    if service.ecolane_profile.token.nil?
+      puts 'Be sure to setup a token for ' + service.name  + ' washington, service_id = ' + service.id.to_s
+      puts 'In console, run: Service.find(<id>).ecolane_profile.update_attributes(token: "<token>") '
+    end
+
+    # Build Service Coverage Area Geometries
+    service.primary_coverage = CoverageZone.build_coverage_area(primary_coverage_counties)
+    service.secondary_coverage = CoverageZone.build_coverage_area(secondary_coverage_counties)
+
+    service.save
 
   end
 
