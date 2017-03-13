@@ -249,6 +249,10 @@ class Itinerary < ActiveRecord::Base
     self.save
     bs = BookingServices.new
     result = bs.book self
+    if result
+      trip = self.trip_part.trip
+      trip.update_attribute :is_planned, true
+    end
     return result
   end
 
