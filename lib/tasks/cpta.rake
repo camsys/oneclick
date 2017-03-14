@@ -749,7 +749,7 @@ namespace :oneclick do
     secondary_coverage_counties = ['Washington']
 
     #Funding Sources
-    funding_source_array = [['Lottery', 2, false, 'Riders 65 or older'], ['PWD', 1, false, "Riders with disabilities"], ['MATP', 3, false, "Medical Transportation"], ["WCT - FREEDOM", 4, false, "Eligible for ADA"], ["WCT - HOPPER", 4, false, "Eligible for ADA"],["Gen Pub", 5, true, "Full Fare"]]
+    funding_source_array = [['Lottery', 2, false, 'Riders 65 or older'], ['PwD', 1, false, "Riders with disabilities"], ['MATP', 3, false, "Medical Transportation"], ["WCT - FREEDOM", 4, false, "Eligible for ADA"], ["WCT - HOPPER", 4, false, "Eligible for ADA"],["Gen Pub", 5, true, "Full Fare"]]
 
     #Sponsors
     sponsor_array = [['MATP', 0],['AAA', 1]]
