@@ -169,7 +169,7 @@ module Api
               i_hash[:discounts] = JSON.parse(itinerary.discounts)
             end
 
-            #Add Service Names to Legs
+            #Add Service info to Legs
             unless itinerary.legs.nil?
               yaml_legs = YAML.load(itinerary.legs)
               yaml_legs.each do |leg|
@@ -177,8 +177,10 @@ module Api
                   service = Service.where(external_id: leg['agencyId']).first
                   unless service.nil?
                     leg['serviceName'] = service.name
+                    leg['serviceFareInfo'] = service.fare_info_url || service.url
                   else
                     leg['serviceName'] = leg['agencyName'] || leg['agencyId']
+                    leg['serviceFareInfo'] = nil
                   end
                 end
               end

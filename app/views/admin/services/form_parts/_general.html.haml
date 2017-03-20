@@ -6,7 +6,7 @@
 -# Forms for creating or editing a service
 = simple_form_for service || :service,
         url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
-        remote: true,
+        remote: !new_service,
         html: { class: "form-horizontal service-details-form #{'last' if new_service}", multipart: true },
         data: {type: :html, "service-id" => service_id, "form-index" => form_index },
         authenticity_token: true,

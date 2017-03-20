@@ -83,6 +83,14 @@ namespace :update do
     Rake::Task["oneclick:set_washington"].invoke #Adds washington county to active Ecolane Services
   end
 
+  desc "v1.11.0"
+  task "v1.11.0" => :environment do
+  end
+
+  desc "v1.12.0"
+  task "v1.12.0" => :environment do
+    Rake::Task["db:migrate"].invoke
+  end
 
 end
 task :update do

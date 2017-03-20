@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210203533) do
+ActiveRecord::Schema.define(version: 20170320151813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -711,6 +711,7 @@ ActiveRecord::Schema.define(version: 20170210203533) do
     t.integer  "trip_volume"
     t.integer  "primary_coverage_id"
     t.integer  "secondary_coverage_id"
+    t.string   "fare_info_url"
   end
 
   add_index "services", ["primary_coverage_id"], :name => "index_services_on_primary_coverage_id"

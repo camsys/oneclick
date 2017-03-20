@@ -19,6 +19,8 @@
   = f.input :external_id,
       label: translate_helper(:external_id_label),
       placeholder: translate_helper(:external_id_placeholder)
+  = f.input :fare_info_url,
+      placeholder: "Enter a link to your service's fare information page"
 
 :javascript
   $(document).ready(function() {

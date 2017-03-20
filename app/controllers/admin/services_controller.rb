@@ -24,7 +24,8 @@ class Admin::ServicesController < Admin::BaseController
 
       if @service.save
         puts "SERVICE SAVED", @service.ai
-        format.html { render partial: 'admin/services/services_menu' } # Refresh the whole services menu on successful create
+        # format.html { render partial: 'admin/services/services_menu' } # Refresh the whole services menu on successful create
+        format.html { redirect_to edit_admin_provider_path(@provider), notice: "Service #{@service.name} was successfully created." } # Refresh whole page on successful create
         format.json { head :no_content }
       else
         puts "SERVICE NOT SAVED", @service.ai, @service.errors.ai
@@ -283,7 +284,7 @@ class Admin::ServicesController < Admin::BaseController
                                     :service_window, :time_factor, :provider_id, :service_type_id, :service_details_partial,
                                     :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email,
                                     :taxi_fare_finder_city, :display_color, :disabled_comment, :booking_profile,
-                                    :fleet_size, :trip_volume,
+                                    :fleet_size, :trip_volume, :fare_info_url,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:
