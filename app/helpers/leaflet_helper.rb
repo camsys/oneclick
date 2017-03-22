@@ -28,7 +28,7 @@ module LeafletHelper
 
     render :partial => '/leaflet/leaflet', :locals => { :options => options_with_indifferent_access, :js_dependencies => js_dependencies }
   end
-
+                                                                                  j
   # Generates the Leaflet JS code to create the map from the options hash
   # passed in via the LeafletMap helper method
   def generate_map(options)
