@@ -109,6 +109,10 @@ es:
   november: "November"
   december: "December"
 
+  fare_info: "Fare Info",
+  reset_password_instructions: "Enter your email address and we'll send you a link to reset your password",
+  reset_your_password: "Reset your password",
+  reset_password_modal_instructions: "Enter your password twice to reset your password"
 
   # Admin Provider/Service Data Form
   admin_user: 'Admin User'
