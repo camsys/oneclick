@@ -79,6 +79,10 @@ en:
   october: "October"
   november: "November"
   december: "December"
+  guests_note: "How many guests will be riding with you?"
+  attendants_note: "How many attendants will be riding with you?"
+  mobility_devices_note: "How many mobility devices will you be bringing?"
+  purpose_note: "What is your trip purpose?"
 
   fare_info: "Fare Info",
   reset_password_instructions: "Enter your email address and we'll send you a link to reset your password",
