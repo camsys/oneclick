@@ -84,9 +84,9 @@ en:
   mobility_devices_note: "How many mobility devices will you be bringing?"
   purpose_note: "What is your trip purpose?"
 
-  fare_info: "Fare Info",
-  reset_password_instructions: "Enter your email address and we'll send you a link to reset your password",
-  reset_your_password: "Reset your password",
+  fare_info: "Fare Info"
+  reset_password_instructions: "Enter your email address and we'll send you a link to reset your password"
+  reset_your_password: "Reset your password"
   reset_password_modal_instructions: "Enter your password twice to reset your password"
 
   invalid_email: "Invalid Email Address Used"
