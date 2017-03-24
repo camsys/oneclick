@@ -27,7 +27,7 @@
                   });
             .col-sm-6
               = f.input :standard_usage_report_date_option, collection: StandardUsageReport.available_date_option_collections, include_blank: false, label: translate_helper(:date_option)
-      - when 'BookedTripsReport', 'PlannedTripsReport'
+      - when 'BookedTripsReport', 'PlannedTripsReport', 'UniqueUsersReport'
         .booked-trips-report-components
           %label= "Query Date Range"
           .row

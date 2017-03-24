@@ -2,6 +2,8 @@ require 'date'
 
 module Reporting::ReportHelper
 
+  AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
+
   # include both generic reports and customized reports
   def all_report_infos
 
@@ -212,6 +214,21 @@ module Reporting::ReportHelper
     @to_date = Chronic.parse(report.to_date).to_date.in_time_zone.utc
     @date_range = @from_date..@to_date
     @time_unit = Parcelable::UNITS_OF_TIME[report.date_option.to_sym]
+  end
+
+
+  # Groups itineraries by associated users
+  def unique_users(itineraries)
+    itineraries.group('users.email').count
+  end
+
+  # Groups itineraries by origin county
+  def group_by_county(itineraries)
+    itineraries.group('trip_places.county').count
+  end
+
+  def distinct_users_by_county(itineraries)
+    itineraries.group('trip_places.county').count('DISTINCT users.email')
   end
 
 end

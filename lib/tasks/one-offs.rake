@@ -321,6 +321,37 @@ namespace :oneclick do
                     active: true
     end
 
+    # Add Planned Trips Report
+    desc "Create Unique Users Report"
+    task :create_unique_users_report => :environment do
+      setup_report  name: 'Unique and First Time Users',
+                    description: 'Dashboard of unique and first-time users planning and booking trips',
+                    view_name: 'unique_users_report',
+                    class_name: 'UniqueUsersReport',
+                    active: true
+    end
+
+    # Geocode Old Places with County
+    desc "Geocode Old Places with County"
+    task :add_county_to_old_places => :environment do
+      places = TripPlace.where(county: nil)
+      og = OneclickGeocoder.new
+      update_count = 0
+      places.find_all do |p|
+        county = og.get_county(p.lat, p.lon)
+        print "Updating Place #{p.id} (#{p.lat},#{p.lon}) to #{county}... "
+        if p.update_attributes(county: county)
+          update_count += 1
+          puts "Success!"
+        else
+          puts "failed."
+        end
+      end
+      puts
+      puts "UPDATED #{update_count} PLACES"
+      puts
+    end
+
     #Delete duplicate modes (Only deletes inactive modes when there is a duplicate mode that is active)
     desc "Delete inactive modes that have an active duplicate"
     task :delete_duplicate_modes => :environment do

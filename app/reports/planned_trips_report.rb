@@ -2,7 +2,7 @@ class PlannedTripsReport < AbstractReport
   include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable, Reporting::GoogleChartsHelper
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
-  AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
+  # AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)

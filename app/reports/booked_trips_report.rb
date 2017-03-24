@@ -2,7 +2,7 @@ class BookedTripsReport < AbstractReport
   include Reporting::ReportHelper, Reporting::ReportHelper::Parcelable, Reporting::GoogleChartsHelper
   ActiveRecord::Relation.send(:include, Reporting::ReportHelper::Parcelable) # Include reporting helper methods in query results
 
-  AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
+  # AVAILABLE_DATE_OPTIONS = [:annually, :monthly, :weekly, :daily]
 
   # Get Data method returns data based on the current user and the report parameters passed in
   def get_data(current_user, report)
@@ -13,7 +13,8 @@ class BookedTripsReport < AbstractReport
 
     # Filter base by counties
     @county_filters = report.county_filters.select {|f| !f.blank? }
-    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place]).where(trip_places: {county: @county_filters}) unless @county_filters.empty?
+    itinerary_base = itinerary_base.includes(trip_part: [:from_trip_place])
+    itinerary_base = itinerary_base.where(trip_places: {county: @county_filters}) unless @county_filters.empty?
 
     # Additional queries based on base query
     booked_itins = itinerary_base.where.not(ecolane_bookings: {itinerary_id: nil})
@@ -24,8 +25,10 @@ class BookedTripsReport < AbstractReport
     # All Booked Trips Count #
     ##########################
 
+    counties = group_by_county(booked_itins).keys
+
     # Prepare Data Table
-    data[:all_booked_trips] = build_google_charts_hash(title: "Total Trips Booked, by #{@time_unit.to_s.titleize}")
+    data[:all_booked_trips] = build_google_charts_hash(title: "Total Trips Booked, by #{@time_unit.to_s.titleize} and Origin County")
 
     # Add totals
     data[:all_booked_trips][:totals] = {
@@ -33,15 +36,28 @@ class BookedTripsReport < AbstractReport
       descriptor: "trips booked"
     }
 
-    # Add columns
-    data[:all_booked_trips][:columns] = [
-      { heading: @time_unit.to_s, type: 'date'},
-      { heading: "trips booked", type: 'number'}
-    ]
+    # # Add columns
+    # data[:all_booked_trips][:columns] = [
+    #   { heading: @time_unit.to_s, type: 'date'},
+    #   { heading: "trips booked", type: 'number'}
+    # ]
+
+    # Create Column Headers
+    data[:all_booked_trips][:columns] = [{ heading: @time_unit.to_s, type: 'date'}]
+    data[:all_booked_trips][:columns] += counties.map do |c|
+      { heading: (c.nil? ? 'no county data' : c), type: 'number'}
+    end
+
+    # # Add Data to the Table
+    # data[:all_booked_trips][:rows] = booked_itins.parcel_by(@date_range, @time_unit) do |seg, data|
+    #   [seg, data.count]
+    # end
 
     # Add Data to the Table
-    data[:all_booked_trips][:rows] = booked_itins.parcel_by(@date_range, @time_unit) do |seg, data|
-      [seg, data.count]
+    data[:all_booked_trips][:rows] =
+    booked_itins.parcel_by(@date_range, @time_unit) do |seg, data|
+      grouped_data = group_by_county(data)
+      [seg] + counties.map{ |c| grouped_data[c] }
     end
 
     # Set up Tick Marks on hAxis
