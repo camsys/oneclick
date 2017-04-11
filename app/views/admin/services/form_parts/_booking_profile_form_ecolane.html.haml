@@ -11,6 +11,7 @@
         input_html: { value: service.ecolane_profile.booking_counties_text,
                       class: "input-ecolane-booking-counties",
                       placeholder: translate_helper(:ecolane_booking_counties_placeholder)}
+      = ep.input :use_customer_default, as: :boolean,  checked_value: true, unchecked_value: false, input_html: {checked: service.ecolane_profile.use_customer_default, class: "input-ecolane-profile-use-customer-default"}
       = ep.input :api_version, as: :hidden, input_html: {value: "9"} # Default to API Version 9
     -else
       = ep.input :system

@@ -167,10 +167,10 @@ ActiveRecord::Schema.define(version: 20170411133357) do
     t.integer  "service_id"
     t.string   "system"
     t.string   "token"
-    t.string   "api_version",            default: "8",  null: false
+    t.string   "api_version",          default: "8",  null: false
     t.text     "booking_counties"
     t.text     "disallowed_purposes"
-    t.boolean  "user_passenger_default", default: true
+    t.boolean  "use_customer_default", default: true
   end
 
   create_table "fare_structures", force: true do |t|

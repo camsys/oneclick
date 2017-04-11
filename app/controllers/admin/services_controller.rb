@@ -143,6 +143,7 @@ class Admin::ServicesController < Admin::BaseController
     ep.disallowed_purposes_text = ecolane_params[:disallowed_purposes]
     ep.booking_counties_text = ecolane_params[:booking_counties]
     ep.api_version = ecolane_params[:api_version]
+    ep.use_customer_default = (ecolane_params[:use_customer_default] == "true") ? true : false
     ep.save
   end
 
