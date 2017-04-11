@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320151813) do
+ActiveRecord::Schema.define(version: 20170411133357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
+  enable_extension "pg_stat_statements"
   enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
@@ -127,8 +126,8 @@ ActiveRecord::Schema.define(version: 20170320151813) do
     t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
     t.boolean  "custom_shape",                                       default: false
+    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "date_options", force: true do |t|
@@ -168,9 +167,10 @@ ActiveRecord::Schema.define(version: 20170320151813) do
     t.integer  "service_id"
     t.string   "system"
     t.string   "token"
-    t.string   "api_version",          default: "8", null: false
+    t.string   "api_version",            default: "8",  null: false
     t.text     "booking_counties"
     t.text     "disallowed_purposes"
+    t.boolean  "user_passenger_default", default: true
   end
 
   create_table "fare_structures", force: true do |t|
@@ -186,8 +186,8 @@ ActiveRecord::Schema.define(version: 20170320151813) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -703,8 +703,8 @@ ActiveRecord::Schema.define(version: 20170320151813) do
     t.string   "display_color"
     t.integer  "mode_id"
     t.string   "taxi_fare_finder_city",        limit: 64
-    t.boolean  "use_gtfs_colors"
     t.string   "disabled_comment"
+    t.boolean  "use_gtfs_colors"
     t.string   "fare_user"
     t.integer  "booking_profile"
     t.integer  "fleet_size"
@@ -964,8 +964,8 @@ ActiveRecord::Schema.define(version: 20170320151813) do
     t.string   "external_user_id",                                        null: false
     t.boolean  "disabled",                default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",              default: '2014-09-19 16:24:36', null: false
-    t.datetime "created_at",              default: '2014-09-19 16:24:36', null: false
+    t.datetime "updated_at",              default: '2014-08-25 14:17:34', null: false
+    t.datetime "created_at",              default: '2014-08-25 14:17:34', null: false
     t.string   "external_user_password"
     t.string   "encrypted_user_password"
   end

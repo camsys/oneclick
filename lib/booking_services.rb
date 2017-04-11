@@ -57,8 +57,12 @@ class BookingServices
 
             #Get the default funding source for this customer and build an array of valid funding source ordered from
             # most desired to least desired.
-            default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
-            funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+            if service.ecolane_profile.use_passenger_default
+              default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
+              funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
+            else
+              funding_array = FundingSource.where(service: service).order(:index).pluck(:code)
+            end
 
             result, messages = es.book_itinerary(sponsors, trip_purpose_raw, is_depart, scheduled_time, from_trip_place, to_trip_place, note_to_driver, assistant, companions, children, other_passengers, customer_number, funding_array, system, token)
             Rails.logger.info messages
