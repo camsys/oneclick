@@ -421,10 +421,15 @@ class EcolaneServices
     end
 
     fares.each do |fare|
-      if highest_priority_fare.empty? or highest_priority_fare[3] < fare['priority']
+      puts fare.ai
+
+      if highest_priority_fare.empty? or highest_priority_fare[3].to_f < fare['priority'].to_f
         highest_priority_fare = [fare['client_copay'].to_f/100.0, fare['funding']['funding_source'], fare['funding']['sponsor'], fare['priority']]
       end
     end
+
+    puts 'returning'
+    puts highest_priority_fare.ai
     return highest_priority_fare[0], highest_priority_fare[1], highest_priority_fare[2]
   end
 
