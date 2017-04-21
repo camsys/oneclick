@@ -19,11 +19,23 @@ module Api
       before_action :get_api_traveler
       after_filter :set_access_control_headers
 
+      # Catches server errors so that response can be rendered as JSON with proper headers, etc.
+      rescue_from Exception, with: :api_error_response
+
       def handle_options_request
         head(:ok) if request.request_method == "OPTIONS"
       end
 
       protected
+
+      # Rescues 500 errors and renders them properly as JSON response
+      def api_error_response(exception)
+        response = {
+          error: { type: exception.class.name, message: exception.message }
+        }
+        render status: 500, json: response
+      end
+
 
       def set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'

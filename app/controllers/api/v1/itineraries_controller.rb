@@ -40,7 +40,7 @@ module Api
 
       #Post details on a trip, create/save the itineraries, and return them as json
       def plan
-
+        
         user_profile = params[:user_profile]
         if user_profile
           @traveler.update_profile user_profile

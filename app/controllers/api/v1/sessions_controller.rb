@@ -8,6 +8,9 @@ module Api
 
       after_filter :set_access_control_headers
 
+      # Catches server errors so that response can be rendered as JSON with proper headers, etc.
+      rescue_from Exception, with: :api_error_response
+
       def create
         email = params[:session][:email] if params[:session]
         password = params[:session][:password] if params[:session]
@@ -128,6 +131,14 @@ module Api
       end
 
       protected
+
+      # Rescues 500 errors and renders them properly as JSON response
+      def api_error_response(exception)
+        response = {
+          error: { type: exception.class.name, message: exception.message }
+        }
+        render status: 500, json: response
+      end
 
       def set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'
