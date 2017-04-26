@@ -92,6 +92,11 @@ namespace :update do
     Rake::Task["db:migrate"].invoke
   end
 
+  desc "v1.14.0"
+  task "v1.14.0" => :environment do
+    Rake::Task["db:migrate"].invoke
+  end
+
 end
 task :update do
   Rake::Task["update:default"].invoke
