@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411133357) do
+ActiveRecord::Schema.define(version: 20170426142023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "postgis"
+  enable_extension "pg_stat_statements"
   enable_extension "tablefunc"
 
   create_table "accommodations", force: true do |t|
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20170411133357) do
     t.text     "recipe"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
     t.boolean  "custom_shape",                                       default: false
+    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
   end
 
   create_table "date_options", force: true do |t|
@@ -186,8 +186,8 @@ ActiveRecord::Schema.define(version: 20170411133357) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
@@ -968,6 +968,7 @@ ActiveRecord::Schema.define(version: 20170411133357) do
     t.datetime "created_at",              default: '2014-08-25 14:17:34', null: false
     t.string   "external_user_password"
     t.string   "encrypted_user_password"
+    t.boolean  "unrestricted_hours",      default: false
   end
 
   create_table "users", force: true do |t|

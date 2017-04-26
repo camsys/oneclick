@@ -66,11 +66,16 @@ module Api
         else # This is not a guest, check to see if the traveler is registered with a service
 
           if @traveler.user_profile.user_services.count > 0 #This user is registered with a service
-            service = @traveler.user_profile.user_services.first.service
+            user_service = @traveler.user_profile.user_services.first
+            service = user_service.service
             min_notice_days = (service.advanced_notice_minutes || 1440).to_i / 1440 #Minimum notice in days
             max_notice_days = [(service.max_advanced_book_minutes || 20160).to_i / 1440, 28].min #Max advanced notice (up to 28 days)
 
-            if service.schedules.count > 0 #This user's service has listed hours
+            if user_service.unrestricted_hours #This user is allowed to book at all times
+              (1..21).each do |n|
+                hours[(today + n).to_s] = {open: "00:00", close: "23:59"}
+              end
+            elsif service.schedules.count > 0 #This user's service has listed hours
 
               (min_notice_days..max_notice_days).each do |n|
                 schedule = service.schedules.where(day_of_week: (today + n).wday).first
