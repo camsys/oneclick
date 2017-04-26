@@ -4,6 +4,8 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  system: "System"
+  whitelist: "Whitelisted Users"
   open_rideshare_app: "Open Uber App"
   their_phone_number_is: "Their phone number is"
   book_another_ride: "Book another ride"

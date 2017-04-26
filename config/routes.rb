@@ -230,6 +230,10 @@ Oneclick::Application.routes.draw do
         end
         resources :trips
       end
+
+      namespace :users do
+        get 'whitelist'
+      end
       resources :users do
         get 'merge', on: :member, to: "users#merge_edit"
         patch 'merge', on: :member, to: "users#merge_submit"

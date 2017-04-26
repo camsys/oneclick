@@ -28,7 +28,8 @@ module CsHelpers
     :translations => 'fa fa-language',
     :multi_od_trip => 'fa fa-table',
     :user_guide => 'fa fa-book',
-    :settings => 'fa fa-gear'
+    :settings => 'fa fa-gear',
+    :whitelist => 'fa fa-list'
   }
 
   def admin_actions
@@ -47,10 +48,9 @@ module CsHelpers
   end
 
   def staff_actions
-    [
+    actions = [
       {label: TranslationEngine.translate_text(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
       {label: TranslationEngine.translate_text(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
-      # {label: TranslationEngine.translate_text(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
       {label: TranslationEngine.translate_text(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:providers], access: :show_provider}, # New Service Data Screen
       {label: TranslationEngine.translate_text(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
       {label: TranslationEngine.translate_text(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
@@ -61,6 +61,13 @@ module CsHelpers
       {label: TranslationEngine.translate_text(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
       {label: TranslationEngine.translate_text(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
+
+    if Oneclick::Application.config.allows_booking
+      return [ {label: TranslationEngine.translate_text(:whitelist), target: admin_users_whitelist_path, window: "", icon: ACTION_ICONS[:whitelist], access: :admin_providers}] + actions
+    else
+      return actions
+    end
+
   end
 
   def traveler_actions options = {}

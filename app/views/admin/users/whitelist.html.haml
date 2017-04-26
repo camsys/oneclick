@@ -1,0 +1,53 @@
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:whitelist)}"
+.row.info-header
+.panel.panel-default{style: 'padding: 0px;'}
+  .panel-heading
+    %h2.panel-title
+      = translate_helper(:whitelist)
+  .panel-body
+    %table.table.table-condensed.table-striped.table-bordered.table-hover#datatable#admin_whitelisted_users_table
+      %thead
+        %tr
+          %th= translate_helper(:id)
+          %th= translate_helper(:name)
+          %th= translate_helper(:system)
+      %tbody
+        - @whitelist.each do |user_service|
+          %tr
+            %td= user_service.external_user_id
+            %td= user_service.user_profile.user.name
+            %td= user_service.service.ecolane_profile ? user_service.service.ecolane_profile.system : nil
+
+
+:javascript
+  $(document).ready(function() {
+    var key = "admin_whitelisted_users";
+    var entityName = "users";
+    var oTable = $('#' + key + '_table').dataTable( {
+          stateSave: true,
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ " + entityName + " per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ " + entityName,
+              "sInfoEmpty": "Showing 0 to 0 of 0 " + entityName,
+              "sInfoFiltered": "(filtered from _MAX_ total " + entityName + ")"
+          },
+          "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+
+    var index = $("thead th").index($('#status'));
+
+    //export all
+    $('#exportAll').on('click', function(e) {
+      var baseUrl = "#{url_for(locale: params[:locale], format: 'csv')}?";
+
+
+      var searchText = oTable.oApi._fnAjaxParameters(oTable.fnSettings()).search.value;
+      if(searchText.trim().length > 0) {
+        params.search = searchText;
+      }
+
+      window.location.href = baseUrl + $.param(params);
+      e.preventDefault();
+    });
+  } );

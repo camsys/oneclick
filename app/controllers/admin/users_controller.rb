@@ -245,6 +245,10 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
+  def whitelist
+    @whitelist = UserService.where(unrestricted_hours: true)
+  end
+
   private
 
   def user_params_with_password
