@@ -1265,7 +1265,10 @@ class BookingServices
     #Unpack the info and update the user's user_service, if this is a new user, create a new user and user_service
     customer_info = Hash.from_xml(customer_info)
     dob = customer_info["customer"]["date_of_birth"]
-    external_user_password = "#{dob.split('-')[1]}/#{dob.split('-')[2]}/#{dob.split('-')[0]}"
+    unless dob
+      return nil
+    end
+    external_user_password = dob ? "#{dob.split('-')[1]}/#{dob.split('-')[2]}/#{dob.split('-')[0]}" : rand(36**10).to_s(36)
     user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service, customer_info["customer"]["first_name"], customer_info["customer"]["last_name"], customer_info["customer"]["id"])
     user_service.unrestricted_hours = true
     user_service.save
