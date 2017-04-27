@@ -4,6 +4,13 @@
 # TODO may want to eventually split these out into separate files
 
 en:
+  added: "Added"
+  removed: "Removed"
+  not_found: "Not Found"
+  customer_number: "Customer Number"
+  county: "County"
+  add_a_user: "Add a User"
+  remove_whitelist_confirmation: "Are you sure that you want to remove this user from the whitelist?"
   system: "System"
   whitelist: "Whitelisted Users"
   open_rideshare_app: "Open Uber App"

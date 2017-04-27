@@ -63,7 +63,7 @@ module CsHelpers
     ]
 
     if Oneclick::Application.config.allows_booking
-      return [ {label: TranslationEngine.translate_text(:whitelist), target: admin_users_whitelist_path, window: "", icon: ACTION_ICONS[:whitelist], access: :admin_providers}] + actions
+      return [ {label: TranslationEngine.translate_text(:whitelist), target: admin_users_whitelist_path, window: "", icon: ACTION_ICONS[:whitelist], access: :whitelist}] + actions
     else
       return actions
     end

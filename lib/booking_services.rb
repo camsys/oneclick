@@ -1250,7 +1250,12 @@ class BookingServices
 
     # Make sure this traveler exists in Ecolane.
     es = EcolaneServices.new
-    customer_info = es.fetch_customer_information(external_user_id, ecolane_profile.system, ecolane_profile.token)
+    customer_id =  es.get_customer_id(external_user_id, ecolane_profile.system, ecolane_profile.token)
+    unless customer_id
+      return nil
+    end
+
+    customer_info = es.fetch_customer_information(customer_id, ecolane_profile.system, ecolane_profile.token)
 
     if customer_info.kind_of?(Array)
       #This traveler does not exist
@@ -1264,7 +1269,19 @@ class BookingServices
     user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service, customer_info["customer"]["first_name"], customer_info["customer"]["last_name"], customer_info["customer"]["id"])
     user_service.unrestricted_hours = true
     user_service.save
+
     return {system: ecolane_profile.system, customer_number: external_user_id, first_name: customer_info["customer"]["first_name"], last_name: customer_info["customer"]["last_name"]}
+
+  end
+
+  def counties
+    external_id_array = Service.paratransit.active.map do |service|
+      if service.ecolane_profile && service.ecolane_profile.booking_counties
+        service.ecolane_profile.booking_counties
+      else
+        []
+      end
+    end.flatten.map(&:humanize).uniq.sort
   end
 
   ####################################

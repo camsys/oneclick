@@ -2,7 +2,7 @@ class Admin::UsersController < Admin::BaseController
   skip_authorization_check :only => [:create, :new]
   before_action :load_user, only: :create
   before_filter :authenticate_user!, :except => [:agency_assist]
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:whitelist, :add_whitelist, :remove_whitelist]
 
   def index
     usertable = UsersDatatable.new(view_context)
@@ -246,13 +246,29 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def whitelist
+    authorize! :access, :whitelist
+    @counties = BookingServices.new.counties
     @whitelist = UserService.where(unrestricted_hours: true)
   end
 
+  def add_whitelist
+    authorize! :access, :whitelist
+    bs = BookingServices.new
+    result = bs.whitelist(params[:county], params[:customer_number])
+    if result
+      flash[:notice] = "#{result[:first_name]} #{result[:last_name]} #{TranslationEngine.translate_text(:added)}"
+    else
+      flash[:error] = "#{params[:customer_number]} #{TranslationEngine.translate_text(:not_found)} in #{params[:county]}"
+    end
+    redirect_to admin_users_whitelist_path
+  end
+
   def remove_whitelist
+    authorize! :access, :whitelist
     user = User.find(params[:user_id])
     user_services = UserService.where(user_profile: user.user_profile, unrestricted_hours:true)
     user_services.update_all(unrestricted_hours: false)
+    flash[:notice] = "#{user.first_name} #{user.last_name} #{TranslationEngine.translate_text(:removed)}"
     redirect_to admin_users_whitelist_path
   end
 

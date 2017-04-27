@@ -100,4 +100,5 @@ namespace :update do
 end
 task :update do
   Rake::Task["update:default"].invoke
+  Rake::Task["oneclick:load_locales"].invoke
 end

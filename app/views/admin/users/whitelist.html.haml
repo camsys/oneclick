@@ -1,5 +1,36 @@
 - content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:whitelist)}"
 .row.info-header
+
+.row
+  .col-md-3
+  .col-md-6
+    .panel.panel-default{style: 'padding: 0px;'}
+      .panel-heading
+        %h2.panel-title
+          =translate_helper(:add_a_user)
+      .panel-body
+        =form_tag(admin_users_whitelist_path, method: "patch") do
+          .row
+            .col-md-4
+              =translate_helper(:customer_number)
+            .col-md-8
+              %input{:type => "string", :name => 'customer_number', :style=>"width:100%;", :maxlength => "100"}
+          .row
+            .col-md-4
+              =translate_helper(:county)
+            .col-md-8
+              %select{:name => "county"}
+                =@counties.each do |county|
+                  %option{:value => county}
+                    =county
+          %br
+          .row
+            .col-md-12.text-center
+              %button.btn.btn-primary{ "data-loading-text" => "Adding User", :id => 'add_user_to_whitelist', :type => "submit"}
+                =translate_helper(:add)
+
+  .col-md-3
+
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
@@ -9,17 +40,19 @@
       %thead
         %tr
           %th= translate_helper(:id)
-          %th= translate_helper(:name)
+          %th= translate_helper(:first_name)
+          %th= translate_helper(:last_name)
           %th= translate_helper(:system)
           %th= ""
       %tbody
         - @whitelist.each do |user_service|
           %tr
             %td= user_service.external_user_id
-            %td= user_service.user_profile.user.name
+            %td= user_service.user_profile.user.first_name
+            %td= user_service.user_profile.user.last_name
             %td= user_service.service.ecolane_profile ? user_service.service.ecolane_profile.system : nil
             %td.center
-              = link_to admin_user_remove_whitelist_path(user_service.user_profile.user), {:style => 'margin-right: 5px;', :class => "btn btn-sm btn-danger", :method => :delete} do
+              = link_to admin_user_whitelist_path(user_service.user_profile.user), {:style => 'margin-right: 5px;', confirm: translate_helper(:remove_whitelist_confirmation), :class => "btn btn-sm btn-danger", :method => :delete} do
                 %i.fa.fa-times
 
 

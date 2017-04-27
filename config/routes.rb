@@ -234,12 +234,14 @@ Oneclick::Application.routes.draw do
       namespace :users do
         get 'whitelist'
       end
+      patch 'users/whitelist' => "users#add_whitelist"
+
       resources :users do
         get 'merge', on: :member, to: "users#merge_edit"
         patch 'merge', on: :member, to: "users#merge_submit"
         put 'update_roles', on: :member
         get 'find_by_email'
-        delete 'remove_whitelist'
+        delete 'whitelist'  => 'users#remove_whitelist'
         member do
           patch 'undelete'
         end
