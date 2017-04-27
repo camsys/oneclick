@@ -249,6 +249,13 @@ class Admin::UsersController < Admin::BaseController
     @whitelist = UserService.where(unrestricted_hours: true)
   end
 
+  def remove_whitelist
+    user = User.find(params[:user_id])
+    user_services = UserService.where(user_profile: user.user_profile, unrestricted_hours:true)
+    user_services.update_all(unrestricted_hours: false)
+    redirect_to admin_users_whitelist_path
+  end
+
   private
 
   def user_params_with_password

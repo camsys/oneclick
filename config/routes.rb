@@ -239,6 +239,7 @@ Oneclick::Application.routes.draw do
         patch 'merge', on: :member, to: "users#merge_submit"
         put 'update_roles', on: :member
         get 'find_by_email'
+        delete 'remove_whitelist'
         member do
           patch 'undelete'
         end

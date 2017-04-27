@@ -11,13 +11,20 @@
           %th= translate_helper(:id)
           %th= translate_helper(:name)
           %th= translate_helper(:system)
+          %th= ""
+          %th= ""
       %tbody
         - @whitelist.each do |user_service|
           %tr
             %td= user_service.external_user_id
             %td= user_service.user_profile.user.name
             %td= user_service.service.ecolane_profile ? user_service.service.ecolane_profile.system : nil
-
+            %td.center
+              =button_tag :type => 'button', :class => "btn btn-sm btn-danger delete-button delete_whitelisted_user", "aria-label" => "#{translate_helper(:remove)}" do
+                %i.fa.fa-times
+            %td.center
+              = link_to admin_user_remove_whitelist_path(user_service.user_profile.user), {:style => 'margin-right: 5px;', :class => "btn action-button", :method => :delete} do
+                = translate_helper(:ok)
 
 :javascript
   $(document).ready(function() {
@@ -35,19 +42,5 @@
           "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       } );
 
-    var index = $("thead th").index($('#status'));
+  });
 
-    //export all
-    $('#exportAll').on('click', function(e) {
-      var baseUrl = "#{url_for(locale: params[:locale], format: 'csv')}?";
-
-
-      var searchText = oTable.oApi._fnAjaxParameters(oTable.fnSettings()).search.value;
-      if(searchText.trim().length > 0) {
-        params.search = searchText;
-      }
-
-      window.location.href = baseUrl + $.param(params);
-      e.preventDefault();
-    });
-  } );
