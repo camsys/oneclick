@@ -1244,6 +1244,29 @@ class BookingServices
     return new_array
   end
 
+  def whitelist county, external_user_id
+    service = county_to_service county
+    ecolane_profile = service.ecolane_profile
+
+    # Make sure this traveler exists in Ecolane.
+    es = EcolaneServices.new
+    customer_info = es.fetch_customer_information(external_user_id, ecolane_profile.system, ecolane_profile.token)
+
+    if customer_info.kind_of?(Array)
+      #This traveler does not exist
+      return nil
+    end
+
+    #Unpack the info and update the user's user_service, if this is a new user, create a new user and user_service
+    customer_info = Hash.from_xml(customer_info)
+    dob = customer_info["customer"]["date_of_birth"]
+    external_user_password = "#{dob.split('-')[1]}/#{dob.split('-')[2]}/#{dob.split('-')[0]}"
+    user_service = get_or_create_ecolane_traveler(external_user_id, external_user_password, service, customer_info["customer"]["first_name"], customer_info["customer"]["last_name"], customer_info["customer"]["id"])
+    user_service.unrestricted_hours = true
+    user_service.save
+    return {system: ecolane_profile.system, customer_number: external_user_id, first_name: customer_info["customer"]["first_name"], last_name: customer_info["customer"]["last_name"]}
+  end
+
   ####################################
   # End Ecolane Specific Functions
   ###################################

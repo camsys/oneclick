@@ -12,7 +12,6 @@
           %th= translate_helper(:name)
           %th= translate_helper(:system)
           %th= ""
-          %th= ""
       %tbody
         - @whitelist.each do |user_service|
           %tr
@@ -20,11 +19,9 @@
             %td= user_service.user_profile.user.name
             %td= user_service.service.ecolane_profile ? user_service.service.ecolane_profile.system : nil
             %td.center
-              =button_tag :type => 'button', :class => "btn btn-sm btn-danger delete-button delete_whitelisted_user", "aria-label" => "#{translate_helper(:remove)}" do
+              = link_to admin_user_remove_whitelist_path(user_service.user_profile.user), {:style => 'margin-right: 5px;', :class => "btn btn-sm btn-danger", :method => :delete} do
                 %i.fa.fa-times
-            %td.center
-              = link_to admin_user_remove_whitelist_path(user_service.user_profile.user), {:style => 'margin-right: 5px;', :class => "btn action-button", :method => :delete} do
-                = translate_helper(:ok)
+
 
 :javascript
   $(document).ready(function() {
