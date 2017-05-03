@@ -57,7 +57,7 @@ class BookingServices
 
             #Get the default funding source for this customer and build an array of valid funding source ordered from
             # most desired to least desired.
-            if service.ecolane_profile.use_passenger_default
+            if service.ecolane_profile.use_customer_default
               default_funding = get_default_funding_source(es.get_customer_id(customer_number, system, token), system, token)
               funding_array = [default_funding] +   FundingSource.where(service: service).order(:index).pluck(:code)
             else
