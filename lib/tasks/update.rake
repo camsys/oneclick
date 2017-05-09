@@ -95,6 +95,7 @@ namespace :update do
   desc "v1.14.0"
   task "v1.14.0" => :environment do
     Rake::Task["db:migrate"].invoke
+    Rake::Task["oneclick:load_locales"].invoke
   end
 
 end
