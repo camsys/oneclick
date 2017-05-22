@@ -648,6 +648,13 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
   # Returns true/false if trip_part is valid for any of the passed service's schedules
   # Returns true if passed a nil service, or a service with no schedules
   def valid_for_service_time?(service)
+
+    # Check to see if user is whitelisted
+    user_service = self.trip.user.user_profile.user_services.find_by(service: service)
+    if user_service and user_service.unrestricted_hours
+      return true
+    end
+
     return true if service.nil? or service.schedules.count == 0
     service.schedules.any? { |sched| valid_for_schedule?(sched) }
   end
