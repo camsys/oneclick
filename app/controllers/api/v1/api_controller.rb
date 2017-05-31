@@ -51,13 +51,13 @@ module Api
         if email.nil? and token.nil?
           return
         elsif email and token.nil?
-          render json: {status: 401, message: "Please enter a token to continue."}
+          render status: 401, json: {message: "Please enter a token to continue."}
         else
           user = User.find_by(email: email)
           if user.nil?
-            render json: {status: 404, message: "User not found."}
+            render status: 404, json: {message: "User not found."}
           elsif user.authentication_token != token
-            render json: {status: 401, message: "Invalid token."}
+            render status: 401, json: {message: "Invalid tokesn."}
           end
         end
       end
@@ -77,8 +77,8 @@ module Api
 
       def confirm_api_activated
         unless Oneclick::Application.config.api_activated
-          hash = {status: 401, message: "Calls to this API are not authorized."}
-          render json: hash
+          hash = {message: "Calls to this API are not authorized."}
+          render status: 401, json: hash
         end
       end
 
