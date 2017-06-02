@@ -57,7 +57,7 @@ module Api
           if user.nil?
             render status: 404, json: {message: "User not found."}
           elsif user.authentication_token != token
-            render status: 401, json: {message: "Invalid tokesn."}
+            render status: 401, json: {message: "Invalid token."}
           end
         end
       end
