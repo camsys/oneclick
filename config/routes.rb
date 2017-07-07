@@ -322,6 +322,10 @@ Oneclick::Application.routes.draw do
   end
 
 
+  namespace :export
+    get 'characteristics'
+  end
+
   #API
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
