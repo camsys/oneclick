@@ -1,15 +1,12 @@
-module export
-
+module Export
   class ExportApiController < ActionController::Base
 
     before_action :confirm_export_token
 
-    def characteristics
-      render json: {message: "fart"}
-    end
-
     def confirm_export_token
-      true
+      unless ENV['EXPORT_TOKEN'] and params[:token] == ENV['EXPORT_TOKEN']
+        render status: 403, json: 'INVALID EXPORT TOKEN'
+      end
     end
 
   end

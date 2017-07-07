@@ -322,8 +322,8 @@ Oneclick::Application.routes.draw do
   end
 
 
-  namespace :export
-    get 'characteristics'
+  namespace :export do
+    resources :accommodations, only: [:index]
   end
 
   #API
