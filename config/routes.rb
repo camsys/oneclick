@@ -325,6 +325,7 @@ Oneclick::Application.routes.draw do
   namespace :export do
     resources :accommodations, only: [:index]
     resources :characteristics, only: [:index]
+    resources :trip_purposes, only: [:index]
   end
 
   #API

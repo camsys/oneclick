@@ -1,11 +1,7 @@
 module Export
   class AccommodationsController < Export::ExportApiController
     def index
-      accs = []
-      Accommodation.all.each do |acc|
-        accs << AccommodationSerializer.new(acc).serializable_hash
-      end
-      render json: accs
+      render json: Accommodation.all.map{ |obj| AccommodationSerializer.new(obj).serializable_hash }
     end
   end
 end
