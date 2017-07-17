@@ -326,6 +326,7 @@ Oneclick::Application.routes.draw do
     resources :accommodations, only: [:index]
     resources :characteristics, only: [:index]
     resources :trip_purposes, only: [:index]
+    resources :providers, only: [:index]
   end
 
   #API
