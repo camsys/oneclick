@@ -1,5 +1,5 @@
 module Export
-  class EligibilitySerializer < ActiveModel::Serializer
+  class EligibilitySerializer < ExportSerializer
     attributes :code,
                :phrases
 
