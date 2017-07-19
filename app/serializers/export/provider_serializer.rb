@@ -1,18 +1,20 @@
 module Export
-  class ProviderSerializer < ActiveModel::Serializer
+  class ProviderSerializer < ExportSerializer
 
     attributes  :name, 
                 :email,
                 :url,
                 :phone,
-                :description
+                :comments
                 
+    uniquize_attribute :name
+    
     def email
       object.email || object.internal_contact_email
     end
 
-    def description
-      object.comments.find_by(locale: "en").try(:comment)
+    def comments
+      object.comments.map {|c| [c.locale, c.comment]}.to_h
     end
     
   end
