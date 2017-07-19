@@ -1,0 +1,193 @@
+// Panels for provider and service forms
+.panel.panel-servicedata {
+  margin: 20px 0;
+
+  .panel-heading {
+    padding: 10px 0;
+  }
+
+  .panel-body {
+    border: 1px solid silver;
+    box-shadow: 2px 2px 20px -2px rgba(0, 0, 0, 0.2);
+    padding: 60px 60px 10px;
+  }
+
+  .nav-tabs {
+    border-bottom: 1px solid silver;
+
+    li > a {
+      border-top: 1px solid silver;
+      border-left: 1px solid silver;
+      border-right: 1px solid silver;
+    }
+
+    li:not(.active) > a {
+      background-color: #E9E9E9;
+      border-bottom: 1px solid silver;
+      box-shadow: inset 0px -2px 4px -2px rgba(0, 0, 0, 0.2);
+      // border: 1px solid silver;
+      // border-bottom-color: inherit;
+    }
+
+    li.active > a {
+      // background-color: inherit;
+      // border: 1px solid silver;
+      // border-bottom-color: transparent;
+    }
+  }
+
+  .panel-body.tab-pane {
+    border-top: none;
+  }
+
+  .panel.panel-subpanel {
+    box-shadow: none;
+
+    .panel-body {
+      border: none;
+      padding: 10px 0;
+    }
+  }
+
+  label {
+    font-weight: normal;
+    font-size: $font-size-base;
+
+    &.header-label {
+      font-weight: bold;
+    }
+
+    &.sub-label {
+      display: block;
+      color: gray;
+    }
+  }
+
+  .form-control {
+    border-radius: 0;
+    box-shadow: none;
+    // resize: none;
+
+    &:read-only:not(select) {
+      border-color: transparent;
+    }
+  }
+
+  .subtle-text {
+    color: silver;
+  }
+}
+
+.btn.btn-svc-data {
+  border: 1px solid green;
+  border-radius: 6px;
+  color: gray;
+  // min-width: 100px;
+  padding: 6px 12px;
+
+  &:hover {
+    background-color: limegreen;
+    color: white;
+  }
+}
+
+button#provider-logo-upload-btn {
+  margin-right: 10px;
+}
+
+textarea.form-control.text {
+  resize: vertical;
+}
+
+.logo-display-img {
+  max-height: 40px;
+  max-width: 40px;
+}
+
+.service-details-form {
+  margin: 20px 0 20px;
+  border-bottom: 1px solid gainsboro;
+  padding: 0 0 60px;
+
+  &.last {
+    border-bottom-color: transparent;
+    padding: 0 0 20px;
+  }
+}
+
+.form-vertical label.control-label {
+  font-weight: bold;
+}
+
+.faded select {
+  color: silver;
+}
+
+.service-details-container {
+    margin-bottom: 20px;
+}
+
+.service-details-row {
+}
+
+.service-details-form-button-container {
+  margin-bottom: 10px;
+}
+
+.btn-activate-service-toggle-group {
+  label {
+    float: left;
+    width: 60px;
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  label input[type=radio] {
+    opacity: 0;
+  }
+
+  label .service-toggle-btn {
+    // padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // line-height: 40px;
+    text-align: center;
+    background-color: rgba(#428bca, 0);
+  }
+
+  label:first-child .service-toggle-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-width: 0;
+  }
+
+  label:last-child .service-toggle-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  :checked + .service-toggle-btn {
+    background-color: limegreen;
+    color: white;
+  }
+}
+
+.inline-form-group {
+  .form-control {
+    display: inline;
+    width: auto;
+    padding: 6px 3px;
+  }
+}
+
+.collapser-container {
+  margin-bottom: 30px;
+}
+
+a:focus, div:focus {
+  outline: none;
+}

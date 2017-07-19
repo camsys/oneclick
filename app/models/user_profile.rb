@@ -4,7 +4,7 @@ class UserProfile < ActiveRecord::Base
   belongs_to :user
   has_many :user_characteristics
   has_many :user_accommodations
-  has_many :user_services
+  has_many :user_services, :dependent => :destroy
 
   has_many :accommodations, through: :user_accommodations, source: :accommodation
   has_many :characteristics, through: :user_characteristics, source: :characteristic
@@ -20,10 +20,11 @@ class UserProfile < ActiveRecord::Base
   end
 
   def age
-    age_characteristic = Characteristic.where(code: "age").first
-    age = self.user_characteristics.where(characteristic: age_characteristic).first
-    age.nil? ? nil : age.value.to_i
+    self.user.age
+  end
+
+  def update_age(dob) #Takes DOB string in mm/dd/yyyy format
+    return self.user.update_age(dob)
   end
 
 end
-

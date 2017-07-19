@@ -13,6 +13,8 @@ class Mode < ActiveRecord::Base
   default_scope {where(active: true)}
 
   scope :top_level, -> { where parent_id: nil }
+  scope :visible, -> { where visible: true }
+  scope :selected_by_default, -> { where selected_by_default: true }
 
   begin
     Mode.unscoped.load.each do |mode|
@@ -70,16 +72,18 @@ class Mode < ActiveRecord::Base
   end
 
   def self.setup_modes(session_mode_codes)
-    q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.all
+
+    q = session_mode_codes ? Mode.where('code in (?)', session_mode_codes) : Mode.selected_by_default
     non_transit_modes = Mode.top_level.where("code <> 'mode_transit'").where(visible: true)
-      .sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |m|
-      [I18n.t(m.name).html_safe, m.code]
+      .sort{|a, b| TranslationEngine.translate_text(a.name) <=> TranslationEngine.translate_text(b.name)}.collect do |m|
+      [TranslationEngine.translate_text(m.name).html_safe, m.code]
     end
     transit = Mode.transit
     if transit.visible
-      non_transit_modes << [I18n.t(transit.name).html_safe, transit.code]
-      transit_modes = transit_submodes.where(visible: true).sort{|a, b| I18n.t(a.name) <=> I18n.t(b.name)}.collect do |t|
-        [I18n.t(t.name).html_safe, t.code]
+      non_transit_modes << [TranslationEngine.translate_text(transit.name).html_safe, transit.code]
+      transit_modes = transit_submodes.where(visible: true).sort{|a, b| TranslationEngine.translate_text(a.name) <=> TranslationEngine.translate_text(b.name)}.collect do |t|
+        # Serialize transit sub-modes like "transit_submode_rail_name", to avoid tag overlap
+        [TranslationEngine.translate_text("transit_sub" + t.name).html_safe, t.code]
       end
     else
       transit_modes = []

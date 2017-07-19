@@ -1,26 +1,38 @@
-- content_for :title, "#{t(:site_title)} - #{t(:users)}"
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:users)}"
 .row.info-header
   .col-sm-12
     .btns.pull-right
-      = link_to t(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
-      = button_tag t(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
-    %h1= t(:users)
+      %button#selectAll.btn.action-button{role: 'button'}
+        = translate_helper(:select_all)
+      %button#selectNone.btn.action-button{role: 'button'}
+        = translate_helper(:select_none)
+      %button#newMessage.btn.action-button{role: 'button', data: {toggle: 'modal', target: '#newMessageDialog'}, disabled: true}
+        = translate_helper(:message)
+      = link_to translate_helper(:create), new_admin_user_path, {class: 'btn action-button', role: 'button'}
+      = button_tag translate_helper(:export), id: 'exportAllUsers', class: 'btn action-button', role: 'button'
+    %h1= translate_helper(:users)
 .panel.panel-default{style: 'padding: 0px;'}
   .panel-heading
     %h2.panel-title
-      = t(:users)
+      = translate_helper(:users)
       = add_tooltip("users_help")
   .panel-body
     %table.table.table-condensed.table-striped.table-bordered.table-hover#admin_users_table
       %thead
         %tr
-          %th= t(:id)
-          %th= t(:username)
-          %th= t(:email)
-          %th= t(:registered)
-          %th= t(:roles)
-          %th#status= t(:status)
+          %th
+          %th= translate_helper(:id)
+          %th= translate_helper(:username)
+          %th= translate_helper(:email)
+          %th= translate_helper(:registered)
+          %th= translate_helper(:roles)
+          %th#status= translate_helper(:status)
+          %th= translate_helper(:provider)
+          %th= translate_helper(:agency)
       %tbody
+
+= render partial: 'messages/send_message_modal', locals: {user: current_user}
+
 :javascript
   $(document).ready(function() {
     var oTable = $('#admin_users_table').dataTable( {
@@ -35,20 +47,95 @@
               "sInfoEmpty": "Showing 0 to 0 of 0 travelers",
               "sInfoFiltered": "(filtered from _MAX_ total travelers)"
       },
-      "bAutoWidth": false,
-      "aoColumns": [
-        {"sWidth": "5%"},
-        {"sWidth": "20%"},
-        {"sWidth": "25%"},
-        {"sWidth": "15%"},
-        {"sWidth": "25%"},
-        {"sWidth": "10%"},
-      ],
+      "bAutoWidth": true,
+      "order": [[ 1, "asc" ]],
+      "columnDefs": [{"orderable": false, "targets": 0}],
       "sDom": "<'row'<'col-sm-6'f>><'row'<'col-sm-6'l><'toggle col-sm-6'>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
       "fnServerParams": function (data) {
         data.push({name: "bIncludeDeleted", value: $("#toggle").is(':checked')});
+      },
+      "fnDrawCallback": function( oSettings ) {
+        // turn on checkbox of selected rows
+        $('#admin_users_table .message-checkbox').each(function() {
+          if(selectedUserIds.indexOf($(this).data('id')) >= 0) {
+            $(this).prop('checked', true);
+          }
+        });
+
+        updateMessageButtonStatus();
       }
     });
+
+    // need to use all user ids to track which user is selected
+    var allUserIds = #{@all_user_ids};
+    var selectedUserIds = [];
+    var localStorageKey = 'message-select-user-ids';
+    var cachedSelectedUserIds = localStorage.getItem(localStorageKey);
+    if(cachedSelectedUserIds) {
+      selectedUserIds = cachedSelectedUserIds.split(',').map(Number);
+    }
+
+    // update local storage before page closing
+    window.onbeforeunload = function(){
+      localStorage.setItem(localStorageKey, selectedUserIds.toString());
+    };
+
+    // update recipient_ids in message form (modal dialog)
+    $('#newMessageDialog').on('show.bs.modal', function () { 
+      // reset form
+      $('#messageForm')[0].reset();
+      $('#newMessageDialog .modal-flash').html('');
+      $('input[name=recipient_ids]').val(selectedUserIds);
+
+    });
+
+    // enable/disable Message button
+    var updateMessageButtonStatus = function() {
+      if(selectedUserIds.length > 0) {
+        $('#newMessage').prop('disabled', false);
+      } else {
+        $('#newMessage').prop('disabled', true);
+      }
+    };
+
+    // checkbox to flag a user as message recipient
+    $('#admin_users_table').on('change', '.message-checkbox', function() {
+      var userId = $(this).data('id');
+      var userIndex = selectedUserIds.indexOf(userId);
+      if(this.checked) {
+        if (userIndex < 0) {
+          selectedUserIds.push(userId);
+        }
+      } else {
+        if (userIndex >= 0) {
+          selectedUserIds.splice(userIndex, 1);
+        }
+      }
+
+      // if has selected user, then show Message button
+      updateMessageButtonStatus();
+    });
+
+    // button to flag all users as recipient
+    $('#selectAll').on('click', function() {
+      selectedUserIds = allUserIds;
+
+      // check each checkbox on page
+      $('#admin_users_table .message-checkbox').prop('checked', true);
+
+      updateMessageButtonStatus();
+    });
+
+    // button to deselect all users as recipient
+    $('#selectNone').on('click', function() {
+      selectedUserIds = [];
+
+      // uncheck each checkbox on page
+      $('#admin_users_table .message-checkbox').prop('checked', false);
+
+      updateMessageButtonStatus();
+    });
+
 
     $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show deleted users</span>');
     $("#toggle").click(function () {

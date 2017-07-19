@@ -1,0 +1,125 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      %button.btn.action-button#return_book_button_btn
+        =translate_helper(:book)
+
+      = button_tag class: 'btn action-button', id:'closeReturnConfirmation', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        = translate_helper(:book_your_return_trip)
+
+  .modal-body
+    .row
+      .col-sm-12.text-center.booking_message{:style => 'font-weight:bold;'}
+        =""
+
+    // Return Booking Details
+    %div{id: 'return_part'}
+      .row
+        %label.col-sm-4.text-right
+          =translate_helper(:from)
+        .col-sm-8.text-left
+          =@trip.return_part.from_trip_place.name
+      .row
+        %label.col-sm-4.text-right
+          =translate_helper(:to)
+        .col-sm-8.text-left
+          =@trip.return_part.to_trip_place.name
+      .row
+        %label.col-sm-4.text-right
+          = @trip.return_part.is_depart ? translate_helper(:departing_at) : translate_helper(:arriving_by)
+        .col-sm-8.text-left
+          =@trip.return_part.trip_time.strftime("%b %e, %l:%M %p")
+
+      -if @trip.return_part.selected_itinerary.service.booking_profile == BookingServices::AGENCY[:trapeze]
+        = render partial: 'booking_return_trapeze_confirmation_form'
+      -if @trip.return_part.selected_itinerary.service.booking_profile == BookingServices::AGENCY[:ridepilot]
+        = render partial: 'booking_return_ridepilot_confirmation_form'
+
+:javascript
+
+  $('#return_book_button_btn').unbind('click');
+  $('#return_book_button_btn').on('click', function(event) {
+
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    var text = "#{translate_helper(:please_wait)}" + "..."
+    $('#return_book_button_btn').text(text);
+    $('#return_book_button_btn').addClass('disabled');
+
+    var return_form_data = $('#return_confirmation_form').serializeArray();
+    $.ajax({
+      url: "/users/" + "#{@traveler.id}" + "/trips/" + "#{@trip.id}" + "/itineraries/" + "#{@trip.return_part.selected_itinerary.id}" + "/book",
+      data: {itin: "#{@trip.return_part.selected_itinerary.id}", form_data: return_form_data},
+      method: 'POST',
+      success: function(result) {
+      $('#return_book_button_btn').hide();
+        console.log(result);
+        if (result['booked'] == true) {
+            $('#bookingModal').attr('data-return-booked', true);
+            var confirmation_number =  result['confirmation'];
+            var cost =  result['fare'];
+            var negotiated_pu_time = result['negotiated_pu_time'];
+            var negotiated_pu_window_start = result['negotiated_pu_window_start'];
+            var negotiated_pu_window_end = result['negotiated_pu_window_end'];
+            var booking_status_message = result['booking_status_message']
+            if($('#bookingModal').data('outbound-booked') == true ){
+              $('#outbound_booking_results').show();
+            } else{
+              $('#outbound_booking_results').hide();
+            }
+
+            $('#return_booking_results').show();
+
+
+            console.log(negotiated_pu_time);
+            booking_state = 'showing_results';
+            update_dialog();
+            $('#itinerary_confirmation_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(confirmation_number);
+            if(!(cost === null)){
+              $('#itinerary_cost_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show()
+              $('#itinerary_cost_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(cost);
+            }
+            if(!(negotiated_pu_time === null)){
+              $('#itinerary_negotiated_pu_time_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_time_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_time);
+            }
+
+            if(!(negotiated_pu_window_start === null)){
+              $('#itinerary_negotiated_pu_window_start_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_window_start_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_start);
+            }
+
+            if(!(negotiated_pu_window_end === null)){
+              $('#itinerary_negotiated_pu_window_end_div_' + "#{@trip.return_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_negotiated_pu_window_end_' + "#{@trip.return_part.selected_itinerary.id.to_s}").text(negotiated_pu_window_end);
+            }
+
+            if (!(booking_status_message === null)){
+              $('#itinerary_booking_status_message_div_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").show();
+              $('#itinerary_booking_status_message_' + "#{@trip.outbound_part.selected_itinerary.id.to_s}").text(booking_status_message);
+            }
+
+        }
+        else {
+          var confirmation_numbers = "";
+          var confirmation_message = result['message']
+          $('.booking_message').html(confirmation_message);
+        }
+
+      },
+      error: function(){
+        var confirmation_message = "#{translate_helper(:booking_failure_message)}"
+        $('#return_booking_results').html(confirmation_message);
+      }
+
+    })
+
+  })

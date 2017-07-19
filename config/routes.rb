@@ -1,13 +1,10 @@
 Oneclick::Application.routes.draw do
+
   get '/configuration' => 'configuration#configuration'
 
   scope "(:locale)", locale: oneclick_available_locales do
 
-    if Oneclick::Application.config.ui_mode == 'kiosk'
-      root to: redirect('/kiosk')
-    else
-      root to: 'home#index'
-    end
+    root to: 'home#index'
 
     authenticated :user do
       root :to => 'trips#new', as: :authenticated_root
@@ -17,6 +14,10 @@ Oneclick::Application.routes.draw do
 
     resources :content
 
+    resources :messages, :only => [:create]
+    post "mark_message_as_read" => "user_messages#mark_as_read", as: :read_message
+    post "open_message" => "user_messages#open"
+
     get "user_relationships/:id/check/" => "user_relationships#check_update", as: :check_update_user_relationship # need to support client-side logic with server-side vaildations
     # everything comes under a user id
     resources :users, except: [:index] do
@@ -25,6 +26,7 @@ Oneclick::Application.routes.draw do
         get   'profile'
         post  'initial_booking'
         post  'add_booking_service'
+        post  'associate_service'
         # post  'update'
         get   '/assist/:buddy_id', to: 'users#assist', as: :assist
       end
@@ -130,6 +132,7 @@ Oneclick::Application.routes.draw do
             get 'map_status'
             get 'request_create_map'
             get 'create_map'
+            post 'book'
           end
         end
         resources :trip_parts do
@@ -150,9 +153,17 @@ Oneclick::Application.routes.draw do
       resources :user_services do
         member do
           post 'update'
+          post 'create'
         end
       end
     end
+
+    resources :providers do
+      collection do
+        get 'index'
+      end
+    end
+
     # scope('/kiosk') do
     #   devise_for :users, as: 'kiosk', controllers: {sessions: "kiosk/sessions"}
     # end
@@ -163,122 +174,6 @@ Oneclick::Application.routes.draw do
     get 'place_details/:id' => 'place_searching#details', as: 'place_details'
     get 'reverse_geocode' => 'place_searching#reverse_geocode', as: 'reverse_geocode'
 
-    namespace :kiosk do
-      get '/', to: 'home#index'
-      get 'reset', to: 'home#reset'
-
-      get 'itineraries/:id/print' => 'trips#itinerary_print', as: 'print_itinerary'
-
-      resources :locations, only: [:show]
-      resources :call, only: [:show, :index] do
-        post :outgoing, on: :collection
-      end
-
-      # TODO can probably remove a lot of these routes
-      resources :users do
-        member do
-          get   'profile'
-          post  'update'
-        end
-
-        namespace :new_trip do
-          resource :start
-          resource :to
-          resource :from
-          resource :pickup_time
-          resource :purpose
-          resource :return_time
-          resource :overview
-        end
-
-        resources :characteristics, :only => [:new, :create, :edit, :update] do
-          collection do
-            get 'header'
-          end
-          member do
-            put 'set'
-          end
-        end
-
-        resources :programs, :only => [:new, :create, :edit, :update] do
-          member do
-            put 'set'
-          end
-        end
-
-        resources :accommodations, :only => [:new, :create, :edit, :update] do
-          member do
-            put 'set'
-          end
-        end
-
-        # user relationships
-        resources :user_relationships, :only => [:new, :create] do
-          member do
-            get   'traveler_retract'
-            get   'traveler_revoke'
-            get   'traveler_hide'
-            get   'delegate_accept'
-            get   'delegate_decline'
-            get   'delegate_revoke'
-          end
-        end
-
-        # users have places
-        resources :places, :only => [:index, :new, :create, :destroy, :edit, :update] do
-          collection do
-            get   'search'
-            post  'geocode'
-          end
-        end
-
-        # users have trips
-        resources :trips, :only => [:show, :index, :new, :create, :destroy, :edit, :update] do
-          collection do
-            post  'set_traveler'
-            get   'unset_traveler'
-            get   'search'
-            post  'geocode'
-          end
-
-          member do
-            get 'start'
-            get   'repeat'
-            get   'select'
-            get   'details'
-            get   'itinerary'
-            post  'email'
-            post  'email_provider'
-            post  'email_itinerary'
-            get   'email_itinerary2_values'
-            post  'email2'
-            get   'hide'
-            get   'unhide_all'
-            get   'skip'
-            post  'comments'
-            post  'admin_comments'
-            get   'email_feedback'
-            get   'show_printer_friendly'
-          end
-        end
-
-        resources :trip_parts do
-          member do
-            get 'unhide_all'
-          end
-        end
-
-      end # kiosk
-
-    end # user
-
-    devise_scope :user do
-      post '/kiosk/sign_in' => 'kiosk/sessions#create', as: :kiosk_user_session
-      get '/kiosk/sign_in' => 'kiosk/sessions#new', as: :new_kiosk_user_session
-      get '/kiosk/session/destroy' => 'kiosk/sessions#destroy', as: :destroy_kiosk_user_session
-    end
-
-    # TODO This should go somewhere else
     get '/place_search' => 'trips#search'
     get '/place_search_my' => 'trips#search_my'
     get '/place_search_poi' => 'trips#search_poi'
@@ -291,10 +186,11 @@ Oneclick::Application.routes.draw do
         resources :results, only: [:index]
       end
     end
-      
+
     namespace :admin do
-  
+
       get '/reports/trips_datatable' => 'reports#trips_datatable'
+      post '/reports/update_reports_data' => 'reports#update_reports_data'
 
       resources :reports, :only => [:index, :show] do
         get 'results'
@@ -329,14 +225,23 @@ Oneclick::Application.routes.draw do
           get   'agency_revoke'
         end
         get 'select_user'
-        member do 
+        member do
           patch 'undelete'
         end
         resources :trips
       end
+
+      namespace :users do
+        get 'whitelist'
+      end
+      patch 'users/whitelist' => "users#add_whitelist"
+
       resources :users do
+        get 'merge', on: :member, to: "users#merge_edit"
+        patch 'merge', on: :member, to: "users#merge_submit"
         put 'update_roles', on: :member
         get 'find_by_email'
+        delete 'whitelist'  => 'users#remove_whitelist'
         member do
           patch 'undelete'
         end
@@ -344,7 +249,7 @@ Oneclick::Application.routes.draw do
       resources :providers do
         get   'find_staff_by_email'
         resources :users
-        resources :services 
+        resources :services
         resources :trips, only: [:index, :show]
         member do
           patch 'undelete'
@@ -362,11 +267,15 @@ Oneclick::Application.routes.draw do
 
     resources :services do
       resources :fare_zones, only: [:create]
-      
+      collection do
+        get 'authenticate_booking_settings'
+      end
+
       member do
         get 'fare_type_form'
         patch 'undelete'
         get 'view'
+
       end
     end
     resources :ratings, only: [:index, :create] do
@@ -377,6 +286,14 @@ Oneclick::Application.routes.draw do
     end
 
     resources :satisfaction_surveys
+
+    resources :feedbacks do
+      collection do
+        get 'get_ratings_and_issues'
+        patch 'approve'
+        get "context"
+      end
+    end
 
     resources :trips do
       member do
@@ -404,17 +321,26 @@ Oneclick::Application.routes.draw do
 
   end
 
-  unless Oneclick::Application.config.ui_mode == 'kiosk'
-    # get '*not_found' => 'errors#handle404'
+
+  namespace :export do
+    resources :accommodations, only: [:index]
+    resources :characteristics, only: [:index]
+    resources :trip_purposes, only: [:index]
+    resources :providers, only: [:index]
+    get '/users/registered' => 'users#registered'
+    get '/users/guests' => 'users#guests'
+
   end
 
   #API
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
+      match '*path', :controller => 'api', :action => 'handle_options_request', via: [:options]
+
       resources :trip_purposes do
         collection do
-          get 'list'
-          get 'index'
+          post 'list' => 'trip_purposes#list'
+          post 'index' => 'trip_purposes#index'
         end
       end
 
@@ -428,10 +354,24 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :services do
+        collection do
+          get 'ids'
+          get 'ids_humanized'
+          get 'counties'
+          get 'hours'
+        end
+      end
+
       resources :trips do
         collection do
           get 'status_from_token'
           get 'details_from_token'
+          get 'list'
+          get 'index'
+          get 'future_trips'
+          get 'past_trips'
+          post 'email'
         end
 
         member do
@@ -443,6 +383,10 @@ Oneclick::Application.routes.draw do
       resources :places do
         collection do
           get 'search'
+          post 'within_area'
+          get 'boundary'
+          get 'routes'
+          get 'recent'
         end
       end
 
@@ -460,9 +404,29 @@ Oneclick::Application.routes.draw do
         end
       end
 
+      resources :users do
+        collection do
+          post 'update'
+          post 'password'
+          get  'profile'
+          get  'get_guest_token'
+          get  'lookup'
+          post 'reset'
+          post 'request_reset'
+        end
+      end
+
+      resources :translations do
+        collection do
+          post 'find'
+          get  'all'
+        end
+      end
+
       devise_scope :user do
         post 'sign_in' => 'sessions#create'
         post 'sign_out' => 'sessions#destroy'
+        post 'sign_up' => 'sessions#sign_up'
       end
 
     end

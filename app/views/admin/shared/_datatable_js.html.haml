@@ -5,6 +5,7 @@
   $(document).ready(function() {
     var key = "#{key}";
     var entityName = "#{entity}";
+    var showShowInactive = "#{entity}";
     var oTable = $('#' + key + '_table').dataTable( {
           stateSave: true,
           "oLanguage": {
@@ -27,7 +28,7 @@
       }
       localStorage.setItem(key + '-show-inactive', false);
       $("div.toggle").html('<span class="pull-right"><input type="checkbox" id="toggle">&nbsp;Show inactive ' + entityName + '</span>');
-    } 
+    }
 
     $("#toggle").click(function () {
       var isChecked = $(this).is(':checked');

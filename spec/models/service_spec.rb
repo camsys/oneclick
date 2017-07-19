@@ -5,7 +5,7 @@ describe Service do
   before (:each) do
     @service = FactoryGirl.create(:populated_service)
   end
-  
+
   it "has a schedule" do
     @service.name.should eq 'Test Service'
   end
@@ -36,5 +36,19 @@ describe Service do
     @service.reload
     @service.internal_contact.should be_nil
   end
-  
+
+  context "trips with multipart schedules" do
+    before do
+      @trip = FactoryGirl.create(:trip)
+    end
+
+    it 'is valid for trips booked during first part of the day' do
+      true.should be_false
+    end
+
+    it 'is valid for trips booked during the second part of the day' do
+      true.should be_false
+    end
+  end
+
 end

@@ -7,9 +7,10 @@ class TripProxy < Proxy
   attr_accessor :id, :map_center
   attr_accessor :trip_options
   attr_accessor :trip_token, :agency_token
-  attr_accessor :kiosk_code
 
   attr_accessor :user_agent, :ui_mode
+
+  attr_accessor :trip_purpose_raw
 
   attr_accessor :outbound_trip_date, :outbound_arrive_depart, :outbound_trip_time
   attr_accessor :is_round_trip, :return_trip_time, :return_arrive_depart, :return_trip_date
@@ -39,7 +40,7 @@ class TripProxy < Proxy
       end
     end
     @return_trip_date ||= @outbound_trip_date
-    @modes ||= Mode.all.collect{|m| m.code}
+    @modes ||= Mode.visible.collect{|m| m.code}
     @modes_desired = @modes
     # Modify modes to reflect transit
     # Using array select with side effects
@@ -95,6 +96,7 @@ class TripProxy < Proxy
     trip_proxy = TripProxy.new(attr)
     trip_proxy.traveler = @traveler
     trip_proxy.trip_purpose_id = trip.trip_purpose.id
+    trip_proxy.trip_purpose_raw = trip.trip_purpose_raw
 
     trip_proxy.outbound_arrive_depart = trip_part.is_depart
     trip_datetime = trip_part.trip_time
@@ -168,7 +170,6 @@ class TripProxy < Proxy
 
     trip_proxy.user_agent = trip.user_agent
     trip_proxy.ui_mode = trip.ui_mode
-    trip_proxy.kiosk_code = trip.kiosk_code
 
     return trip_proxy
 
@@ -199,20 +200,20 @@ class TripProxy < Proxy
   def datetime_cannot_be_before_now
     true if trip_datetime.count(nil) == 2
     if trip_datetime[0] < Date.today
-      errors.add(:outbound_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+      errors.add(:outbound_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
       false
     end
     if trip_datetime[0] < Time.current
-      errors.add(:outbound_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+      errors.add(:outbound_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
       false
     end
     if is_round_trip == 1
       if trip_datetime[1] < Date.today
-        errors.add(:return_trip_date, I18n.translate(:trips_cannot_be_entered_for_days))
+        errors.add(:return_trip_date, TranslationEngine.translate_text(:trips_cannot_be_entered_for_days))
         false
       end
       if trip_datetime[1] < Time.current
-        errors.add(:return_trip_time, I18n.translate(:trips_cannot_be_entered_for_times))
+        errors.add(:return_trip_time, TranslationEngine.translate_text(:trips_cannot_be_entered_for_times))
         false
       end
     end

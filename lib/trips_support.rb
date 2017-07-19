@@ -31,7 +31,6 @@ module TripsSupport
   PLACES_TYPE = "3"
   RAW_ADDRESS_TYPE = "4"
   PLACES_AUTOCOMPLETE_TYPE = '5'
-  KIOSK_LOCATION_TYPE = '6'
 
   # Set the default travel time/date to x mins from now
   # def default_trip_time
@@ -119,13 +118,6 @@ module TripsSupport
       # the user entered a raw address and possibly selected an alternate from the list of possible
       # addresses
 
-      # if is_from
-      #   #puts place_id
-      #   #puts get_cached_addresses(CACHED_FROM_ADDRESSES_KEY).ai
-      #   place = get_cached_addresses(CACHED_FROM_ADDRESSES_KEY)[place_id.to_i]
-      # else
-      #   place = get_cached_addresses(CACHED_TO_ADDRESSES_KEY)[place_id.to_i]
-      # end
       Rails.logger.info "in get_preselected_place"
       Rails.logger.info "#{is_from} #{place.ai}"
       return {
@@ -143,23 +135,12 @@ module TripsSupport
     when PLACES_AUTOCOMPLETE_TYPE
       result = get_places_autocomplete_details(place_id)
       place = result.body['result']
-      # puts "====== PLACES_AUTOCOMPLETE_TYPE ======"
-      # puts place
       {
         place_id:          false,
         name:              place['formatted_address'],
         formatted_address: place['formatted_address'],
         lat:               place['geometry']['location']['lat'],
         lon:               place['geometry']['location']['lng'],
-      }
-    when KIOSK_LOCATION_TYPE
-      place = KioskLocation.find(place_id)
-
-      {
-        name:              place[:name],
-        formatted_address: place[:addr],
-        lat:               place[:lat],
-        lon:               place[:lon]
       }
     else
       raise "unhandled place type: #{place_type}"

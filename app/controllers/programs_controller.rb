@@ -17,13 +17,9 @@ class ProgramsController < TravelerAwareController
           @trip = Trip.find(session[:current_trip_id])
           session[:current_trip_id] =  nil
           @trip.create_itineraries
-          @path = user_trip_path_for_ui_mode(@traveler, @trip)
+          @path = user_trip_path(@traveler, @trip)
         else
-          if ui_mode_kiosk?
-            @path = skip_user_trip_path_for_ui_mode(@traveler, session[:current_trip_id])
-          else
-            @path = new_user_registration_path(inline: 1)
-          end
+          @path = skip_user_trip_path(@traveler, session[:current_trip_id])
         end
       end
     else
@@ -34,7 +30,7 @@ class ProgramsController < TravelerAwareController
     # the request was an ajax request or not. The trip-planning form does not
     # use ajax.
     if request.xhr?
-      flash[:notice] = t(:profile_updated)
+      flash[:notice] = TranslationEngine.translate_text(:profile_updated)
     end
 
     respond_to do |format|

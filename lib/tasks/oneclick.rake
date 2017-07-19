@@ -27,23 +27,6 @@ end
 #encoding: utf-8
 namespace :oneclick do
 
-  desc "Sets mode icons to point to S3"
-  task :set_mode_icons => :environment do
-    bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
-    full_url = "https://s3.amazonaws.com/#{bucket}/modes/"
-    puts "----------------------------"
-    puts full_url
-    puts "----------------------------"
-
-    Mode.unscoped.each do |mode|
-      old_logo = mode.logo_url.match('\w*(.png)')[0]
-      mode.logo_url = full_url + old_logo
-      if mode.save
-        puts "Mode: #{mode} | Logo: #{mode.logo_url}"
-      end
-    end
-  end
-
   desc "Sets default logo"
   task :set_default_logo=> :environment do
     bucket = ENV['AWS_BUCKET'].nil? ? "oneclick-#{Oneclick::Application.config.brand}" : ENV['AWS_BUCKET']
@@ -210,14 +193,6 @@ namespace :oneclick do
   end
   #THIS IS THE END
 
-  desc "Load database translations from config/locales/moved-to-db/*.yml files (idempotent)"
-  task load_locales: :environment do
-    Dir.glob('config/locales/moved-to-db/*').each do |file|
-      puts "Loading locale file #{file}"
-      I18n::Utility.load_locale file
-    end
-  end
-
   def wrap s, p, c
     "[#{p}#{c}]#{s}[#{p}]"
   end
@@ -225,48 +200,6 @@ namespace :oneclick do
   def quote s
     q = (s =~ /\"/ ? '\'' : '"')
     "#{q}#{s}#{q}"
-  end
-
-  task rewrite_locale: :environment do
-    raise "INFILE= must be defined" unless ENV['INFILE']
-    y = YAML.load_file(ENV['INFILE'])
-    p = ENV['PREFIX']
-    raise "PREFIX= must be defined" unless p
-    c = 0
-    traverse( y ) do |v, parents|
-      indent = ' ' * (parents.size-1) * 2
-      case v
-      when Hash
-        if parents.size==1
-          puts "#{indent}#{p}:"
-        else
-          puts "#{indent}#{parents.last}:"
-        end
-      when Array
-        puts "#{indent}#{parents.last}:"
-        v.each do |l|
-          puts "#{indent}- #{quote(wrap(l, p, c))}"
-        end
-      when String
-        q = (v =~ /\"/ ? '\'' : '"')
-        puts "#{indent}#{parents.last}: #{quote(wrap(v, p, c))}"
-      else
-        raise "Don't know how to handle #{v.inspect}"
-      end
-      c += 1
-    end
-
-    # y.each_with_parents do |parents, v|
-    #   locale = parents.shift
-    #   if v.is_a? Array
-    #     puts "ARRAY"
-    #     puts
-    #     Translation.create(key: parents.join('.'), locale: locale, value: v.join(','), is_list: true).id.nil? ? failed += 1 : success += 1
-    #   else
-    #     Translation.create(key: parents.join('.'), locale: locale, value: v).id.nil? ? failed += 1 : success += 1
-    #   end
-    # end
-    # puts "Read #{success+failed} keys, #{success} successful, #{failed} failed, #{skipped} skipped"
   end
 
   task print_booking_report: :environment do
@@ -355,7 +288,7 @@ namespace :oneclick do
     selected_itins_by_trip_count = Itinerary.includes(trip_part: :trip).references(trip_part: :trip)
       .where(selected: true)
       .group("trips.id").count
-    
+
     puts 'find trip ids with trip_part_count == selected_itins_count'
     planned_trip_ids = []
     trip_part_by_trip_count.merge(selected_itins_by_trip_count) {|k, n, o| planned_trip_ids << k if n == o}
@@ -373,5 +306,216 @@ namespace :oneclick do
 
     puts 'trips_view is created'
   end
+
+  desc "Create Funding Source Objects for Ecolane/Rabbit"
+  task create_funding_sources: :environment do
+    funding_sources = Oneclick::Application.config.funding_source_order
+    services = Service.where(booking_service_code: "ecolane")
+    services.each do |s|
+      funding_sources.each_with_index do |fs,i|
+        FundingSource.where(code: fs, service: s).first_or_create do |new_fs|
+          new_fs.index = i
+          new_fs.save
+        end
+      end
+    end
+  end
+
+  desc 'add returned_mode_code'
+  task add_returned_mode_codes: :environment do
+    itins = Itinerary.where(returned_mode_code: nil)
+    itins.each do |itin|
+      if itin.mode
+        itin.returned_mode_code = itin.mode.code
+        itin.save
+
+      end
+    end
+  end
+
+  desc "Move FareStructure#desc to Comment table"
+  task transfer_fare_comments_to_comments_table: :environment do
+    FareStructure.where.not(desc: nil).each do |fare_structure|
+      comment_en = fare_structure.public_comments.first_or_create(locale: 'en')
+      comment_en.update_attributes(comment: fare_structure.desc, visibility: 'public')
+    end
+  end
+
+  desc "Add feedback types/ratings/issues"
+  task :add_feedback_types => :environment do
+    feedback_types = [
+      "application",
+      "unmet_need",
+      "trip"
+    ]
+    feedback_types.each { |name| FeedbackType.where(name: name).first_or_create }
+
+    feedback_statuses = [
+      "pending",
+      "approved",
+      "rejected"
+    ]
+    feedback_statuses.each { |name| FeedbackStatus.where(name: name).first_or_create }
+
+    feedback_ratings = [
+      "color_scheme",
+      "ease_of_use",
+      "quality_of_services",
+      "number_of_services",
+      "cleanliness",
+      "courtesy",
+      "safety",
+      "timeliness"
+    ]
+    feedback_ratings.each { |name| FeedbackRating.where(name: name).first_or_create }
+
+    feedback_issues = [
+      "invalid_data",
+      "confusing_info",
+      "base_fare",
+      "number_of_transfers",
+      "travel_time",
+      "walking_distance",
+      "incorrect_info",
+      "not_enough_options"
+    ]
+    feedback_issues.each { |name| FeedbackIssue.where(name: name).first_or_create }
+
+    type1 = FeedbackType.find_by(name: "application")
+    type2 = FeedbackType.find_by(name: "unmet_need")
+    type3 = FeedbackType.find_by(name: "trip")
+
+    FeedbackRatingsFeedbackType.where(feedback_type: type1, feedback_rating: FeedbackRating.find(1)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type1, feedback_rating: FeedbackRating.find(2)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type2, feedback_rating: FeedbackRating.find(3)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type2, feedback_rating: FeedbackRating.find(4)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(5)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(6)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(7)).first_or_create
+    FeedbackRatingsFeedbackType.where(feedback_type: type3, feedback_rating: FeedbackRating.find(8)).first_or_create
+
+    FeedbackIssuesFeedbackType.where(feedback_type: type1, feedback_issue: FeedbackIssue.find(1)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type1, feedback_issue: FeedbackIssue.find(2)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(3)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(4)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(5)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type2, feedback_issue: FeedbackIssue.find(6)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type3, feedback_issue: FeedbackIssue.find(7)).first_or_create
+    FeedbackIssuesFeedbackType.where(feedback_type: type3, feedback_issue: FeedbackIssue.find(8)).first_or_create
+  end
+
+  desc "Update booked trips status"
+  task update_booked_trips: :environment do
+    Itinerary.booked.upcoming.each do |itinerary|
+      itinerary.update_booking_status
+    end
+
+    Itinerary.booked.within_last_24hours.each do |itinerary|
+      itinerary.update_booking_status
+    end
+  end
+
+  desc "Refresh materialized views for reports"
+  task refresh_materialized_views: :environment do
+    ActiveRecord::Base.connection.execute("select * from refreshallmaterializedviews();")
+  end
+
+  desc "Transfer old Ratings into new Feedback"
+  task change_ratings_to_feedback: :environment do
+    Rating.all.each do |rating|
+      unless ["Agency", "Service", "Provider"].include?(rating.rateable_type)
+
+        type = rating.rateable_type == "Trip" ? FeedbackType.find_by(name: "trip") : FeedbackType.find_by(name: "application")
+        status = FeedbackStatus.where(name: rating.status).first_or_create
+
+        feedback_params = {
+          user_id: rating.user_id,
+          user_email: rating.user.email,
+          feedback_type_id: type.id,
+          feedback_status_id: status.id,
+          trip_id: (rating.rateable_id if type.name == "trip"),
+          comment: rating.comments,
+          average_rating: rating.value,
+          created_at: rating.created_at,
+          updated_at: rating.updated_at
+        }
+        feedback = Feedback.where(feedback_params).first_or_create
+
+        FeedbackRatingsFeedbackType.where(feedback_type: type).each do |rating_type|
+          feedback.feedback_ratings_feedbacks << FeedbackRatingsFeedback.where(feedback_id: feedback.id, feedback_rating_id: rating_type.feedback_rating_id, value: (rating.value == -1 ? 0 : rating.value)).first_or_create
+        end
+        FeedbackIssuesFeedbackType.where(feedback_type: type).each do |issue_type|
+          feedback.feedback_issues_feedbacks << FeedbackIssuesFeedback.where(feedback_id: feedback.id, feedback_issue_id: issue_type.feedback_issue_id, value: false).first_or_create
+        end
+      end
+    end
+  end
+
+  desc "Enable ride-hailing mode"
+  task enable_ride_hailing_mode: :environment do
+    # mode
+    ride_hailing_mode = Mode.where(
+      name: 'mode_ride_hailing_name',
+      code: 'mode_ride_hailing'
+      ).first_or_create
+
+    ride_hailing_mode.update_attributes active:true, elig_dependent: false, visible: true
+  end
+
+  desc 'Enable uberX service'
+  task enable_uberx_service: :environment do
+    require 'open-uri'
+    # service type
+    type = ServiceType.where(
+      name: 'uber_x_name',
+      code: 'uber_x',
+      note: 'uber_x_note'
+    ).first_or_create
+
+    # Uber provider
+    provider = Provider.where(name: 'Uber').first_or_create
+    #provider.update_attribute :logo_url, 'uber/uber.png'
+    open(Rails.root.join('public', 'init-assets', 'uber', 'uber.png')) do |f|
+      provider.logo = f.read
+      provider.save
+    end rescue nil
+
+    # uberX Service
+    uberx_service = Service.where(provider: provider, service_type: type, name: 'uberX').first_or_create
+    #uberx_service.update_attribute :logo_url, 'uber/uberx.png'
+    uberx = UberHelpers.new.get_product_by_name('uberX', Oneclick::Application.config.uber_lat, Oneclick::Application.config.uber_lon) if UberHelpers.available?
+    if uberx
+      uberx_service.external_id = uberx.product_id
+      uberx_service.remote_logo_url = uberx.image
+      uberx_service.save
+    end
+  end
+
+  # # DEPRECATED
+  # desc "Enable all counties in the state"
+  # task create_counties_for_state: :environment do
+  #   state = Oneclick::Application.config.state
+  #   puts 'Enabling all counties in the state of ' + state.to_s
+  #
+  #   counties = County.where(state: state)
+  #   counties.each do |county|
+  #     gc = GeoCoverage.where(coverage_type: "county_name", value: county.name).first_or_create
+  #     gc.save
+  #   end
+  #
+  # end
+
+  # # DEPRECATED
+  # desc "Enable all zipcodes in the state"
+  # task create_zipcodes_for_state: :environment do
+  #   state = Oneclick::Application.config.state
+  #   puts 'Enabling all zipcodes in the state of ' + state.to_s
+  #
+  #   zipcodes = Zipcode.where(state: state)
+  #   zipcodes.each do |zipcode|
+  #     gc = GeoCoverage.where(coverage_type: "zipcode", value: zipcode.zipcode).first_or_create
+  #     gc.save
+  #   end
+  # end
 
 end

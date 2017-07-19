@@ -1,0 +1,75 @@
+.row
+  %label.col-sm-4.text-right
+    =translate_helper(:from)
+  .col-sm-8.text-left
+    =itinerary.trip_part.from_trip_place.name
+.row
+  %label.col-sm-4.text-right
+    =translate_helper(:to)
+  .col-sm-8.text-left
+    =itinerary.trip_part.to_trip_place.name
+.row
+  %label.col-sm-4.text-right
+    =itinerary.trip_part.is_depart ? translate_helper(:departing_at) : translate_helper(:arriving_by)
+  .col-sm-8.text-left
+    =itinerary.trip_part.trip_time.strftime("%b %e, %l:%M %p")
+.row
+  %label.col-sm-4.text-right
+    =translate_helper(:confirmation_capped)
+  .col-sm-8.text-left{id: 'itinerary_confirmation_' + itinerary.id.to_s}
+    =itinerary.booking_confirmation
+
+-if itinerary.cost.blank?
+  %div{id: 'itinerary_cost_div_' + itinerary.id.to_s, style: 'display:none;'}
+-else
+  %div{id: 'itinerary_cost_div_' + itinerary.id.to_s}
+    .row
+      %label.col-sm-4.text-right
+        =translate_helper(:fare)
+      .col-sm-8.text-left{id: 'itinerary_cost_' + itinerary.id.to_s}
+        =number_to_currency(itinerary.cost)
+
+-if itinerary.negotiated_pu_window_start.blank?
+  %div{id: 'itinerary_negotiated_pu_window_start_div_' + itinerary.id.to_s, style: 'display:none;'}
+-else
+  %div{id: 'itinerary_negotiated_pu_window_start_div_' + itinerary.id.to_s}
+    .row
+      %label.col-sm-4.text-right
+        =translate_helper(:time_window_start)
+      .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_start_' + itinerary.id.to_s}
+        =itinerary.negotiated_pu_window_start.strftime("%b %e, %l:%M %p")
+
+-if itinerary.negotiated_pu_time.blank?
+  %div{id: 'itinerary_negotiated_pu_time_div_' + itinerary.id.to_s, style: 'display:none;'}
+-else
+  %div{id: 'itinerary_negotiated_pu_time_div_' + itinerary.id.to_s}
+    .row
+      %label.col-sm-4.text-right
+        =translate_helper(:estimated_pu_time)
+      .col-sm-8.text-left{id: 'itinerary_negotiated_pu_time_' + itinerary.id.to_s}
+        =itinerary.negotiated_pu_time.strftime("%b %e, %l:%M %p")
+
+-if itinerary.negotiated_pu_window_end.blank?
+  %div{id: 'itinerary_negotiated_pu_window_end_div_' + itinerary.id.to_s, style: 'display:none;'}
+-else
+  %div{id: 'itinerary_negotiated_pu_window_end_div_' + itinerary.id.to_s}
+    .row
+      %label.col-sm-4.text-right
+        =translate_helper(:time_window_end)
+      .col-sm-8.text-left{id: 'itinerary_negotiated_pu_window_end_' + itinerary.id.to_s}
+        =itinerary.negotiated_pu_window_end.strftime("%b %e, %l:%M %p")
+
+-if itinerary.ridepilot_booking
+  -ridepilot_booking = itinerary.ridepilot_booking
+  -if ridepilot_booking.booking_status_message.blank?
+    %div{id: 'itinerary_booking_status_message_div_' + itinerary.id.to_s, style: 'display:none;'}
+  -else
+    %div{id: 'itinerary_booking_status_message_div_' + itinerary.id.to_s}
+      .row
+        %label.col-sm-4.text-right
+          =translate_helper(:trip_status)
+        .col-sm-8.text-left{id: 'itinerary_booking_status_message_' + itinerary.id.to_s}
+          =ridepilot_booking.booking_status_message
+
+
+

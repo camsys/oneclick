@@ -1,0 +1,14 @@
+.booking-profile-form-container.ridepilot.agency-2{ class: service.booking_profile == 2 ? "" : "hidden" }
+  = f.simple_fields_for :ridepilot_profile do |rp|
+    -unless service.ridepilot_profile.nil?
+      = rp.input :endpoint, input_html: {value: service.ridepilot_profile.endpoint, class: "input-ridepilot-profile-endpoint"}
+      = rp.input :api_token, input_html: {value: service.ridepilot_profile.api_token, class: "input-ridepilot-profile-api-token"}
+      = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id), input_html: {value: service.ridepilot_profile.provider_id, class: "input-ridepilot-profile-provider-id"}
+    -else
+      = rp.input :endpoint
+      = rp.input :api_token
+      = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
+  %center
+    .ridepilot-response.alert.alert-info.hidden
+    = button_tag :type => :button, class: "btn btn-default btn-svc-data btn-ridepilot-test-connection", :remote => true do
+      = icon_label(:test_connection)

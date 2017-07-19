@@ -203,11 +203,6 @@ class PlaceSearchingController < TravelerAwareController
     if (result.status != 200) || (result.body['status'] != 'OK')
       msg = "Google autocomplete failed: status: #{result.status} body: #{result.body}"
       Rails.logger.error msg
-      Honeybadger.notify(
-        :error_class   => "Google geocode failure",
-        :error_message => msg,
-        :parameters    => {result_status: result.status, body: result.body}
-      )
     end
 
     counter -= 1

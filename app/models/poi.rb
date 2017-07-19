@@ -2,18 +2,26 @@ class Poi < GeocodedAddress
   
   # Associations
   belongs_to :poi_type
+  serialize :types
 
   #after_validation :reverse_geocode
   
   # Updatable attributes
   # attr_accessible :name
+  include PlaceHelper
 
   # set the default scope
   default_scope {order('pois.name')}
+  scope :has_address, -> { where.not(:address1 => nil) }
+  scope :is_new, -> {where(old: false)}
 
-  def self.get_by_query_str(query_str, limit)
+  def self.get_by_query_str(query_str, limit, has_address=false)
     rel = Poi.arel_table[:name].matches(query_str)
-    pois = Poi.where(rel).limit(limit)
+    if has_address
+      pois = Poi.has_address.where(rel).limit(limit)
+    else
+      pois = Poi.where(rel).limit(limit)
+    end
     pois
   end
 
@@ -67,7 +75,8 @@ class Poi < GeocodedAddress
                 city: poi_city,
                 state: row[6],
                 zip: row[7],
-                county: row[8]
+                county: row[8],
+                google_place_id: row[10]
               })
               count_good += 1
             else
@@ -92,7 +101,7 @@ class Poi < GeocodedAddress
       count_bad: count_bad,
       count_possible_existing: count_possible_existing
     }
-    summary_info = I18n.t(:pois_load_summary) % sub_pairs
+    summary_info = count_good.to_s + ' Pois Loaded'#TranslationEngine.translate_text(:pois_load_summary) % sub_pairs
     OneclickConfiguration.create_or_update(:poi_last_loading_summary, summary_info)
     OneclickConfiguration.create_or_update(:poi_is_loading, false)
 
@@ -139,44 +148,64 @@ class Poi < GeocodedAddress
     'POI_TYPE'
   end
 
+
   def build_place_details_hash
     #Based on Google Place Details
-
     {
-      address_components: [
-        {
-          long_name: self.address1,
-          short_name: self.address1,
-          types: ["street_address"]
-        },
-        {
-          long_name: self.city,
-          short_name: self.city,
-          types: ["locality", "political"]
-        },
-        {
-          long_name: self.state,
-          short_name: self.state,
-          types: ["administrative_area_level_1","political"]
-        },
-        {
-          long_name: self.zip,
-          short_name: self.zip,
-          types: ["postal_code"]
-        }
-      ],
+        address_components: self.address_components,
 
-      formatted_address: self.address,
-      geometry: {
+        formatted_address: self.address,
+        place_id: self.google_place_id,
+        geometry: {
         location: {
-          lat: self.lat,
-          lng: self.lon,
-        }
-      },
-      id: self.id,
-      name: self.name,
-      scope: "global"
+        lat: self.lat,
+        lng: self.lon,
     }
+    },
+
+        id: self.id,
+        name: self.name == self.address1 ? "" : self.name,
+        scope: "user",
+        stop_code: self.stop_code,
+        types: self.types
+    }
+  end
+
+  def address_components
+    address_components = []
+
+    #street_number
+    if self.street_number
+      address_components << {long_name: self.street_number, short_name: self.street_number, types: ['street_number']}
+    end
+
+    #Route
+    if self.route
+      address_components << {long_name: self.route, short_name: self.route, types: ['route']}
+    end
+
+    #Street Address
+    if self.address1
+      address_components << {long_name: self.address1, short_name: self.address1, types: ['street_address']}
+    end
+
+    #City
+    if self.city
+      address_components << {long_name: self.city, short_name: self.city, types: ["locality", "political"]}
+    end
+
+    #Zip
+    if self.zip
+      address_components << {long_name: self.zip, short_name: self.zip, types: ["postal_code"]}
+    end
+
+    #State
+    if self.state
+      address_components << {long_name: self.state, short_name: self.state, types: ["administrative_area_level_1","political"]}
+    end
+
+    return address_components
+
   end
   
 end

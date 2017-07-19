@@ -14,7 +14,7 @@ class TripPartsController < PlaceSearchingController
       Rails.logger.info i.ai
     end
     Rails.logger.info ""
-    redirect_to user_trip_path_for_ui_mode(@traveler, trip_part.trip)
+    redirect_to user_trip_path(@traveler, trip_part.trip)
   end
 
   # Unhides all the hidden itineraries for a trip part
@@ -24,7 +24,7 @@ class TripPartsController < PlaceSearchingController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_path_for_ui_mode(@traveler, trip_part.trip)
+    redirect_to user_trip_path(@traveler, trip_part.trip)
   end
 
   def itineraries
@@ -34,13 +34,14 @@ class TripPartsController < PlaceSearchingController
     if params[:regen]
       @trip_part.remove_existing_itineraries(@modes)
     end
-    @itineraries = @trip_part.itineraries.where(returned_mode_code: params[:mode])
+    @itineraries = @trip_part.itineraries.visible.where(returned_mode_code: params[:mode])
     Rails.logger.info "trip part has #{@itineraries.count} itineraries for modes #{@modes.map(&:code).join(', ')}."
 
     if (@itineraries.empty?)
       Rails.logger.info "itineraries is empty, generating itineraries."
 
-      @itineraries = @trip_part.create_itineraries(@modes)
+      @trip_part.create_itineraries(@modes)
+      @itineraries = @trip_part.itineraries.visible
       #end
     else
       Rails.logger.info "itineraries is not empty, not generating itineraries."

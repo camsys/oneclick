@@ -1,0 +1,150 @@
+- this_path = "admin/services/form_parts/paratransit_part2"
+- form_index = 2
+- service_id = new_service ? "new-#{mode}" : service.id
+
+= simple_form_for service || :service,
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-vertical service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :vertical_form do |f|
+  = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  .service-details-container
+    %label.control-label= translate_helper(:service_schedule_heading)
+    - if service.schedules.any?
+      - service.schedules.each do |sched|
+        = render partial: "admin/services/form_parts/schedule_row",
+          locals: {f:f, sched:sched}
+    - else
+      %label.sub-label.label-no-schedules= translate_helper(:no_service_schedules_message)
+    - 7.times do
+      = render partial: "admin/services/form_parts/schedule_row",
+        locals: {f:f, wrapper_classes: "hidden",
+          sched: Schedule.new(day_of_week: nil, start_time: nil, end_time: nil)}
+    = render partial: "admin/services/form_parts/schedule_row",
+      locals: {f:f, wrapper_classes: "faded", master: true,
+        sched: Schedule.new(day_of_week: service.schedules.any? ? (service.schedules.last.day_of_week + 1) % 7 : 1,
+          start_time: service.schedules.any? ? service.schedules.last.start_time : "8:00 AM",
+          end_time: service.schedules.any? ? service.schedules.last.end_time : "8:00 PM")}
+    -# %datalist#schedule-times
+    -#   %option 8:00 AM
+    -#   %option TIME 2
+    -#   %option TIME 3
+
+  .service-details-container
+    %label.control-label= translate_helper(:service_booking_cutoff_header)
+    .row.form-group.form-horizontal.inline-form-group
+      .col-xs-12
+        %span= translate_helper(:booking_cutoff_sentence_pt1)
+        = select_tag(:day_of_week,
+          options_for_select(Rails.application.config.times_of_day, service.booking_cut_off_times.empty? ? "8:00 PM" : service.booking_cut_off_times.first.cut_off_seconds),
+          {class: "select form-control service-bct-master-select"})
+        %span= translate_helper(:booking_cutoff_sentence_pt2)
+        %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
+            value: service.advanced_notice_minutes/60/24.round,
+            name: "service[notice_days_part]"}
+        %span= translate_helper(:booking_cutoff_sentence_pt3)
+        %input.text-right.text.form-control{type: "number", min: 0, max: Service.max_allow_advanced_book_days,
+            value: service.max_advanced_book_minutes/60/24.round,
+            name: "service[max_advanced_book_days_part]"}
+        %span= translate_helper(:booking_cutoff_sentence_pt4)
+    - if service.booking_cut_off_times.empty?
+      - (0..6).each do |dow|
+        .row.service-details-row.hidden
+          = f.input :booking_cut_off_times,
+            collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: dow,
+            input_html: {name: input_name(f, :booking_cut_off_times, :day_of_week)},
+            wrapper_html: {class: "col-xs-3"},
+            label: false
+          = f.input :booking_cut_off_times,
+            collection: Rails.application.config.times_of_day, selected: "8:00 PM",
+            input_html: {name: input_name(f, :booking_cut_off_times, :cut_off_time), class: "cutoff-time-select"},
+            wrapper_html: {class: "col-xs-3"},
+            label: false
+          = f.input :booking_cut_off_times,
+            input_html: {name: input_name(f, :booking_cut_off_times, :_destroy), value: false, class: "input-bct-destroy"},
+            wrapper_html: {class: "col-xs-2"},
+            label: false
+    - else
+      - service.booking_cut_off_times.each do |bct|
+        .row.service-details-row.hidden
+          = f.input :booking_cut_off_times,
+            input_html: {name: input_name(f, :booking_cut_off_times, :id), value: bct.id},
+            wrapper_html: {class: "col-xs-2"},
+            label: false
+          = f.input :booking_cut_off_times,
+            collection: 0..6, label_method: Proc.new{|i| Date::ABBR_DAYNAMES[i]}, selected: bct.day_of_week,
+            input_html: {name: input_name(f, :booking_cut_off_times, :day_of_week)},
+            wrapper_html: {class: "col-xs-3"},
+            label: false
+          = f.input :booking_cut_off_times,
+            collection: Rails.application.config.times_of_day, selected: bct.cut_off_seconds,
+            input_html: {name: input_name(f, :booking_cut_off_times, :cut_off_time), class: "cutoff-time-select"},
+            wrapper_html: {class: "col-xs-3"},
+            label: false
+          = f.input :booking_cut_off_times,
+            input_html: {name: input_name(f, :booking_cut_off_times, :_destroy), value: false, class: "input-bct-destroy"},
+            wrapper_html: {class: "col-xs-2"},
+            label: false
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = new ServiceForm(
+      "#{service_id}",
+      "#{form_index}",
+      ("#{new_service}" === "true"),
+      ['.delete-schedule-btn', '.service-schedules-master-row'],
+      ['.label-no-schedules']
+    );
+
+    // Delete Schedule Button Handler - Hide Row and Set Destroy to TRUE
+    form.$('.delete-schedule-btn').on("click", function(e) {
+      console.log("Delete Schedule Button Clicked", $(this));
+      $(this).closest(".service-details-row").addClass("hidden"); // Hide this row
+      $(this).closest(".service-details-row").find(".input-schedule-destroy").attr("value", true); // Set destroy value to true for this element
+    });
+
+    // Handler for New Schedule Row Selector
+    form.$('.service-schedules-master-row .add-schedule-btn').on("click", function(e) {
+
+      // Identify the next hidden new schedule form
+      var nextNewScheduleForm = $(this).closest(".service-details-row").siblings(".hidden[data-schedule-id='new-schedule']").first();
+
+      // Modify its values to match the master form
+      var dow = parseInt(form.$('.service-schedules-master-row .select-schedule-dow').val());
+      nextNewScheduleForm.find('.select-schedule-dow').val(dow).change();
+      // nextNewScheduleForm.find(`.select-schedule-dow option[value='${dow}']`).prop("selected", true);
+
+      var startTime = form.$('.service-schedules-master-row .select-schedule-start-time').val();
+      nextNewScheduleForm.find('.select-schedule-start-time').val(startTime).change();
+      // nextNewScheduleForm.find(`.select-schedule-start-time option[value='${startTime}']`).prop("selected", true);
+
+      var endTime = form.$('.service-schedules-master-row .select-schedule-end-time').val();
+      nextNewScheduleForm.find('.select-schedule-end-time').val(endTime).change();
+      // nextNewScheduleForm.find(`.select-schedule-end-time option[value='${endTime}']`).prop("selected", true);
+
+      // Set its destroy value to true
+      nextNewScheduleForm.find('.input-schedule-destroy').attr("value", false);
+
+      // Unhide it
+      nextNewScheduleForm.removeClass("hidden");
+
+      // Update the master form to have the same times but the next day
+      form.$('.service-schedules-master-row .select-schedule-dow').val((dow + 1) % 7).change();
+
+    });
+
+    // Handler for Booking Cutoff Times Selector sets all hidden BCT fields to its value
+    form.$('.service-bct-master-select').change(function(e) {
+      $(this).closest(".service-details-container").find(`.cutoff-time-select option[value="${$(this).val()}"]`).attr("selected", true);
+    });
+
+  });

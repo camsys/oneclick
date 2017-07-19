@@ -5,7 +5,8 @@ class Place < GeocodedAddress
   belongs_to  :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to  :poi       # optional
   has_many    :trip_places # optional
-  
+  serialize :types
+
   # attr_protected :id, :user_id, :created_at, :updated_at
   # attr_accessible :name, :raw_address
   # attr_accessible :creator_id, :poi_id, :active, :home, :lat, :lon
@@ -111,42 +112,82 @@ class Place < GeocodedAddress
 
   def build_place_details_hash
     #Based on Google Place Details
-
     {
-        address_components: [
-        {
-            long_name: self.address1,
-        short_name: self.address1,
-        types: ["street_address"]
-    },
-        {
-            long_name: self.city,
-        short_name: self.city,
-        types: ["locality", "political"]
-    },
-        {
-            long_name: self.state,
-        short_name: self.state,
-        types: ["administrative_area_level_1","political"]
-    },
-        {
-            long_name: self.zip,
-        short_name: self.zip,
-        types: ["postal_code"]
-    }
-    ],
+        address_components: self.address_components,
 
-        formatted_address: self.address,
+        formatted_address: self.raw_address || self.build_formatted_address,
+        place_id: self.google_place_id,
         geometry: {
         location: {
         lat: self.lat,
         lng: self.lon,
-    }
+      }
     },
         id: self.id,
         name: self.name,
-        scope: "user"
+        scope: "user",
+        stop_code: self.stop_code,
+        types: self.types
     }
+  end
+
+  def build_formatted_address
+    address = ""
+    if self.address1
+      address += self.address1 + ', '
+    end
+
+    if self.city
+      address += self.city + ', '
+    end
+
+    if self.state
+      address += self.state + '  '
+    end
+
+    if self.zip
+      address += self.zip + '  '
+    end
+
+    return address.chop.chop
+
+  end
+
+  def address_components
+    address_components = []
+
+    #street_number
+    if self.street_number
+      address_components << {long_name: self.street_number, short_name: self.street_number, types: ['street_number']}
+    end
+
+    #Route
+    if self.route
+      address_components << {long_name: self.route, short_name: self.route, types: ['route']}
+    end
+
+    #Street Address
+    if self.address1
+      address_components << {long_name: self.address1, short_name: self.address1, types: ['street_address']}
+    end
+
+    #City
+    if self.city
+      address_components << {long_name: self.city, short_name: self.city, types: ["locality", "political"]}
+    end
+
+    #State
+    if self.state
+      address_components << {long_name: self.zip, short_name: self.zip, types: ["postal_code"]}
+    end
+
+    #Zip
+    if self.zip
+      address_components << {long_name: self.state, short_name: self.state, types: ["administrative_area_level_1","political"]}
+    end
+
+    return address_components
+
   end
 
 end

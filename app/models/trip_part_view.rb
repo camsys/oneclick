@@ -12,7 +12,7 @@ class TripPartView < ActiveRecord::Base
   # case insensitive search and sort
   ransacker :is_return_trip do
     Arel.sql(
-      "case when is_return_trip is true then '#{I18n.t(:return)}' else '#{I18n.t(:outbound)}' end"
+      "case when is_return_trip is true then '#{TranslationEngine.translate_text(:return)}' else '#{TranslationEngine.translate_text(:outbound)}' end"
     )
   end
 
@@ -28,14 +28,14 @@ class TripPartView < ActiveRecord::Base
   # csv related
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:trip_id),
-      I18n.t(:traveler),
-      I18n.t(:trip_datetime),
-      I18n.t(:from),
-      I18n.t(:to),
-      I18n.t(:outbound_or_return),
-      I18n.t(:provider_name)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:trip_id),
+      TranslationEngine.translate_text(:traveler),
+      TranslationEngine.translate_text(:trip_datetime),
+      TranslationEngine.translate_text(:from),
+      TranslationEngine.translate_text(:to),
+      TranslationEngine.translate_text(:outbound_or_return),
+      TranslationEngine.translate_text(:provider_name)
     ]
   end
 

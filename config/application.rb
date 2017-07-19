@@ -41,6 +41,8 @@ end
 
 module Oneclick
   class Application < Rails::Application
+    OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
@@ -73,6 +75,7 @@ module Oneclick
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = ENV['TIME_ZONE'] || "Eastern Time (US & Canada)"
+    config.times_of_day = (0..48).map{|hh| [(Time.new(0) + hh * 1800).strftime("%l:%M %p").strip, hh * 1800]}# << ["12:00 AM", "11:59 PM"]
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -94,54 +97,37 @@ module Oneclick
     # config.active_record.schema_format = :sql
 
     # Enable the asset pipeline
-    config.assets.enabled = true
+    #config.assets.enabled = true
+    #config.assets.compile = false
     # For heroku; see http://blog.nathanhumbert.com/2012/01/rails-32-on-heroku-tip.html
-    config.assets.initialize_on_precompile = false
+    #config.assets.initialize_on_precompile = false
+    #config.serve_static_assets = true
 
     config.ui_mode = ENV['UI_MODE'] || 'desktop'
 
     # config.assets.precompile = ['foo']
 
-    if config.ui_mode=='desktop'
-      config.assets.paths << File.join(Rails.root, 'app', 'assets-default')
+    #config.assets.debug = true
+    #config.assets.paths << File.join(Rails.root, 'app', 'assets')
+    config.assets.paths << Rails.root.join('app', 'assets')
     config.assets.precompile += %w(
         application.css
-        arc.css
-        pa.css
-        broward.css
         tadaaapickr.en.js
         typeahead.js-bootstrap.css
         users.css
     )
-    else # config.ui_mode=='kiosk'
-      config.assets.paths << File.join(Rails.root, 'app', 'assets-kiosk')
-      config.assets.precompile += %w(
-        application.css
-        _base.css
-        style.css
-        pa.css
-        ext/fontawesome-ext-webfont.eot
-        ext/fontawesome-ext-webfont.svg
-        ext/fontawesome-ext-webfont.ttf
-        ext/fontawesome-ext-webfont.woff
-      )
-    end
+
+    #Alloow CORS to the API from 1 domain
+    config.action_dispatch.default_headers = {
+        'Access-Control-Allow-Origin' => ENV['ALLOWED_API_DOMAIN'],
+        'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
+    }
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.6'
 
-    # See http://work.stevegrossi.com/2013/04/06/dynamic-error-pages-with-rails-3-2/
-    config.exceptions_app = self.routes
-    config.brand = ENV['BRAND'] || 'arc'
-    config.ui_mode = ENV['UI_MODE'] || 'desktop'
-    if config.ui_mode=='desktop'
-      config.sass.load_paths << File.expand_path("./app/assets-default/stylesheets/#{config.brand}")
-      if ENV['USE_GOOGLE_ANALYTICS'].to_s.downcase == 'true'
-        config.sass.load_paths << File.expand_path("./app/assets-default/javascripts/#{config.brand}")
-      end
-    else # config.ui_mode=='kiosk'
-      config.sass.load_paths << File.expand_path("./app/assets-kiosk/stylesheets/#{config.brand}")
-    end
+    # Service Data UI Configurations
+    config.show_paratransit_fleet_size_and_trip_volume = false
   end
 
 end
@@ -156,4 +142,3 @@ def oneclick_available_locales
     %r{en}
   end
 end
-

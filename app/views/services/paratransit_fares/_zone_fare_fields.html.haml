@@ -1,6 +1,6 @@
 .col-sm-12
   = button_tag :type => 'button', "data-target" => "#farezoneUploadDialog", "data-toggle" => "modal", :class => "btn action-button pull-right" do
-    = t(:upload_farezones)
+    = translate_helper(:upload_fare_zones)
 .col-sm-12#zoneFaresTable
   - service_id = fare_structure.service.id if fare_structure.service
   - zones = FareZone.where(service_id: service_id).select(:id, :zone_id).order(:zone_id)

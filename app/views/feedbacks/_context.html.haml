@@ -1,0 +1,18 @@
+- feedback = Feedback.find(params[:id])
+.modal-header
+  .row
+    %button.btn.action-button.pull-right{style: "margin-right:10px;", data: {dismiss: "modal"}}= translate_helper(:ok)
+.modal-body{style: "margin:0 10px 0 10px;"}
+  .modal-title
+    .pull-right= feedback.to_stars(feedback.average_rating, 1)
+    = "#{feedback.feedback_type.name.to_s.titleize} #{translate_helper(:feedback)}"
+    = add_tooltip("#{feedback.feedback_type.name.to_s}_help")
+    %p= feedback.user_email if feedback.user_email
+  .row
+    - case feedback.feedback_type.name
+      - when 'trip'
+        = trip = Trip.find(feedback.trip_id)
+        = trip.planned_trip_html.html_safe unless trip.planned_trip_html.nil?
+        = render partial: 'review_feedback', locals: {feedback: feedback}
+      - else
+        = render partial: 'review_feedback', locals: {feedback: feedback}

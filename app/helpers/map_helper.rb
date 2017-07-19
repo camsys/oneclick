@@ -2,13 +2,8 @@ module MapHelper
 
   ALPHABET = ('A'..'Z').to_a
 
-  unless ENV['UI_MODE']=='kiosk'
-    POPUP_PARTIAL = "/shared/map_popup"
-    BUILDING_ICON = 'fa-building-o'
-  else
-    POPUP_PARTIAL = "/shared/map_popup_b2"
-    BUILDING_ICON = 'icon-building'
-  end
+  POPUP_PARTIAL = "/shared/map_popup"
+  BUILDING_ICON = 'fa-building-o'
 
   # Returns a formatted string for displaying a map marker image that includes a A,B,C, etc. designator.
   #
@@ -112,7 +107,7 @@ module MapHelper
       markers << get_addr_marker(place, 'stop', 'stopIcon')
     else
       multi_origin_places = []
-      multi_origin_places = trip_proxy.multi_origin_places.split(';') unless trip_proxy.multi_origin_places.nil?
+      multi_origin_places = trip_proxy.multi_origin_places.split(';##$##;') unless trip_proxy.multi_origin_places.nil?
 
       multi_origin_places.each_with_index do |raw_place, index|
         place = JSON.parse(raw_place).symbolize_keys
@@ -120,7 +115,7 @@ module MapHelper
       end
 
       multi_dest_places = []
-      multi_dest_places = trip_proxy.multi_dest_places.split(';') unless trip_proxy.multi_dest_places.nil?
+      multi_dest_places = trip_proxy.multi_dest_places.split(';##$##;') unless trip_proxy.multi_dest_places.nil?
 
       multi_dest_places.each_with_index do |raw_place, index|
         place = JSON.parse(raw_place).symbolize_keys

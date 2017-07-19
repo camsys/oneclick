@@ -8,11 +8,13 @@ class TripPlace < GeocodedAddress
   ]
 
   validate :validator
+  serialize :types
 
   # Associations
   belongs_to :trip    # everyone trip place must belong to a trip
   belongs_to :place   # optional
   belongs_to :poi     # optional
+  has_one :user, :through => :trip
 
   # Updatable attributes
   # attr_accessible :sequence, :raw_address
@@ -141,64 +143,115 @@ class TripPlace < GeocodedAddress
   def from_place_details details
 
     components = details[:address_components]
-    components.each do |component|
-      types = component[:types]
-      if 'street_address'.in? types
-        self.address1 = component[:long_name]
-      elsif 'administrative_area_level_1'.in? types
-        self.state = component[:long_name]
-      elsif 'locality'.in? types
-        self.city = component[:long_name]
-      elsif 'postal_code'.in? types
-        self.zip = component[:long_name]
+    unless components.nil?
+      components.each do |component|
+        types = component[:types]
+        if types.nil?
+          next
+        end
+        if 'street_address'.in? types
+          self.address1 = component[:long_name]
+        elsif 'route'.in? types
+          self.route = component[:long_name]
+        elsif 'street_number'.in? types
+          self.street_number = component[:long_name]
+        elsif 'administrative_area_level_1'.in? types
+          self.state = component[:long_name]
+        elsif 'locality'.in? types
+          self.city = component[:long_name]
+        elsif 'postal_code'.in? types
+          self.zip = component[:long_name]
+        elsif 'administrative_area_level_2'.in? types
+          self.county = component[:long_name].sub(' County', '')
+        end
       end
+
+      #If we didn't get a street address, combine the street number and route into a street address
+      if self.address1.nil?
+        self.address1 = self.street_number.to_s + ' ' + self.route.to_s
+      end
+
     end
 
     self.raw_address = details[:formatted_address]
     self.lat = details[:geometry][:location][:lat]
     self.lon = details[:geometry][:location][:lng]
     self.name = details[:name]
+    self.google_place_id = details[:place_id]
+    self.stop_code = details[:stop_code]
+    self.types = details[:types]
 
+    if self.county.blank?
+      self.county = get_county
+    end
+
+  end
+
+  def get_county
+    if self.lat.nil? or self.lon.nil?
+      return nil
+    end
+    oneclick_geocoder = OneclickGeocoder.new
+    oneclick_geocoder.get_county(self.lat, self.lon)
   end
 
   def build_place_details_hash
     #Based on Google Place Details
-
     {
-        address_components: [
-        {
-            long_name: self.address1,
-        short_name: self.address1,
-        types: ["street_address"]
-    },
-        {
-            long_name: self.city,
-        short_name: self.city,
-        types: ["locality", "political"]
-    },
-        {
-            long_name: self.state,
-        short_name: self.state,
-        types: ["administrative_area_level_1","political"]
-    },
-        {
-            long_name: self.zip,
-        short_name: self.zip,
-        types: ["postal_code"]
-    }
-    ],
+      address_components: self.address_components,
 
-        formatted_address: self.address,
-        geometry: {
+      formatted_address: self.raw_address,
+      place_id: self.google_place_id,
+      geometry: {
         location: {
-        lat: self.lat,
-        lng: self.lon,
+          lat: self.lat,
+          lng: self.lon,
+        }
+      },
+
+      id: self.id,
+      name: self.name,
+      scope: "user",
+      stop_code: self.stop_code,
+      types: self.types
     }
-    },
-        id: self.id,
-        name: self.name,
-        scope: "user"
-    }
+  end
+
+  def address_components
+    address_components = []
+
+    #street_number
+    if self.street_number
+      address_components << {long_name: self.street_number, short_name: self.street_number, types: ['street_number']}
+    end
+
+    #Route
+    if self.route
+      address_components << {long_name: self.route, short_name: self.route, types: ['route']}
+    end
+
+    #Street Address
+    if self.address1
+      address_components << {long_name: self.address1, short_name: self.address1, types: ['street_address']}
+    end
+
+    #City
+    if self.city
+      address_components << {long_name: self.city, short_name: self.city, types: ["locality", "political"]}
+    end
+
+    #State
+    if self.state
+      address_components << {long_name: self.zip, short_name: self.zip, types: ["postal_code"]}
+    end
+
+    #Zip
+    if self.zip
+      address_components << {long_name: self.state, short_name: self.state, types: ["administrative_area_level_1","political"]}
+    end
+
+    return address_components
+
   end
 
 

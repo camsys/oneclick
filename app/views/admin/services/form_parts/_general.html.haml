@@ -1,0 +1,91 @@
+- service_logo_url = service.nil? ? nil : service.logo_url
+- this_path = "admin/services/form_parts/general"
+- form_index = 0
+- service_id = new_service ? "new-#{mode}" : service.id
+
+-# Forms for creating or editing a service
+= simple_form_for service || :service,
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: !new_service,
+        html: { class: "form-horizontal service-details-form #{'last' if new_service}", multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index },
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  = f.input :name, as: :string,
+    label: translate_helper(:service_name),
+    placeholder: translate_helper(:service_name_placeholder)
+
+  -if new_service # Hidden Input Sets Mode
+    %input.hidden#service_service_type_id{value: ServiceType.where(code: mode)[0].id, name: "service[service_type_id]", type: "text"}
+
+  .form-group.file.optional.service_logo
+    = f.input :logo, input_html: { class: "hidden service-logo-upload-real" }, :as => :file, wrapper: false
+    .col-sm-9
+      %button.btn.btn-default.btn-svc-data.service-logo-upload-btn= service_logo_url.nil? ? translate_helper(:upload_logo) : translate_helper(:replace_logo)
+      %img.logo-display-img.logo-upload-img{ src: service_logo_url}
+      -if service_logo_url.nil?
+        %span.subtle-text= translate_helper(:image_file_types)
+
+  -# Show Phone input for Taxi and Paratransit Only
+  -if (ServiceType::PARATRANSIT_MODE_NAMES + ServiceType::TAXI_MODE_NAMES).include?(mode)
+    = f.input :phone,
+      label: translate_helper(:phone)
+
+  -# Show URL input for Paratransit Only
+  -if ServiceType::PARATRANSIT_MODE_NAMES.include?(mode)
+    = f.input :url
+
+  -# Display a comment field for each active locale, with existing comment if present
+  - I18n.available_locales.map(&:to_s).each do |locale|
+    - existing_comment = new_service ? nil : service.public_comments.find_by(locale: locale)
+    - if existing_comment
+      = f.simple_fields_for existing_comment do |comment|
+        = comment.input :id, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][id]" }
+        = comment.input :comment, as: :text,
+          label: [translate_helper("locales.#{locale}"), translate_helper(:comment)].join(' '),
+          input_html: {name: "service[public_comments_attributes][][comment]"}
+        = comment.input :locale, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][locale]"}
+        = comment.input :visibility, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][visibility]"}
+    - else
+      = f.simple_fields_for :comment do |comment|
+        = comment.input :comment, as: :text,
+          label: [translate_helper("locales.#{locale}"), translate_helper(:comment)].join(' '),
+          input_html: {name: "service[public_comments_attributes][][comment]"}
+        = comment.input :locale, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][locale]", value: locale}
+        = comment.input :visibility, as: :hidden,
+          input_html: {name: "service[public_comments_attributes][][visibility]", value: "public"}
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"), ['.service-logo-upload-btn']);
+
+    // Update Tab Name on Name change
+    form.$().on("ajax:success", function(evt, data, status, xhr) {
+      var newName = form.$('.service_name .form-control').val() || $(form.tabLinkId).text();
+      $(form.tabLinkId).text(newName);
+    });
+
+    // Handle logo upload via proxy button
+    form.$(".service-logo-upload-btn").on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      form.$(".service-logo-upload-real").click();
+    });
+
+    // Preview logo before upload
+    form.$(".service-logo-upload-real").change(function(e) {
+      form.$(".logo-upload-img").attr("src", URL.createObjectURL(event.target.files[0]));
+    });
+
+  });

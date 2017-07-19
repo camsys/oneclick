@@ -1,0 +1,3 @@
+class TaxiService < Service
+
+end

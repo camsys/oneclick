@@ -1,0 +1,54 @@
+-outbound_space_types = @trip.outbound_part.get_space_types
+-outbound_passenger_types = @trip.outbound_part.get_passenger_types
+
+=simple_form_for @trip.outbound_part, url: user_trip_trip_part_path(trip_id: @trip.id),  html: { id: 'outbound_confirmation_form', class: 'form-horizontal' } do |f|
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:unit_number)
+    = f.input :unit, :label => false, :as => :string, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_unit'}
+
+  .row
+    %label.col-sm-4.text-right
+      =translate_helper(:confirm_trip_purpose)
+    = f.input :booking_trip_purpose_id, :label => false, :collection => @trip.outbound_part.get_booking_trip_purposes, :include_blank => false, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_trip_purpose_collection'}
+
+//  .row
+//    %label.col-sm-4.text-right
+//      =translate_helper(:passenger1_type)
+//    = f.input :passenger1_type, :label => false, :collection => outbound_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger1_type'}
+//
+//  .row
+//    %label.col-sm-4.text-right
+//      =translate_helper(:passenger1_space_type)
+//    = f.input :passenger1_space_type, :label => false, :collection => outbound_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger1_space_type'}
+//
+//  #outbound_passenger2
+//    .row
+//      %label.col-sm-4.text-right
+//        =translate_helper(:passenger2_type)
+//      = f.input :passenger2_type, :label => false, :collection => outbound_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger2_type'}
+//
+//    .row
+//      %label.col-sm-4.text-right
+//        =translate_helper(:passenger2_space_type)
+//      = f.input :passenger2_space_type, :label => false, :collection => outbound_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger2_space_type'}
+//
+// #outbound_passenger3
+//    .row
+//      %label.col-sm-4.text-right
+//        =translate_helper(:passenger3_type)
+//      = f.input :passenger3_type, :label => false, :collection => outbound_passenger_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger3_type'}
+//
+//    .row
+//      %label.col-sm-4.text-right
+//        =translate_helper(:passenger3_space_type)
+//     = f.input :passenger3_space_type, :label => false, :collection => outbound_space_types, :include_blank => true, wrapper_html: {class: 'col-sm-8', style: 'margin:0;'}, input_html: {id: 'outbound_passenger3_space_type'}
+
+//:javascript
+//  $('#outbound_passenger2, #outbound_passenger3').hide();
+//  $('#outbound_passenger1_type').on('change', function(){
+//    if ( $(this).val().length != 0 ) { $('#outbound_passenger2').show(); }
+//  });
+//  $('#outbound_passenger2_type').on('change', function(){
+//    if ( $(this).val().length != 0 ) { $('#outbound_passenger3').show(); }
+//  });

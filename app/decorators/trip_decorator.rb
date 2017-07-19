@@ -1,5 +1,5 @@
 class TripDecorator < Draper::Decorator
-  decorates_association :itineraries  
+  decorates_association :itineraries
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through
@@ -15,7 +15,7 @@ class TripDecorator < Draper::Decorator
     super
     @elig_svc = EligibilityService.new
   end
-  
+
   def created
     I18n.l created_at, format: :isoish
   end
@@ -31,7 +31,7 @@ class TripDecorator < Draper::Decorator
   def assisted_by
     (object.user == object.creator) ? '' : creator
   end
-  
+
   def creator
     object.creator.name if object.creator
   end
@@ -53,49 +53,49 @@ class TripDecorator < Draper::Decorator
   end
 
   def out_arrive_or_depart
-    outbound_part.is_depart ? I18n.t(:departing_at) : I18n.t(:arriving_by)
+    outbound_part.is_depart ? TranslationEngine.translate_text(:departing_at) : TranslationEngine.translate_text(:arriving_by)
   end
-  
+
   def out_datetime
     I18n.l outbound_part.scheduled_time, format: :isoish
   end
-  
+
   def to_lat
     to_place.lat
   end
-  
+
   def to_lon
     to_place.lon
   end
 
   def in_arrive_or_depart
     if is_return_trip
-      return_part.is_depart ? I18n.t(:departing_at) : I18n.t(:arriving_by)
+      return_part.is_depart ? TranslationEngine.translate_text(:departing_at) : TranslationEngine.translate_text(:arriving_by)
     end
   end
-  
+
   def in_datetime
     if is_return_trip
       I18n.l return_part.scheduled_time, format: :isoish
     end
   end
-  
+
   def round_trip
-    is_return_trip ? I18n.t(:yes_str) : I18n.t(:no_str)
+    is_return_trip ? TranslationEngine.translate_text(:yes_str) : TranslationEngine.translate_text(:no_str)
   end
-  
+
   def booked
-    is_booked? ? I18n.t(:yes_str) : I18n.t(:no_str)
+    is_booked? ? TranslationEngine.translate_text(:yes_str) : TranslationEngine.translate_text(:no_str)
   end
 
   def eligibility
     get_eligibility(outbound_part.selected_itinerary, object.user.user_profile)
   end
-  
+
   def accommodations
     get_accomodations(outbound_part.selected_itinerary)
   end
-  
+
   def outbound_itinerary_count
     outbound_part.itineraries.count
   end
@@ -121,43 +121,49 @@ class TripDecorator < Draper::Decorator
   def itinerary_modes part, strings
     part.itineraries.group(:mode_id).count.each do |key, val|
       key ||= Mode.walk.id
-      key_name = I18n.t("#{Mode.unscoped.find(key).code}_name")
+      key_name = TranslationEngine.translate_text("#{Mode.unscoped.find(key).code}_name")
       strings << "#{key_name}: #{val}"
     end
   end
-  
+
   def outbound_selected_short
     get_trip_summary(outbound_part.selected_itinerary) if outbound_part.selected_itinerary
   end
-  
+
   def return_selected
     if is_return_trip
       get_trip_summary(return_part.selected_itinerary) if return_part.selected_itinerary
     end
   end
-  
+
   def status
   end
-  
+
   def device
   end
-  
+
   def location
   end
-  
+
   def trip_purpose
     I18n.t object.trip_purpose.name if object.trip_purpose
   end
 
-  def modes
-    I18n.t(desired_modes.map{|m| m.name}).join ', ' if desired_modes
-  end
+    def modes
+      return_array = []
+      if desired_modes.present?
+        desired_modes.each do |desired_mode|
+          return_array.push(TranslationEngine.translate_text(desired_mode.name))
+        end
+        return return_array
+      end
+    end
 
   def get_trip_summary itinerary
     summary = ''
     if itinerary.is_walk
       itinerary.get_legs(false).each do |leg|
-        summary += "#{I18n.t(leg.mode.downcase)} #{I18n.t(:to)} #{leg.end_place.name};"
+        summary += "#{TranslationEngine.translate_text(leg.mode.downcase)} #{TranslationEngine.translate_text(:to)} #{leg.end_place.name};"
       end
     else
       if itinerary.mode.nil?
@@ -171,46 +177,48 @@ class TripDecorator < Draper::Decorator
       else
         code = itinerary.mode.code
       end
-      
+
       case code
       when 'mode_transit', 'mode_bus', 'mode_rail'
         itinerary.get_legs(false).each do |leg|
           case leg.mode
           when Leg::TripLeg::WALK
-            summary += "#{I18n.t(leg.mode.downcase)}"
+            summary += "#{TranslationEngine.translate_text(leg.mode.downcase)}"
           when Leg::TripLeg::BICYCLE
-            summary += "#{I18n.t(leg.mode.downcase)}"
+            summary += "#{TranslationEngine.translate_text(leg.mode.downcase)}"
           when Leg::TripLeg::CAR
-            summary += "#{I18n.t(:drive)}/#{I18n.t(:taxi)}"
+            summary += "#{TranslationEngine.translate_text(:drive)}/#{TranslationEngine.translate_text(:taxi)}"
           else
-            summary += "#{leg.agency_id} #{I18n.t(leg.mode.downcase)} #{leg.route}"
+            summary += "#{leg.agency_id} #{TranslationEngine.translate_text(leg.mode.downcase)} #{leg.route}"
           end
-          summary += " #{I18n.t(:to)} #{leg.end_place.name};"
+          summary += " #{TranslationEngine.translate_text(:to)} #{leg.end_place.name};"
         end
       when 'mode_paratransit'
         if itinerary.service
           itinerary.service.get_contact_info_array.each do |a,b|
-            summary += "#{I18n.t(:paratransit)} #{I18n.t(a)}: #{h.sanitize_nil_to_na b};"
+            summary += "#{TranslationEngine.translate_text(:paratransit)} #{TranslationEngine.translate_text(a)}: #{h.sanitize_nil_to_na b};"
           end
         end
-        
+
       when 'mode_taxi'
-        YAML.load(itinerary.server_message).each do |business|
-          summary += "#{I18n.t(:taxi)} #{business['name']}: #{business['phone']};"
+        if itinerary.server_message
+          YAML.load(itinerary.server_message).each do |business|
+            summary += "#{TranslationEngine.translate_text(:taxi)} #{business['name']}: #{business['phone']};"
+          end
         end
       when 'mode_rideshare'
         if itinerary.server_message
           YAML.load(itinerary.server_message).each do |business|
-            summary += "#{I18n.t(:rideshare)} #{business['name']}: #{business['phone']};"
+            summary += "#{TranslationEngine.translate_text(:rideshare)} #{business['name']}: #{business['phone']};"
           end
         else
           # TODO: this should be generalized here and in _rideshare_details.html.haml
-          summary += 'Georgia Commute Options'
+          summary += ''
         end
       when 'skip'
         # do nothing
       else
-        summary += "#{I18n.t(:unknown)} #{I18n.t(:mode)}"
+        summary += "#{TranslationEngine.translate_text(:unknown)} #{TranslationEngine.translate_text(:mode)}"
       end
     end
     summary
@@ -220,7 +228,7 @@ class TripDecorator < Draper::Decorator
     result = ''
     if itinerary && itinerary.service
       itinerary.service.accommodations.each do |a|
-        result += "#{I18n.t(a.name)};"
+        result += "#{TranslationEngine.translate_text(a.name)};"
       end
     end
     result
@@ -236,7 +244,7 @@ class TripDecorator < Draper::Decorator
           user_characteristic = UserCharacteristic.where(user_profile_id: user_profile.id,
                                                          characteristic_id: requirement.id)
           if user_characteristic.count > 0 &&
-            user_characteristic.first.meets_requirement(map)
+            user_characteristic.first.value == "true"
             result += "#{@elig_svc.translate_service_characteristic_map(map)};"
           end
         end
@@ -244,6 +252,5 @@ class TripDecorator < Draper::Decorator
     end
     result
   end
-  
-end
 
+end

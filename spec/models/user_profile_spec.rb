@@ -59,7 +59,7 @@ describe UserProfile do
           pending "todo"
           Time.zone = tz
           eh = EligibilityService.new
-          characteristics = Characteristic.all
+          characteristics = Characteristic.active
           characteristics.each do |c|
             if c.code == 'date_of_birth'
               UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: @user_profile.id, characteristic_id: c.id, value: '05/11/1905')
@@ -80,7 +80,7 @@ describe UserProfile do
           pending "todo"
           Time.zone = tz
           eh = EligibilityService.new
-          characteristics = Characteristic.all
+          characteristics = Characteristic.active
           characteristics.each do |c|
             if c.code == 'date_of_birth'
               UserCharacteristic.find_or_create_by_user_profile_id_and_characteristic_id(user_profile_id: user_profile.id, characteristic_id: c.id, value: '05/11/1905')

@@ -4,18 +4,6 @@ module ApplicationHelper
   MILE_TO_FEET = 5280
 
   include CsHelpers
-  include LocaleHelpers
-
-  KIOSK_ICON_DICTIONARY = {
-    Leg::TripLeg::WALK => 'travelcon-walk',
-    Leg::TripLeg::TRAM => 'travelcon-subway',
-    Leg::TripLeg::SUBWAY => 'travelcon-subway',
-    Leg::TripLeg::RAIL => 'travelcon-rail',
-    Leg::TripLeg::BUS => 'travelcon-bus',
-    Leg::TripLeg::FERRY => 'travelcon-boat',
-    Leg::TripLeg::CAR => 'travelcon-car',
-    Leg::TripLeg::BICYCLE => 'travelcon-bicycle'
-  }
 
   # Returns the name of the logo image based on the oneclick configuration
   def get_logo
@@ -47,12 +35,7 @@ module ApplicationHelper
 
   # Returns a mode-specific icon
   def get_mode_icon(mode)
-    if ENV['UI_MODE']=='kiosk'
-      KIOSK_ICON_DICTIONARY.default = 'travelcon-bus'
-      KIOSK_ICON_DICTIONARY[mode]
-    else
-      Mode.unscoped.where(code: 'mode_' + mode.downcase).first.logo_url
-    end
+    Mode.unscoped.where(code: 'mode_' + mode.downcase).first.try(:logo_url)
   end
 
   # Returns a service-specific icon
@@ -103,7 +86,7 @@ module ApplicationHelper
     TripPurpose.all.each do |tp|
       elems << {
         :id => tp.id,
-        :value => t(tp.name)
+        :value => TranslationEngine.translate_text(tp.name)
       }
     end
     return elems
@@ -129,35 +112,35 @@ module ApplicationHelper
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.001
-      dist_str = [miles.round(4).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(4).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     elsif miles < 0.01
-      dist_str = [miles.round(3).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(3).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     else
-      dist_str = [miles.round(2).to_s, I18n.t(:miles)].join(' ')
+      dist_str = [miles.round(2).to_s, TranslationEngine.translate_text(:miles)].join(' ')
     end
 
     dist_str
   end
 
   def distance_to_words(dist_in_meters)
-    return t(:n_a) unless dist_in_meters
+    return TranslationEngine.translate_text(:n_a) unless dist_in_meters
 
     # convert the meters to miles
     miles = dist_in_meters * METERS_TO_MILES
     if miles < 0.25
-      dist_str = t(:less_than_1_block)
+      dist_str = TranslationEngine.translate_text(:less_than_1_block)
     elsif miles < 0.5
-      dist_str = t(:about_2_blocks)
+      dist_str = TranslationEngine.translate_text(:about_2_blocks)
     elsif miles < 1
-      dist_str = t(:about_4_blocks)
+      dist_str = TranslationEngine.translate_text(:about_4_blocks)
     else
-      dist_str = t(:twof_miles) % [miles]
+      dist_str = TranslationEngine.translate_text(:twof_miles) % [miles]
     end
     dist_str
   end
 
   def duration_to_words(time_in_seconds, options = {})
-    return t(:n_a) unless time_in_seconds
+    return TranslationEngine.translate_text(:n_a) unless time_in_seconds
 
     time_in_seconds = time_in_seconds.to_i
     hours = time_in_seconds/3600
@@ -166,39 +149,45 @@ module ApplicationHelper
     time_string = ''
 
     if time_in_seconds > 60*60*24 and options[:days_only]
-      return I18n.translate(:day, count: hours / 24)
+      count = hours / 24
+      return count.to_s + " " + TranslationEngine.translate_text("day")
     end
 
     if hours > 0
-      format = ((options[:suppress_minutes] and minutes==0) ? :hour_long : :hour)
-      time_string << I18n.translate(format, count: hours)  + ' '
+      time_string << hours.to_s + " " + TranslationEngine.translate_text("datetime.prompts.hour").downcase[0] + " "
     end
 
     if minutes > 0 || (hours > 0 and !options[:suppress_minutes])
-      time_string << I18n.translate(:minute, count: minutes)
+      time_string << minutes.to_s + " " + TranslationEngine.translate_text("minutes")[0..2]
+      time_string << "s" if minutes != 1
     end
 
     if time_in_seconds < 60
-      time_string = I18n.translate(:less_than_one_minute)
+      time_string = TranslationEngine.translate_text(:less_than_one_minute)
     end
 
     if options[:days_only]
-      time_string = I18n.translate(:day, count: hours/24.round)
+      time_string = (hours/24.round).to_s + " " + TranslationEngine.translate_text("day")
     end
 
     time_string
   end
 
   def day_range_to_words(start_time_in_seconds, end_time_in_seconds)
-    return t(:n_a) unless (
-      start_time_in_seconds && end_time_in_seconds && 
+    return TranslationEngine.translate_text(:n_a) unless (
+      start_time_in_seconds && end_time_in_seconds &&
       (end_time_in_seconds >= start_time_in_seconds)
     )
 
     start_days = start_time_in_seconds/3600/24.round
     end_days = end_time_in_seconds/3600/24.round
+    count = end_days - start_days
 
-    start_days.to_s + " " + I18n.translate(:to).downcase + " " + I18n.translate(:day, count: end_days)
+    result = start_days.to_s + " " + TranslationEngine.translate_text(:to).downcase + " " + end_days.to_s + " " + TranslationEngine.translate_text("day")
+    result << "s"
+
+    result
+
   end
 
   def get_boolean(val)
@@ -235,7 +224,7 @@ module ApplicationHelper
       'paratransit_details'
     elsif mode_code == 'livery'
       'paratransit_details'
-    elsif mode_code == 'taxi'
+    elsif mode_code == 'taxi' || mode_code == 'ride_hailing'
       'taxi_details'
     elsif mode_code == 'rideshare'
       'rideshare_details'
@@ -254,7 +243,7 @@ module ApplicationHelper
   def get_trip_summary_icon(itinerary)
     return if itinerary.nil?
 
-    fa_prefix = ui_mode_kiosk? ? 'icon' : 'fa'
+    fa_prefix = 'fa'
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     icon_name = if mode_code == 'rail'
@@ -307,100 +296,6 @@ module ApplicationHelper
     html.html_safe
   end
 
-  def t(key, options={})
-    branded_key = [brand, key].join('.')
-    if I18n.locale != :tags
-      begin
-        if I18n.translate(branded_key, options.merge({raise: true})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true})))
-        else
-          raw(I18n.translate(branded_key, options.merge({raise: true})))
-        end
-      rescue Exception => e
-        begin
-          if I18n.translate(key, options.merge({raise: true})).class != Array
-            make_translation_safe(I18n.translate(key, options.merge({raise: true})))
-          else
-            raw(I18n.translate(key, options.merge({raise: true})))
-          end
-        rescue Exception => e
-          Rails.logger.warn "key: #{key} not found: #{e.inspect}"
-          begin
-            if I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})).class != Array
-              make_translation_safe(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
-            else
-              raw(I18n.translate(key,options.merge({raise: true, locale: I18n.default_locale})))
-            end
-          rescue Exception => e
-            "Key not found: #{key}" # No need to internationalize this.  Should only hit if a non-existant key is called
-          end
-        end
-      end
-    else
-      begin
-        if I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})).class != Array
-          make_translation_safe(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
-        else
-          raw(I18n.translate(branded_key, options.merge({raise: true, locale: I18n.default_locale})))
-        end
-      rescue Exception => e
-        return '[' + key.to_s + ']'
-      end
-
-      return '[' + branded_key.to_s + ']'
-    end
-  end
-
-  def make_translation_safe(translation)
-    translation.to_s.gsub('%{application_name}', Oneclick::Application.config.name).gsub('%{break}', '</br> ').html_safe
-  end
-
-  def links_to_each_locale(show_translations = false)
-    links = []
-    I18n.available_locales.each do |l|
-      links << link_using_locale(I18n.t("locales.#{l}"), l)
-    end
-    if show_translations
-      links << link_using_locale(Oneclick::Application::config.translation_tag_locale_text, :tags)
-    end
-
-    return '' if links.size <= 1
-
-    links.join(' | ').html_safe
-  end
-
-  def link_using_locale link_text, locale
-    path = session[:location] || request.fullpath
-    parts = path.split('/', 3)
-
-    current_locale = I18n.available_locales.detect do |l|
-      parts[1] == l.to_s
-    end
-    parts.delete_at(1) if current_locale or I18n.locale == :tags
-    parts = parts.join('/')
-    parts = '' if parts=='/'
-    newpath = "/#{locale}#{parts}"
-
-    if (newpath == path) or
-      (newpath == "/#{I18n.locale}#{path}") or
-      (newpath == "/#{I18n.locale}")
-      link_text
-    else
-      link_to link_text, newpath
-    end
-  end
-
-  def link_without_locale link_text
-    parts = link_text.split('/', 3)
-    has_locale = I18n.available_locales.detect do |l|
-      parts[1] == l.to_s
-    end
-    parts.delete_at(1) if has_locale
-    parts = parts.join('/')
-    return '/' if parts.empty?
-    parts
-  end
-
   def at_root
     (request.path == root_path) or
     (link_without_locale(request.path) == root_path)
@@ -425,30 +320,61 @@ module ApplicationHelper
     end
   end
 
-  # non-tag locale: the key must be defined, and content is not blank
-  # tag locale: key must be defined
-  def whether_show_tranlatation_item? key
-    defined? key and
-    !Translation.where(key: key).first.nil? and
-    (I18n.locale == :tags or !Translation.where(key: key, locale: I18n.locale).first.nil?) and
-    !I18n.t(key).blank?
+
+  def links_to_each_locale(show_translations = false)
+    links = []
+    I18n.available_locales.each do |l|
+      links << link_using_locale(l)
+    end
+    if show_translations
+      links << link_using_locale(:tags)
+    end
+
+    return '' if links.size <= 1
+
+    links.join(' | ').html_safe
   end
 
-  def translation_exists?(key_str)
-    translation = I18n.t key_str, :raise => true rescue false
-    if translation
-      return !translation.empty?
+  def link_using_locale locale
+    path = request.fullpath
+    parts = path.split('/', 3)
+
+    current_locale = I18n.available_locales.detect do |l|
+      parts[1] == l.to_s
+    end
+    parts.delete_at(1) if current_locale or I18n.locale == :tags
+    parts = parts.join('/')
+    parts = '' if parts=='/'
+    newpath = "/#{locale}#{parts}"
+
+    if (newpath == path) or (newpath == "/#{I18n.locale}#{path}") or (newpath == "/#{I18n.locale}")
+      TranslationEngine.translate_text("locales.#{locale}")
     else
-      return false
+      if locale == :tags
+        link_to "Tags", newpath
+      else
+        link_to TranslationEngine.translate_text("locales.#{locale}"), newpath
+      end
     end
   end
 
-  def add_tooltip(key)
-    if translation_exists?(key)
-      html = '<i class="fa fa-question-circle fa-2x pull-right label-help" style="margin-top:-4px;" title data-original-title="'
-      html << t(key.to_sym)
+  def link_without_locale link_text
+    parts = link_text.split('/', 3)
+    has_locale = I18n.available_locales.detect do |l|
+      parts[1] == l.to_s
+    end
+    parts.delete_at(1) if has_locale
+    parts = parts.join('/')
+    return '/' if parts.empty?
+    parts
+  end
+
+  def add_tooltip(key, classes="fa fa-question-circle fa-2x pull-right", styles="margin-top:-4px;")
+    if TranslationEngine.translation_exists?(key)
+      html = "<i class=\"#{classes} label-help\" style=\"#{styles}\" title data-original-title=\""
+      html << TranslationEngine.translate_text(key.to_sym)
       html << '" aria-label="'
-      html << t(key.to_sym)
+      html << TranslationEngine.translate_text(key.to_sym)
       html << '" tabindex="0"></i>'
       return html.html_safe
     end

@@ -28,58 +28,68 @@ module CsHelpers
     :translations => 'fa fa-language',
     :multi_od_trip => 'fa fa-table',
     :user_guide => 'fa fa-book',
-    :settings => 'fa fa-gear'
+    :settings => 'fa fa-gear',
+    :whitelist => 'fa fa-list'
   }
 
   def admin_actions
     a = [
-      {label: t(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
-      {label: t(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
-      {label: t(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
+      {label: TranslationEngine.translate_text(:settings), target: admin_settings_path, icon: ACTION_ICONS[:settings], access: :admin_settings},
+      {label: TranslationEngine.translate_text(:users), target: admin_users_path, icon: ACTION_ICONS[:users], access: :admin_users},
+      {label: TranslationEngine.translate_text(:translations), target: admin_translations_path, icon: ACTION_ICONS[:translations], access: :admin_translations}
     ]
     if Rating.feedback_on?
-      a.push({label: t(:feedback), target: ratings_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
+      a.push({label: TranslationEngine.translate_text(:feedback), target: feedbacks_path, icon: ACTION_ICONS[:feedback], access: :admin_feedback})
     end
     if SidewalkObstruction.sidewalk_obstruction_on?
-      a.push({label: t(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
+      a.push({label: TranslationEngine.translate_text(:sidewalk_obstructions), target: admin_sidewalk_obstructions_path, icon: ACTION_ICONS[:sidewalk_obstructions], access: :admin_sidewalk_obstruction})
     end
     a
   end
 
   def staff_actions
-    [
-      {label: t(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
-      {label: t(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
-      {label: t(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_provider}, #TODO find icon
-      {label: t(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
-      {label: t(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
-      {label: t(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
-      {label: t(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
-      {label: t(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
-      {label: t(:reports), target: reporting_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
-      {label: t(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
-      {label: t(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
+    actions = [
+      {label: TranslationEngine.translate_text(:travelers), target: find_travelers_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :staff_travelers},
+      {label: TranslationEngine.translate_text(:agency_profile), target: agency_profile_path, window: "", icon: ACTION_ICONS[:find_traveler], access: :show_agency}, #TODO find icon
+      {label: TranslationEngine.translate_text(:provider_profile), target: provider_profile_path, window: "", icon: ACTION_ICONS[:providers], access: :show_provider}, # New Service Data Screen
+      {label: TranslationEngine.translate_text(:trips), target: create_trips_path, window: "", icon: ACTION_ICONS[:trips], access: :admin_trips},
+      {label: TranslationEngine.translate_text(:trip_parts), target: create_trip_parts_path, window: "", icon: ACTION_ICONS[:trip_parts], access: :admin_trip_parts},
+      {label: TranslationEngine.translate_text(:agencies), target: admin_agencies_path, window: "", icon: ACTION_ICONS[:agents_agencies], access: :admin_agencies},
+      {label: TranslationEngine.translate_text(:providers), target: admin_providers_path, window: "", icon: ACTION_ICONS[:providers], access: :admin_providers},
+      {label: TranslationEngine.translate_text(:services), target: services_path, window: "", icon: ACTION_ICONS[:services], access: :admin_services},
+      {label: TranslationEngine.translate_text(:reports), target: reporting_reports_path, window: "", icon: ACTION_ICONS[:reports], access: :admin_reports},
+      {label: TranslationEngine.translate_text(:multi_od_trip), target: create_multi_od_user_trips_path(current_user), window: "", icon: ACTION_ICONS[:multi_od_trip], access: MultiOriginDestTrip},
+      {label: TranslationEngine.translate_text(:user_guide), target: Oneclick::Application.config.user_guide_url, window: "_blank", icon: ACTION_ICONS[:user_guide], access: :user_guide}
     ]
+
+    if Oneclick::Application.config.allows_booking
+      return [ {label: TranslationEngine.translate_text(:whitelist), target: admin_users_whitelist_path, window: "", icon: ACTION_ICONS[:whitelist], access: :whitelist}] + actions
+    else
+      return actions
+    end
+
   end
 
   def traveler_actions options = {}
     a = if user_signed_in?
       [
-        {label: t(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
-        {label: t(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
-        {label: t(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
-        {label: t(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user}
+        {label: TranslationEngine.translate_text(:plan_a_trip), target: new_user_trip_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: TranslationEngine.translate_text(:travel_profile), target: user_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:travel_profile]},
+        {label: TranslationEngine.translate_text(:trips), target: user_trips_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_trips]},
+        {label: TranslationEngine.translate_text(:places), target: user_places_path(get_traveler, locale: I18n.locale), icon: ACTION_ICONS[:my_places]},
+        {label: TranslationEngine.translate_text(:providers), target: providers_path(locale: I18n.locale), icon: ACTION_ICONS[:providers]},
+        {label: TranslationEngine.translate_text(:stop_assisting), target: unset_traveler_user_trips_path(get_traveler), icon: ACTION_ICONS[:stop_assisting], test: get_traveler != current_or_guest_user},
+        {label: TranslationEngine.translate_text(:feedback), target: '#feedbackModal', icon: 'fa-thumbs-o-up'}
       ]
     else
       [
-        {label: t(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
-        {label: t(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
-        {label: t(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
+        {label: TranslationEngine.translate_text(:plan_a_trip), target: new_user_trip_path(current_or_guest_user), icon: ACTION_ICONS[:plan_a_trip]},
+        {label: TranslationEngine.translate_text(:log_in), target: new_user_session_path, icon: ACTION_ICONS[:log_in], not_on_homepage: true},
+        {label: TranslationEngine.translate_text(:create_an_account), target: new_user_registration_path, icon: ACTION_ICONS[:create_an_account], not_on_homepage: true}
       ]
     end
     if options[:with_logout]
-      a << {label: t(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true, method: :delete}
+      a << {label: TranslationEngine.translate_text(:logout), target: destroy_user_session_path, icon: 'fa-sign-out', divider_before: true, method: :delete}
     end
     a
   end
@@ -107,7 +117,8 @@ module CsHelpers
   end
 
   def provider_profile_path
-    admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any
+    # admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any
+    edit_admin_provider_path(current_user.provider) if current_user.has_role? :provider_staff, :any # Path to new service data maintenance screen
   end
 
   def create_trips_path
@@ -133,14 +144,6 @@ module CsHelpers
 
   # Session key for storing the traveler id
   TRAVELER_USER_SESSION_KEY = 'traveler'
-
-  def ui_mode_kiosk?
-    CsHelpers::ui_mode_kiosk?
-  end
-
-  def self.ui_mode_kiosk?
-    Oneclick::Application.config.ui_mode=='kiosk'
-  end
 
   def current_or_guest_user
     if current_user
@@ -194,6 +197,10 @@ module CsHelpers
     guest_user
   end
 
+  def api_guest_user
+    @cached_guest_user = User.find_by(email: "dedwards8@gmail.com")
+  end
+
   # TODO Unclear whether this will need to be more flexible depending on how clients want to do their domains
   # may have to vary by environment
   def brand
@@ -223,9 +230,9 @@ module CsHelpers
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
     if date.year == Date.today.year
-      formatted_date = I18n.l date.to_date, :format => :oneclick_short
+      formatted_date = TranslationEngine.localize_date_short_format date.to_date
     else
-      formatted_date = I18n.l date.to_date, :format => :oneclick_long
+      formatted_date = TranslationEngine.localize_date_long_format date.to_date
     end
     I18n.locale = :tags if is_in_tags
 
@@ -235,7 +242,7 @@ module CsHelpers
   def format_time(time)
     is_in_tags = I18n.locale == :tags # tags locale cause trouble in datetime localization, here, using default_locale to localize
     I18n.locale = I18n.default_locale if is_in_tags
-    formatted_time = I18n.l time, :format => :oneclick_short unless time.nil?
+    formatted_time = TranslationEngine.localize_time(time) unless time.nil?
     I18n.locale = :tags if is_in_tags
 
     formatted_time || ""
@@ -268,39 +275,41 @@ module CsHelpers
 
     mode_code = get_pseudomode_for_itinerary(itinerary)
     title = if mode_code == 'rail'
-      I18n.t(:rail)
+      TranslationEngine.translate_text(:rail)
     elsif mode_code == 'railbus'
-      I18n.t(:rail_and_bus)
+      TranslationEngine.translate_text(:rail_and_bus)
     elsif mode_code == 'bus'
-      I18n.t(:bus)
+      TranslationEngine.translate_text(:bus)
     elsif mode_code == 'drivetransit'
-      I18n.t(:drive_and_transit)
+      TranslationEngine.translate_text(:drive_and_transit)
     elsif mode_code == 'transit'
-      I18n.t(:transit)
+      TranslationEngine.translate_text(:transit)
     elsif mode_code == 'paratransit'
-      I18n.t(:mode_paratransit_name)
+      TranslationEngine.translate_text(:mode_paratransit_name)
     elsif mode_code == 'volunteer'
-      I18n.t(:volunteer)
+      TranslationEngine.translate_text(:volunteer)
     elsif mode_code == 'non-emergency medical service'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
     elsif mode_code == 'nemt'
-      I18n.t(:nemt)
+      TranslationEngine.translate_text(:nemt)
     elsif mode_code == 'dial_a_ride'
-      I18n.t(:dial_a_ride)
+      TranslationEngine.translate_text(:dial_a_ride)
     elsif mode_code == 'tap'
-      I18n.t(:tap)
+      TranslationEngine.translate_text(:tap)
     elsif mode_code == 'livery'
-      I18n.t(:car_service)
+      TranslationEngine.translate_text(:car_service)
     elsif mode_code == 'taxi'
-      I18n.t(:taxi)
+      TranslationEngine.translate_text(:taxi)
     elsif mode_code == 'rideshare'
-      I18n.t(:rideshare)
+      TranslationEngine.translate_text(:rideshare)
     elsif mode_code == 'walk'
-      I18n.t(:walk)
+      TranslationEngine.translate_text(:walk)
     elsif mode_code == 'car'
-      I18n.t(:drive)
+      TranslationEngine.translate_text(:drive)
     elsif mode_code == 'bicycle'
-      I18n.t(:bicycle)
+      TranslationEngine.translate_text(:bicycle)
+    elsif mode_code == 'ride_hailing'
+      TranslationEngine.translate_text(:ride_hailing)
     end
     return title
   end
@@ -325,72 +334,6 @@ module CsHelpers
     name_string.chop.chop
   end
 
-  # Kiosk-related helpers
-
-  def user_trip_path_for_ui_mode traveler, trip
-    unless ui_mode_kiosk?
-      user_trip_path traveler, trip, locale: I18n.locale
-    else
-      kiosk_user_trip_path traveler, trip
-    end
-  end
-
-  def new_user_characteristic_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_characteristic_path traveler, options
-    else
-      new_kiosk_user_characteristic_path traveler, options
-    end
-  end
-
-  def unhide_all_user_trip_part_path_for_ui_mode traveler, trip_part
-    unless ui_mode_kiosk?
-      unhide_all_user_trip_part_path traveler, trip_part
-    else
-      unhide_all_kiosk_user_trip_part_path traveler, trip_part
-    end
-  end
-
-  def new_user_program_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_program_path traveler, options
-    else
-      new_kiosk_user_program_path traveler, options
-    end
-  end
-
-  def user_program_path_for_ui_mode traveler, user_programs_proxy_id, options = {}
-    unless ui_mode_kiosk?
-      user_program_path traveler, user_programs_proxy_id, options
-    else
-      kiosk_user_program_path traveler, user_programs_proxy_id, options
-    end
-  end
-
-  def new_user_accommodation_path_for_ui_mode traveler, options = {}
-    unless ui_mode_kiosk?
-      new_user_accommodation_path traveler, options
-    else
-      new_kiosk_user_accommodation_path traveler, options
-    end
-  end
-
-  def skip_user_trip_path_for_ui_mode traveler, current_trip_id
-    unless ui_mode_kiosk?
-      skip_user_trip_path traveler, current_trip_id
-    else
-      skip_kiosk_user_trip_path traveler, current_trip_id
-    end
-  end
-
-  def new_user_trip_characteristic_path_for_ui_mode traveler, trip
-    unless ui_mode_kiosk?
-      new_user_trip_characteristic_path traveler, trip, locale: I18n.locale
-    else
-      raise "new_user_trip_characteristic_path not defined for kiosk yet"
-    end
-  end
-
   # first check if itinerary service or provider has customized logo
   # then check if it's a walk itinerary, to show walk logo
   # last, just get itineary mode logo
@@ -398,7 +341,7 @@ module CsHelpers
     s = itinerary.service
     if s
       if s.taxi_fare_finder_city.present?
-        return 'https://s3.amazonaws.com/oneclick-arc-int/images/tff_logo_50.jpg'
+        return "#{root_url(locale: {})}#{ActionController::Base.helpers.asset_path("tff_logo_50.jpg")}"
       elsif s.logo_url
         return get_service_provider_icon_url(s.logo_url)
       elsif s.provider and s.provider.logo_url
@@ -430,225 +373,6 @@ module CsHelpers
     end
   end
 
-  # TODO: needs to be refactored into ParatransitItinerary model
-  # Not intetefere with other non-paratransit fare calculation
-  def calculate_paratransit_itinerary_cost(itinerary, skip_calculation = false)
-    estimated = false
-    price_formatted = nil
-    cost_in_words = ''
-    comments = ''
-
-    fare = itinerary.cost
-    fare_structure = itinerary.service.fare_structures.first rescue nil
-
-    if fare_structure
-      case fare_structure.fare_type
-      when FareStructure::FLAT
-        flat_fare = fare_structure.flat_fare
-
-        if flat_fare
-          if !skip_calculation && flat_fare.one_way_rate
-            fare = flat_fare.one_way_rate
-          end
-
-          if fare
-            fare = fare.to_f
-            price_formatted = number_to_currency(fare)
-            cost_in_words = price_formatted
-
-            if flat_fare.round_trip_rate
-              price_formatted +=  '*'
-              comments = "#{I18n.t(:one_way_rate)}: #{flat_fare.one_way_rate}; #{I18n.t(:round_trip_rate)}: #{flat_fare.round_trip_rate}"
-            end
-          end
-        else
-          fare = nil
-        end
-      when FareStructure::MILEAGE
-        mileage_fare = fare_structure.mileage_fare
-        if mileage_fare && mileage_fare.base_rate
-          estimated = true
-          if mileage_fare.mileage_rate
-            if !skip_calculation
-              trip_part = itinerary.trip_part
-              is_return_trip = trip_part.is_return_trip
-              trip_places = trip_part.trip.trip_places
-              if is_return_trip
-                start_lat = trip_places.last.lat 
-                start_lng = trip_places.last.lon
-                end_lat = trip_places.first.lat 
-                end_lng = trip_places.first.lon
-              else
-                start_lat = trip_places.first.lat 
-                start_lng = trip_places.first.lon
-                end_lat = trip_places.last.lat 
-                end_lng = trip_places.last.lon
-              end
-
-              mileage = TripPlanner.new.get_drive_distance(
-                !trip_part.is_depart, 
-                trip_part.scheduled_time, 
-                start_lat, start_lng, 
-                end_lat, end_lng)
-
-              if mileage
-                fare = mileage_fare.base_rate.to_f + mileage * mileage_fare.mileage_rate.to_f
-              else
-                fare = mileage_fare.base_rate.to_f
-              end
-            end
-
-            comments = "#{number_to_currency(mileage_fare.mileage_rate)}/mile - " + I18n.t(:cost_estimated)
-          else
-            if !skip_calculation
-              fare = mileage_fare.base_rate.to_f
-            end
-            comments = I18n.t(:mileage_rate_not_available)
-          end
-          
-          if fare
-            price_formatted = number_to_currency(fare.ceil) + '*'
-            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-          end
-        else
-          fare = nil
-        end
-      when FareStructure::ZONE
-        if !skip_calculation
-          is_return_trip = itinerary.trip_part.is_return_trip
-          trip_places = itinerary.trip_part.trip.trip_places
-          if is_return_trip
-            start_lat = trip_places.last.lat 
-            start_lng = trip_places.last.lon
-            end_lat = trip_places.first.lat 
-            end_lng = trip_places.first.lon
-          else
-            start_lat = trip_places.first.lat 
-            start_lng = trip_places.first.lon
-            end_lat = trip_places.last.lat 
-            end_lng = trip_places.last.lon
-          end
-
-          fare = fare_structure.zone_fare(start_lat, start_lng, end_lat, end_lng)
-        end
-      end
-    end
-
-    {
-      estimated: estimated,
-      fare: fare,
-      price_formatted: price_formatted,
-      cost_in_words: cost_in_words,
-      comments: comments
-    }
-  end
-
-  def get_itinerary_cost itinerary
-    estimated = false
-    fare =  itinerary.cost || (itinerary.service.fare_structures.first rescue nil)
-    price_formatted = nil
-    cost_in_words = ''
-    comments = ''
-    is_paratransit = itinerary.service.is_paratransit? rescue false
-
-    
-    if is_paratransit
-      para_fare = calculate_paratransit_itinerary_cost itinerary, itinerary.cost
-      if para_fare
-        estimated = para_fare[:estimated]
-        fare = para_fare[:fare]
-        price_formatted = para_fare[:price_formatted]
-        cost_in_words = para_fare[:cost_in_words]
-        comments = para_fare[:comments]
-      end
-    else
-      if fare.respond_to? :fare_type
-        case fare.fare_type
-        when FareStructure::FLAT
-          if fare.base and fare.rate
-            estimated = true
-            comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-            fare = fare.base.to_f
-            price_formatted = number_to_currency(fare.ceil) + '*'
-            cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-          elsif fare.base
-            fare = fare.base.to_f
-            price_formatted = number_to_currency(fare)
-            cost_in_words = price_formatted
-          else
-            fare = nil
-          end
-        when FareStructure::MILEAGE
-            if fare.base
-              estimated = true
-              comments = "+#{number_to_currency(fare.rate)}/mile - " + I18n.t(:cost_estimated)
-              fare = fare.base.to_f
-              price_formatted = number_to_currency(fare.ceil) + '*'
-              cost_in_words = number_to_currency(fare.ceil) + I18n.t(:est)
-            else
-              fare = nil
-            end
-        when FareStructure::COMPLEX
-          fare = nil
-          estimated = true
-          price_formatted = '*'
-          comments = I18n.t(:see_details_for_cost)
-          cost_in_words = I18n.t(:see_below)
-        end
-      else
-        if itinerary.is_walk or itinerary.is_bicycle #TODO: walk, bicycle currently are put in transit category
-          Rails.logger.info 'is walk or bicycle, so no charge'
-          fare = 0
-          price_formatted = I18n.t(:no_charge)
-          cost_in_words = price_formatted
-        else
-          case itinerary.mode
-          when Mode.taxi
-            if fare
-              fare = fare.ceil
-              estimated = true
-              price_formatted = number_to_currency(fare) + '*'
-              comments = I18n.t(:cost_estimated)
-              cost_in_words = number_to_currency(fare) + I18n.t(:est)
-            end
-          when Mode.rideshare
-            fare = nil
-            estimated = true
-            price_formatted = '*'
-            comments = I18n.t(:see_details_for_cost)
-            cost_in_words = I18n.t(:see_below)
-          end
-        end
-      end
-    end
-
-    if price_formatted.nil?
-      unless fare.nil?
-        fare = fare.to_f
-        if fare == 0
-          Rails.logger.info 'no charge as fare is 0'
-          price_formatted = I18n.t(:no_charge)
-          cost_in_words = price_formatted
-        else
-          price_formatted = number_to_currency(fare)
-          cost_in_words = number_to_currency(fare)
-        end
-      else
-        estimated = true
-        price_formatted = '*'
-        comments = I18n.t(:see_details_for_cost)
-        cost_in_words = I18n.t(:unknown)
-      end
-    end
-
-    # save calculated fare
-    if !estimated && fare && itinerary.cost != fare
-      itinerary.update_attributes(cost: fare)
-    end
-
-    return {price: fare, comments: comments, price_formatted: price_formatted, estimated: estimated, cost_in_words: cost_in_words}
-  end
-
   def get_itinerary_start_time itinerary
     tp = itinerary.trip_part
     case itinerary.mode
@@ -670,18 +394,7 @@ module CsHelpers
   end
 
   def unselect_all_user_trip_part_path_for_ui_mode traveler, trip_part
-    # unless ui_mode_kiosk?
-      unselect_all_user_trip_part_path traveler, trip_part
-    # else
-    #   unselect_all_kiosk_user_trip_part_path traveler, trip_part
-    # end
+        unselect_all_user_trip_part_path traveler, trip_part
   end
 
-  def is_arc?
-    Oneclick::Application.config.brand == 'arc'
-  end
-
-  def is_ieuw?
-    Oneclick::Application.config.brand == 'ieuw'
-  end
 end

@@ -22,6 +22,12 @@ class UserCharacteristicsProxy < UserProfileProxy
     characteristic = Characteristic.enabled.active.find_by_code(code)
     unless characteristic.nil?
       map = UserCharacteristic.where(characteristic: characteristic, user_profile: user.user_profile).first
+
+      unless map.nil? or map.fresh?
+        map.delete
+        map = nil
+      end
+
     else #if the code is an accommodation instead of a characteristic
       characteristic = Accommodation.enabled.active.where(code: code).first
       if characteristic.nil?
@@ -38,7 +44,16 @@ class UserCharacteristicsProxy < UserProfileProxy
   def get_answer_description(code)
     characteristic = Characteristic.find_by_code(code)
     map = UserCharacteristic.where("characteristic_id = ? AND user_profile_id = ?", characteristic.id, user.user_profile.id).first
-    return coerce_value_to_string(characteristic, map)
+
+    if map.nil?
+      return TranslationEngine.translate_text(:no_answer_str)
+    elsif map.value == true
+      return TranslationEngine.translate_text(:yes_str)
+    elsif map.value == false
+      return TranslationEngine.translate_text(:no_str)
+    else
+      return TranslationEngine.translate_text(:no_answer_str)
+    end
   end
 
   def update_maps(new_settings)
@@ -76,7 +91,7 @@ class UserCharacteristicsProxy < UserProfileProxy
           if characteristic.datatype == 'date' and (new_value != '')
             if(new_value.nil? or (new_value.year < MIN_YEAR) or (new_value.year > this_year))
               errors.add(characteristic.code.to_sym,
-                         I18n.t(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
+                         TranslationEngine.translate_text(:four_digit_year) + " #{MIN_YEAR} - #{this_year}")
               valid = false
               next
             else

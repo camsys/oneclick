@@ -34,5 +34,5 @@ Oneclick::Application.configure do
   config.eager_load = false
 
   config.i18n.fallbacks = false
-  
+
 end

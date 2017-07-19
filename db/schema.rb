@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521192345) do
+ActiveRecord::Schema.define(version: 20170426142023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "postgis_topology"
   enable_extension "pg_stat_statements"
   enable_extension "tablefunc"
 
@@ -98,6 +97,7 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.boolean "for_traveler",                         default: true
     t.integer "linked_characteristic_id"
     t.string  "link_handler"
+    t.integer "freshness_seconds"
   end
 
   create_table "comments", force: true do |t|
@@ -122,6 +122,14 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.boolean "active",     null: false
   end
 
+  create_table "coverage_zones", force: true do |t|
+    t.text     "recipe"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "custom_shape",                                       default: false
+    t.spatial  "geom",         limit: {:srid=>0, :type=>"geometry"}
+  end
+
   create_table "date_options", force: true do |t|
     t.string   "name"
     t.string   "code"
@@ -134,6 +142,35 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   create_table "day_of_week", force: true do |t|
     t.string "name", limit: 16
     t.string "note", limit: 16
+  end
+
+  create_table "ecolane_bookings", force: true do |t|
+    t.boolean  "assistant"
+    t.integer  "children"
+    t.integer  "companions"
+    t.integer  "other_passengers"
+    t.string   "note_to_driver"
+    t.string   "booking_status_code"
+    t.string   "booking_status_message"
+    t.integer  "itinerary_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "funding_source"
+    t.string   "sponsor"
+    t.string   "confirmation_number"
+  end
+
+  create_table "ecolane_profiles", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "default_trip_purpose"
+    t.integer  "service_id"
+    t.string   "system"
+    t.string   "token"
+    t.string   "api_version",          default: "8",  null: false
+    t.text     "booking_counties"
+    t.text     "disallowed_purposes"
+    t.boolean  "use_customer_default", default: true
   end
 
   create_table "fare_structures", force: true do |t|
@@ -149,11 +186,63 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "zone_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
     t.integer  "service_id"
+    t.spatial  "geom",       limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "fare_zones", ["service_id"], :name => "index_fare_zones_on_service_id"
+
+  create_table "feedback_issues", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_issues_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",  null: false
+    t.integer "feedback_issue_id", null: false
+  end
+
+  create_table "feedback_issues_feedbacks", force: true do |t|
+    t.integer "feedback_id",       null: false
+    t.integer "feedback_issue_id", null: false
+    t.boolean "value"
+  end
+
+  create_table "feedback_ratings", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_ratings_feedback_types", id: false, force: true do |t|
+    t.integer "feedback_type_id",   null: false
+    t.integer "feedback_rating_id", null: false
+  end
+
+  create_table "feedback_ratings_feedbacks", force: true do |t|
+    t.integer "feedback_id",        null: false
+    t.integer "feedback_rating_id", null: false
+    t.integer "value"
+  end
+
+  create_table "feedback_statuses", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedback_types", force: true do |t|
+    t.string "name"
+  end
+
+  create_table "feedbacks", force: true do |t|
+    t.string   "user_email"
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.integer  "feedback_type_id"
+    t.integer  "feedback_rating_id"
+    t.integer  "feedback_issue_id"
+    t.integer  "feedback_status_id"
+    t.text     "comment"
+    t.float    "average_rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "flat_fares", force: true do |t|
     t.float    "one_way_rate"
@@ -165,14 +254,15 @@ ActiveRecord::Schema.define(version: 20150521192345) do
 
   add_index "flat_fares", ["fare_structure_id"], :name => "index_flat_fares_on_fare_structure_id"
 
-  create_table "geo_coverages", force: true do |t|
-    t.string  "value"
-    t.string  "coverage_type", limit: 128
-    t.string  "polygon"
-    t.spatial "geom",          limit: {:srid=>0, :type=>"geometry"}
+  create_table "funding_sources", force: true do |t|
+    t.string   "code",                           null: false
+    t.integer  "index"
+    t.integer  "service_id",                     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.text     "comment"
+    t.boolean  "general_public", default: false
   end
-
-  add_index "geo_coverages", ["geom"], :name => "index_geo_coverages_on_geom", :spatial => true
 
   create_table "itineraries", force: true do |t|
     t.integer  "trip_part_id"
@@ -188,31 +278,37 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.integer  "transfers"
     t.integer  "count"
     t.text     "legs"
-    t.decimal  "cost",                     precision: 10, scale: 2
-    t.boolean  "hidden",                                                            null: false
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.decimal  "cost",                       precision: 10, scale: 2
+    t.boolean  "hidden",                                                              null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
     t.integer  "ride_count"
     t.text     "external_info"
-    t.float    "match_score",                                       default: 0.0
-    t.boolean  "missing_information",                               default: false
-    t.boolean  "accommodation_mismatch",                            default: false
+    t.float    "match_score",                                         default: 0.0
+    t.boolean  "missing_information",                                 default: false
+    t.boolean  "accommodation_mismatch",                              default: false
     t.text     "missing_information_text"
-    t.boolean  "date_mismatch",                                     default: false
-    t.boolean  "time_mismatch",                                     default: false
-    t.boolean  "too_late",                                          default: false
-    t.string   "missing_accommodations",                            default: ""
+    t.boolean  "date_mismatch",                                       default: false
+    t.boolean  "time_mismatch",                                       default: false
+    t.boolean  "too_late",                                            default: false
+    t.string   "missing_accommodations",                              default: ""
     t.text     "cost_comments"
     t.boolean  "selected"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.boolean  "is_bookable",                                       default: false, null: false
+    t.boolean  "is_bookable",                                         default: false, null: false
     t.string   "booking_confirmation"
-    t.boolean  "duration_estimated",                                default: false
-    t.string   "map_image"
-    t.boolean  "too_early",                                         default: false
+    t.boolean  "duration_estimated",                                  default: false
+    t.text     "map_image"
+    t.boolean  "too_early",                                           default: false
     t.string   "returned_mode_code"
     t.text     "order_xml"
+    t.text     "discounts"
+    t.datetime "negotiated_pu_time"
+    t.datetime "negotiated_do_time"
+    t.datetime "negotiated_pu_window_start"
+    t.datetime "negotiated_pu_window_end"
+    t.string   "product_id"
   end
 
   create_table "kiosk_locations", force: true do |t|
@@ -225,6 +321,44 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "updated_at"
   end
 
+  create_table "legs", force: true do |t|
+    t.integer  "itinerary_id_id"
+    t.integer  "leg_sequence"
+    t.integer  "service_id_id"
+    t.integer  "mode_id_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.float    "leg_time"
+    t.float    "leg_distance"
+    t.decimal  "cost",                            precision: 10, scale: 0
+    t.string   "cost_comments"
+    t.text     "otp_leg"
+    t.string   "returned_mode_id",     limit: 50
+    t.boolean  "is_bookable"
+    t.string   "booking_confirmation"
+    t.boolean  "duration_estimated"
+    t.text     "order_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locales", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", force: true do |t|
+    t.integer  "sender_id"
+    t.text     "body"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["sender_id"], :name => "index_messages_on_sender_id"
+
   create_table "mileage_fares", force: true do |t|
     t.float    "base_rate"
     t.float    "mileage_rate"
@@ -236,15 +370,16 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   add_index "mileage_fares", ["fare_structure_id"], :name => "index_mileage_fares_on_fare_structure_id"
 
   create_table "modes", force: true do |t|
-    t.string  "name",               limit: 64,                 null: false
-    t.boolean "active",                                        null: false
+    t.string  "name",                limit: 64,                 null: false
+    t.boolean "active",                                         null: false
     t.string  "code"
-    t.boolean "elig_dependent",                default: false
+    t.boolean "elig_dependent",                 default: false
     t.integer "parent_id"
     t.string  "otp_mode"
     t.integer "results_sort_order"
     t.string  "logo_url"
-    t.boolean "visible",                       default: false
+    t.boolean "visible",                        default: false
+    t.boolean "selected_by_default",            default: true
   end
 
   create_table "multi_origin_dest_trips", force: true do |t|
@@ -264,23 +399,28 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "places", force: true do |t|
-    t.integer  "user_id",                                null: false
+    t.integer  "user_id",                                    null: false
     t.integer  "creator_id"
-    t.string   "name",        limit: 64,                 null: false
+    t.string   "name",            limit: 64,                 null: false
     t.integer  "poi_id"
-    t.string   "raw_address", limit: 254
-    t.string   "address1",    limit: 128
-    t.string   "address2",    limit: 128
-    t.string   "city",        limit: 128
-    t.string   "state",       limit: 64
-    t.string   "zip",         limit: 10
+    t.string   "raw_address",     limit: 254
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
     t.float    "lat"
     t.float    "lon"
-    t.boolean  "active",                  default: true
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "county",      limit: 128
+    t.boolean  "active",                      default: true
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "county",          limit: 128
     t.boolean  "home"
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "google_place_id"
+    t.string   "stop_code"
+    t.text     "types"
   end
 
   create_table "poi_types", force: true do |t|
@@ -289,19 +429,27 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "pois", force: true do |t|
-    t.integer  "poi_type_id",             null: false
-    t.string   "name",        limit: 256, null: false
-    t.string   "address1",    limit: 128
-    t.string   "address2",    limit: 128
-    t.string   "city",        limit: 128
-    t.string   "state",       limit: 64
-    t.string   "zip",         limit: 10
+    t.integer  "poi_type_id",                 null: false
+    t.string   "name",            limit: 256, null: false
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "county",      limit: 128
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "county",          limit: 128
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "google_place_id"
+    t.string   "stop_code"
+    t.text     "types"
+    t.boolean  "old"
   end
+
+  add_index "pois", ["name"], :name => "index_pois_on_name"
 
   create_table "profile_types", force: true do |t|
     t.string "name",        limit: 64
@@ -336,6 +484,7 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.text    "public_comments_old"
     t.string  "logo"
     t.string  "disabled_comment"
+    t.boolean "send_booking_emails"
   end
 
   create_table "ratings", force: true do |t|
@@ -438,6 +587,29 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.boolean  "exportable",              default: false
   end
 
+  create_table "ridepilot_bookings", force: true do |t|
+    t.integer  "guests"
+    t.integer  "attendants"
+    t.integer  "mobility_devices"
+    t.integer  "itinerary_id"
+    t.string   "trip_purpose_code"
+    t.string   "booking_status_code"
+    t.string   "booking_status_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "booking_status_name"
+    t.string   "confirmation_number"
+  end
+
+  create_table "ridepilot_profiles", force: true do |t|
+    t.string   "endpoint"
+    t.string   "api_token"
+    t.string   "provider_id"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "roles", force: true do |t|
     t.string   "name",          limit: 64
     t.integer  "resource_id"
@@ -482,13 +654,6 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.boolean "requires_verification",            default: false, null: false
     t.boolean "active",                           default: true,  null: false
     t.integer "rel_code",                         default: 1,     null: false
-    t.integer "group",                            default: 0,     null: false
-  end
-
-  create_table "service_coverage_maps", force: true do |t|
-    t.integer "service_id"
-    t.integer "geo_coverage_id"
-    t.string  "rule"
   end
 
   create_table "service_trip_purpose_maps", force: true do |t|
@@ -499,9 +664,10 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "service_types", force: true do |t|
-    t.string "name", limit: 64, null: false
-    t.string "note"
-    t.string "code"
+    t.string  "name",   limit: 64,                null: false
+    t.string  "note"
+    t.string  "code"
+    t.boolean "active",            default: true
   end
 
   create_table "services", force: true do |t|
@@ -521,8 +687,8 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "phone",                        limit: 25
     t.string   "url"
     t.string   "booking_service_code"
-    t.integer  "service_window"
-    t.float    "time_factor"
+    t.integer  "service_window",                           default: 0
+    t.float    "time_factor",                              default: 2.5
     t.string   "internal_contact_name"
     t.string   "internal_contact_email"
     t.string   "internal_contact_title"
@@ -539,7 +705,17 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "taxi_fare_finder_city",        limit: 64
     t.string   "disabled_comment"
     t.boolean  "use_gtfs_colors"
+    t.string   "fare_user"
+    t.integer  "booking_profile"
+    t.integer  "fleet_size"
+    t.integer  "trip_volume"
+    t.integer  "primary_coverage_id"
+    t.integer  "secondary_coverage_id"
+    t.string   "fare_info_url"
   end
+
+  add_index "services", ["primary_coverage_id"], :name => "index_services_on_primary_coverage_id"
+  add_index "services", ["secondary_coverage_id"], :name => "index_services_on_secondary_coverage_id"
 
   create_table "services_users", id: false, force: true do |t|
     t.integer "user_id",    null: false
@@ -559,31 +735,61 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "updated_at"
   end
 
-  create_table "temp_translations", id: false, force: true do |t|
-    t.integer  "id"
-    t.string   "key"
-    t.text     "interpolations"
-    t.boolean  "is_proc"
+  create_table "sponsors", force: true do |t|
+    t.string   "code",       null: false
+    t.integer  "index"
+    t.integer  "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "translation_keys", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "locale"
-    t.text     "value"
-    t.boolean  "is_html"
-    t.boolean  "complete"
-    t.boolean  "is_list"
   end
 
   create_table "translations", force: true do |t|
     t.string   "key"
     t.text     "interpolations"
-    t.boolean  "is_proc",        default: false
+    t.boolean  "is_proc",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "locale"
     t.text     "value"
-    t.boolean  "is_html",        default: false
-    t.boolean  "complete",       default: false
-    t.boolean  "is_list",        default: false
+    t.boolean  "is_html",            default: false
+    t.boolean  "complete",           default: false
+    t.boolean  "is_list",            default: false
+    t.integer  "locale_id"
+    t.integer  "translation_key_id"
+  end
+
+  create_table "trapeze_bookings", force: true do |t|
+    t.string   "passenger1_type"
+    t.string   "passenger1_space_type"
+    t.string   "passenger2_type"
+    t.string   "passenger2_space_type"
+    t.string   "passenger3_type"
+    t.string   "passenger3_space_type"
+    t.integer  "itinerary_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fare1_type_id"
+    t.string   "fare2_type_id"
+    t.string   "fare3_type_id"
+    t.string   "confirmation_number"
+  end
+
+  create_table "trapeze_profiles", force: true do |t|
+    t.string   "endpoint"
+    t.string   "username"
+    t.string   "password"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "namespace"
+    t.integer  "para_service_id"
+    t.integer  "booking_offset_minutes", default: 0, null: false
   end
 
   create_table "traveler_notes", force: true do |t|
@@ -596,40 +802,48 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.integer  "trip_id"
     t.integer  "from_trip_place_id"
     t.integer  "to_trip_place_id"
-    t.integer  "sequence",                           null: false
-    t.boolean  "is_depart",          default: false
-    t.boolean  "is_return_trip",     default: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "sequence",                                  null: false
+    t.boolean  "is_depart",                 default: false
+    t.boolean  "is_return_trip",            default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
     t.boolean  "assistant"
     t.integer  "companions"
     t.integer  "children"
     t.integer  "other_passengers"
+    t.text     "note_to_driver"
+    t.integer  "booking_trip_purpose_id"
+    t.string   "booking_trip_purpose_desc"
   end
 
   add_index "trip_parts", ["trip_id", "sequence"], :name => "index_trip_parts_on_trip_id_and_sequence"
-  add_index "trip_parts", ["trip_id"], :name => "idxTrip_ID"
 
   create_table "trip_places", force: true do |t|
     t.integer  "trip_id"
-    t.integer  "sequence",                 null: false
+    t.integer  "sequence",                    null: false
     t.integer  "place_id"
     t.integer  "poi_id"
     t.string   "raw_address"
     t.float    "lat"
     t.float    "lon"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "address1",     limit: 128
-    t.string   "address2",     limit: 128
-    t.string   "city",         limit: 128
-    t.string   "state",        limit: 64
-    t.string   "zip",          limit: 10
-    t.string   "county",       limit: 128
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "address1",        limit: 128
+    t.string   "address2",        limit: 128
+    t.string   "city",            limit: 128
+    t.string   "state",           limit: 64
+    t.string   "zip",             limit: 10
+    t.string   "county",          limit: 128
     t.string   "result_types"
-    t.string   "name",         limit: 256
+    t.string   "name",            limit: 256
+    t.string   "street_number"
+    t.string   "route"
+    t.string   "google_place_id"
+    t.string   "stop_code"
+    t.text     "types"
+    t.string   "unit"
   end
 
   create_table "trip_purposes", force: true do |t|
@@ -651,8 +865,8 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.integer  "user_id"
     t.integer  "trip_purpose_id"
     t.integer  "creator_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.boolean  "taken"
     t.date     "scheduled_date"
     t.datetime "scheduled_time"
@@ -669,6 +883,13 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.string   "token"
     t.boolean  "is_planned",                           default: false
     t.string   "agency_token"
+    t.string   "trip_purpose_raw"
+    t.string   "optimize",                             default: "TIME"
+    t.float    "max_walk_miles"
+    t.integer  "max_walk_seconds"
+    t.float    "walk_mph",                             default: 3.0
+    t.integer  "num_itineraries",                      default: 3
+    t.float    "max_bike_miles",                       default: 5.0
   end
 
   create_table "trips_desired_modes", force: true do |t|
@@ -686,13 +907,28 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "user_characteristics", force: true do |t|
-    t.integer  "user_profile_id",                              null: false
-    t.integer  "characteristic_id",                            null: false
-    t.string   "value",             limit: 64,                 null: false
-    t.boolean  "verified",                     default: false, null: false
+    t.integer  "user_profile_id",                   null: false
+    t.integer  "characteristic_id",                 null: false
+    t.boolean  "verified",          default: false, null: false
     t.datetime "verified_at"
     t.integer  "verified_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "value"
   end
+
+  create_table "user_messages", force: true do |t|
+    t.integer  "recipient_id"
+    t.integer  "message_id"
+    t.boolean  "read",              default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "last_displayed_at"
+    t.datetime "read_at"
+  end
+
+  add_index "user_messages", ["message_id"], :name => "index_user_messages_on_message_id"
+  add_index "user_messages", ["recipient_id"], :name => "index_user_messages_on_recipient_id"
 
   create_table "user_mode_preferences", force: true do |t|
     t.integer  "user_id"
@@ -723,23 +959,26 @@ ActiveRecord::Schema.define(version: 20150521192345) do
   end
 
   create_table "user_services", force: true do |t|
-    t.integer  "user_profile_id",                                  null: false
-    t.integer  "service_id",                                       null: false
-    t.string   "external_user_id",                                 null: false
-    t.boolean  "disabled",         default: false,                 null: false
+    t.integer  "user_profile_id",                                         null: false
+    t.integer  "service_id",                                              null: false
+    t.string   "external_user_id",                                        null: false
+    t.boolean  "disabled",                default: false,                 null: false
     t.string   "customer_id"
-    t.datetime "updated_at",       default: '2014-09-19 17:13:41', null: false
-    t.datetime "created_at",       default: '2014-09-19 17:13:41', null: false
+    t.datetime "updated_at",              default: '2014-08-25 14:17:34', null: false
+    t.datetime "created_at",              default: '2014-08-25 14:17:34', null: false
+    t.string   "external_user_password"
+    t.string   "encrypted_user_password"
+    t.boolean  "unrestricted_hours",      default: false
   end
 
   create_table "users", force: true do |t|
     t.string   "nickname",                    limit: 64
     t.string   "prefix",                      limit: 4
-    t.string   "first_name",                  limit: 64,                 null: false
-    t.string   "last_name",                   limit: 64,                 null: false
+    t.string   "first_name",                  limit: 64,                  null: false
+    t.string   "last_name",                   limit: 64,                  null: false
     t.string   "suffix",                      limit: 4
-    t.string   "email",                       limit: 128,                null: false
-    t.string   "encrypted_password",          limit: 64,                 null: false
+    t.string   "email",                       limit: 128,                 null: false
+    t.string   "encrypted_password",          limit: 64,                  null: false
     t.string   "reset_password_token",        limit: 64
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -748,8 +987,8 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",          limit: 16
     t.string   "last_sign_in_ip",             limit: 16
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "agency_id"
     t.string   "preferred_locale",                        default: "en"
     t.string   "authentication_token"
@@ -761,6 +1000,8 @@ ActiveRecord::Schema.define(version: 20150521192345) do
     t.datetime "deleted_at"
     t.integer  "maximum_wait_time"
     t.string   "disabled_comment"
+    t.boolean  "api_guest",                               default: false
+    t.integer  "age"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"

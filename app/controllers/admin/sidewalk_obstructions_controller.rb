@@ -29,7 +29,7 @@ class Admin::SidewalkObstructionsController < ApplicationController
       SidewalkObstruction.find(k).update_attributes(status: v)
     end
 
-    flash[:notice] = t(:sidewalk_obstructions_update, count: parsed_feedbacks.count) if parsed_feedbacks.count != 0
+    flash[:notice] = TranslationEngine.translate_text(:sidewalk_obstructions_update) if parsed_feedbacks.count != 0
     respond_to do |format|
       format.js {render nothing: true}
       format.html {redirect_to action: :index}
@@ -62,13 +62,13 @@ class Admin::SidewalkObstructionsController < ApplicationController
       else
         return {
           success: false,
-          error_msg: I18n.t(:not_authorized_as_an_administrator)
+          error_msg: TranslationEngine.translate_text(:not_authorized_as_an_administrator)
         }
       end
     else
       return {
         success: false,
-        error_msg: I18n.t(:something_went_wrong)
+        error_msg: TranslationEngine.translate_text(:something_went_wrong)
       }
     end
   end

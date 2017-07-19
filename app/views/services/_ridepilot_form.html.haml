@@ -1,0 +1,37 @@
+= f.simple_fields_for :ridepilot_profile do |rp|
+  -unless @service.ridepilot_profile.nil?
+    = rp.input :endpoint, input_html: {value: @service.ridepilot_profile.endpoint}
+    = rp.input :api_token, input_html: {value: @service.ridepilot_profile.api_token}
+    = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id), input_html: {value: @service.ridepilot_profile.provider_id}
+  -else
+    = rp.input :endpoint
+    = rp.input :api_token
+    = rp.input :provider_id, label: translate_helper(:ridepilot_provider_id)
+%center
+  %div#ridepilot_response.alert.alert-info{style: "display:none;"}
+  = button_tag :type => :button, :id => 'ridepilot_form_button', class: "btn action-button", style: "margin-right:5px;", :remote => true do
+    = icon_label(:test_connection)
+
+:javascript
+
+  $('#ridepilot_form_button').click(function(){
+     $('#ridepilot_form_button').prop('disabled', true);
+     var ridepilot_endpoint = $('#service_ridepilot_profile_endpoint').val();
+     var ridepilot_api_token = $('#service_ridepilot_profile_api_token').val();
+     var ridepilot_provider_id = $('#service_ridepilot_profile_provider_id').val();
+
+     $.ajax({
+       url: '/services/authenticate_booking_settings?booking_profile=' + '#{BookingServices::AGENCY[:ridepilot]}' + '&endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
+       method: 'GET',
+       success: function(result){
+         $('#ridepilot_form_button').prop('disabled', false);
+         $('#ridepilot_response').text(result['message']);
+         $('#ridepilot_response').show();
+       },
+       error: function(result){
+         $('#ridepilot_form_button').prop('disabled', false);
+         $('#ridepilot_response').text(result['message']);
+         $('#ridepilot_response').show();
+       }
+     });
+  });

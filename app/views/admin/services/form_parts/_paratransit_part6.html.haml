@@ -1,0 +1,28 @@
+- this_path = "admin/services/form_parts/paratransit_part6"
+- form_index = 6
+- service_id = new_service ? "new-#{mode}" : service.id
+
+= simple_form_for service || :service,
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  = f.input :fleet_size, label: translate_helper(:fleet_size), input_html: {type: "number", min: 0}
+
+  = f.input :trip_volume, label: translate_helper(:trip_volume), input_html: {type: "number", min: 0}
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+  });

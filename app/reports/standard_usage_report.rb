@@ -6,7 +6,7 @@ class StandardUsageReport < AbstractReport
 
   def initialize(effective_date, date_option)
     @effective_date = if effective_date.blank?
-      Date.today 
+      Date.today
     else
       effective_date
     end
@@ -54,11 +54,11 @@ class StandardUsageReport < AbstractReport
       :phone
     ]
 
-    @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
-  end    
+    # @platforms_stat_rows << :kiosk if Rails.application.config.kiosk_available
+  end
 
   def self.available_date_option_collections
-    StandardUsageReport::AVAILABLE_DATE_OPTIONS.map {|option| [I18n.t(option), option]}
+    StandardUsageReport::AVAILABLE_DATE_OPTIONS.map {|option| [TranslationEngine.translate_text(option), option]}
   end
 
   def get_data
@@ -77,21 +77,21 @@ class StandardUsageReport < AbstractReport
       [get_empty_data_row]
     ].flatten(1)
   end
-  
+
   def get_columns
     @totals_cols.map {|col| col[:name]}
   end
 
   def get_localized_columns
-    @totals_cols.map {|col| 
+    @totals_cols.map {|col|
       col_name = col[:name]
       if col_name.is_a? Integer
         col_name
       else
         if col_name == :time_period
-          "#{I18n.t(col_name)} (#{I18n.t(@date_option)})"
+          "#{TranslationEngine.translate_text(col_name)} (#{TranslationEngine.translate_text(@date_option)})"
         else
-          I18n.t(col_name)
+          TranslationEngine.translate_text(col_name)
         end
       end
     }
@@ -104,7 +104,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = Trip.planned_between(col[:start_time], col[:end_time])
           row_data << case row
@@ -130,7 +130,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = Trip.created_between(col[:start_time], col[:end_time])
           row_data << case row
@@ -157,7 +157,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = Itinerary.valid.created_between(col[:start_time], col[:end_time])
           row_data << case row
@@ -185,7 +185,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = Itinerary.created_between(col[:start_time], col[:end_time]).booked
           row_data << case row
@@ -207,7 +207,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = User.without_role(:anonymous_traveler)
           row_data << case row
@@ -233,7 +233,7 @@ class StandardUsageReport < AbstractReport
       row_data = []
       @totals_cols.each do |col|
         if col[:name] == :time_period
-          row_data << I18n.t(row)
+          row_data << TranslationEngine.translate_text(row)
         else
           base = Trip.planned_between(col[:start_time], col[:end_time])
           row_data << case row
@@ -272,9 +272,9 @@ class StandardUsageReport < AbstractReport
     n = 0
     start_date = @effective_date
     while start_date >= launch_date && n < last_n
-      name = if n>0 
+      name = if n>0
         -n
-      else 
+      else
         :current
       end
 
@@ -315,5 +315,5 @@ class StandardUsageReport < AbstractReport
     }
 
   end
-  
+
 end

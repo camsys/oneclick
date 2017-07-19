@@ -3,9 +3,14 @@
     %li.divider.text-left
   %li{role: 'presentation'}
     - unless menu_item.include? :method
-      = link_to menu_item[:target], role: 'menuitem' do
-        %i.fa{class: menu_item[:icon]}
-        = menu_item[:label]
+      - if menu_item[:target] == '#feedbackModal'
+        = link_to menu_item[:target], role: 'menuitem', "tabindex" => "2", data: {target: menu_item[:target], toggle: 'modal'} do
+          %i.fa{class: menu_item[:icon]}
+          = menu_item[:label]
+      - else
+        = link_to menu_item[:target], role: 'menuitem' do
+          %i.fa{class: menu_item[:icon]}
+          = menu_item[:label]
     - else
       = link_to menu_item[:target], method: menu_item[:method], role: 'menuitem' do
         %i.fa{class: menu_item[:icon]}

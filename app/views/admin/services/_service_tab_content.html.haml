@@ -1,0 +1,74 @@
+-# Takes a boolean new_service, a boolean active, and then either a service service, or a mode mode.
+- mode = new_service ? mode : service.service_type.code
+- service = new_service ? nil : service
+- service_id = new_service ? "new-#{mode}" : service.id
+
+.tab-pane.panel-body{role: 'tabpanel',
+      id: (new_service ? "new-#{mode}-service-tab-content" : "service-#{service.id}-tab-content"),
+      class: (active ? "active" : "") + " " + (new_service ? "new-service-tab-pane" : "service-tab-pane")}
+  = render partial: "admin/services/form_parts/general",
+    locals: { new_service: new_service,
+              service: service,
+              mode: mode }
+
+  -unless new_service
+    .row.collapser-container
+      .col-xs-12
+        .pull-right
+          .btn.btn-link.collapse-toggle-btn{"data-toggle" => "collapse", "data-target" => "##{mode}-details-#{service_id}", "data-service-id" => service_id}
+            %span= translate_helper(:show_more)
+            .i.fa.fa-chevron-down
+    .collapsible.collapse{id: "#{mode}-details-#{service_id}"}
+      - if ServiceType::PARATRANSIT_MODE_NAMES.include?(mode)
+        = render partial: "admin/services/form_parts/paratransit_part1",
+          locals: { new_service: new_service,
+                    service: service,
+                    active: active}
+        = render partial: "admin/services/form_parts/paratransit_part2",
+          locals: { new_service: new_service,
+                    service: service }
+        = render partial: "admin/services/form_parts/paratransit_part3",
+          locals: { new_service: new_service,
+                    service: service }
+        = render partial: "admin/services/form_parts/paratransit_part4",
+          locals: { new_service: new_service,
+                    service: service }
+        = render partial: "admin/services/form_parts/paratransit_part5",
+          locals: { new_service: new_service,
+                    service: service }
+        - if Oneclick::Application.config.show_paratransit_fleet_size_and_trip_volume
+          = render partial: "admin/services/form_parts/paratransit_part6",
+            locals: { new_service: new_service,
+                      service: service }
+      - elsif ServiceType::TRANSIT_MODE_NAMES.include?(mode)
+        = render partial: "admin/services/form_parts/transit_part1",
+          locals: { new_service: new_service,
+                    service: service }
+      - elsif ServiceType::TAXI_MODE_NAMES.include?(mode)
+        = render partial: "admin/services/form_parts/taxi_part1",
+          locals: { new_service: new_service,
+                    service: service,
+                    active: active}
+        = render partial: "admin/services/form_parts/taxi_part2",
+          locals: { new_service: new_service,
+                    service: service }
+        = render partial: "admin/services/form_parts/taxi_part3",
+          locals: { new_service: new_service,
+                    service: service }
+      = render partial: "admin/services/form_parts/activate_service_form",
+        locals: { new_service: new_service, service: service}
+
+:javascript
+  $(document).ready(function() {
+
+    // Toggles collapse form button
+    $(".collapse-toggle-btn[data-service-id=#{service_id}]").on("click", function(e) {
+      if(!$("##{mode}-details-#{service_id}").hasClass("in")) {
+        $(this).find("span").text("#{translate_helper(:show_less)}");
+        $(this).find(".i.fa").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+      } else {
+        $(this).find("span").text("#{translate_helper(:show_more)}");
+        $(this).find(".i.fa").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+      }
+    });
+  });

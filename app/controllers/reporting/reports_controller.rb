@@ -15,7 +15,7 @@ module Reporting
           redirect_to admin_report_path Report.find(first_report[:id])
         end
       end
-      
+
     end
 
     def show
@@ -34,6 +34,6 @@ module Reporting
     def verify_permission
       authorize! :access, :admin_reports
     end
-    
+
   end
 end

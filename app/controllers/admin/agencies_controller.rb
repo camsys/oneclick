@@ -12,9 +12,9 @@ class Admin::AgenciesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @agencies }
-      format.csv do 
+      format.csv do
         filter_params = params.permit(:bIncludeInactive, :search)
-        
+
         @agencies = Agency.get_exported(@agencies, filter_params)
 
         render_csv("agencies.csv", @agencies, Agency.csv_headers)
@@ -74,7 +74,7 @@ class Admin::AgenciesController < ApplicationController
 
     respond_to do |format|
       if @agency.save
-        format.html { redirect_to [:admin, @agency], notice: t(:agency_was_successfully_created) }
+        format.html { redirect_to [:admin, @agency], notice: TranslationEngine.translate_text(:agency_was_successfully_created) }
         format.json { render json: @agency, status: :created, location: @agency }
       else
         format.html { render action: "new" }
@@ -99,7 +99,7 @@ class Admin::AgenciesController < ApplicationController
         set_internal_contact(internal_contact_id) unless internal_contact_id.blank?
         set_agents(agent_ids)
         set_admins(admin_ids)
-        format.html { redirect_to [:admin, @agency], notice: t(:agency) + ' ' + t(:was_successfully_updated) }
+        format.html { redirect_to [:admin, @agency], notice: TranslationEngine.translate_text(:agency) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -112,6 +112,7 @@ class Admin::AgenciesController < ApplicationController
   # DELETE /agencies/1.json
   def destroy
     # @agency = Agency.find(params[:id])
+    @agency.disabled_comment = params[:agency][:disabled_comment]
     @agency.update_attributes(active: false)
 
     respond_to do |format|
@@ -134,13 +135,13 @@ class Admin::AgenciesController < ApplicationController
 
     if user.nil?
       success = false
-      msg = I18n.t(:no_agent_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
+      msg = TranslationEngine.translate_text(:no_agent_with_email_address, email: params[:email]) # did you know that this was an XSS vector?  OOPS
     elsif !user.agency.nil?
       success = false
-      msg = I18n.t(:already_an_agency_agent)
+      msg = TranslationEngine.translate_text(:already_an_agency_agent)
     else
       success = true
-      msg = t(:please_save_agents, name: user.name)
+      msg = TranslationEngine.translate_text(:please_save_agents, name: user.name)
       output = user.id
       row = [
               user.id,
@@ -159,7 +160,7 @@ private
 def agency_params params
   params.require(:agency).permit(:name, :address, :city, :state, :zip, :phone, :email, :url,
     :parent_id, :parent,:internal_contact_name, :internal_contact_title, :internal_contact_phone,
-    :internal_contact_email,
+    :internal_contact_email, :disabled_comment,
     comments_attributes: COMMENT_ATTRIBUTES,
     public_comments_attributes: COMMENT_ATTRIBUTES,
     private_comments_attributes: COMMENT_ATTRIBUTES,

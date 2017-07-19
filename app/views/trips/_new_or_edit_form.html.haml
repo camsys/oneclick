@@ -1,46 +1,39 @@
-- content_for :title, "#{t(:site_title)} - #{t(:plan_a_trip)}"
-- is_splash_available = whether_show_tranlatation_item?(:splash)
+- content_for :title, "#{translate_helper(:site_title)} - #{translate_helper(:plan_a_trip)}"
+- is_splash_available = TranslationEngine.show_translation_item?(:splash)
+- is_pre_splash_available = TranslationEngine.show_translation_item?(:pre_splash)
+- is_split_display = is_splash_available || is_pre_splash_available
 - non_splash_css = 'col-sm-12'
 - splash_css = ''
-- if is_splash_available
+- is_trip_cannot_modify = (@trip && !@trip.can_modify) ? true : false
+- if is_repeat
+  -is_trip_cannot_modify = false
+- if is_split_display
   - non_splash_css = 'col-sm-7 col-xs-12'
   - splash_css = 'col-sm-5 col-xs-12'
 .row
   %div{class: non_splash_css}
     .pull-right
-      -if @show_booking
-        = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;"  do
-          =t(:ecolane_login_button)
-          :javascript
-            $(function() {
-              $('button[name=ecolaneSignin]').click(function() {
-                $('#bookingSignupModal').modal('show');
-              });
-            });
-      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-        =t(:next)
+      = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button", :tabindex => "-1" do
+        =translate_helper(:next)
         :javascript
           $(function() {
-            $('button[name=planTrip]').click(function() {
-              $('.plan-a-trip').submit();
-            });
+            if(#{is_trip_cannot_modify}) {
+              $('button[name=planTrip]').hide();
+            } else {
+              $('button[name=planTrip]').click(function() {
+                $('.plan-a-trip').submit();
+              });
+            }
           });
     = render partial: 'shared/trip_plan_breadcrumbs'
-.row
-  - is_splash_available = whether_show_tranlatation_item?(:splash)
-  - non_splash_css = 'col-sm-12'
-  - splash_css = ''
-  - if is_splash_available
-    - non_splash_css = 'col-sm-7 col-xs-12'
-    - splash_css = 'col-sm-5 col-xs-12'
-  %div{class: non_splash_css}
+    %br.hidden-sm.hidden-md.hidden-lg.hidden-xl
     .col-sm-12
       - header_comment_key = session[:is_multi_od] ? :multi_od_trip_header_comment : :trip_header_comment
       = render partial: 'shared/page_comments', locals: {key: header_comment_key}
     .col-sm-12.panel.panel-default{:role => "main", :aria => {:label => 'Trip Form'}, :style => 'padding:0px;'}
       .panel-heading
-        %h2.panel-title
-          =t(:trip_parameters)
+        %h3.panel-title
+          =translate_helper(:trip_parameters)
           = add_tooltip("trip_parameters_help")
       .panel-body
         = simple_form_for @trip_proxy, :url => @trip_proxy.id.nil? ? user_trips_path(:user_id => @traveler.id) : user_trip_path(:user_id => @traveler.id), :method => @trip_proxy.id.nil? ? 'post' : 'put', :html => {:class => "plan-a-trip form-horizontal no-bottom-margin", :style => "margin-top:10px;margin-bottom:0px;"}, wrapper: :horizontal_form, wrapper_mappings: {check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :plan_trip_radio}  do |f|
@@ -57,18 +50,16 @@
             #tripOptions
               .form-group.radio_buttons.optional.trip_proxy_is_round_trip
                 %legend.col-sm-3.radio_buttons.optional.control-label#legend_label
-                  =t(:trip_dir)
+                  =translate_helper(:trip_dir)
                   = add_tooltip("trip_dir_help")
                 .col-sm-9#is_round_trip_inputs
-                  %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{t(:round_trip)}
-
                   %input.radio_buttons.optional#trip_proxy_is_round_trip_0{name: "trip_proxy[is_round_trip]", type: "radio", value: 0, checked: (@trip_proxy.is_round_trip ? nil : "checked")}
-                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{t(:one_way)}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_0"} #{translate_helper(:one_way)}
+                  %input.radio_buttons.optional#trip_proxy_is_round_trip_1{name: "trip_proxy[is_round_trip]", type: "radio", value: 1, checked: (@trip_proxy.is_round_trip ? "checked" : nil)}
+                  %label.radio_buttons.optional{for: "trip_proxy_is_round_trip_1"} #{translate_helper(:round_trip)}
+
 
             = field_set_tag do
-              / .inline-radio
-              /   = f.input :is_round_trip, as: :radio_buttons, label: t(:trip_dir), collection: [[t(:round_trip), 1], [t(:one_way), 0]], checked: (@trip_proxy.is_round_trip ? "1" : "0")
 
               :javascript
                 $('#tripOptions :radio').change(function() {
@@ -83,17 +74,38 @@
             #baseModes
               .form-group.check_boxes.optional.trip_proxy_modes
                 %legend.col-sm-3.check_boxes.optional.control-label#legend_label
-                  =t(:modes)
+                  =translate_helper(:modes)
                   = add_tooltip("modes_help")
                 .col-sm-9#modes_inputs
                   - @modes.each do |mode|
                     %div
                       %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
                       %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+                      = add_tooltip("#{mode[1]}_name_help", "", "")
                       %br
+                  #transitModes
+                    -# = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+                    .form-group.check_boxes.optional.trip_proxy_modes
+                      - @transit_modes.each do |mode|
+                        #transit_modes_inputs
+                          %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
+                          %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+                          = add_tooltip("transit_sub#{mode[1]}_name_help", "", "")
+                          %br
+
+                    :javascript
+                      $('#transitModes input[type="checkbox"]').change( function() {
+                        var checkedCount = $('#transitModes input:checked').length;
+                        if (checkedCount === 0) {
+                          $("#trip_proxy_modes_mode_transit").prop('checked', false);
+                        } else {
+                          $("#trip_proxy_modes_mode_transit").prop('checked', true);
+                        }
+                      });
+
 
             = field_set_tag do
-              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: t(:modes)
+              / = f.input :modes, as: :check_boxes, collection: @modes, label_method: :first, value_method: :last, checked: @selected_modes, label: translate_helper(:modes)
 
             :javascript
               $('#trip_proxy_modes_mode_transit').change(function() {
@@ -108,29 +120,40 @@
                 }
               });
 
-            #transitModes
-              = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
-
-              :javascript
-                $('#transitModes input[type="checkbox"]').change( function() {
-                  var checkedCount = $('#transitModes input:checked').length;
-                  if (checkedCount === 0) {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', false);
-                  } else {
-                    $("#trip_proxy_modes_mode_transit").prop('checked', true);
-                  }
-                });
+            -# #transitModes
+            -#   -# = f.input :modes, as: :check_boxes, collection: @transit_modes, label_method: :first, value_method: :last, checked: @selected_modes, label: '', collection_wrapper_class: 'col-xs-offset-1', collection_wrapper_tag: :div
+            -#   .form-group.check_boxes.optional.trip_proxy_modes
+            -#     - @transit_modes.each do |mode|
+            -#       .col-xs-offset-4#transit_modes_inputs
+            -#         %input.check_boxes.optional{id: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes][]", type: "checkbox", value: "#{mode[1]}", checked: (@selected_modes.include?(mode[1]) ? "checked" : nil)}
+            -#         %label.check_boxes.optional{for: "trip_proxy_modes_#{mode[1]}", name: "trip_proxy[modes]"} #{mode[0]}
+            -#         = add_tooltip("#{mode[1]}_name_help", "", "")
+            -#         %br
+            -#
+            -#   :javascript
+            -#     $('#transitModes input[type="checkbox"]').change( function() {
+            -#       var checkedCount = $('#transitModes input:checked').length;
+            -#       if (checkedCount === 0) {
+            -#         $("#trip_proxy_modes_mode_transit").prop('checked', false);
+            -#       } else {
+            -#         $("#trip_proxy_modes_mode_transit").prop('checked', true);
+            -#       }
+            -#     });
 
           -if I18n.locale == :tags
-            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            = f.input :trip_purpose_id, :collection =>  TripPurpose.all.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| translate_helper(v[0][:name])}, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
-                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
+                addHelperTooltip('#trip_purpose_id_label', "#{translate_helper(:trip_purposes_help)}");
           -else
-            = f.input :trip_purpose_id, :collection => TripPurpose.ordered_by_localized_name.map{|x| [{code: x.code, name: x.name}, x.id]}, :selected => @trip_proxy.trip_purpose_id, :value => :id, :label_method => lambda { |v| t(v[0][:name])}, label: t(:trip_purposes), input_html: { class: 'form-control' }
-            - if translation_exists?("trip_purposes_help")
+            - unless @trip_purposes_raw.nil?
+              = f.input :trip_purpose_raw, :label => "Trip Purpose", :selected => @trip_purposes_raw.first, :collection => @trip_purposes_raw, input_html: { class: 'form-control' }
+              = f.hidden_field :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => TripPurpose.first.id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - else
+              = f.input :trip_purpose_id, :collection => @trip_purposes, :selected => @trip_proxy.trip_purpose_id, :value => :id, label: translate_helper(:trip_purposes), input_html: { class: 'form-control' }
+            - if TranslationEngine.translation_exists?("trip_purposes_help")
               :javascript
-                addHelperTooltip('#trip_purpose_id_label', "#{t(:trip_purposes_help)}");
+                addHelperTooltip('#trip_purpose_id_label', "#{translate_helper(:trip_purposes_help)}");
 
           = render partial: 'location_input', locals: {dir: 'from', f: f}
           = render partial: 'location_input', locals: {dir: 'to', f: f}
@@ -144,14 +167,14 @@
           .hidden-xs.hidden-sm{id: "tripMapContainer", class: 'hide', style: 'position: absolute; top: 0; right:-520px; z-index: 1000;'}
             .panel.panel-default{style:'padding:0px;'}
               .panel-heading.clearfix
-                %h2.panel-title
-                  %button#mapCloseButton.close.pull-right{type: "button", title: t(:close)}
+                %h3.panel-title
+                  %button#mapCloseButton.close.pull-right{type: "button", title: translate_helper(:close)}
                     %i.fa.fa-close
                     %span.hide Close
                   %button.pull-right.close{type: 'button', "data-toggle" => "modal", "data-target" => "#mapExpand", style: "min-width:1em;margin-right:10px;margin-top:2px;", aria: {label: "Map"}}
                     %i.fa.fa-expand
 
-                  =t(:map)
+                  =translate_helper(:map)
                   = add_tooltip("map_help")
                   :javascript
                     $('#tripMapContainer .label-help').removeClass('pull-right fa-2x');
@@ -159,11 +182,8 @@
                 = LeafletMap({ :mapid => "tripMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", width: '500px;', :style => "height: 400px; width: 500px;", :show_location_select => true })
     .col-sm-12{style: "margin-bottom: 5px; padding: 0px;"}
       .pull-right
-        -if @show_booking
-          = button_tag :type => 'submit', :name => 'ecolaneSignin', :class => "btn action-button", :style => "margin-right: 10px;" do
-            =t(:ecolane_login_button)
         = button_tag :type => 'submit', :name => 'planTrip', :class => "btn action-button" do
-          =t(:next)
+          =translate_helper(:next)
 
       .pull-left
         %button.btn.btn-default.generate-url{type: 'button', "data-toggle" => "modal", "data-target" => "#generatedUrl", style: "min-width:1em;", aria: {label: "Generate a URL to your current trip."}}
@@ -196,7 +216,7 @@
                   %i.fa.fa-compress
                 %span.sr-only Minimize
               %h3.modal-title{id: "modalLabel2"}
-                = t(:map)
+                = translate_helper(:map)
             .modal-body{:"aria-hidden" => "true"}
               = LeafletMap({ :mapid => "expandedMap", :markers => @markers, :tile_provider => 'GOOGLEMAP', :min_zoom => 3, :max_zoom => 15, :class => "map", :style => "height: 100%; width: 100%;", :show_location_select => true })
 
@@ -233,23 +253,26 @@
             "&outbound_arrive_depart=" + outboundArriveDepart;
 
             if (isRoundTrip == "true") {
-              completeUrl += 
+              completeUrl +=
               "&return_trip_date=" + returnDate +
               "&return_trip_time=" + returnTime +
               "&return_arrive_depart=" + returnArriveDepart;
             }
-            
+
             $('#trip-url').val(completeUrl);
-            
+
           });
 
     .col-sm-12
       - footer_comment_key = session[:is_multi_od] ? :multi_od_trip_footer_comment : :trip_footer_comment
       = render partial: 'shared/page_comments', locals: {key: footer_comment_key}
-  - if is_splash_available
-    = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
-  -if @show_booking
-    = render partial: 'booking_signup'
+  - if is_split_display
+    %div{class: splash_css}
+      - if is_pre_splash_available
+        = render partial: 'shared/splash', locals: {splash_key: :pre_splash, title_key: :pre_splash_title, splash_div_class: splash_css}
+      - if is_splash_available
+        = render partial: 'shared/splash', locals: {splash_key: :splash, title_key: :splash_title, splash_div_class: splash_css}
+
 :javascript
   $(function() {
     // initialize place picker
@@ -257,17 +280,17 @@
     var bounds_hash = null;
     if(geocoder_bounds) {
       bounds_hash = {
-        xmin: geocoder_bounds[0][0],
-        ymin: geocoder_bounds[0][1],
-        xmax: geocoder_bounds[1][0],
-        ymax: geocoder_bounds[1][1]
+        ne_lat: geocoder_bounds[0][0],
+        ne_lng: geocoder_bounds[0][1],
+        sw_lat: geocoder_bounds[1][0],
+        sw_lng: geocoder_bounds[1][1]
       }
     }
     init_place_picker(
-      ".plan-a-trip .place_picker", 
+      ".plan-a-trip .place_picker",
       bounds_hash
     );
-          
+
     var makeFullscreen = function(){
       var minMapHeight = 200;
       var newMainHeight = $(window).outerHeight(true);
@@ -365,13 +388,13 @@
       $('#from_places td.address-data').each(function(){
         multi_origin_places.push($(this).text());
       });
-      $('#multi_origin_places').val(multi_origin_places.join(';'));
+      $('#multi_origin_places').val(multi_origin_places.join(';##$##;'));
 
       var multi_dest_places = [];
       $('#to_places td.address-data').each(function(){
         multi_dest_places.push($(this).text());
       });
-      $('#multi_dest_places').val(multi_dest_places.join(';'));
+      $('#multi_dest_places').val(multi_dest_places.join(';##$##;'));
 
       return true;
     });

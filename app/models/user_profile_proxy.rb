@@ -86,6 +86,8 @@ class UserProfileProxy < Proxy
   # coerce value into a localized description based on the data type
   # returns a string if it can be displayed as stored (dates and numbers)
   # returns a symbol if it needs to be localied
+
+  # This method is inconsistent.  Sometimes it returns symbols, sometimes it returns strings.
   def coerce_value_to_string(characteristic, user_characteristic)
     if user_characteristic.nil?
       return :no_answer_str
@@ -97,6 +99,11 @@ class UserProfileProxy < Proxy
         ret = user_characteristic.value
       elsif type == 'date'
         user_char_value = user_characteristic.value unless user_characteristic.nil?
+
+        if user_char_value.blank?
+          return :no_answer_str
+        end
+
         if user_characteristic and !user_char_value.blank? and user_char_value.split('-').length < 3
           user_char_value = "12-31-#{user_char_value.split('-')[0]}"
         end

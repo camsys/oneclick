@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :except => :initial_booking
-  load_and_authorize_resource except: [:edit, :assist]
+  before_filter :authenticate_user!, :except => :associate_service
+  load_and_authorize_resource except: [:edit, :assist, :associate_service]
+  before_filter :clear_stale_answers, :only => [:show, :edit]
 
   def index
-    authorize! :index, User, :message => t(:not_authorized_as_an_administrator)
+    authorize! :index, User, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     @users = User.all
   end
 
@@ -74,7 +75,7 @@ class UsersController < ApplicationController
       @user.add_buddies(params[:new_buddies])
 
       if booking_alert
-        redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid Client Id or Date of Birth."
+        redirect_to user_path(@user, locale: @user.preferred_locale), :alert => "Invalid booking credentials."
       else
         if params[:user][:password] and params[:user][:password].eql? params[:user][:password_confirmation] # They have updated their password, so log them back in, otherwise they will fail authentication
           sign_in @user, :bypass => true
@@ -101,7 +102,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, @user, :message => t(:not_authorized_as_an_administrator)
+    authorize! :destroy, @user, :message => TranslationEngine.translate_text(:not_authorized_as_an_administrator)
     user = User.find(params[:id])
     unless user == current_user
       user.destroy
@@ -116,61 +117,6 @@ class UsersController < ApplicationController
     @user = User.includes(:traveler_relationships, :delegate_relationships).find(params[:id])
     authorize! :edit, @user
     @user_characteristics_proxy = UserCharacteristicsProxy.new(@user)
-  end
-
-
-  def initial_booking
-    #TODO: This is not DRY, It reuses a lot of what is in add_booking_service
-    get_traveler
-    external_user_id = params['user_service_proxy']['external_user_id']
-    service = Service.find(params['user_service_proxy']['service_id'])
-    @errors = false
-
-    @booking_proxy = UserServiceProxy.new(external_user_id: external_user_id, service: service)
-
-    #Check that the formatting is correct
-    begin
-      Date.strptime(params['user_service_proxy']['dob'], "%m/%d/%Y")
-      dob = params['user_service_proxy']['dob']
-    rescue ArgumentError
-      @booking_proxy.errors.add(:dob, "Date needs to be in mm/dd/yyyy format.")
-      @errors = true
-    end
-
-    eh = EcolaneHelpers.new
-    #If the formatting is correct, check to see if this is a valid user
-    unless @errors
-      result, first_name, last_name = eh.validate_passenger(external_user_id, dob)
-      unless result
-
-        @booking_proxy.errors.add(:external_user_id, "Unknown Client Id or incorrect date of birth.")
-        @errors = true
-      end
-    end
-
-    #If everything checks out, create a link between the OneClick user and the Booking Service
-    unless @errors
-      #Todo: This will need to be updated when more services are able to book.
-      if @traveler.is_visitor?
-        @traveler = eh.get_ecolane_traveler(external_user_id, dob, first_name, last_name)
-        sign_in @traveler, :bypass => true
-      end
-      Service.where(booking_service_code: 'ecolane').each do |booking_service|
-        user_service = UserService.where(user_profile: @traveler.user_profile, service: booking_service).first_or_initialize
-        user_service.external_user_id = external_user_id
-        user_service.save
-      end
-    end
-
-    #redirect_to new_user_trip_path(@traveler)
-    #return
-
-    @trip = Trip.last
-    respond_to do |format|
-      format.json {}
-      format.js { render "trips/update_initial_booking" }
-    end
-
   end
 
   def add_booking_service
@@ -217,21 +163,21 @@ class UsersController < ApplicationController
 
     if user.nil?
       success = false
-      msg = I18n.t(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
+      msg = TranslationEngine.translate_text(:no_user_with_email_address, email: ERB::Util.html_escape(params[:email])) # did you know that this was an XSS vector?  OOPS
     elsif user.eql? traveler
       success = false
-      msg = t(:you_can_t_be_your_own_buddy)
+      msg = TranslationEngine.translate_text(:you_can_t_be_your_own_buddy)
     elsif traveler.pending_and_confirmed_delegates.include? user
       success = false
-      msg = t(:you_ve_already_asked_them_to_be_a_buddy)
+      msg = TranslationEngine.translate_text(:you_ve_already_asked_them_to_be_a_buddy)
     else
       success = true
-      msg = t(:please_save_buddies, name: user.first_name)
+      msg = TranslationEngine.translate_text(:please_save_buddies, name: user.first_name)
       output = user.email
       row = [
               user.name,
               user.email,
-              I18n.t('relationship_status.relationship_status_pending'),
+              TranslationEngine.translate_text('relationship_status.relationship_status_pending'),
               UserRelationshipDecorator.decorate(UserRelationship.find_by(traveler: user, delegate: traveler)).buttons
             ]
     end
@@ -247,10 +193,12 @@ class UsersController < ApplicationController
 
     if UserRelationship.find_by(user_id: params[:buddy_id], delegate_id: @user)
       set_traveler_id params[:buddy_id]
-      flash[:notice] = t(:assisting_turned_on)
+      flash[:notice] = TranslationEngine.translate_text(:assisting_turned_on)
       redirect_to new_user_trip_path(params[:buddy_id])
     end
   end
+
+
 
 private
 
@@ -283,36 +231,35 @@ private
 
   def set_booking_services(user, services)
 
+    if not Oneclick::Application.config.allows_booking or services.blank?
+      return false
+    end
+
+    Rails.logger.info services
+    Rails.logger.info "SERVICES WILL BE AROUND HERE SOMEHWERE"
+
+    service_ids = services.select { |key, value| key.to_s.match(/^service_\d+/) }
+
     alert = false
-    dob = services['dob']
-    services.each do |id, user_id|
+    service_ids.each do |service_id, user_id|
+      id = service_id.split('_').last
+      user_password = services["password_" + id]
 
-      unless id == 'dob'
-        service = Service.find(id)
+      unless user_password.blank?
+        service = Service.find(id.to_i)
+        result = service.associate_user(user, user_id, user_password)
 
-        user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
-        #only validate on a change
-        if user_service.external_user_id == user_id
+        unless result
+          alert = true
           next
-        end
-
-        eh = EcolaneHelpers.new
-        unless user_id == ""
-          unless eh.validate_passenger(user_id, dob)[0]
-            alert = true
-            next
-          end
-          #user_service = UserService.where(user_profile: user.user_profile, service: service).first_or_initialize
-          user_service.external_user_id = user_id
-          user_service.save
-        else
-          user_services = UserService.where(user_profile: user.user_profile, service: service)
-          user_services.each do |user_service|
-            user_service.destroy
-          end
         end
       end
     end
     alert
   end
+
+  def clear_stale_answers
+    @traveler.clear_stale_answers
+  end
+
 end

@@ -1,8 +1,12 @@
 class ApplicationController < ActionController::Base
   include CsHelpers
-  include LocaleHelpers
 
   # acts_as_token_authentication_handler_for User
+  force_ssl if: :ssl_configured?
+
+  def ssl_configured?
+    ENV["ENABLE_HTTPS"] == "true"
+  end
 
   # include the helper method in any controller which needs to know about guest users
   helper_method :current_or_guest_user
@@ -12,6 +16,8 @@ class ApplicationController < ActionController::Base
   before_filter :get_traveler
   before_filter :set_locale
   before_filter :setup_actions
+  before_filter :get_unread_messages
+  before_filter :set_feedback_types
   before_action do |controller|
     @current_ability ||= Ability.new(get_traveler)
   end
@@ -28,6 +34,10 @@ class ApplicationController < ActionController::Base
     else
       redirect_to root_path, :alert => exception.message
     end
+  end
+
+  def get_unread_messages
+    @unread_messages = current_user.try(:unread_received_messages) if current_user
   end
 
   def current_traveler
@@ -71,6 +81,29 @@ class ApplicationController < ActionController::Base
     super(options, response_status)
   end
 
+  def set_feedback_types
+    @feedback_types = []
+    app = FeedbackType.find_by(name: 'application')
+    trip = FeedbackType.find_by(name: 'trip')
+    unmet_need = FeedbackType.find_by(name: 'unmet_need')
+
+    app_feedback = [TranslationEngine.translate_text(app.name.to_sym), app.id] if app
+    trip_feedback = [TranslationEngine.translate_text(trip.name.to_sym), trip.id] if trip
+    unmet_need_feedback = [TranslationEngine.translate_text(unmet_need.name.to_sym), unmet_need.id] if unmet_need
+
+    @feedback_types << app_feedback
+
+    if params[:controller] == "trips" && params[:action] == "show"
+      @feedback_types << unmet_need_feedback
+    elsif params[:controller] == "trips" && params[:action] == "plan"
+      @feedback_types << trip_feedback
+      @feedback_types << unmet_need_feedback
+    elsif params[:controller] == "admin/trips" && params[:action] == "index"
+      @feedback_types << trip_feedback
+      @feedback_types << unmet_need_feedback
+    end
+  end
+
   protected
 
   def create_random_string(length=16)
@@ -102,11 +135,7 @@ class ApplicationController < ActionController::Base
       @trip.create_itineraries
       user_trip_path(@traveler, @trip)
     else
-      if ui_mode_kiosk?
-        new_user_trip_path(current_or_guest_user)
-      else
-        root_path(locale: current_or_guest_user.preferred_locale)
-      end
+      root_path(locale: current_or_guest_user.preferred_locale)
     end
   end
 
@@ -133,6 +162,7 @@ class ApplicationController < ActionController::Base
   end
 
   def create_guest_user
+
     random_string = create_random_string(16)
     u = User.new
     u.first_name = "Visitor"

@@ -7,16 +7,16 @@ class TripPlanner
   MAX_REQUEST_TIMEOUT = Rails.application.config.remote_request_timeout_seconds
   MAX_READ_TIMEOUT    = Rails.application.config.remote_read_timeout_seconds
   METERS_TO_MILES = 0.000621371192
-  
+
   include ServiceAdapters::RideshareAdapter
 
-  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, try_count=Oneclick::Application.config.OTP_retry_count)
+  def get_fixed_itineraries(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries = 3, try_count=Oneclick::Application.config.OTP_retry_count)
     try = 1
     result = nil
     response = nil
 
     while try <= try_count
-      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance)
+      result, response = get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode, wheelchair, walk_speed, max_walk_distance, max_bicycle_distance, optimize, num_itineraries)
       if result
         break
       else
@@ -34,54 +34,56 @@ class TripPlanner
 
   end
 
-  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2)
+  def get_fixed_itineraries_once(from, to, trip_datetime, arriveBy, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0, max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3)
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
 
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
-    base_url = Oneclick::Application.config.open_trip_planner
+    base_url = Oneclick::Application.config.open_trip_planner + "/plan?"
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
-    url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+
+    #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
+    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
+      url_options += "&maxWalkDistance=" + (1609.34*max_bicycle_distance).to_s
+    else
+      url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+    end
+
+    url_options += "&numItineraries=" + num_itineraries.to_s
+
+    #Unless the optimiziton = QUICK (which is the default), set additional parameters
+    case optimize.downcase
+      when 'walking'
+        url_options += "&walkReluctance=" + Oneclick::Application.config.otp_walk_reluctance.to_s
+      when 'transfers'
+        url_options += "&transferPenalty=" + Oneclick::Application.config.otp_transfer_penalty.to_s
+    end
 
     url = base_url + url_options
+
     Rails.logger.info URI.parse(url)
     t = Time.now
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
       Rails.logger.info(resp.ai)
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: #{e.message}",
-        :parameters    => {url: url}
-      )
       return false, {'id'=>500, 'msg'=>e.to_s}
     end
 
     if resp.code != "200"
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: resp.code not 200, #{resp.message}",
-        :parameters    => {resp_code: resp.code, resp: resp}
-      )
       return false, {'id'=>resp.code.to_i, 'msg'=>resp.message}
     end
 
     data = resp.body
     result = JSON.parse(data)
     if result.has_key? 'error' and not result['error'].nil?
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: fixed: result has error: #{result['error']}",
-        :parameters    => {result: result}
-      )
       return false, result['error']
     else
       return true, result['plan']
@@ -137,12 +139,15 @@ class TripPlanner
       trip_itinerary['legs'] = itinerary['legs'].to_yaml
       trip_itinerary['server_status'] = 200
       trip_itinerary['match_score'] = match_score
+
       begin
         #TODO: Need better documentaiton of OTP Fare Object to make this more generic
-        trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+        if itinerary['fare']
+          trip_itinerary['cost'] = itinerary['fare']['fare']['regular']['cents'].to_f/100.0
+        end
       rescue Exception => e
-        Rails.logger.error e
-        Rails.logger.error itinerary['fare'].ai
+        Rails.logger.info e
+        Rails.logger.info itinerary['fare'].ai
         #do nothing, leave the cost element blank
       end
       agency_id = itinerary['legs'].detect{|l| !l['agencyId'].blank?}['agencyId'] rescue nil
@@ -170,18 +175,17 @@ class TripPlanner
     trip_itinerary['missing_information_text'] = missing_information_text
     trip_itinerary['missing_accommodations'] = ''
     trip_itinerary
-
   end
 
   def get_rideshare_itineraries(from, to, trip_datetime)
 
     t = Time.now
     query = create_rideshare_query(from, to, trip_datetime)
-    
+
     agent = Mechanize.new
     agent.keep_alive=false
     agent.open_timeout = MAX_REQUEST_TIMEOUT
-    agent.read_timeout = MAX_READ_TIMEOUT    
+    agent.read_timeout = MAX_READ_TIMEOUT
 
 
     begin
@@ -189,16 +193,11 @@ class TripPlanner
       doc = Nokogiri::HTML(page.body)
       results = doc.css('#results li div.marker.dest')
     rescue Exception=>e
-      Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => "Service failure: rideshare: #{e.message}, URL was #{service_url}",
-        :parameters    => {service_url: service_url, query: query}
-      )
       Rails.logger.warn "Service failure: rideshare: #{e.message}"
       Rails.logger.warn "URL was #{service_url}"
       Rails.logger.warn e.backtrace.join("\n")
       return false, {'id'=>500, 'msg'=>e.to_s, 'mode' => 'rideshare'}
-    end    
+    end
     if results.size > 0
       summary = doc.css('.summary').text
       Rails.logger.debug "Summary: #{summary}"
@@ -234,8 +233,19 @@ class TripPlanner
     tp = TripPlanner.new
     result, response = get_fixed_itineraries([from_lat, from_lon],
                                                 [to_lat, to_lon], trip_time, arrive_by.to_s, 'CAR')
-    itinerary = response['itineraries'].first
-    return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
+    if response["itineraries"]
+      itinerary = response['itineraries'].first
+      return itinerary['legs'].first['distance'] * METERS_TO_MILES rescue nil
+    else
+      return nil
+    end
+  end
+
+  def get_routes
+    routes_path = '/index/routes'
+    url = Oneclick::Application.config.open_trip_planner + routes_path
+    resp = Net::HTTP.get_response(URI.parse(url))
+    return JSON.parse(resp.body)
   end
 
 end

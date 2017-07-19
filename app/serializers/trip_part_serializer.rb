@@ -2,7 +2,7 @@ class TripPartSerializer < ActiveModel::Serializer
   include CsHelpers
   include TripsHelper
 
-  attributes :id, :description, :description_without_direction, :start_time, :end_time
+  attributes :id, :description, :description_without_direction, :start_time, :end_time, :is_return_trip
   attribute :is_depart, key: :is_depart_at
   has_many :itineraries
   attr_accessor :debug, :asynch
@@ -18,13 +18,13 @@ class TripPartSerializer < ActiveModel::Serializer
       return object.itineraries
     end
     return [] if @asynch
-    
+
     itineraries = object.itineraries.valid.visible
     return filter_itineraries_by_max_offset_time(itineraries, object.is_depart, object.trip_time)
   end
 
   def round_trip trip
-    trip.is_return_trip ? I18n.t(:round_trip) : I18n.t(:one_way)
+    trip.is_return_trip ? TranslationEngine.translate_text(:round_trip) : TranslationEngine.translate_text(:one_way)
   end
 
   def start_time

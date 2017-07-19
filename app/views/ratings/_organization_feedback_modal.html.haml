@@ -6,8 +6,8 @@
           -# If users can enter feedback without a trip...
           - if not rateable.is_a? Provider and can? :create, rateable.ratings.build
             %button.btn.action-button#load_feedback
-              = t(:feedback)
-          %button.btn.action-button{data: {dismiss: "modal"}}= t(:close)
+              = translate_helper(:feedback)
+          %button.btn.action-button{data: {dismiss: "modal"}}= translate_helper(:close)
       .modal-body
         .panel.panel-default
           .panel-heading
@@ -24,7 +24,7 @@
                   %dd.rating-comments= decorated_rating.comments 
             -else
               .alert
-                =t(:no_ratings_yet)
+                =translate_helper(:no_ratings_yet)
     .modal-content#give_feedback
                 
 -# Load in the form dynamically

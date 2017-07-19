@@ -5,7 +5,8 @@ class TripsController < PlaceSearchingController
     :show_printer_friendly, :example, :plan, :populate, :book, :itinerary_map, :print_itinerary_map]
   load_and_authorize_resource only: [:new, :create, :show, :index, :update, :edit]
 
-  before_action :detect_ui_mode, :get_kiosk_code
+  include ItineraryHelper
+  before_action :detect_ui_mode, :get_trip_purposes, :get_ecolane_trip_purposes
 
   def index
 
@@ -18,34 +19,29 @@ class TripsController < PlaceSearchingController
     @q.sorts = "id asc" if @q.sorts.empty?
 
     @params = {q: q_param}
-
     total_trips = @q.result(:district => true)
 
     # filter data based on accessibility
     total_trips = total_trips.by_user(params[:user_id])
-        
+
     # @results is for html display; only render current page
     @trip_views = total_trips.page(page).per(@per_page)
     @trips = Trip.where(id: @trip_views.pluck(:id))
+
+    # If any itineraries are booked, update their statuses
+    @itineraries = []
+    @trips.each do |trip|
+      @itineraries += trip.itineraries.booked
+    end
+    @itineraries.each do |itinerary|
+      itinerary.update_booking_status
+    end
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @trips }
     end
 
-  end
-
-  def show_old
-    @show_hidden = params[:show_hidden]
-
-    if session[:current_trip_id]
-      session[:current_trip_id] = nil
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @trip }
-    end
   end
 
   def show
@@ -62,7 +58,7 @@ class TripsController < PlaceSearchingController
 
     @current_user_accommodations = []
     User.find(params[:user_id]).user_accommodations.where(value: "true").each do |acc|
-      @current_user_accommodations << I18n.t(Accommodation.find(acc.accommodation_id).name).downcase
+      @current_user_accommodations << TranslationEngine.translate_text(Accommodation.find(acc.accommodation_id).name).downcase
     end
 
     @satisfaction_survey = SatisfactionSurvey.new
@@ -105,8 +101,8 @@ class TripsController < PlaceSearchingController
     @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
 
     unless @multi_od_trip.nil?
-      origin_places = @multi_od_trip.origin_places.split(';')
-      dest_places = @multi_od_trip.dest_places.split(';')
+      origin_places = @multi_od_trip.origin_places.split(';##$##;')
+      dest_places = @multi_od_trip.dest_places.split(';##$##;')
 
       if @multi_od_trip.trips.length == 0 || session[:multi_od_trip_edited] == true
         @multi_od_trip.trips = []
@@ -152,7 +148,7 @@ class TripsController < PlaceSearchingController
 
       session[:multi_od_trip_edited] = false
     else
-      flash.now[:alert] = I18n.t(:something_went_wrong)
+      flash.now[:alert] = TranslationEngine.translate_text(:something_went_wrong)
     end
 
     respond_to do |format|
@@ -172,6 +168,7 @@ class TripsController < PlaceSearchingController
     @trip = Trip.find(params[:id])
     @trip_parts = @trip.trip_parts
     @satisfaction_survey = SatisfactionSurvey.new
+    @user_services= {}
 
     unless params[:itinids].nil?
       @is_review = false
@@ -183,6 +180,17 @@ class TripsController < PlaceSearchingController
 
       #Mark these itineraries as selected
       @itineraries.each do |itinerary|
+
+        if itinerary.service_is_bookable?
+          user_service = UserService.where(service: itinerary.service, user_profile: @traveler.user_profile).first_or_initialize
+          @user_services[itinerary.id] = user_service
+        end
+
+        #Update the booking status if it has changed
+        if itinerary.is_booked?
+          itinerary.update_booking_status
+        end
+
         itinerary.selected = true
         itinerary.save
       end
@@ -228,12 +236,7 @@ class TripsController < PlaceSearchingController
       end
     else
       @tripHash = JSON.parse(@trip.to_json)
-      Honeybadger.notify(
-        :error_class   => "Some selected itineraries not available for Plan page",
-        :error_message => "Supposedly each trip part should have one and only valid selected itinerary, however, this is not the case. Check parameters about trip data.",
-        :parameters    => @tripHash
-      )
-      flash.now[:alert] = t(:error_couldnt_plan)
+      flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
     end
   end
 
@@ -245,6 +248,12 @@ class TripsController < PlaceSearchingController
 
     if session[:current_trip_id]
       session[:current_trip_id] = nil
+    end
+
+    @trip.selected_itineraries.each do |itin|
+      itin.map_image = create_static_map(itin)
+      puts itin.map_image
+      itin.save
     end
 
     respond_to do |format|
@@ -261,25 +270,16 @@ class TripsController < PlaceSearchingController
   end
 
   def email
-    @print_map = true
-    Rails.logger.info "Begin email"
-    email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    if user_signed_in? and params[:email][:send_email_to]
-      params[:email][:send_email_to].each do |email|
-        unless email == ""
-          email_addresses << email
-        end
-      end
+    email_address = params[:email][:email_addresses]
+    comments = params[:email][:email_comments]
+
+    notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', email_address.split(/[ ,]+/).to_sentence)
+    begin
+      UserMailer.user_trip_email([email_address], @trip, comments, @traveler).deliver
+    rescue Net::SMTPSyntaxError
+      notice_text = TranslationEngine.translate_text(:invalid_email)
     end
 
-    email_addresses = email_addresses.uniq
-    Rails.logger.info email_addresses.inspect
-    from_email = user_signed_in? ? current_user.email : params[:email][:from]
-
-    subject = t(:user_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : t(:user_trip_email_subject)
-    UserMailer.user_trip_email(email_addresses, @trip, subject,
-      params[:email][:email_comments], @traveler).deliver
-    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.to_sentence)
     respond_to do |format|
       format.html { redirect_to plan_user_trip_path(@trip.creator, @trip, itinids: params[:itinids], locale: I18n.locale),
         :notice => notice_text  }
@@ -310,9 +310,9 @@ class TripsController < PlaceSearchingController
     if params[:email][:copy_self] == '1'
       emails << from_email
     end
-    subject = t(:provider_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Request' : t(:provider_trip_email_subject)
+    subject = TranslationEngine.translate_text(:provider_trip_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Request' : TranslationEngine.translate_text(:provider_trip_email_subject)
     UserMailer.provider_trip_email(emails, @trip, subject, from_email, comments).deliver
-    notice_text = t(:email_sent_to).sub('%{email_sent_to}', provider.name)
+    notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', provider.name)
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
@@ -329,10 +329,10 @@ class TripsController < PlaceSearchingController
     email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
     Rails.logger.info email_addresses.inspect
     from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    subject = t(:user_itinerary_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : t(:user_itinerary_email_subject)
+    subject = TranslationEngine.translate_text(:user_itinerary_email_subject).blank? ? Oneclick::Application.config.name + ' Trip Itinerary' : TranslationEngine.translate_text(:user_itinerary_email_subject)
     UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, subject, from_email,
       params[:email][:email_comments], @traveler).deliver
-    notice_text = t(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
+    notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', email_addresses.join(', '))
     respond_to do |format|
       format.html { redirect_to user_trip_url(@trip.creator, @trip, locale: I18n.locale), :notice => notice_text  }
       format.json { render json: @trip }
@@ -344,10 +344,10 @@ class TripsController < PlaceSearchingController
     if @trip.user.email
       Rails.logger.info "Begin email"
       UserMailer.feedback_email(@trip).deliver
-      notice_text = t(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
+      notice_text = TranslationEngine.translate_text(:email_sent_to).sub('%{email_sent_to}', @trip.user.email)
     else
       Rails.logger.info "no email found"
-      notice_text = t(:no_email_found)
+      notice_text = TranslationEngine.translate_text(:no_email_found)
     end
 
     if current_user.agency
@@ -369,16 +369,6 @@ class TripsController < PlaceSearchingController
   end
 
   def email_itinerary2_values
-    # @itinerary = Itinerary.find(params[:itinerary].to_i)
-
-    # Rails.logger.info "Begin email"
-    # email_addresses = params[:email][:email_addresses].split(/[ ,]+/)
-    # Rails.logger.info email_addresses.inspect
-    # email_addresses << current_user.email if user_signed_in? && params[:email][:send_to_me]
-    # email_addresses << current_traveler.email if assisting? && params[:email][:send_to_traveler]
-    # Rails.logger.info email_addresses.inspect
-    # from_email = user_signed_in? ? current_user.email : params[:email][:from]
-    # UserMailer.user_itinerary_email(email_addresses, @trip, @itinerary, "ARC OneClick Trip Itinerary", from_email).deliver
     services = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.service.name}}
     providers = @trip.trip_parts.collect {|tp| tp.itineraries.valid.selected.collect{|i| i.provider.name}}
     respond_to do |format|
@@ -403,7 +393,7 @@ class TripsController < PlaceSearchingController
   def repeat
     # make sure we can find the trip we are supposed to be repeating and that it belongs to us.
     if @trip.nil?
-      redirect_to(user_trips_url(locale: I18n.locale), :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url(locale: I18n.locale), :flash => { :alert => TranslationEngine.translate_text(:error_404) })
       return
     end
 
@@ -440,6 +430,8 @@ class TripsController < PlaceSearchingController
 
     setup_modes
 
+    @is_repeat = true
+
     respond_to do |format|
       format.html { render :action => 'edit'}
     end
@@ -450,7 +442,7 @@ class TripsController < PlaceSearchingController
     Rails.logger.info 'edit multi_od? ' + session[:is_multi_od].to_s
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     # if @trip.nil?
-    #   redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+    #   redirect_to(user_trips_url, :flash => { :alert => TranslationEngine.translate_text(:error_404) })
     #   return
     # end
     # make sure that the trip can be modified
@@ -472,6 +464,8 @@ class TripsController < PlaceSearchingController
     @markers = create_trip_proxy_markers(@trip_proxy, session[:is_multi_od]).to_json
     @places = create_place_markers(@traveler.places)
 
+    @is_repeat = false
+
     respond_to do |format|
       format.html
     end
@@ -484,7 +478,7 @@ class TripsController < PlaceSearchingController
     # set the @traveler variable
     get_traveler
 
-    redirect_to root_path(locale: I18n.locale), :alert => t(:assisting_turned_off)
+    redirect_to root_path(locale: I18n.locale), :alert => TranslationEngine.translate_text(:assisting_turned_off)
 
   end
 
@@ -506,12 +500,12 @@ class TripsController < PlaceSearchingController
   def destroy
     # make sure we can find the trip we are supposed to be removing and that it belongs to us.
     if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => TranslationEngine.translate_text(:error_404) })
       return
     end
     # make sure that booked and future trip cannot be deleted
     if @trip.is_booked? and @trip.can_modify
-      redirect_to(user_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_url, :flash => { :alert => TranslationEngine.translate_text(:error_404) })
       return
     end
 
@@ -519,9 +513,9 @@ class TripsController < PlaceSearchingController
       # remove any child objects
       @trip.clean
       @trip.destroy
-      message = t(:trip_was_successfully_removed)
+      message = TranslationEngine.translate_text(:trip_was_successfully_removed)
     else
-      render text: t(:error_404), status: 404
+      render text: TranslationEngine.translate_text(:error_404), status: 404
       return
     end
 
@@ -538,6 +532,7 @@ class TripsController < PlaceSearchingController
     session[:is_multi_od] = false
     session[:multi_od_trip_id] = nil
     session[:multi_od_trip_edited] = false
+    @traveler.clear_stale_answers
 
     new_trip
 
@@ -555,7 +550,7 @@ class TripsController < PlaceSearchingController
 
     # make sure we can find the trip we are supposed to be updating and that it belongs to us.
     if @trip.nil?
-      redirect_to(user_trips_url, :flash => { :alert => t(:error_404) })
+      redirect_to(user_trips_url, :flash => { :alert => TranslationEngine.translate_text(:error_404) })
       return
     end
     # make sure that the trip can be modified
@@ -579,7 +574,7 @@ class TripsController < PlaceSearchingController
     else
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
-      flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+      flash.now[:notice] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
       render action: "new"
       return
     end
@@ -602,6 +597,7 @@ class TripsController < PlaceSearchingController
 
       # update the associations
       @trip.trip_purpose = updated_trip.trip_purpose
+      @trip.trip_purpose_raw = updated_trip.trip_purpose_raw
       @trip.desired_modes = updated_trip.desired_modes
       @trip.creator = @traveler
       @trip.agency = @traveler.agency
@@ -631,29 +627,25 @@ class TripsController < PlaceSearchingController
         if @trip.save
           @trip.reload
 
-          if !@trip.eligibility_dependent?
-            if session[:is_multi_od] == true
-              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
-            else
-              @path = user_trip_path_for_ui_mode(@traveler, @trip)
-            end
+          if session[:is_multi_od] == true
+            @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
           else
-            session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
+            @path = user_trip_path(@traveler, @trip)
           end
+
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
           Rails.logger.info "\nError render 2\n"
           Rails.logger.info "ERRORS: #{@trip.errors.ai}"
           Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-          flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+          flash.now[:notice] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
           format.html { render action: "new" }
           format.json { render json: @trip_proxy.errors, status: :unprocessable_entity }
         end
       else
         Rails.logger.info "\nError render 3\n"
-        flash.now[:notice] = t(:correct_errors_to_create_a_trip)
+        flash.now[:notice] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
         format.html { render action: "new" }
       end
     end
@@ -661,7 +653,7 @@ class TripsController < PlaceSearchingController
   end
 
   def populate
-    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
+    redirect_to user_trip_path(@traveler, @trip)
   end
 
   # POST /trips
@@ -687,6 +679,7 @@ class TripsController < PlaceSearchingController
 
   # GET
   def plan_a_trip
+
     session[:is_multi_od] = false
     session[:multi_od_trip_id] = nil
     session[:multi_od_trip_edited] = false
@@ -706,12 +699,14 @@ class TripsController < PlaceSearchingController
     end
 
     purpose = TripPurpose.where(code: params["purpose"]).first || TripPurpose.first
+    trip_purpose_raw = params["trip_purpose_raw"]
 
     params['trip_purpose_id'] = purpose.id if purpose
+    params['trip_purpose_raw'] = trip_purpose_raw
 
     @trip_proxy = create_trip_proxy_from_form_params(params)
 
-    @trip_proxy.is_round_trip = true
+    @trip_proxy.is_round_trip = false
     if params['is_round_trip'] == '0' or params['is_round_trip'] == 'false'
       @trip_proxy.is_round_trip = false
     end
@@ -767,7 +762,7 @@ class TripsController < PlaceSearchingController
     @trip.trip_parts.each do |tp|
       tp.create_itineraries
     end
-    @path = user_trip_path_for_ui_mode(@traveler, @trip)
+    @path = user_trip_path(@traveler, @trip)
     session[:current_trip_id] = nil
 
     respond_to do |format|
@@ -818,7 +813,7 @@ class TripsController < PlaceSearchingController
   def hide
     itinerary = @trip.itineraries.valid.find(params[:itinerary])
     if itinerary.nil?
-      render text: t(:unable_to_remove_itinerary), status: 500
+      render text: TranslationEngine.translate_text(:unable_to_remove_itinerary), status: 500
       return
     end
 
@@ -832,8 +827,8 @@ class TripsController < PlaceSearchingController
         format.html { redirect_to user_trip_path(@traveler, @trip) }
       else
         # TODO for now, no ajax
-        # render text: t(:unable_to_remove_itinerary), status: 500
-        format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { error: t(:unable_to_remove_itinerary)}) }
+        # render text: TranslationEngine.translate_text(:unable_to_remove_itinerary), status: 500
+        format.html { redirect_to(user_trip_path(@traveler, @trip), :flash => { error: TranslationEngine.translate_text(:unable_to_remove_itinerary)}) }
       end
     end
   end
@@ -844,7 +839,7 @@ class TripsController < PlaceSearchingController
       i.hidden = false
       i.save
     end
-    redirect_to user_trip_path_for_ui_mode(@traveler, @trip)
+    redirect_to user_trip_path(@traveler, @trip)
   end
 
   def unselect_all
@@ -856,56 +851,23 @@ class TripsController < PlaceSearchingController
     itinerary = Itinerary.find(params[:itin])
     itinerary.update_attribute :selected, true
     respond_to do |format|
-      format.html { redirect_to(user_trip_path_for_ui_mode(@traveler, @trip)) }
+      format.html { redirect_to(user_trip_path(@traveler, @trip)) }
       format.json { head :no_content }
     end
   end
 
   def book
-    @itinerary = Itinerary.find(params[:itin].to_i)
-    eh = EcolaneHelpers.new
-
-    outbound_part = @itinerary.trip_part
-    contact_number = ""
-    if outbound_part.is_bookable?
-
-      outbound_itinerary = @itinerary
-      outbound_result, outbound_message = eh.book_itinerary(@itinerary)
-      contact_number = outbound_itinerary.service.phone || ""
-      unless outbound_result
-        @trip.debug_info = @trip.debug_info.to_s + "[Outbound Booking Error: " + outbound_message.to_s + "]"
-        @trip.save
-      end
-    else
-      outbound_result = 'none'
-      outbound_message = 'none'
-    end
-
-    return_part = @itinerary.trip_part.get_return_part
-    if return_part and return_part.is_bookable?
-      if contact_number.empty?
-        return_itinerary = return_part.selected_itinerary
-        contact_number = return_itinerary.service.phone || ""
-      end
-      return_result, return_message = eh.book_itinerary(return_part.selected_itinerary)
-      unless return_result
-        @trip.debug_info = @trip.debug_info.to_s + "[Return Booking Error: " + return_message.to_s + "]"
-        @trip.save
-      end
-    else
-      return_result = 'none'
-      return_message = 'none'
-    end
 
     respond_to do |format|
-      format.json { render json: [outbound_result.to_s, outbound_message, return_result.to_s, return_message, contact_number] }
+      format.json { render json: @trip.book }
     end
+
   end
 
   def new_rating_from_email
     @trip = Trip.find(params[:id])
     unless ((@trip.md5_hash.eql? params[:hash]) || (authorize! :create, @trip.ratings.build(rateable: @trip)))
-      flash[:notice] = t(:http_404_not_found)
+      flash[:notice] = TranslationEngine.translate_text(:http_404_not_found)
       redirect_to :root
     end
 
@@ -923,35 +885,12 @@ class TripsController < PlaceSearchingController
 
   def cancel
     trip = Trip.find(params[:id].to_i)
+    result = trip.cancel
 
-    eh = EcolaneHelpers.new
-    service_number = ""
-    service_name = ""
-    failure_service_number = ""
-    failure_service_name = ""
-
-    failure = false
-    trip.trip_parts.each do |tp|
-      booked_itineraries = tp.itineraries.where.not(booking_confirmation: nil)
-      booked_itineraries.each do |booked_itinerary|
-        res = eh.cancel(booked_itinerary.booking_confirmation)
-        service_number = booked_itinerary.service.phone || ""
-        service_name = booked_itinerary.service.name || ""
-        if res
-          booked_itinerary.booking_confirmation = nil
-          booked_itinerary.save
-        else
-          failure = true
-          failure_service_number = booked_itinerary.service.phone || ""
-          failure_service_name = booked_itinerary.service.name || ""
-        end
-      end
-    end
-
-    if failure
-      message = t(:cancel_booking_failure, name: failure_service_name, number: failure_service_number)
+    if result
+      message = TranslationEngine.translate_text(:cancel_booking_success)
     else
-      message = t(:cancel_booking_success, name: service_name, number: service_number)
+      message = TranslationEngine.translate_text(:cancel_booking_failure)
     end
 
     respond_to do |format|
@@ -987,7 +926,7 @@ protected
     # default to a round trip. The default return trip time is set the the default trip time plus
     # a configurable interval
     return_trip_time = travel_date + DEFAULT_RETURN_TRIP_DELAY_MINS.minutes
-    @trip_proxy.is_round_trip = "1"
+    @trip_proxy.is_round_trip = false
 
     if mobile?
       @trip_proxy.return_trip_date = return_trip_time.strftime("%Y-%m-%d")
@@ -1019,7 +958,6 @@ protected
  def launch_trip_planning(trip_proxy)
     trip_proxy.user_agent = request.user_agent
     trip_proxy.ui_mode = @ui_mode
-    trip_proxy.kiosk_code = @kiosk_code
 
     session[:modes_desired] = trip_proxy.modes_desired
 
@@ -1032,14 +970,10 @@ protected
     unless trip_proxy.valid?
       Rails.logger.info "Not valid: #{@trip_proxy.ai}"
       Rails.logger.info "\nError render 1\n"
-      flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+      flash.now[:alert] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
       render action: "new"
       return
     end
-
-    # Create markers for the map control
-    #@markers = create_trip_proxy_markers(trip_proxy, session[:is_multi_od]).to_json
-    #@places = create_place_markers(@traveler.places)
 
     respond_to do |format|
       Rails.logger.info trip_proxy.to_json
@@ -1048,20 +982,19 @@ protected
       if @trip
         if @trip.errors.empty? && @trip.save
           @trip.reload
-          if !@trip.eligibility_dependent? or @traveler.can_book?
-            Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
-            if session[:is_multi_od] == true
-              session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
-              @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
-              @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
-            else
-              @trip.create_itineraries
-              @path = user_trip_path_for_ui_mode(@traveler, @trip)
-            end
+          Rails.logger.info 'trip_planning multi_od? ' + session[:is_multi_od].to_s
+
+          if session[:is_multi_od] == true
+            session[:multi_od_trip_id] = session[:multi_od_trip_id] || params[:multi_od_trip_id]
+            @multi_od_trip = MultiOriginDestTrip.find(session[:multi_od_trip_id])
+            @path = user_trip_multi_od_grid_path(@traveler, @trip, @multi_od_trip)
           else
-            session[:current_trip_id] = @trip.id
-            @path = new_user_trip_characteristic_path_for_ui_mode(@traveler, @trip)
+
+            # changed to async loading
+            @trip.remove_itineraries
+            @path = populate_user_trip_path(@traveler, @trip, {asynch: 1}, locale: I18n.locale )
           end
+
           format.html { redirect_to @path }
           format.json { render json: @trip, status: :created, location: @trip }
         else
@@ -1072,7 +1005,7 @@ protected
           Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
           Rails.logger.info "PLACE ERRORS: #{@trip.trip_places.collect{|tp| tp.errors}}"
           trip_proxy.errors = @trip.errors
-          flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+          flash.now[:alert] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
           format.html { render action: "new" }
           format.json { render json: trip_proxy.errors, status: :unprocessable_entity }
         end
@@ -1081,7 +1014,7 @@ protected
         Rails.logger.info "\nError render 3\n"
         Rails.logger.info "ERRORS: #{@trip.errors.ai}"
         Rails.logger.info "PLACES: #{@trip.trip_places.ai}"
-        flash.now[:alert] = t(:correct_errors_to_create_a_trip)
+        flash.now[:alert] = TranslationEngine.translate_text(:correct_errors_to_create_a_trip)
         format.html { render action: "new" }
       end
     end
@@ -1131,12 +1064,7 @@ protected
     # TODO This seems incredibly hacky to go to json and back for this, but...
     @tripResponseHash = JSON.parse(@tripResponse.to_json)
     if @tripResponseHash['status'] == 0
-      Honeybadger.notify(
-        :error_class   => "Trip serialization failure for review page",
-        :error_message => @tripResponseHash['status_text'],
-        :parameters    => @tripResponseHash
-      )
-      flash.now[:alert] = t(:error_couldnt_plan)
+      flash.now[:alert] = TranslationEngine.translate_text(:error_couldnt_plan)
     end
   end
 
@@ -1175,6 +1103,11 @@ private
     trip_proxy = TripProxy.new(trip_proxy_params)
     trip_proxy.traveler = @traveler
 
+    if trip_proxy.modes.nil?
+      modes = ['mode_paratransit', 'mode_taxi', 'mode_transit']
+      trip_proxy.desired_modes = Mode.where(code: modes)
+    end
+
     Rails.logger.debug trip_proxy.inspect
     return trip_proxy
   end
@@ -1198,6 +1131,32 @@ private
     @selected_modes = mode_hash[:selected_modes]
   end
 
+  def get_trip_purposes
+
+    @trip_purposes = []
+    TripPurpose.all.each do |trip_purpose|
+      new_trip_purpose = []
+      new_trip_purpose[0] = TranslationEngine.translate_text(trip_purpose.name)
+      new_trip_purpose[1] = trip_purpose.id
+      @trip_purposes.push(new_trip_purpose)
+    end
+
+  end
+
+  #Deprecated, but not removed because it is currently used by the FindMyRide UI
+  def get_ecolane_trip_purposes
+    # GENERIC_BOOKING
+    @trip_purpose_raw = nil
+    return @trip_purposes_raw
+    if @traveler.user_profile.user_services.count > 0
+      eh = EcolaneHelpers.new
+      @trip_purposes_raw = eh.get_trip_purposes_from_traveler(@traveler)
+    else
+      @trip_purposes_raw = nil
+    end
+
+  end
+
   def detect_ui_mode
     case request.user_agent
     when /iPad/i
@@ -1209,10 +1168,6 @@ private
     else
       @ui_mode = :desktop
     end
-  end
-
-  def get_kiosk_code
-    @kiosk_code = request.headers["X-Client-Hostname"] || ""
   end
 
 end

@@ -1,19 +1,20 @@
 Oneclick::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  config.cache_classes = true
+  #config.cache_classes = true
 
   config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = false
+  config.action_controller.asset_host = ENV['HOST'] # So assets point to correct location
 
   # config.action_dispatch.best_standards_support
 
   config.serve_static_assets = true
 
-  config.assets.compress = true
-  config.assets.compile = false
-  config.assets.digest = true
-  # config.assets.debug
+  #config.assets.compress = true
+  #config.assets.compile = false
+  #config.assets.digest = true
+  #config.assets.debug
 
   config.i18n.fallbacks = false
 
@@ -23,6 +24,7 @@ Oneclick::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.asset_host = config.action_controller.asset_host # So that email images will show up
 
   # Warning: Heroku uses env var LOG_LEVEL
   config.log_level = :info
@@ -30,9 +32,4 @@ Oneclick::Application.configure do
   config.logger = Logger.new(STDOUT)
 
   config.eager_load = true
-
-  config.after_initialize do
-    #Needed for Devise::Mailer (Password Resetting)
-    config.devise.mailer_sender = ENV['SYSTEM_SEND_FROM_ADDRESS'] ||= "1-click@camsys.com"
-  end
 end

@@ -1,0 +1,77 @@
+- content_for :title, "#{translate_helper(:site_title)} - #{@provider.name}"
+- if can? :index, Provider
+  .row
+    .col-sm-12
+      = link_to translate_helper(:all_providers), providers_path, class: 'btn action-button btn-arrow-left'
+.row.info-header
+  .col-sm-5
+    %h1= @provider.name
+    - unless @provider.active
+      %p= @provider.deleted_message
+  .col-sm-7.btns
+
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:provider_info)
+          = add_tooltip("provider_info_help")
+      .panel-body
+        %table.table.table-condensed
+          %tr
+            %td.text-right
+              = translate_helper(:logo)
+            %td.center
+              %img{src: @provider.logo_url}
+          %tr
+            %td.text-right
+              = translate_helper(:address) + ":"
+            %td.text-left
+              %strong= @provider.address.to_s
+            %td.text-left
+              %strong= @provider.city.to_s
+            %td.text-left
+              %strong= @provider.state.to_s
+            %td.text-left
+              %strong= @provider.zip.to_s
+          %tr
+            %td.text-right
+              = translate_helper(:phone)+ ":  "
+            %td.text-left{colspan: 4}
+              %strong= @provider.phone.to_s
+          %tr
+            %td.text-right
+              = translate_helper(:email)+ ":  "
+            %td.text-left{colspan: 4}
+              %strong= mail_to @provider.email.to_s
+          %tr
+            %td.text-right
+              = translate_helper(:url)+ ":  "
+            %td.text-left{colspan: 4}
+              - if @provider.url
+                %strong= link_to @provider.url, @provider.url, :target => "_blank"
+
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:comments)
+      .panel-body
+        -if @provider.public_comments.for_locale
+          =@provider.public_comments.for_locale.comment.html_safe
+
+:javascript
+  $(document).ready(function() {
+    $('#admin_services_table').dataTable( {
+          stateSave: true,
+          "oLanguage": {
+              "sLengthMenu": "Display _MENU_ services per page",
+              "sZeroRecords": "Nothing found - sorry",
+              "sInfo": "Showing _START_ to _END_ of _TOTAL_ services",
+              "sInfoEmpty": "Showing 0 to 0 of 0 services",
+              "sInfoFiltered": "(filtered from _MAX_ total services)"
+          },
+          "sDom": "<'row'<'col-sm-6'l>r>t<'row'<'col-sm-6'i><'col-sm-6'p>>",
+      } );
+  } );

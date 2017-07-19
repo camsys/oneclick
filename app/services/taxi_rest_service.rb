@@ -2,7 +2,8 @@ class TaxiRestService
 
   def self.call_out_to_taxi_fare_finder(city, api_key, from, to)
 
-	base_url = "http://api.taxifarefinder.com/"
+
+    base_url = "https://api.taxifarefinder.com/"
 
   	entity = '&entity_handle=' + city
   	api_key = '?key=' + api_key
@@ -16,9 +17,14 @@ class TaxiRestService
   	Rails.logger.info "TripPlanner#get_taxi_itineraries-fare: url: #{url}"
 
     begin
-      resp = Net::HTTP.get_response(URI.parse(url))
+      resp = nil
+      timeout(3) do
+        resp = Net::HTTP.get_response(URI.parse(url))
+      end
+      if resp.nil?
+        return nil
+      end
     rescue Exception=>e
-      log_error_to_honeybadger("Service failure: taxi: #{e.message}",{url: url, resp: resp})
       return
     end
 
@@ -26,8 +32,7 @@ class TaxiRestService
 
     fare = JSON.parse(resp.body)
     if fare['status'] != "OK"
-      log_error_to_honeybadger("Service failure: taxi: fare status not OK",{fare: fare})
-      return 
+      return
     end
 
     #Get providers
@@ -37,9 +42,14 @@ class TaxiRestService
     Rails.logger.info "TripPlanner#get_taxi_itineraries-business: url: #{url}"
 
     begin
-      resp = Net::HTTP.get_response(URI.parse(url))
+      resp = nil
+      timeout(3) do
+        resp = Net::HTTP.get_response(URI.parse(url))
+      end
+      if resp.nil?
+        return nil
+      end
     rescue Exception=>e
-      log_error_to_honeybadger("Service failure: taxi: #{e.message}",{resp: resp})
       return
     end
 
@@ -48,20 +58,11 @@ class TaxiRestService
     businesses = JSON.parse(resp.body)
 
     if businesses['status'] != "OK"
-      log_error_to_honeybadger("Service failure: taxi: business status not OK",{businesses:businesses})
       return
     else
       return format_response_object([fare, businesses])
     end
 
-  end
-
-  def self.log_error_to_honeybadger(message, params)
-  	  Honeybadger.notify(
-        :error_class   => "Service failure",
-        :error_message => message,
-        :parameters    => params
-      )
   end
 
   def self.format_response_object(response_object)

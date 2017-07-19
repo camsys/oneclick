@@ -41,9 +41,9 @@ class PlacesController < PlaceSearchingController
     if place
       place.active = false
       if place.save
-        flash[:notice] = t(:address_book_updated)
+        flash[:notice] = TranslationEngine.translate_text(:address_book_updated)
       else
-        flash[:alert] = t(:error_updating_addresses)
+        flash[:alert] = TranslationEngine.translate_text(:error_updating_addresses)
       end
     end
 
@@ -59,6 +59,7 @@ class PlacesController < PlaceSearchingController
 
   def create
     p = params[:places_controller_places_proxy]
+
     # if the address wasn't geocoded, just take whatever the traveler entered
     if p[:json].blank?
       Rails.logger.info "Not geocoded"
@@ -67,7 +68,9 @@ class PlacesController < PlaceSearchingController
       j = JSON.parse(p[:json])
       if j['type_name']=='PLACES_AUTOCOMPLETE_TYPE'
         Rails.logger.info "Was autocompleted, create or update as needed"
+
         details = get_places_autocomplete_details(j['id'], j['reference'])
+
         d = cleanup_google_details(details.body['result'])
         Rails.logger.info d
 
@@ -100,14 +103,14 @@ class PlacesController < PlaceSearchingController
     respond_to do |format|
       if place
         if place.save
-          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }
+          format.html { redirect_to user_places_path(@traveler), :notice => TranslationEngine.translate_text(:address_book_updated)  }
           format.json { render :json => place, :status => :created, :location => place }
         else
           format.html { render action: "index" }
           format.json { render json: @place_proxy.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render action: "index", flash[:alert] => t(:nothing_found) }
+        format.html { render action: "index", flash[:alert] => TranslationEngine.translate_text(:nothing_found) }
       end
     end
   end
@@ -165,7 +168,7 @@ class PlacesController < PlaceSearchingController
       if valid
         if place.save
           place.reload
-          format.html { redirect_to user_places_path(@traveler), :notice => t(:address_book_updated)  }
+          format.html { redirect_to user_places_path(@traveler), :notice => TranslationEngine.translate_text(:address_book_updated)  }
           format.json { render json: place, status: :updated, location: place }
         else
           format.html { render action: "index" }

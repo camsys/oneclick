@@ -1,11 +1,11 @@
-- if translation_exists?("printer_friendly_header")
-  = t(:printer_friendly_header)
+- if TranslationEngine.translation_exists?("printer_friendly_header")
+  = translate_helper(:printer_friendly_header)
 - else
   %img{src: "#{get_logo_path}"}
   %br
   %h1{:style => 'display:inline;vertical-align:middle;'}
     %strong
-      = t(:site_title)
+      = translate_helper(:site_title)
 
 %hr
 
@@ -13,21 +13,21 @@
   %tr
     %td{style: "color:grey;"}
       %strong
-        = t(:from) + ':  '
+        = translate_helper(:from) + ':  '
     %td
       %strong
         =@trip.from_place.name
   %tr
     %td{style: "color:grey; weight:strong;"}
       %strong
-        =t(:to) + ':  '
+        =translate_helper(:to) + ':  '
     %td
       %strong
         =@trip.to_place.name
   %tr
     %td{style: "color:grey;"}
       %strong
-        =t(:at_time)
+        =translate_helper(:at_time)
     %td
       %strong
         =format_date(@trip.trip_datetime.in_time_zone)
@@ -38,17 +38,8 @@
 
 %hr{style: "height:12px; background:#848484;"}
 
-- if translation_exists?("printer_friendly_footer")
-  = t(:printer_friendly_footer)
-- else
-  %table
-    %tbody
-      %tr
-        %td="Thank you for using " + Oneclick::Application.config.name + " Software"
-      %tr
-        %td="Provided by Cambridge Systematics, 100 Cambridge Park Dr, Cambridge MA 02140"
-
-= render partial: 'prepare_print_maps', locals: {trip: @trip}
+- if TranslationEngine.translation_exists?("printer_friendly_footer")
+  = translate_helper(:printer_friendly_footer)
 
 - content_for :head do
   %meta{name: 'user_id', content: @trip.user.id}

@@ -1,0 +1,68 @@
+- this_path = "admin/services/form_parts/taxi_part3"
+- form_index = 3
+- service_id = new_service ? "new-#{mode}" : service.id
+- fare_types = FareStructure::TAXI_TYPES.sort.map {|k,v| [translate_helper("#{k.to_s}_fare"), v] }
+
+= simple_form_for service || :service,
+        url: new_service ? admin_provider_services_path(@provider) : admin_provider_service_path(@provider, service_id),
+        remote: true,
+        html: { class: 'form-horizontal service-details-form', multipart: true },
+        data: {type: :html, "service-id" => service_id, "form-index" => form_index},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  = render partial: "admin/services/form_parts/service_details_form_buttons", locals: {f:f}
+
+  -# Hidden Input tells the controller which partial to send back.
+  %input.hidden{name: "service_details_partial", type: "text", value: this_path }
+
+  .service-details-container
+    = f.simple_fields_for :fare_structures do |fare|
+      - fare_structure = fare.object
+      = f.input :fare_structures,
+        as: :select,
+        :collection => fare_types,
+        selected: fare_structure.fare_type,
+        label: translate_helper(:fare_type),
+        label_html: { class: "header-label"},
+        input_html: { class: "select-fare-structure", name: 'service[base_fare_structure_attributes][fare_type]', value: fare_structure.id}
+      = render partial: 'admin/services/form_parts/mileage_fare_form', locals: {f: f, fare_structure: fare_structure}
+      = render partial: 'admin/services/form_parts/tff_fare_form', locals: {f: f, fare_structure: fare_structure}
+
+:javascript
+  $(document).ready(function() {
+
+    // Setup form, setting parameters via (ruby) string interpolation
+    var form = new ServiceForm("#{service_id}", "#{form_index}", ("#{new_service}" === "true"));
+
+    // Display appropriate fare structure form on menu select
+    form.$('.select-fare-structure').on('change', function(e) {
+      var fs = this.value;
+      form.$('.fare-structure-form-container').addClass('hidden');
+      form.$(`.fare-structure-form-container.type-${fs}`).removeClass('hidden');
+    });
+
+    // RidePilot Test Connection Button Handler
+    form.$('.btn-ridepilot-test-connection').on("click", function(){
+      form.$('.btn-ridepilot-test-connection').prop('disabled', true);
+      var ridepilot_endpoint = form.$('.input-ridepilot-profile-endpoint').val();
+      var ridepilot_api_token = form.$('.input-ridepilot-profile-api-token').val();
+      var ridepilot_provider_id = form.$('.input-ridepilot-profile-provider-id').val();
+
+      $.ajax({
+        url: '/services/authenticate_booking_settings?booking_profile=' + '#{BookingServices::AGENCY[:ridepilot]}' + '&endpoint=' + ridepilot_endpoint + '&api_token=' + ridepilot_api_token + '&provider_id=' + ridepilot_provider_id,
+        method: 'GET',
+        success: function(result){
+          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
+          form.$('.ridepilot-response').text(result['message']);
+          form.$('.ridepilot-response').removeClass('hidden');
+        },
+        error: function(result){
+          form.$('.btn-ridepilot-test-connection').prop('disabled', false);
+          form.$('.ridepilot-response').text(result['message']);
+          form.$('.ridepilot-response').removeClass('hidden');
+        }
+      });
+    });
+
+  });

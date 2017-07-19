@@ -1,0 +1,38 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      = button_tag class: 'btn action-button', id: 'closeBookingResults', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        ="Booking Confirmation"
+
+  .modal-body
+    .row
+      .col-sm-12.text-center.booking_message{:style => 'font-weight:bold;'}
+        =""
+
+    //confirmation post-booking
+    %div
+      -@trip.selected_itineraries.each do |itinerary|
+        -if itinerary.service_is_bookable?
+          - is_return_itinerary = itinerary.trip_part.is_return_trip?
+          .panel.panel-default{id: is_return_itinerary ? 'return_booking_results' : 'outbound_booking_results'}
+            .panel-heading
+              -if is_return_itinerary
+                ="Your Return Trip"
+              -else
+                ="Your Outbound Trip"
+            .panel-body
+              = render partial: 'booked_itinerary_confirmation', locals: {itinerary: itinerary}
+
+:javascript
+  $(document).ready(function() {
+    $('body').on('click', '#closeBookingResults', function() {
+      document.location.reload();
+    })
+  });

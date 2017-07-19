@@ -1,0 +1,38 @@
+= simple_form_for Message.new, method: :post, html: {id: 'messageForm'}, remote: true do |f|
+  #newMessageDialog.modal.fade.col-sm-12{"aria-describedby" => translate_helper(:send_message), :role => "dialog", "aria-hidden" => 'true', :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          = button_tag class: 'btn action-button pull-right', data: {dismiss: 'modal'} do
+            = translate_helper(:cancel)
+          = button_tag type: 'submit', class: "btn action-button pull-right", style: "margin-right:5px;" do
+            = translate_helper(:send)
+          .modal-title{:style => "text-align:left;"}
+            %strong
+              = translate_helper(:send_message)
+        .modal-body{:style => "text-align:left;"}
+          .modal-flash
+          %input{type: "hidden", name: 'recipient_ids'}
+          = f.input :body, label: translate_helper(:message_body), as: :text
+          %label{for: "message_from_date"}= translate_helper(:message_from_date)
+          = f.input :from_date, label: false do
+            - if mobile?
+              = f.input_field :from_date, type: :date, class: 'form-control', id: "message_from_date", autocomplete: 'off'
+            - else
+              = f.input_field :from_date, as: :string, class: 'form-control', id: "message_from_date", autocomplete: 'off'
+          %label{for: "message_to_date"}= translate_helper(:message_to_date)
+          = f.input :to_date, label: false do
+            - if mobile?
+              = f.input_field :to_date, type: :date, class: 'form-control', id: "message_to_date", autocomplete: 'off'
+            - else
+              = f.input_field :to_date, as: :string, class: 'form-control', id: "message_to_date", autocomplete: 'off'
+          - unless mobile?
+            / The <script> for date&time picker
+            :javascript
+              $('#message_from_date, #message_to_date').datetimepicker({
+                defaultDate: null,
+                minDate: moment(0, "HH"),
+                pickTime: false,
+                format: 'MM/DD/YYYY',
+                language: '#{I18n.locale}'
+              });

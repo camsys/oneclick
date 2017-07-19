@@ -1,0 +1,611 @@
+.modal.modal-fullscreen {
+  /* Maximize the main wrappers on the screen */
+  /* Make the parent wrapper of the modal box a full-width block */
+  /* Remove borders and effects on the content */
+  /**
+   * /!\ By using this feature, you force the header and footer to be placed
+   * in an absolute position. You must handle by yourself the margin of the
+   * content.
+   */
+}
+.modal.modal-fullscreen {
+  max-height:100%;
+}
+.modal.modal-fullscreen .modal-body {
+  height: 100%;
+}
+.modal.modal-fullscreen.new-trip-modal .modal-body {
+  max-height: 100%;
+  height: 90%;
+  padding: 0;
+}
+#itinerary_modal.modal.modal-fullscreen .modal-body  {
+  margin-bottom: 0;
+}
+
+.modal.modal-fullscreen .modal-dialog,
+.modal.modal-fullscreen .modal-content {
+  bottom: 1%;
+  left: 1%;
+  position: absolute;
+  right: 3%;
+  top: 1%;
+}
+.modal.modal-fullscreen .modal-dialog {
+  margin: 0;
+  width: 100%;
+}
+.modal.modal-fullscreen .modal-content {
+  border: none;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: inherit;
+  -moz-box-shadow: inherit;
+  -o-box-shadow: inherit;
+  box-shadow: inherit;
+}
+.modal.modal-fullscreen.force-fullscreen {
+  /* Remove the padding inside the body */
+}
+.modal.modal-fullscreen.force-fullscreen .modal-body {
+  padding: 0;
+}
+.modal.modal-fullscreen.force-fullscreen .modal-header,
+.modal.modal-fullscreen.force-fullscreen .modal-footer {
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+.modal.modal-fullscreen.force-fullscreen .modal-header {
+  top: 0;
+}
+.modal.modal-fullscreen.force-fullscreen .modal-footer {
+  bottom: 0;
+}
+
+.place_picker {
+  // width: 20em;
+}
+
+.twitter-typeahead {
+  display: table-cell !important;
+}
+
+.tt-dropdown-menu {
+  max-height: 20em;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.tt-suggestion.tt-is-under-cursor a {
+  cursor: pointer;
+  color: blue;
+}
+
+.form-group .zero-horizontal-margin {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.form-group .control-label {
+  @media(max-width:$screen-xs-max){
+    text-align: left;
+  }
+  @media(min-width:$screen-sm-min){
+    ext-align: right;
+  }
+}
+
+@media(max-width:$screen-xs-max){
+  .tick-label-hidden-xs {
+    visibility: hidden !important;
+  }
+}
+
+@media(max-width:$screen-sm-max){
+  .hidden-xs-sm {
+    display: none !important;
+  }
+}
+
+@media(min-width:$screen-md-min){
+  .hidden-md-lg {
+    display: none !important;
+  }
+}
+
+@media(min-width:$screen-sm-min) and (max-width:$screen-md-max){
+  .tick-label-hidden-sm-md {
+    visibility: hidden !important;
+  }
+}
+
+@media(min-width:$screen-lg-min){
+  .tick-label-hidden-lg {
+    visibility: hidden !important;
+  }
+
+  .tick-label-visible-lg {
+    visibility: visible !important;
+  }
+}
+
+.page-action-button-container {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu a {
+  cursor: pointer;
+}
+
+.btn .fa-map-marker {
+  color: #499bea;
+}
+
+/*highlight vertical line style(either left or right side of each chart)*/
+.highlight-left-border {
+  border-left: 2px black solid;
+}
+
+.highlight-right-border {
+  border-right: 2px black solid;
+}
+
+.regular-left-border {
+  border-left: 1px black solid;
+}
+
+.regular-right-border {
+  border-right: 1px black solid;
+}
+
+$period-nav-button-width: 40px;
+
+/* in sm+ mode, one period-nav button in same container, so apply margin to sorter component that make them vertically align in containers */
+/* in xs mode, as space is so limited, not apply margin so sorter can take whatever space left in its container */
+.sm-sorter-margin-left {
+  @media(max-width:$screen-xs-max){
+    margin-left: 0px;
+  }
+
+  @media(min-width:$screen-sm-min){
+    margin-left: $period-nav-button-width * -1;
+  }
+}
+
+.sm-sorter-margin-right {
+  @media(max-width:$screen-xs-max){
+     margin-right: 0px;
+  }
+
+  @media(min-width:$screen-sm-min){
+    margin-right: -$period-nav-button-width * -1;
+  }
+}
+
+.single-trip-part {
+  padding: 0px;
+}
+
+.single-plan-header{
+  background-color: transparante;
+  border: none;
+  padding: 2px;
+}
+
+.single-plan-review{
+  background-color: white;
+  border-radius: 5px;
+  border: 2px whitesmoke solid;
+  height: $single-plan-height;
+}
+
+.trip-part-no-itinerary-alert {
+  text-align: center;
+}
+
+.overlay-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+.overlay-mask-spinner {
+  z-index: 1000;
+  font-size: 4em;
+  //top: 100px;
+  left: 50%;
+  position: absolute;
+}
+
+.single-plan-selected {
+  border: 2px black solid;
+}
+
+.single-plan-unselected {
+  border: 2px whitesmoke solid;
+}
+
+.trip-plan-first-column {
+  @media(max-width:$screen-xs-max){
+    width: 15%;
+  }
+  @media(min-width:$screen-sm-min){
+    width: 20%;
+  }
+  display: inline-block;
+}
+
+
+.trip-plan-main-column {
+  @media(max-width:$screen-xs-max){
+    width: 75%;
+  }
+  @media(min-width:$screen-sm-min){
+    width: 70%;
+  }
+  display: inline-block;
+}
+
+.select-column {
+  text-align: center;
+  line-height: $single-plan-height;
+  width: 10%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.select-column-button {
+  margin: 0px !important;
+  @media(max-width:$screen-xs-max){
+    min-width: 3em !important;
+  }
+}
+
+.single-plan-select {
+}
+
+.single-plan-question {
+}
+
+/*Review page timeline chart styles*/
+.chart {
+  background: none;
+}
+
+.chart rect {
+  stroke: none;
+}
+
+.chart line {
+  stroke: black;
+}
+
+.itinerary-chart-service-name {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* override bootstrap tooltip default styles*/
+body .tooltip-inner {
+  max-width: 40em;
+  text-align: left;
+}
+body .tooltip.in {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.slider-tip {
+    opacity:1;
+    bottom:120%;
+}
+
+.travel-legend-container {
+}
+
+$legend-height: 20px;
+.travel-legend {
+  width: 35px;
+  height: $legend-height;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px black solid;
+}
+
+.travel-legend-text {
+  vertical-align: top;
+}
+
+.travel-legend-walk {
+  background-color: $trip-leg-walk;
+}
+
+.travel-legend-wait {
+  background-color: $trip-leg-wait;
+}
+
+.travel-legend-subway {
+  background-color: $trip-leg-subway;
+}
+
+.travel-legend-ferry {
+  background-color: $trip-leg-ferry;
+}
+
+.travel-legend-gondola {
+  background-color: $trip-leg-gondola;
+}
+
+.travel-legend-cable_car {
+  background-color: $trip-leg-cable_car;
+}
+
+.travel-legend-funicular {
+  background-color: $trip-leg-funicular;
+}
+
+.travel-legend-tram {
+  background-color: $trip-leg-tram;
+}
+
+.travel-legend-rail {
+  background-color: $trip-leg-rail;
+}
+
+.travel-legend-bus {
+  background-color: $trip-leg-bus;
+}
+
+.travel-legend-taxi {
+  background-color: $trip-leg-taxi;
+}
+
+.travel-legend-ride_hailing {
+  background-color: $trip-leg-ride_hailing;
+}
+
+.travel-legend-bike {
+  background-color: $trip-leg-bicycle;
+}
+
+.travel-legend-bicycle {
+  background-color: $trip-leg-bicycle;
+}
+
+.travel-legend-bikeshare {
+  background-color: $trip-leg-bikeshare;
+}
+
+.travel-legend-drive {
+  background-color: $trip-leg-drive;
+}
+
+.travel-legend-car {
+  background-color: $trip-leg-drive;
+}
+
+.travel-legend-rideshare {
+  background-color: $trip-leg-rideshare;
+}
+
+.travel-legend-paratransit {
+  background-color: $trip-leg-paratransit;
+}
+
+.travel-legend-unknown {
+  background-color: $trip-leg-unknown;
+}
+
+.travel-type-walk {
+  fill: $trip-leg-walk;
+}
+
+.travel-type-wait {
+  fill: $trip-leg-wait;
+}
+
+.travel-type-subway {
+  fill: $trip-leg-subway;
+}
+
+.travel-type-ferry{
+   fill: $trip-leg-ferry;
+ }
+
+.travel-type-gondola{
+  fill: $trip-leg-gondola;
+}
+
+.travel-type-cable_car{
+  fill: $trip-leg-cable_car;
+}
+
+.travel-type-funicular{
+  fill: $trip-leg-funicular;
+}
+
+.travel-type-tram {
+  fill: $trip-leg-tram;
+}
+
+.travel-type-rail {
+  fill: $trip-leg-rail;
+}
+
+.travel-type-bus {
+  fill: $trip-leg-bus;
+}
+
+.travel-type-taxi {
+  fill: $trip-leg-taxi;
+}
+
+.travel-type-ride_hailing {
+  fill: $trip-leg-ride_hailing;
+}
+
+.travel-type-bike {
+  fill: $trip-leg-bicycle;
+}
+
+.travel-type-bicycle {
+  fill: $trip-leg-bicycle;
+}
+
+.travel-type-bikeshare {
+  fill: $trip-leg-bikeshare;
+}
+
+.travel-type-drive {
+  fill: $trip-leg-drive;
+}
+
+.travel-type-car {
+  fill: $trip-leg-drive;
+}
+
+.travel-type-rideshare {
+  fill: $trip-leg-rideshare;
+}
+
+.travel-type-paratransit {
+  fill: $trip-leg-paratransit;
+}
+
+.travel-type-unknown {
+  fill: $trip-leg-unknown;
+}
+
+/*styles for trip mode service*/
+.trip-mode-icon {
+  background-repeat: no-repeat;
+  width: 50px;
+  height: $single-plan-height;
+  float: left;
+  background-position: center;
+
+  a {
+    display: block;
+    height: $single-plan-height;
+  }
+}
+
+.single-plan-review .trip-mode-icon {
+  @media(max-width:$screen-xs-max){
+    display: none !important;
+  }
+}
+
+.trip-mode-cost {
+  text-align: center;
+  width: 100%;
+}
+
+#bookingContent{
+  .form-group{
+    margin-bottom: 0;
+  }
+
+  .confirmation{
+    font-weight: bold;
+  }
+}
+
+.characteristics-icon {
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 50px;
+  float: left;
+  background-position: center;
+}
+
+.user-characteristics {
+  .control-label {
+    font-weight: bold;
+  }
+  button.active {
+
+  }
+}
+
+#baseModes .trip_proxy_modes {
+  margin-bottom: 0px;
+}
+
+.sidewalk-feedback-popup {
+
+}
+
+.grid-summary-item {
+  padding-left: 10px;
+}
+
+#legend_label,
+#input_container > legend {
+  font-weight: bold;
+  font-size: 12pt;
+  border-bottom: 0;
+}
+
+#is_round_trip_inputs,
+#modes_inputs,
+#eligibility_questions {
+  margin-top: 6px;
+}
+
+#is_round_trip_inputs > label,
+#modes_inputs > div > label,
+#eligibility_questions > label,
+#transit_modes_inputs > label {
+  margin: 0 15px 0 3px;
+  font-weight: inherit;
+}
+
+#transitModes {
+  margin-left: 40px;
+}
+
+#modes_inputs > div {
+  margin-bottom: 7px;
+}
+
+.panel {
+  margin-bottom: 10px;
+}
+
+th.rotate {
+  white-space: nowrap;
+  -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+  -ms-transform: rotate(-90.0deg);  /* IE9+ */
+  -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+  -webkit-transform: rotate(-90.0deg);  /* Safari 3.1+, Chrome */
+  transform: rotate(-90.0deg);  /* Standard */
+}
+
+.prev-period {
+  padding: 0px 3px 0px 16px !important;
+}
+
+.next-period {
+  padding: 0px 16px 0px 3px !important;
+}
+
+.paratransit-center-line, .paratransit-boundary-line {
+  stroke-width: 4px;
+  stroke: lightgrey !important;
+}
+
+.tick-labels {
+  white-space: nowrap;
+}

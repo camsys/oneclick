@@ -52,6 +52,7 @@ class Ability
       can [:access], :admin_services
       can [:access], :admin_reports
       can [:access], :admin_feedback
+      can [:create], Message
 
       can :manage, AgencyUserRelationship, agency_id: user.agency.try(:id)
       can :read, Agency # all agencies are viewable
@@ -96,6 +97,7 @@ class Ability
       can [:show, :results, :trips_datatable], Report
       can [:index, :show], [Provider, Service] # Read-only access to providers and services
       can :send_follow_up, Trip
+      can [:create], Message
     end
 
     if User.with_role(:provider_staff, :any).include?(user)
@@ -107,15 +109,19 @@ class Ability
       can [:access], :admin_reports
       can [:access], :admin_feedback
 
+      can [:manage], :whitelist
+      can [:whitelist], :admin_users
+
       can [:show, :results, :trips_datatable], Report
-      can [:read, :full_read, :find_staff_by_email], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
-      can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
+      can [:read, :full_read, :find_staff_by_email, :edit, :update, :destroy], Provider, id: user.try(:provider_id) # full read includes add'l information.  All users can read contact info
+      # can [:update, :destroy], Provider, id: user.try(:provider_id), active: true
       can [:update, :show, :full_read, :destroy, :manage], Service do |s|
         user.provider.services.include?(s)
       end
       can :create, Service
       can :send_follow_up, Trip
       can :create, FareZone
+      can [:create], Message
 
     end
 

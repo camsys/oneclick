@@ -15,6 +15,8 @@ FactoryGirl.define do
       create(:service_wheelchair_accommodation, service: s)
       contact = create(:service_contact, services: [s])
       contact.add_role :internal_contact, s
+      create(:multipart_monday_1, service: s)
+      create(:multipart_monday_2, service: s)
     end
   end
 
@@ -38,16 +40,19 @@ FactoryGirl.define do
     rel_code GE
     group 0
   end
+
   factory :disabled, class: 'ServiceCharacteristic' do
     association :characteristic, factory: :disabled_characteristic
     value true
     rel_code EQ
     group 1
   end
+
   factory :veteran, class: 'ServiceCharacteristic' do
     association :characteristic, factory: :veteran_characteristic
     value true
     rel_code EQ
     group 1
   end
+
 end

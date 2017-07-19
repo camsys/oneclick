@@ -317,7 +317,7 @@ class EspReader
 
       service.service_type = ServiceType.find_by_code('paratransit')
       service.advanced_notice_minutes = 0  #TODO: Need to get this from ESP
-      service.max_advanced_book_minutes = 0  #TODO: Need to get this from ESP
+      service.max_advanced_book_minutes = 365*24*60  #TODO: Need to get this from ESP
       service.active = true
       esp_provider = get_esp_provider(esp_service[@service_idx['ProviderID']])
 
@@ -491,7 +491,8 @@ class EspReader
     service_comments_hash.each do |key, item|
       service = Service.find(key)
       fare_structure = service.fare_structures.first #should only be one
-      fare_structure.desc = item + "</table><br>" + (fare_structure.desc || "")
+      comment_en = item + "</table><br>" + (fare_structure.desc || "")
+      fare_structure.public_comments.new(locale: 'en', comment: comment_en, visibility: 'public')
       fare_structure.save
       puts item
     end

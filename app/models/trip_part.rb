@@ -22,6 +22,9 @@ class TripPart < ActiveRecord::Base
   validates :from_trip_place, presence: true
   validates :to_trip_place, presence: true
 
+  #For Booking
+  attr_accessor :passenger1_type, :passenger1_space_type, :passenger2_type, :passenger2_space_type, :passenger3_type, :passenger3_space_type, :booking_trip_purpose_code, :guests, :attendants, :mobility_devices
+
   # Scopes
   scope :created_between, lambda {|from_time, to_time| where("trip_parts.created_at > ? AND trip_parts.created_at < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
   #scope :scheduled_between, lambda {|from_time, to_time| where("trip_parts.trip_time > ? AND trip_parts.trip_time < ?", from_time, to_time).order("trip_parts.trip_time DESC") }
@@ -38,12 +41,28 @@ class TripPart < ActiveRecord::Base
     return self.trip.get_return_part
   end
 
+
+  ##################################
+  ### Booking Specific Methods #####
+  ##################################
+
   def is_bookable?
     unless selected?
       return false
     end
-
     return selected_itinerary.is_bookable?
+  end
+
+  def service_is_bookable?
+    unless selected?
+      return false
+    end
+
+    if self.selected_itinerary.service.nil?
+      return false
+    end
+
+    return self.selected_itinerary.service.is_bookable?
 
   end
 
@@ -54,6 +73,52 @@ class TripPart < ActiveRecord::Base
       false
     end
   end
+
+  # return true if this trip_part's selected service is associated with it's user
+  def is_associated?
+    itinerary = self.selected_itinerary
+    if itinerary.nil?
+      return false
+    end
+
+    service = itinerary.service
+    if service.nil?
+      return false
+    end
+
+    return service.is_associated_with_user? self.trip.user
+
+  end
+
+  def get_booking_trip_purposes
+    if selected?
+      return selected_itinerary.get_booking_trip_purposes
+    else
+      return {}
+    end
+  end
+
+  def get_passenger_types
+    if selected?
+      return selected_itinerary.get_passenger_types
+    else
+      return {}
+    end
+  end
+
+  def get_space_types
+    if selected?
+      return selected_itinerary.get_space_types
+    else
+      return {}
+    end
+  end
+
+  def unit
+    self.from_trip_place.unit
+  end
+
+  ### END Booking Specific Methods #####
 
   def has_selected?
     selected?
@@ -114,23 +179,30 @@ class TripPart < ActiveRecord::Base
     Rails.logger.info "CREATE: " + modes.collect {|m| m.code}.join(",")
     # remove_existing_itineraries
     itins = []
-    
+
     modes.each do |mode|
+
+      Rails.logger.info('CREATING ITINERARIES FOR TRIP PART ' + self.id.to_s)
+      Rails.logger.info(mode)
       case mode
         # start with the non-OTP modes
       when Mode.taxi
         timed "taxi" do
-          taxi_itineraries = TaxiItinerary.get_taxi_itineraries(self, [from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, trip.user)
+          taxi_itineraries = TaxiItinerary.get_taxi_itineraries(self, from_trip_place, to_trip_place, trip_time, trip.user)
           itins << taxi_itineraries if taxi_itineraries.length > 0
           itins.flatten!
         end
       when Mode.paratransit
         timed "paratransit" do
-          itins += create_paratransit_itineraries
+          itins += ParatransitItinerary.get_itineraries(self)
         end
       when Mode.rideshare
         timed "rideshare" do
           itins += create_rideshare_itineraries
+        end
+      when Mode.ride_hailing
+        timed "ride_hailing" do
+          itins += RideHailingItinerary.get_itineraries(self)
         end
       else
         # OTP modes
@@ -140,7 +212,6 @@ class TripPart < ActiveRecord::Base
             new_itins = create_fixed_route_itineraries(mode.otp_mode, mode)
             non_duplicate_itins = []
             new_itins.each do |itin|
-              puts itin.ai
               unless self.check_for_duplicates(itin, self.itineraries + itins)
                 non_duplicate_itins << itin
               end
@@ -150,7 +221,8 @@ class TripPart < ActiveRecord::Base
         end
       end
     end
-
+    Rails.logger.info('Adding NEW ITINERARIES TO THIS TRIP PART')
+    Rails.logger.info(itins.inspect)
     self.itineraries << itins
     itins
   end
@@ -185,22 +257,50 @@ class TripPart < ActiveRecord::Base
 
     default_walk_speed = WalkingSpeed.where(is_default:true).first
     default_walk_max_dist = WalkingMaximumDistance.where(is_default:true).first
-    walk_speed = default_walk_speed ? default_walk_speed.value : 3
-    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2
-    if trip.user.walking_speed
+    walk_speed = default_walk_speed ? default_walk_speed.value : 3.0
+    max_walk_distance = default_walk_max_dist ? default_walk_max_dist.value : 2.0
+
+    # SET THE WALKING SPEED
+    #Check to see if the trip has a walking_speed
+    if trip.walk_mph
+      walk_speed = trip.walk_mph
+    #If the trip doesn't have a walk speed, check to see if the user does
+    elsif trip.user.walking_speed
       walk_speed = trip.user.walking_speed.value
     end
-    if trip.user.walking_maximum_distance
+
+    # SET MAX WALK DISTANCE
+    #Check to see if the trip has a maximum distance
+    if trip.max_walk_miles
+      max_walk_distance = trip.max_walk_miles
+    #If the trip doesn't have a max walk distance, check to see if the user does
+    elsif trip.user.walking_maximum_distance
       max_walk_distance = trip.user.walking_maximum_distance.value
     end
 
-    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance)
+    # If the max walk time is shorter than the distance allows, override the distance
+    # Check to see if the trip has a maximum walk time
+    if trip.max_walk_seconds
+      if (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f) < max_walk_distance
+        max_walk_distance = (trip.max_walk_seconds.to_f * (1.0/3600.0) * walk_speed.to_f)
+      end
+    end
+
+    result, response = tp.get_fixed_itineraries([from_trip_place.location.first, from_trip_place.location.last],[to_trip_place.location.first, to_trip_place.location.last], trip_time, arrive_by.to_s, mode, wheelchair, walk_speed, max_walk_distance, self.trip.max_bike_miles, self.trip.optimize, self.trip.num_itineraries)
 
     #TODO: Save errored results to an event log
     if result
       tp.convert_itineraries(response, mode_code).each do |itinerary|
-        serialized_itinerary = {}
 
+        #If the max_walk is an absolute and it's above the max walk time, then discard it
+        if Oneclick::Application.config.max_walk_seconds_is_constraint and itinerary['walk_time'].to_f > (trip.max_walk_seconds || Oneclick::Application.config.max_walk_seconds)
+          next
+        end
+
+        # Discard if it's associated with an inactive service
+        next if itinerary['service'] && !itinerary['service']['active']
+
+        serialized_itinerary = {}
         itinerary.each do |k,v|
           if v.is_a? Array
             serialized_itinerary[k] = v.to_yaml
@@ -227,11 +327,32 @@ class TripPart < ActiveRecord::Base
       itins = check_for_short_drives(itins)
     end
 
-    # Don't hide duplicate itineraries in new UI
-    # See https://www.pivotaltracker.com/story/show/71254872
-    # TODO This will probably break kiosk, will add story
-    # hide_duplicate_fixed_route(itineraries)
+    # Filter out itineraries that occur on different days than requested
+    if Oneclick::Application.config.filter_midnight
+      itins = filter_midnight(itins)
+    end
+
+    # Filter out trips with very long waits
+    if Oneclick::Application.config.filter_long_wait
+      itins = filter_long_wait(itins)
+    end
+
     itins
+  end
+
+  # Filter trips that begin/end on a different day than they were planned to begin/end
+  def filter_midnight itineraries
+    if self.is_depart
+      # Filter out itineraries that begin on a different day than requested
+      return itineraries.select {|itin| itin.start_time.day == self.scheduled_time.day}
+    else
+      # Filter out itineraries that end on a different day than requested
+      return itineraries.select {|itin| itin.end_time.day == self.scheduled_time.day}
+    end
+  end
+
+  def filter_long_wait itineraries
+    return itineraries.select { |itin| itin.wait_time < Oneclick::Application.config.absolute_max_wait_minutes*90}
   end
 
   # TODO refactor following 4 methods
@@ -298,13 +419,13 @@ class TripPart < ActiveRecord::Base
 
           ##Build a short drive itinerary
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.end_time,
-                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+                                                      'true', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries)
 
           #TODO: Save errored results to an event log
           if result
             tp.convert_itineraries(response, Mode.car.code).each do |itinerary|
-              serialized_itinerary = {}
 
+              serialized_itinerary = {}
               itinerary.each do |k,v|
                 if v.is_a? Array
                   serialized_itinerary[k] = v.to_yaml
@@ -353,7 +474,7 @@ class TripPart < ActiveRecord::Base
 
           ##Build a short drive itinerary
           result, response = tp.get_fixed_itineraries([replaced_leg.start_place.lat, replaced_leg.start_place.lon], [replaced_leg.end_place.lat, replaced_leg.end_place.lon], replaced_leg.start_time,
-                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000)
+                                                      'false', mode="CAR", wheelchair='false', walk_speed=3, max_walk_distance=1000, max_bicycle_distance=5, self.trip.optimize, self.trip.num_itineraries)
 
           #TODO: Save errored results to an event log
           if result
@@ -428,41 +549,6 @@ class TripPart < ActiveRecord::Base
     end
   end
 
-  def create_paratransit_itineraries
-    eh = EligibilityService.new
-    fh = FareHelper.new
-    itins = eh.get_accommodating_and_eligible_services_for_traveler(self)
-    itins = eh.remove_ineligible_itineraries(self, itins)
-
-    itins = itins.collect do |itinerary|
-      new_itinerary = Itinerary.new(itinerary)
-      new_itinerary.trip_part = self
-      fh.calculate_fare(self, new_itinerary)
-      new_itinerary
-    end
-
-    unless itins.empty?
-      unless ENV['SKIP_DYNAMIC_PARATRANSIT_DURATION']
-        begin
-          base_duration = TripPlanner.new.get_drive_time(!is_depart, trip_time, from_trip_place.location.first, from_trip_place.location.last, to_trip_place.location.first, to_trip_place.location.last)[0]
-        rescue Exception => e
-          Rails.logger.error "Exception #{e} while getting trip duration."
-          base_duration = nil
-        end
-      else
-        Rails.logger.info "SKIP_DYNAMIC_PARATRANSIT_DURATION is set, skipping it"
-        base_duration = Oneclick::Application.config.default_paratransit_duration
-      end
-      Rails.logger.info "Base duration: #{base_duration} minutes"
-      itins.each do |i|
-        service_window = i.service.service_window if i && i.service
-        i.estimate_duration(base_duration, Oneclick::Application.config.minimum_paratransit_duration,
-                            i.service.time_factor || Oneclick::Application.config.paratransit_duration_factor, service_window, trip_time, is_depart)
-      end
-    end
-    itins
-  end
-
   def create_rideshare_itineraries
     itins = []
     tp = TripPlanner.new
@@ -500,7 +586,7 @@ class TripPart < ActiveRecord::Base
     new_time = scheduled_time + (minutes.to_i).minutes
 
     if new_time < DateTime.current.utc
-      raise I18n.t(:cannot_change_time_to_past)
+      raise TranslationEngine.translate_text(:cannot_change_time_to_past)
     end
 =begin
 if only trip part, is okay
@@ -508,9 +594,9 @@ if advancing, just make sure doesn't equal or get later than next part's time
 if subtracting, just make sure doesn't get equal to or earlier than previous part's time
 =end
     if not new_time_before_next_part(new_time)
-      raise I18n.t(:cannot_change_time_to_after_next_trip_part)
+      raise TranslationEngine.translate_text(:cannot_change_time_to_after_next_trip_part)
     elsif not new_time_after_prev_part(new_time)
-      raise I18n.t(:cannot_change_time_to_before_prev_trip_part)
+      raise TranslationEngine.translate_text(:cannot_change_time_to_before_prev_trip_part)
     end
 
     update_attribute(:scheduled_time, new_time)
@@ -532,4 +618,44 @@ if subtracting, just make sure doesn't get equal to or earlier than previous par
     return new_time > trip.prev_part(self).scheduled_time
   end
 
+  def unselect
+    selected_itinerary = self.selected_itinerary
+    if selected_itinerary
+      selected_itinerary.selected = false
+      selected_itinerary.save
+    end
+  end
+
+  def origin
+    return self.from_trip_place
+  end
+
+  def destination
+    return self.to_trip_place
+  end
+
+  # Returns true/false if trip_part falls within bounds of passed schedule
+  def valid_for_schedule?(schedule)
+    tt = trip_time.seconds_since_midnight
+    tdow = trip_time.wday
+    sdow = schedule.day_of_week
+
+    # Handles special case for midnight trips--check previous day's schedule as necessary.
+    (tdow == sdow && schedule.contains?(tt)) ||
+    (tt == 0 && tdow == (sdow + 1) % 7 && schedule.contains?(tt + 24 * 3600))
+  end
+
+  # Returns true/false if trip_part is valid for any of the passed service's schedules
+  # Returns true if passed a nil service, or a service with no schedules
+  def valid_for_service_time?(service)
+
+    # Check to see if user is whitelisted
+    user_service = self.trip.user.user_profile.user_services.find_by(service: service)
+    if user_service and user_service.unrestricted_hours
+      return true
+    end
+
+    return true if service.nil? or service.schedules.count == 0
+    service.schedules.any? { |sched| valid_for_schedule?(sched) }
+  end
 end

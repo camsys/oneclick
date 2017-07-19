@@ -1,0 +1,18 @@
+- new_provider = current_page?(action: 'new') if local_assigns[:new_provider].nil?
+-# - new_provider = true
+- content_for :title, "#{translate_helper(:site_title)} - " + (new_provider ? "#{translate_helper(:new_provider)}" : "#{translate_helper(:edit)} #{@provider.name}")
+
+.row.info-header
+  .col-sm-12
+    %h2= new_provider ? translate_helper(:new_provider_form_title) : translate_helper(:edit_provider_form_title)
+.row
+  .col-md-8.col-sm-10.col-xs-12.center
+    .panel.panel-servicedata
+      .panel-heading
+        %h4.panel-title
+          = translate_helper(:provider)
+          = add_tooltip("provider_info_help", "fa fa-question-circle", nil)
+      .panel-body
+        = render partial: 'provider_form', locals: {new_provider: new_provider}
+-unless new_provider # Only show services menu if in edit mode
+  = render partial: 'admin/services/services_menu'

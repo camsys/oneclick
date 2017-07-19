@@ -1,57 +1,46 @@
-= t(:user_itinerary_email_header).to_s
-
+%head
 - unless @comments.blank?
-  %h3= t(:comments)
+  %h3= translate_helper(:comments)
   %p= @comments
+  %hr
 
-%hr
-
-%h2
-  -if @itinerary.mode.code == 'mode_paratransit'
-    =@itinerary.service.name
-    %h3
-      =@itinerary.service.provider.name
-  -else
-    =get_trip_summary_title(@itinerary)
-%hr
-
-%table{style: "font-size:1.4em;"}
+%table.trip_header{style: "font-size:1.0em; padding: 12px 0px; font-family: 'Helvetica Neue', Arial;"}
   %tr
-    %td{style: "color:grey;"}
-      %strong
-        = t(:from) + ':  '
-    %td
-      %strong
+    %td{style: "color:grey; padding-right: 10px;"}
+      %strong.trip_header_detail
+        = 'Origin: '
+    %td{style: "padding-right: 10px;"}
+      %strong.trip_header_detail
         =@trip.from_place.name
   %tr
-    %td{style: "color:grey; weight:strong;"}
-      %strong
-        =t(:to) + ':  '
-    %td
-      %strong
+    %td{style: "color:grey; weight:strong; padding-right: 10px;"}
+      %strong.trip_header_detail
+        ='Destination: '
+    %td{style: "padding-right: 10px;"}
+      %strong.trip_header_detail
         =@trip.to_place.name
   %tr
-    %td{style: "color:grey;"}
+    %td{style: "color:grey; padding-right: 10px;"}
+      %strong.trip_header_detail
+        ='Date: '
+    %td{style: "padding-right: 10px;"}
       %strong
-        =t(:at_time)
-    %td
-      %strong
-        =format_date(@trip.trip_datetime.in_time_zone)
+        =@trip.trip_datetime.in_time_zone.strftime("%A, %B %-d")
 
+  -unless @trip_link.blank?
+    %tr
+      %td{style: "color:grey; weight:strong; padding-right: 10px;"}
+        %strong.trip_header_detail
+          ='Trip Link' + ':  '
+      %td{style: "padding-right: 10px;"}
+        %a{href: @trip_link + @trip.id.to_s}
+          =@trip_link + @trip.id.to_s
 
 
 -unless @itinerary.mode.code == 'mode_rideshare'
-  %hr
-  %h3
-    =t(:summary) + ":"
   = render :partial => 'trip_summary_header', :locals => { :itinerary => @itinerary }
-
-%hr
-%h3
-  =t(:details) +":"
 
 = render :partial => get_trip_partial(@itinerary), :locals => { :itinerary => @itinerary }
 
-%hr
-
-= t(:user_itinerary_email_footer).to_s
+%hr{style: "height:12px; background:#848484;"}
+= translate_helper(:user_trip_email_footer).to_s

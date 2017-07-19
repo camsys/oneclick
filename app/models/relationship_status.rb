@@ -33,7 +33,7 @@ class RelationshipStatus < ActiveRecord::Base
   end
 
   def human_readable
-    I18n.t("relationship_status.#{code}")
+    TranslationEngine.translate_text("relationship_status.#{code}")
   end
   
   def to_s

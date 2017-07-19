@@ -1,0 +1,133 @@
+.modal-content
+  .modal-header
+
+    // The Buttons
+    .pull-right
+      %button.btn.action-button{id: 'outbound_associate_button_btn', type: 'button'}
+        -outbound_associate_button_text = translate_helper(:associate)
+        =outbound_associate_button_text
+
+      = button_tag class: 'btn action-button', id:'closeOutboundAssociation', data: {dismiss: 'modal'} do
+        = translate_helper(:close)
+
+    // The Title
+    .modal-title{:style => "text-align:left;"}
+      %strong{id: 'booking_title'}
+        =@trip.outbound_part.selected_itinerary.service.name + " " + translate_helper(:sign_in)
+
+
+    .modal-body
+      .row
+        .col-sm-12.text-center
+          =translate_helper(:more_info_message)
+          =link_to @trip.outbound_part.selected_itinerary.service.provider.name, provider_url(@trip.outbound_part.selected_itinerary.service.provider), :target => "_blank"
+          = "."
+      .row
+        .col-sm-12.text-center.booking_message{:style => 'font-weight:bold;'}
+          =""
+
+      //associate with outbound service
+      .row
+        %div{id: 'outbound_association_part'}
+          -itinerary = @trip.outbound_part.selected_itinerary
+          =simple_form_for @user_services[itinerary.id], :remote => true, :html => {id: 'outbound_association_form'}, :url => user_user_services_path(@traveler), :method => :post  do |f|
+            .row
+              %div.col-sm-12
+                = f.input :external_client_id, label: translate_helper(:client_id), input_html: { value: "" }
+                = f.input :service_id, :as => :hidden, input_html: {value: @user_services[itinerary.id].service.id}
+                = f.input :user_id, :as => :hidden, input_html: {value: @traveler.id}
+            .row
+              %div.col-sm-12
+                -if itinerary.service.booking_profile == BookingServices::AGENCY[:ecolane]
+                  ='Need to configure Ecolane'
+                -if itinerary.service.booking_profile ==  BookingServices::AGENCY[:trapeze]
+                  =f.input :external_client_password, label: translate_helper(:password)
+                -if itinerary.service.booking_profile ==  BookingServices::AGENCY[:ridepilot]
+                  =f.input :external_client_password, label: translate_helper(:token)
+
+
+:javascript
+  
+  $('#closeOutboundAssociation, #closeOutboundConfirmation').on('click', function(event) {
+    if('#{(@trip.selected_itineraries.count > 1 && @trip.return_part.service_is_bookable?).to_s}' == 'true' ){
+      event.preventDefault();
+      if('#{@trip.return_part.is_associated?.to_s}' == 'true') {
+        booking_state = 'confirming_return';
+      } else {
+        booking_state = 'associating_return';
+      }
+      update_dialog();
+
+      return false;
+    }
+  });
+
+  $('#outbound_associate_button_btn').on('click', function(event) {
+   event.stopPropagation();
+   event.stopImmediatePropagation();
+   var text = "#{translate_helper(:please_wait)}" + "..."
+   $('#outbound_associate_button_btn').text(text);
+   $('#outbound_associate_button_btn').addClass('disabled');
+   $('#outbound_association_form').submit();
+   event.stopPropagation();
+
+  })
+
+  $('#outbound_association_form').on('ajax:success', function(event, data, status, xhr) {
+    if(data['associated'] == true){
+
+      //Populate trip purposes
+      var trip_purposes = data['trip_purposes'];
+      var trip_purpose_html = ""
+      for (var key in trip_purposes){
+        trip_purpose_html = trip_purpose_html + "<option value=" + trip_purposes[key] + ">" + key + '</option>'
+      }
+      $('#outbound_trip_purpose_collection').html(trip_purpose_html);
+
+      //Populate Passenger Types
+      var passenger_types = data['passenger_types'];
+      var passenger_types_html = "<option value=''></option>"
+      for (var key in passenger_types){
+        passenger_types_html = passenger_types_html + "<option value=" + passenger_types[key] + ">" + key + '</option>'
+      }
+      $('#outbound_passenger1_type').html(passenger_types_html);
+      $('#outbound_passenger2_type').html(passenger_types_html);
+      $('#outbound_passenger3_type').html(passenger_types_html);
+
+      //Populate Space Types
+      var space_types = data['space_types'];
+      var space_types_html =  "<option value=''></option>"
+      for (var key in space_types){
+        space_types_html = space_types_html + "<option value=" + space_types[key] + ">" + key + '</option>'
+      }
+      $('#outbound_passenger1_space_type').html(space_types_html);
+      $('#outbound_passenger2_space_type').html(space_types_html);
+      $('#outbound_passenger3_space_type').html(space_types_html);
+
+
+      //Do the same thing for return, if the servie is the same
+      if("#{@trip.same_service?.to_s}" == 'true'){
+        $('#return_trip_purpose_collection').html(trip_purpose_html);
+        $('#return_passenger1_type').html(passenger_types_html);
+        $('#return_passenger2_type').html(passenger_types_html);
+        $('#return_passenger3_type').html(passenger_types_html);
+        $('#return_passenger1_space_type').html(space_types_html);
+        $('#return_passenger2_space_type').html(space_types_html);
+        $('#return_passenger3_space_type').html(space_types_html);
+      }
+
+      booking_state = 'confirming_outbound';
+      update_dialog();
+    }
+    else{
+      var message = data['message'];
+      $('.booking_message').text(message);
+      $('#outbound_associate_button_btn').text('#{outbound_associate_button_text}');
+      $('#outbound_associate_button_btn').removeClass('disabled');
+    }
+
+  });
+
+
+
+

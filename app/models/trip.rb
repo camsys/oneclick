@@ -16,17 +16,17 @@ class Trip < ActiveRecord::Base
 
   # Scopes
   scope :created_between, lambda {|from_day, to_day| where("trips.created_at >= ? AND trips.created_at <= ?", from_day.at_beginning_of_day, to_day.at_end_of_day) }
-  scope :with_role, lambda {|role_name| 
+  scope :with_role, lambda {|role_name|
     includes(user: :roles)
     .where(roles: {name: role_name})
     .references(user: :roles)
   }
-  scope :without_role, lambda {|role_name| 
+  scope :without_role, lambda {|role_name|
     includes(user: :roles)
     .where.not(roles: {name: role_name})
     .references(user: :roles)
   }
-  
+
   scope :with_ui_mode, -> (ui_mode) {where(ui_mode: ui_mode)}
   scope :by_provider, ->(p) { joins(itineraries: {service: :provider}).where('providers.id=?', p).distinct }
   # .join(:services).join(:providers) }
@@ -34,18 +34,20 @@ class Trip < ActiveRecord::Base
   scope :by_agency, ->(a) { joins(user: :approved_agencies).where('agencies.id' => a) }
   scope :feedbackable, -> { includes(:itineraries).where(itineraries: {selected: true}, trips: {needs_feedback_prompt: true}).uniq}
   scope :scheduled_before, lambda {|to_day| where("trips.scheduled_time < ?", to_day) }
+  scope :selected, -> { includes(:itineraries).where(itineraries: {selected: true})}
+  scope :future, -> { joins(:itineraries).where('itineraries.start_time > ?', Time.now).uniq }
+  scope :future_not_paratransit, -> { joins(:itineraries).where('itineraries.mode_id <> ? AND itineraries.selected = true AND itineraries.start_time > ?', Mode.paratransit.id, Time.now).uniq }
+  scope :during_not_paratransit, -> (end_time = Time.now) { joins(:itineraries).where('itineraries.mode_id <> ? AND itineraries.selected = true AND itineraries.start_time > ? AND itineraries.start_time < ?', Mode.paratransit.id, Time.now-365.days, end_time).uniq }
+  scope :during, -> (end_time = Time.now) { joins(:itineraries).where('itineraries.selected = true AND itineraries.start_time > ? AND itineraries.start_time < ?', Time.now-365.days, end_time).uniq }
+  scope :planned, -> { where(is_planned: true) }
+
+  #Constants
+  QUICK = 'QUICK'
+  TRANSFERS = 'TRANSFERS'
+  WALK = 'WALK'
 
   def self.planned_between(start_time = nil, end_time = nil)
-    base_trips = Trip.where(is_planned: true)
-
-    start_time = start_time.at_beginning_of_day if start_time
-    end_time = end_time.at_end_of_day if end_time
-
-    base_trips = base_trips.where("trips.created_at >= ?", start_time) if start_time
-    base_trips = base_trips.where("trips.created_at <= ?", end_time) if end_time
-
-    base_trips
-   
+    Trip.created_between(start_time, end_time).planned
   end
 
   # Returns a set of trips that are scheduled between the start and end time
@@ -70,14 +72,21 @@ class Trip < ActiveRecord::Base
   end
 
   def self.create_from_proxy trip_proxy, user, traveler
+
     trip = Trip.new()
     trip.creator = user
     trip.agency = user.agency
     trip.user = traveler
-    trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+    if trip_proxy.trip_purpose_id
+      trip.trip_purpose = TripPurpose.find(trip_proxy.trip_purpose_id)
+    else
+      trip.trip_purpose = TripPurpose.first
+    end
+
     trip.desired_modes = Mode.where(code: trip_proxy.modes)
     trip.token = trip_proxy.trip_token || nil
     trip.agency_token = trip_proxy.agency_token || nil
+    trip.trip_purpose_raw = trip_proxy.trip_purpose_raw || nil
 
     #Assign agency if app_token is present and belongs to an agency
     if trip.agency.nil? and not trip.agency_token.nil?
@@ -93,7 +102,7 @@ class Trip < ActiveRecord::Base
 
     from_place = TripPlace.new.from_trip_proxy_place(trip_proxy.from_place_object, 0,
       trip_proxy.from_place, trip_proxy.map_center, traveler)
-    
+
     to_place = TripPlace.new.from_trip_proxy_place(trip_proxy.to_place_object, 1,
       trip_proxy.to_place, trip_proxy.map_center, traveler)
     # bubble up any errors finding places
@@ -105,7 +114,6 @@ class Trip < ActiveRecord::Base
 
     trip.user_agent = trip_proxy.user_agent
     trip.ui_mode = trip_proxy.ui_mode
-    trip.kiosk_code = trip_proxy.kiosk_code
 
     # set the sequence counter for when we have multiple trip parts
     sequence = 0
@@ -283,17 +291,20 @@ class Trip < ActiveRecord::Base
   end
 
   # returns true is this trip can be edited or deleted. Note that this
-  # bascially comes down to wether the planned trip is in the future or not.
+  # bascially comes down to wether the planned trip is in the future or if it has been booked
   def can_modify
     if trip_parts.empty?
       return true
+    elsif is_booked?
+      return false
     else
       return in_the_future
     end
   end
 
   def cant_modify_reason
-    in_the_future ? "(can modify)" : "Can't modify this trip: either the depart or arrive time is in the past."
+    return TranslationEngine.translate_text(:cant_modify_booked_trip_reason) if is_booked?
+    return TranslationEngine.translate_text(:cant_modify_past_trip_reason) if !in_the_future
   end
 
   # Overrides the default to string method.
@@ -398,6 +409,33 @@ class Trip < ActiveRecord::Base
     desired_modes.where(elig_dependent: true).count > 0
   end
 
+
+  #################################
+  # BOOKING-SPECIFIC METHODS
+  #################################
+
+  def book
+
+    booked_itineraries = []
+    itineraries = self.selected_itineraries
+    itineraries.each do |itinerary|
+      result_hash = itinerary.book
+      booked_itineraries.append(result_hash)
+    end
+
+    booked_itineraries
+
+  end
+
+  def cancel
+    self.selected_itineraries.each do |itinerary|
+      result = itinerary.cancel #if the trip is not booked, then canceling will mark it as unselected
+      unless result
+        return false
+      end
+    end
+  end
+
   def is_booked?
     trip_parts.each do |trip_part|
       if trip_part.is_booked?
@@ -406,6 +444,24 @@ class Trip < ActiveRecord::Base
     end
     false
   end
+
+  def is_bookable?
+    self.selected_itineraries.each do |itinerary|
+      if itinerary.is_bookable?
+        return true
+      end
+    end
+    return false
+  end
+
+  def same_service?
+    if self.trip_parts.count < 2
+      return false
+    end
+    return (self.outbound_part.service_is_bookable? and self.return_part.service_is_bookable? and (self.outbound_part.selected_itinerary.service.id == self.return_part.selected_itinerary.service.id))
+  end
+
+  ##### End Booking Methods
 
   def next_part trip_part
     return nil if trip_parts.count==1

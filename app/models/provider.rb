@@ -1,32 +1,47 @@
 require 'carrierwave/orm/activerecord'
 
 class Provider < ActiveRecord::Base
+  include DisableCommented
   include Rateable
   include Commentable
-  extend LocaleHelpers
   resourcify
 
   mount_uploader :logo, ProviderLogoUploader
 
+  #Scopes
+  scope :active, -> { where(active: true)}
+
   #associations
   has_many :users
-  has_many :services
+  has_many :services, -> { order(updated_at: :asc) }
   has_many :ratings, through: :services
 
   has_many :cs_roles, -> {where(resource_type: 'Provider')}, class_name: 'Role',
         foreign_key: :resource_id
   has_many :staff, -> { where('roles.name=?', 'provider_staff') }, class_name: 'User',
         through: :cs_roles, source: :users
-  
+
   include Validations
   before_validation :check_url_protocol
   validates :name, presence: true, length: { maximum: 128 }
 
   def self.form_collection include_all=true, provider_id=false
     relation = provider_id ? where(id: provider_id).order(:name) : order(:name)
-    form_collection_from_relation include_all, relation, false, true
+    if include_all
+      list = [[TranslationEngine.translate_text(:all), -1]]
+    else
+      list = []
+    end
+    inactive_label = " (#{TranslationEngine.translate_text(:inactive)})"
+    relation.each do |r|
+      name = TranslationEngine.translate_text(r.name) if TranslationEngine.translation_exists? r.name
+      name ||= r.name
+      name = name + inactive_label if !r.active
+      list << [name, r.id]
+    end
+    list
   end
-  
+
   def internal_contact
     users.with_role( :internal_contact, self).first
   end
@@ -40,6 +55,29 @@ class Provider < ActiveRecord::Base
       users << user
       user.add_role :internal_contact, self
       self.save
+    end
+  end
+
+  # Admin User virtual attribute
+  def admin_user
+    User.with_role( :provider_staff, self).first
+  end
+
+  def admin_user= user_email
+    user = User.find_by_email(user_email)
+
+    # Only update if valid email address was entered, if it's different from current user, and if that user is not already the provider somewhere
+    if user && user != admin_user && !user.has_role?(:provider_staff, :any)
+
+      # First, remove :provider_staff role from all users associated with this provider
+      User.with_role(:provider_staff, self).each do
+        |u| u.remove_role(:provider_staff, self)
+        self.users.delete(u)
+      end
+
+      # Then, give the user the provider_staff role, and associate the user with the provider
+      user.add_role(:provider_staff, self) if user
+      self.users << user
     end
   end
 
@@ -61,9 +99,9 @@ class Provider < ActiveRecord::Base
 
   def self.csv_headers
     [
-      I18n.t(:id),
-      I18n.t(:name),
-      I18n.t(:status)
+      TranslationEngine.translate_text(:id),
+      TranslationEngine.translate_text(:name),
+      TranslationEngine.translate_text(:status)
     ]
   end
 
@@ -71,7 +109,7 @@ class Provider < ActiveRecord::Base
     [
       id,
       name,
-      active ? '' : I18n.t(:inactive)
+      active ? '' : TranslationEngine.translate_text(:inactive)
     ].to_csv
   end
 

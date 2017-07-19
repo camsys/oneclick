@@ -1,0 +1,74 @@
+- read_only = !new_provider if local_assigns[:read_only].nil?
+
+-# Form for creating or editing a provider
+= simple_form_for [:admin, @provider],
+        remote: !new_provider,
+        html: { class: 'form-horizontal', multipart: true, id: 'provider-data-form' },
+        data: {type: :html},
+        authenticity_token: true,
+        wrapper: :horizontal_form do |f|
+  = f.error_notification message: print_messages(f)
+  = f.input :name, as: :string, label: translate_helper(:provider_name)
+  .form-group.file.optional.provider_logo
+    = f.input :logo, input_html: { id: "provider-logo-upload-real", class: "hidden"}, :as => :file, wrapper: false
+    .col-sm-9
+      %button.btn.btn-default.btn-svc-data#provider-logo-upload-btn= @provider.logo_url.nil? ? translate_helper(:upload_logo) : translate_helper(:replace_logo)
+      %img.logo-display-img#logo-upload-img{src: @provider.logo_url}
+      -if @provider.logo_url.nil?
+        %span.subtle-text= translate_helper(:image_file_types)
+  - if can? :manage, @provider
+    = f.input :admin_user, label: translate_helper(:admin_user),
+      placeholder: @provider.admin_user.nil? ? translate_helper(:admin_user_placeholder_text) : @provider.admin_user.email,
+      input_html: {value: @provider.admin_user.nil? ? nil : @provider.admin_user.email}
+  %input{:name => "provider[staff_ids]", :type => 'hidden'}
+  .pull-right
+    = f.button :submit, translate_helper(:save), class: "btn btn-default btn-svc-data", id: "save-provider-form-btn"
+    .btn.btn-link#edit-provider-form-btn.hidden= translate_helper(:edit).downcase
+
+:javascript
+  $(document).ready(function() {
+    var thisForm = {
+      formId: '#provider-data-form',
+      visibleElements: ['#provider-logo-upload-btn', '#save-provider-form-btn'],
+      hiddenElements: ['#edit-provider-form-btn']
+    };
+
+    // Form should be read-only on page load if in edit mode
+    if(#{read_only}) {
+      setFormReadOnly(thisForm, true);
+    }
+
+    // Handle logo upload via proxy button
+    $('#provider-logo-upload-btn').on("click", function(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
+      $('#provider-logo-upload-real').click();
+    });
+
+    // Preview logo before upload
+    $('#provider-logo-upload-real').change(function(e) {
+      $('#logo-upload-img').attr("src", URL.createObjectURL(event.target.files[0]));
+    });
+
+    // Edit Button handler
+    $('#edit-provider-form-btn').on("click", function(e) {
+      e.preventDefault();
+      setFormReadOnly(thisForm, false);
+    });
+
+    // Prevent double form submit on save click
+    $('#save-provider-form-btn').on("click", function(e) {
+      e.preventDefault();
+      $('#provider-data-form').submit();
+    })
+
+    // Handle Form AJAX response if not a new provider
+    if(!#{new_provider}) {
+      $('#provider-data-form')
+      .on("ajax:success", function(evt, data, status, xhr) {
+        // On success, refresh just the provider form partial
+        $('#provider-data-form').replaceWith(xhr.responseText);
+        setFormReadOnly(thisForm, #{read_only});
+      });
+    }
+
+  });

@@ -13,9 +13,9 @@ class ServicesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @services }
-      format.csv do 
+      format.csv do
         filter_params = params.permit(:bIncludeInactive, :search)
-        
+
         @services = Service.get_exported(@services, filter_params)
 
         render_csv("services.csv", @services, Service.csv_headers)
@@ -32,30 +32,7 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @contact = @service.internal_contact
 
-    polylines = []
-
-    ['coverage_area', 'endpoint_area'].each do |rule|
-      case rule
-        when 'coverage_area'
-          geometry = @service.coverage_area_geom.try(:geom)
-          color = 'red'
-          id = 1
-        when 'endpoint_area'
-          geometry = @service.endpoint_area_geom.try(:geom)
-          color = 'green'
-          id = 0
-      end
-
-      unless geometry.nil?
-        polylines << {
-           "id" => id,
-           "geom" => @service.wkt_to_array(rule),
-           "options" =>  {"color" => color, "width" => "2"}
-        }
-      end
-    end
-
-    @polylines = polylines.to_json || nil
+    @polylines = @service.get_polylines
 
     @eh = EligibilityService.new
     respond_to do |format|
@@ -103,6 +80,7 @@ class ServicesController < ApplicationController
     end
   end
 
+  # DEPRECATED - Services are now created via admin/services_controller
   # POST /services
   # POST /services.json
   def create
@@ -121,6 +99,9 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
+        if @service.is_paratransit?
+          update_fare
+        end
         @service.build_polygons
         format.html { redirect_to [:admin, @provider], notice: 'Service was successfully added.' } #TODO Internationalize
         format.json { render json: @service, status: :created, location: @service }
@@ -151,6 +132,7 @@ class ServicesController < ApplicationController
 
   end
 
+  # DEPRECATED - Services are now updated via admin/services_controller
   # PUT /services/1
   # PUT /services/1.json
   def update
@@ -159,9 +141,19 @@ class ServicesController < ApplicationController
 
     @service = Service.find(params[:id])
 
+    had_endpoints = !@service.endpoints.empty?
+    had_coverages = !@service.coverages.empty?
+
     respond_to do |format|
 
       par = service_params
+
+
+      # Update the service area by county name
+      county_coverage_array = params[:county_coverage_array]
+      county_endpoint_array = params[:county_endpoint_array]
+      @service.county_coverage_array = county_coverage_array.split(',').map(&:strip)
+      @service.county_endpoint_array = county_endpoint_array.split(',').map(&:strip)
 
       if @service.update_attributes(service_params)
 
@@ -174,31 +166,61 @@ class ServicesController < ApplicationController
         # internal_contact is a special case
         @service.internal_contact = User.find_by_id(params[:service][:internal_contact])
 
-        temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
-        temp_coverages_shapefile = params[:service][:coverages_shapefile]
-        unless temp_endpoints_shapefile.nil?
-          if temp_endpoints_shapefile.content_type.include?('zip')
-            temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
-          else
-            zip_alert_msg = t(:upload_zip_alert)
+        # update endpoint and coverage area geometry
+        has_endpoints = !@service.endpoints.empty?
+        has_coverages = !@service.coverages.empty?
+
+        #binding.pry
+
+        is_to_delete_endpoint_shp = params[:service][:delete_endpoints_shapefile]
+        if (had_endpoints && !has_endpoints) || (!has_endpoints && is_to_delete_endpoint_shp)
+          @service.destroy_endpoint_geom
+        end
+
+        if !is_to_delete_endpoint_shp
+          temp_endpoints_shapefile = params[:service][:endpoints_shapefile]
+          unless temp_endpoints_shapefile.nil?
+            if temp_endpoints_shapefile.content_type.include?('zip')
+              temp_endpoints_shapefile_path = temp_endpoints_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
           end
         end
-        unless temp_coverages_shapefile.nil?
-          if temp_coverages_shapefile.content_type.include?('zip')
-            temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
-          else
-            zip_alert_msg = t(:upload_zip_alert)
+
+        is_to_delete_coverage_shp = params[:service][:delete_coverages_shapefile]
+        if (had_coverages && !has_coverages) || (!has_coverages && is_to_delete_coverage_shp)
+          @service.destroy_coverage_geom
+        end
+        if !is_to_delete_coverage_shp
+          temp_coverages_shapefile = params[:service][:coverages_shapefile]
+          unless temp_coverages_shapefile.nil?
+            if temp_coverages_shapefile.content_type.include?('zip')
+              temp_coverages_shapefile_path = temp_coverages_shapefile.tempfile.path
+            else
+              zip_alert_msg = TranslationEngine.translate_text(:upload_zip_alert)
+            end
           end
         end
 
         polygon_alert_msg = @service.build_polygons(temp_endpoints_shapefile_path, temp_coverages_shapefile_path)
+
         if params[:service][:logo]
           @service.logo = params[:service][:logo]
-          @service.save
         elsif params[:service][:remove_logo] == '1' #confirm to delete it
           @service.remove_logo!
-          @service.save
         end
+
+        @service.save
+
+        #Setup Trapeze Profile
+        case @service.booking_profile
+          when BookingServices::AGENCY[:trapeze]
+            update_trapeze_profile(params[:service][:trapeze_profile])
+          when BookingServices::AGENCY[:ridepilot]
+            update_ridepilot_profile(params[:service][:ridepilot_profile])
+        end
+
 
         # fare
         if @service.is_paratransit?
@@ -210,7 +232,7 @@ class ServicesController < ApplicationController
         if alert_msgs.count > 0
           format.html { redirect_to @service, alert: alert_msgs.join('; ') }
         else
-          format.html { redirect_to @service, notice: t(:service) + ' ' + t(:was_successfully_updated) }
+          format.html { redirect_to @service, notice: TranslationEngine.translate_text(:service) + ' ' + TranslationEngine.translate_text(:was_successfully_updated) }
         end
         format.json { head :no_content }
       else
@@ -226,6 +248,7 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
+    @service.disabled_comment = params[:service][:disabled_comment]
     @service.update_attributes(active: false)
 
     respond_to do |format|
@@ -259,6 +282,36 @@ class ServicesController < ApplicationController
     end
   end
 
+  def update_trapeze_profile(trapeze_params)
+    tp = TrapezeProfile.where(service: @service).first_or_initialize
+    tp.para_service_id = trapeze_params[:para_service_id]
+    tp.endpoint = trapeze_params[:endpoint]
+    tp.namespace = trapeze_params[:namespace]
+    tp.username = trapeze_params[:username]
+    tp.password = trapeze_params[:password]
+    tp.booking_offset_minutes = trapeze_params[:booking_offset_minutes].to_i
+    tp.save
+  end
+
+  def update_ridepilot_profile(ridepilot_params)
+    rp = RidepilotProfile.where(service: @service).first_or_initialize
+    rp.provider_id = ridepilot_params[:provider_id]
+    rp.endpoint = ridepilot_params[:endpoint]
+    rp.api_token = ridepilot_params[:api_token]
+    rp.save
+  end
+
+  def authenticate_booking_settings
+    bs = BookingServices.new
+    result = bs.authenticate_provider(params[:endpoint], params[:api_token], params[:provider_id], params[:booking_profile])
+
+    if result[:authenticated]
+      render json: {message: TranslationEngine.translate_text(:successful_connection)}
+    else
+      render json: {message: result[:message]}
+    end
+  end
+
 protected
   def service_params
     params.require(:service).permit(:name, :phone, :email, :url, :external_id, :public_comments_old, :private_comments_old,
@@ -266,7 +319,7 @@ protected
                                     :notice_days_part, :notice_hours_part, :notice_minutes_part, :max_advanced_book_minutes,
                                     :max_advanced_book_days_part, :max_advanced_book_hours_part, :max_advanced_book_minutes_part,
                                     :service_window, :time_factor, :provider_id, :service_type_id,
-                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :use_gtfs_colors,
+                                    :internal_contact_name, :internal_contact_title, :internal_contact_phone, :internal_contact_email, :taxi_fare_finder_city, :display_color, :disabled_comment, :booking_profile, :fleet_size, :trip_volume,
                                     { schedules_attributes:
                                       [ :day_of_week, :start_time, :end_time, :id, :_destroy ] },
                                     { booking_cut_off_times_attributes:
@@ -277,9 +330,10 @@ protected
                                     { accommodation_ids: [] },
                                     { trip_purpose_ids: [] },
                                     { fare_structures_attributes:
-                                      [ :id, :base, :rate, :desc, :fare_type ] },
+                                      [ :id, :base, :rate, :fare_type, public_comments_attributes: COMMENT_ATTRIBUTES ] },
                                     { service_coverage_maps_attributes:
                                       [ :id, :rule, :geo_coverage_id, :_destroy, :keep_record ] },
+                                    trapeze_profile_attributes: [:para_service_id],
                                     comments_attributes: COMMENT_ATTRIBUTES,
                                     public_comments_attributes: COMMENT_ATTRIBUTES,
                                     private_comments_attributes: COMMENT_ATTRIBUTES
@@ -319,13 +373,14 @@ protected
       @service.fare_structures.build
     end
 
-    fs_attrs = service_params[:fare_structures_attributes]
-    if fs_attrs[:id]
+    fs_attrs = params[:service][:base_fare_structure_attributes]
+
+    if !fs_attrs[:id].blank?
       fs = FareStructure.find(fs_attrs[:id])
     else
       fs = @service.fare_structures.first
     end
-    fs.fare_type == fs_attrs[:fare_type].to_i
+    fs.fare_type = fs_attrs[:fare_type].to_i
 
     case fs.fare_type
     when FareStructure::FLAT
@@ -336,6 +391,7 @@ protected
         one_way_rate: (flat_fare_attrs[:one_way_rate].to_f if !flat_fare_attrs[:one_way_rate].blank?),
         round_trip_rate: (flat_fare_attrs[:round_trip_rate].to_f if !flat_fare_attrs[:round_trip_rate].blank?)
       }
+
       if !fs.flat_fare
         FlatFare.create flat_fare_params
       else
@@ -355,6 +411,7 @@ protected
         base_rate: (mileage_fare_attrs[:base_rate].to_f if !mileage_fare_attrs[:base_rate].blank? ),
         mileage_rate: (mileage_fare_attrs[:mileage_rate].to_f if !mileage_fare_attrs[:mileage_rate].blank?)
       }
+
       if !fs.mileage_fare
         MileageFare.create mileage_fare_params
       else
@@ -369,16 +426,16 @@ protected
     when FareStructure::ZONE
       # zone fares
       zone_fares_attrs = params[:service][:zone_fares_attributes]
-      
+
       zone_fares_attrs.each do | fare_attrs |
         next if fare_attrs[:rate].blank?
         fare_params = {
           rate: fare_attrs[:rate].to_f
         }
-        
+
         fs.zone_fares.update_all fare_params, :id => fare_attrs[:id].to_i
       end
-      
+
       if fs.mileage_fare
         fs.mileage_fare.delete
         fs.mileage_fare = nil

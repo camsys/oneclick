@@ -1,0 +1,16 @@
+.booking-profile-form-container.trapeze.agency-1{ class: service.booking_profile == 1 ? "" : "hidden" }
+  = f.simple_fields_for :trapeze_profile do |tp|
+    -unless service.trapeze_profile.nil?
+      = tp.input :endpoint, input_html: {value: service.trapeze_profile.endpoint}
+      = tp.input :namespace, input_html: {value: service.trapeze_profile.namespace}
+      = tp.input :username, input_html: {value: service.trapeze_profile.username}
+      = tp.input :password, input_html: {value: service.trapeze_profile.password}
+      = tp.input :para_service_id, label: 'Trapeze ParaServiceId', input_html: {value: service.trapeze_profile.para_service_id}
+      = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: service.trapeze_profile.booking_offset_minutes}
+    -else
+      = tp.input :endpoint
+      = tp.input :namespace
+      = tp.input :username
+      = tp.input :password
+      = tp.input :para_service_id, label: 'Trapeze ParaServiceId'
+      = tp.input :booking_offset_minutes, label: translate_helper(:booking_offset_minutes), input_html: {value: 0}

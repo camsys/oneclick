@@ -24,7 +24,7 @@ module Api
         end
 
         # Global POIs
-        pois = Poi.get_by_query_str(search_string, max_results)
+        pois = Poi.get_by_query_str(search_string, max_results, true)
         pois.each do |poi|
           locations.append(poi.build_place_details_hash)
           count += 1
@@ -39,6 +39,39 @@ module Api
 
       end
 
-    end
-  end
-end
+      # Returns json result: true if the provided location is within any of the active service areas, false if not
+      def within_area
+        lat, lng = params[:geometry][:location][:lat], params[:geometry][:location][:lng]
+        render json: {result: Service.active.paratransit.any? { |s| s.primary_coverage_contains?(lat, lng) } }
+      end
+
+      def boundary
+        gs =  GeographyServices.new
+        if gs.global_boundary_exists?
+          render json: gs.global_boundary_as_geojson
+          return
+        end
+
+        render :status => 404, json: {message: 'No Global Boundary'}
+      end
+
+      def routes
+        tp = TripPlanner.new
+        render status: 200, json: tp.get_routes
+        return
+      end
+
+      # If logged in, returns the 4 most recent places.
+      def recent
+        if @traveler.is_api_guest?
+          render status: 200, json: []
+          return
+        end
+
+        render status: 200, json: @traveler.recent_places.map { |place| place.build_place_details_hash}
+
+      end
+
+    end #Places Controller
+  end #V1
+end #API
