@@ -327,6 +327,7 @@ Oneclick::Application.routes.draw do
     resources :characteristics, only: [:index]
     resources :trip_purposes, only: [:index]
     resources :providers, only: [:index]
+    resources :pois, only: [:index]
     get '/users/registered' => 'users#registered'
     get '/users/guests' => 'users#guests'
 
