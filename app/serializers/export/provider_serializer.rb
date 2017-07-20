@@ -5,7 +5,8 @@ module Export
                 :email,
                 :url,
                 :phone,
-                :comments
+                :comments,
+                :logo
                 
     uniquize_attribute :name
     
@@ -15,6 +16,10 @@ module Export
 
     def comments
       object.comments.map {|c| [c.locale, c.comment]}.to_h
+    end
+    
+    def logo
+      object.try(:logo_url)
     end
     
   end

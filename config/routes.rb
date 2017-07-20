@@ -330,6 +330,8 @@ Oneclick::Application.routes.draw do
     resources :pois, only: [:index]
     get '/users/registered' => 'users#registered'
     get '/users/guests' => 'users#guests'
+    resources :services, only: [:index]
+    get '/geographies/fare_zones' => 'geographies#fare_zones'
 
   end
 
