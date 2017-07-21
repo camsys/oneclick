@@ -1,15 +1,9 @@
 module Export
-  class FareZoneSerializer < ExportSerializer
-    
-    attributes :name, :geom
-    
+  class FareZoneSerializer < GeographySerializer
+            
     def name
       "#{object.service.name}_zone_#{object.zone_id}".underscore
     end
-    
-    def geom
-      object.geom.to_s
-    end
-    
+        
   end
 end

@@ -332,6 +332,9 @@ Oneclick::Application.routes.draw do
     get '/users/guests' => 'users#guests'
     resources :services, only: [:index]
     get '/geographies/fare_zones' => 'geographies#fare_zones'
+    get '/geographies/counties' => 'geographies#counties'
+    get '/geographies/zipcodes' => 'geographies#zipcodes'
+    get '/geographies/cities' => 'geographies#cities'
 
   end
 
