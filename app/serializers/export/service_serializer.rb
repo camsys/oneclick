@@ -11,7 +11,7 @@ module Export
                 :start_or_end_area_recipe,
                 :trip_within_area_recipe,
                 :published,
-                :service_type,
+                :type,
                 :fare_structure,
                 :fare_details,
                 :gtfs_agency_id,
@@ -32,12 +32,12 @@ module Export
     }
     
     SERVICE_TYPES = {
-      "paratransit" => :paratransit,
-      "volunteer" => :paratransit,
-      "nemt" => :paratransit,
-      "transit" => :transit,
-      "taxi" => :taxi,
-      "uber_x" => :uber
+      "paratransit" => "Paratransit",
+      "volunteer" => "Paratransit",
+      "nemt" => "Paratransit",
+      "transit" => "Transit",
+      "taxi" => "Taxi",
+      "uber_x" => "Uber"
     }
     
     def email
@@ -68,7 +68,7 @@ module Export
       object.active
     end
     
-    def service_type
+    def type
       SERVICE_TYPES[object.service_type.try(:code)]
     end
     
@@ -82,13 +82,13 @@ module Export
       case fare_structure
       when :flat
         return { 
-          base_fare: fare_info.base.try(:to_f) 
+          base_fare: fare_info.base.to_f
         }
       when :mileage
         return { 
-          base_fare: fare_info.base.try(:to_f),
-          mileage_rate: fare_info.rate.try(:to_f),
-          trip_type: service_type
+          base_fare: fare_info.base.to_f,
+          mileage_rate: fare_info.rate.to_f,
+          trip_type: type.underscore.to_sym
         }
       when :complex
         return nil

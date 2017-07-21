@@ -10,7 +10,6 @@ module Export
                 :preferred_locale,
                 :last_sign_in_at,
                 :current_sign_in_at,
-                :authentication_token,
                 :accommodations,
                 :characteristics,
                 :preferred_modes
