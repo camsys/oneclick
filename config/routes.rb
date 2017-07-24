@@ -335,6 +335,7 @@ Oneclick::Application.routes.draw do
     get '/geographies/counties' => 'geographies#counties'
     get '/geographies/zipcodes' => 'geographies#zipcodes'
     get '/geographies/cities' => 'geographies#cities'
+    resources :roles, only: [:index]
 
   end
 
