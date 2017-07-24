@@ -337,6 +337,7 @@ Oneclick::Application.routes.draw do
     get '/geographies/zipcodes' => 'geographies#zipcodes'
     get '/geographies/cities' => 'geographies#cities'
     resources :roles, only: [:index]
+    resources :feedbacks, only: [:index]
 
   end
 
