@@ -15,7 +15,14 @@ module Export
     end
     
     def rating
-      object.average_rating
+      r = object.average_rating
+      
+      if r.is_a?(Numeric)
+        return [[0, r].max, 5].min
+      else
+        return r
+      end
+      
     end
     
     def review
