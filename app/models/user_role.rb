@@ -5,7 +5,7 @@ class UserRole < ActiveRecord::Base
   belongs_to :role
   
   scope :professional, -> do
-    joins(:role).where(roles: { name: ["system_administrator", "agency_administrator", "agent", "provider_staff", "internal_contact"] })
+    joins(:role).where(roles: { name: ["system_administrator", "provider_staff"] })
   end
   
 end
