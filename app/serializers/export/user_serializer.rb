@@ -13,7 +13,8 @@ module Export
                 :authentication_token,
                 :accommodations,
                 :characteristics,
-                :preferred_modes
+                :preferred_modes,
+                :places
                 
     uniquize_attribute :email
 
@@ -31,6 +32,10 @@ module Export
     
     def preferred_modes
       object.preferred_modes.pluck(:code)
+    end
+
+    def places
+      object.places.map{ |obj| PlaceSerializer.new(obj).serializable_hash }
     end
 
   end
