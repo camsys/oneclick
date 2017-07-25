@@ -3,8 +3,8 @@ module Export
 
     attributes  :arrive_by, 
                 :trip_time, 
-                :origin, 
-                :destination,
+                :origin_attributes, 
+                :destination_attributes,
                 :created_at,
                 :user_id
                 
@@ -18,12 +18,12 @@ module Export
       object.scheduled_time
     end
     
-    def origin
-      PoiSerializer.new(object.try(:from_trip_place)).serializable_hash
+    def origin_attributes
+      TripPlaceSerializer.new(object.try(:from_trip_place)).serializable_hash || {}
     end
     
-    def destination
-      PoiSerializer.new(object.try(:to_trip_place)).serializable_hash
+    def destination_attributes
+      TripPlaceSerializer.new(object.try(:to_trip_place)).serializable_hash || {}
     end
     
     def user_id
