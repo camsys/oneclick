@@ -322,6 +322,11 @@ Oneclick::Application.routes.draw do
   end
 
 
+
+  ############################
+  # LEGACY -> OCC EXPORT API #
+  ############################
+
   namespace :export do
     resources :accommodations, only: [:index]
     resources :characteristics, only: [:index]
@@ -338,8 +343,12 @@ Oneclick::Application.routes.draw do
     get '/geographies/cities' => 'geographies#cities'
     resources :roles, only: [:index]
     resources :feedbacks, only: [:index]
+    resources :trips, only: [:index]
 
   end
+  #export
+
+
 
   #API
   namespace :api, defaults: {format: 'json'} do

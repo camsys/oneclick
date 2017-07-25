@@ -1,5 +1,5 @@
 module Export
-  class PoiSerializer < ExportSerializer
+  class TripPlaceSerializer < ExportSerializer
 
     require 'street_address'
 
@@ -10,9 +10,13 @@ module Export
                 :state,
                 :zip,
                 :lat,
-                :lon
+                :lng
 
     uniquize_attribute :name
+    
+    def lng
+      object.lon
+    end
     
     def parsed_address
       StreetAddress::US.parse(object.address1.to_s.strip)
