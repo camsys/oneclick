@@ -201,16 +201,16 @@ namespace :oneclick do
 
         ######
         # Build Coverage Zones by parsing Endpoint Array and Coverage Array as recipes and joining to existing coverage recipes.
-        unless service.county_endpoint_array.nil?
+        unless service.try(:county_endpoint_array)
           print "Parsing county_endpoint_array to Primary Coverage Area..."
-          service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(service.county_endpoint_array))
+          service.update_attributes(primary_coverage: service.primary_coverage.add_to_recipe(service.try(:county_endpoint_array)))
           puts " #{service.primary_coverage.recipe} added as primary coverage."
         end
 
         # Only build secondary coverage zones for paratransit:
-        unless service.county_coverage_array.nil? || !ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
+        unless service.try(:county_coverage_array) || !ServiceType::PARATRANSIT_MODE_NAMES.include?(service.service_type.code)
           print "Parsing county_coverage_array to Secondary Coverage Area..."
-          service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.county_coverage_array))
+          service.update_attributes(secondary_coverage: service.secondary_coverage.add_to_recipe(service.try(:county_coverage_array)))
           puts " #{service.secondary_coverage.recipe} added as secondary coverage."
         end
         ######
