@@ -1384,3 +1384,7 @@ en:
         password: 'Password'
         retype_your_password: 'Retype your password'
         remember_me: 'Remember me'
+
+  # NEW UI TRANSLATIONS
+  select_trip: "Save to My Trips"
+  cancel_trip: "Remove from My Trips"
