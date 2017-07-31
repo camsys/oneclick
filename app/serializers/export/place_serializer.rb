@@ -13,12 +13,19 @@ module Export
                 :lon
 
     def street_number
-      StreetAddress::US.parse(object.address1).number
+      parsed_address.try(:number)
     end
 
     def route
-      parsed = StreetAddress::US.parse(object.address1)
-      "#{parsed.street} #{parsed.street_type}"
+      [ parsed_address.try(:street),
+        parsed_address.try(:street_type) ].compact.join(' ')
+    end
+    
+    private
+    
+    # helper method for parsing address
+    def parsed_address
+      StreetAddress::US.parse(object.address1.strip)
     end
 
   end
