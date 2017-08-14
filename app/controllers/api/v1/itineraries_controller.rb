@@ -288,7 +288,17 @@ module Api
             end
 
             negotiated_do_time = negotiated_do_time.iso8601
-            results_array.append({trip_id: bi.trip_part.trip.id, itinerary_id: bi.id, booked: true, confirmation_id: bi.booking_confirmation, wait_start: wait_start, wait_end: wait_end, arrival: negotiated_do_time, message: nil, negotiated_duration: negotiated_duration })
+            results_array.append({
+              trip_id: bi.trip_part.trip.id, 
+              itinerary_id: bi.id, 
+              booked: true, 
+              confirmation_id: bi.booking_confirmation, 
+              wait_start: wait_start, 
+              wait_end: wait_end, 
+              arrival: negotiated_do_time, 
+              message: nil, 
+              negotiated_duration: negotiated_duration 
+            })
 
             #Select the itinerary
             bi.reload
