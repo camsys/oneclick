@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
 
   belongs_to :agency
   belongs_to :provider
-  belongs_to :walking_speed                                                                              r.cou
+  belongs_to :walking_speed
   belongs_to :walking_maximum_distance
   has_and_belongs_to_many :services
 
