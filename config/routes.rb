@@ -344,6 +344,7 @@ Oneclick::Application.routes.draw do
     resources :roles, only: [:index]
     resources :feedbacks, only: [:index]
     resources :trips, only: [:index]
+    resources :oneclick_configurations, only: [:index]
 
   end
   #export
