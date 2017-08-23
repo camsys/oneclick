@@ -347,6 +347,8 @@ Oneclick::Application.routes.draw do
     get '/booking/user_booking_profiles' => 'booking#user_booking_profiles'
     get '/booking/service_booking_profiles' => 'booking#service_booking_profiles'
     get '/booking/trip_bookings' => 'booking#trip_bookings'
+    resources :oneclick_configurations, only: [:index]
+
 
   end
   #export

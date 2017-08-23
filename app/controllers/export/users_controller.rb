@@ -6,16 +6,23 @@ module Export
     end
     
     def guests
-      @users = User.where.not(id: User.registered.pluck(:id)).joins(:trips).uniq
+      @professinals = get_professionals
+      @users = (User.where.not(id: User.registered.pluck(:id)).joins(:trips).uniq) - @professinals
       render json: @users.map{ |u| UserSerializer.new(u).serializable_hash }
     end
     
     def professionals
-      @users = User.with_any_role(
-        {name: :provider_staff, resource: :any}, 
-        :system_administrator
-      )
+      @users = get_professionals
       render json: @users.map{ |u| UserSerializer.new(u).serializable_hash }
+    end
+
+    protected
+
+    def get_professionals
+      User.with_any_role(
+          {name: :provider_staff, resource: :any},
+          :system_administrator
+      )
     end
   end
 end
